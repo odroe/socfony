@@ -4,11 +4,16 @@ import { apolloServer } from "./apollo-server";
 async function main() {
     await apolloServer.start();
     
-    await app.register(apolloServer.createHandler({
+    const address = await app
+    
+    /// Register Apollo Server.
+    .register(apolloServer.createHandler({
         path: '/',
-    }));
+    }))
+    
+    /// Listen on port 3000
+    .listen(3000);
 
-    const address = await app.listen(3000);
     console.log(`🚀 Listening on ${address}`);
 }
 

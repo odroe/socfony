@@ -1,9 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 
-declare global {
-    namespace Express {
-        interface Request {
-            prisma: PrismaClient;
-        }
-    }
+interface PrismaClientMixin {
+    prisma: PrismaClient;
+}
+
+declare module "fastify" {
+    interface FastifyInstance extends PrismaClientMixin {}
+    interface FastifyRequest extends PrismaClientMixin {}
 }
