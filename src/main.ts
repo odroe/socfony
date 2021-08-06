@@ -3,11 +3,13 @@ import { apolloServer } from "./apollo-server";
 
 async function main() {
     await apolloServer.start();
-    apolloServer.applyMiddleware({ app, path: '/' });
     
-    app.listen(process.env.PORT || 3000)
+    await app.register(apolloServer.createHandler({
+        path: '/',
+    }));
 
-    console.log(`🚀 Apollo Server is listening on port http://localhost:${process.env.PORT || 3000}`);
+    const address = await app.listen(3000);
+    console.log(`🚀 Listening on ${address}`);
 }
 
 main();
