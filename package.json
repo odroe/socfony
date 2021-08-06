@@ -1,9 +1,8 @@
 {
   "name": "socfony",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "scripts": {
+    "dev": "ts-node-dev --transpile-only --no-notify src/main.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -15,5 +14,20 @@
   "bugs": {
     "url": "https://github.com/odroe/socfony/issues"
   },
-  "homepage": "https://github.com/odroe/socfony#readme"
+  "homepage": "https://github.com/odroe/socfony#readme",
+  "dependencies": {
+    "@prisma/client": "^2.27.0",
+    "apollo-server-express": "^3.1.2",
+    "express": "^4.17.1",
+    "graphql": "^15.5.1",
+    "nexus": "^1.1.0",
+    "nexus-prisma": "^0.30.0"
+  },
+  "devDependencies": {
+    "@types/node": "^16.4.13",
+    "@vercel/ncc": "^0.29.0",
+    "prisma": "2.27.0",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.3.5"
+  }
 }

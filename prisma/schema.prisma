@@ -1,0 +1,20 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator Client {
+  provider = "prisma-client-js"
+  previewFeatures = ["nApi"]
+}
+
+generator Nexus {
+  provider = "nexus-prisma"
+}
+
+model User {
+  id String @id @db.Char(64)
+}
