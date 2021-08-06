@@ -14,7 +14,7 @@ async function main() {
     /// Listen on port 3000
     .listen(3000);
 
-    console.log(`🚀 Listening on ${address}`);
+    console.log(`🚀 Server ready at ${address}`);
 }
 
 main();
