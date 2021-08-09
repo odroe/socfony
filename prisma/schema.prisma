@@ -1,20 +1,48 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+// Define a MySQL data source.
 datasource db {
-  provider = "postgresql"
+  // Pinned the `provider` is MySQL driver.
+  provider = "mysql"
+  // Use the `url` to connect to your MySQL database.
   url      = env("DATABASE_URL")
 }
 
+// Generate a JsvaScript client.
 generator Client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["nApi"]
 }
 
+// Generate a Nexus GraphQL schema client.
 generator Nexus {
   provider = "nexus-prisma"
 }
 
+/// User-based account meta.
 model User {
+  /// The user's ID.
+  // Global unique, length: 64 size.
   id String @id @db.Char(64)
+
+  /// The user's user name.
+  // Must be unique, length: 48 size.
+  /// rules: ^([A-Za-z])[A-Za-z0-9_-]*$, min: 3, max: 48
+  name String? @unique @db.VarChar(48)
+
+  /// The user's email.
+  // Must be unique, length: 128 size.
+  email String? @unique @db.VarChar(128)
+
+  /// The user's mobile number.
+  // Must be unique, length: 15 size.
+  /// E.g: `+86 187xxxxxxx`
+  mobile String? @unique @db.VarChar(15)
+
+  /// The user's password.
+  password String? @db.VarChar(128)
+
+  /// The user's registered at.
+  registeredAt DateTime @default(now())
 }
