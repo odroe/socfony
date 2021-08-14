@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "ts-node-dev --transpile-only --no-notify src/main.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "ncc build src/main.ts -o dist"
   },
   "repository": {
     "type": "git",

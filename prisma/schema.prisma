@@ -11,8 +11,7 @@ datasource db {
 
 // Generate a JsvaScript client.
 generator Client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["nApi"]
+  provider = "prisma-client-js"
 }
 
 // Generate a Nexus GraphQL schema client.
