@@ -17,6 +17,7 @@
   "homepage": "https://github.com/odroe/socfony#readme",
   "dependencies": {
     "@prisma/client": "^2.27.0",
+    "ajv": "^8.6.2",
     "apollo-server-fastify": "^3.1.2",
     "fastify": "^3.20.1",
     "fastify-plugin": "^2.3.4",

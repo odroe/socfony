@@ -22,21 +22,15 @@ generator Nexus {
 /// User-based account meta.
 model User {
   /// The user's ID.
-  // Global unique, length: 64 size.
   id String @id @db.Char(64)
 
   /// The user's user name.
-  // Must be unique, length: 48 size.
-  /// rules: ^([A-Za-z])[A-Za-z0-9_-]*$, min: 3, max: 48
   name String? @unique @db.VarChar(48)
 
   /// The user's email.
-  // Must be unique, length: 128 size.
   email String? @unique @db.VarChar(128)
 
   /// The user's mobile number.
-  // Must be unique, length: 15 size.
-  /// E.g: `+86 187xxxxxxx`
   mobile String? @unique @db.VarChar(15)
 
   /// The user's password.
