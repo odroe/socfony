@@ -1,5 +1,5 @@
 import { FastifyRequest } from "fastify";
-import { nonNull, objectType } from "nexus";
+import { objectType } from "nexus";
 import { AccessToken } from "nexus-prisma";
 import { AccessToken as AccessTokenInterface, User as UserInterface } from "@prisma/client";
 

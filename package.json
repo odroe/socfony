@@ -2,7 +2,7 @@
   "name": "socfony",
   "version": "1.0.0",
   "scripts": {
-    "dev": "ts-node-dev --transpile-only --no-notify src/main.ts",
+    "dev": "ts-node-dev --respawn --transpile-only --no-notify src/main.ts",
     "build": "ncc build src/main.ts -o dist"
   },
   "repository": {
