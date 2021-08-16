@@ -1,4 +1,5 @@
 import Ajv from 'ajv';
+import { isValidPhoneNumber } from 'libphonenumber-js';
 
 export const ajv = new Ajv()
 
@@ -7,3 +8,6 @@ export const ajv = new Ajv()
 
 // Create a E-Mail format
 .addFormat("email", data => /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i.test(data))
+
+// Create phone number format
+.addFormat("phone-number", data => isValidPhoneNumber(data))

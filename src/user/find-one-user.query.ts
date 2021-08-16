@@ -22,7 +22,7 @@ export const findOneUserQuery = queryField('user', {
     type: nullable(UserEntity),
     resolve(_root, args, { prisma }: FastifyRequest) {
         if (validate(args) === false) {
-            throw new Error('jiv-validate/json:' + JSON.stringify(validate.errors));
+            throw new Error('ajv-validate/json:' + JSON.stringify(validate.errors));
         }
 
         return prisma.user.findUnique({

@@ -38,4 +38,28 @@ model User {
 
   /// The user's registered at.
   registeredAt DateTime @default(now())
+
+  /// The user's access tokens.
+  accessTokens AccessToken[]
+}
+
+/// Access token.
+model AccessToken {
+  /// The access token's token.
+  token String @db.VarChar(128) @id
+
+  /// The access token's user ID.
+  userId String @db.Char(64)
+
+  /// The access token's created at.
+  createdAt DateTime @default(now())
+
+  /// The access token's expiry date.
+  expiredAt DateTime
+
+  /// The access token's refresh expiry date.
+  refreshExpiredAt DateTime
+
+  /// The access token owner.
+  user User @relation(fields: [userId], references: [id])
 }
