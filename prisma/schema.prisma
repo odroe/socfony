@@ -11,7 +11,8 @@ datasource db {
 
 // Generate a JsvaScript client.
 generator Client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialActions"]
 }
 
 // Generate a Nexus GraphQL schema client.
@@ -61,5 +62,7 @@ model AccessToken {
   refreshExpiredAt DateTime
 
   /// The access token owner.
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([userId])
 }
