@@ -1,6 +1,7 @@
 import { objectType } from "nexus";
 import { User } from 'nexus-prisma';
 import { User as UserInterface } from '@prisma/client';
+import { FastifyRequest } from "fastify";
 
 // Chack User password has set.
 const hasSetPassword = (user: UserInterface) => !!user.password;
@@ -17,7 +18,7 @@ export const UserEntity = objectType({
         t.field(User.registeredAt);
         t.boolean('hasSetPassword', {
             description: "The user's password has set.",
-            authorize: (_root, _args, context) => !!context.accessToken,
+            authorize: (root: UserInterface, _args, { accessToken }: FastifyRequest) => root.id === accessToken?.userId,
             resolve: (root: UserInterface) => hasSetPassword(root),
         });
     },
