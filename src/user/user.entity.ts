@@ -17,6 +17,7 @@ export const UserEntity = objectType({
         t.field(User.registeredAt);
         t.boolean('hasSetPassword', {
             description: "The user's password has set.",
+            authorize: (_root, _args, context) => !!context.accessToken,
             resolve: (root: UserInterface) => hasSetPassword(root),
         });
     },

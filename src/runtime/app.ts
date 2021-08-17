@@ -1,8 +1,15 @@
 import fastify from 'fastify';
-import { applyPrismaPlugin } from './plugins';
+import { applyPrismaPlugin, applyAuthPlugin } from './plugins';
 
 // Create a fastify instance
 export const app = fastify()
+//------------------ Start registering plugins ------------------//
 
-// Apply Prisma client instance to fastify instance.
+// Register Prisma client instance to fastify instance.
 .register(applyPrismaPlugin)
+
+// Register auth plugin
+.register(applyAuthPlugin)
+
+//------------------ End registering plugins --------------------//
+;

@@ -1,4 +1,4 @@
-import { makeSchema } from "nexus";
+import { fieldAuthorizePlugin, makeSchema } from "nexus";
 import { $settings } from "nexus-prisma";
 import nexusPrismaScalars from 'nexus-prisma/scalars';
 import * as resolvers from './resolvers';
@@ -8,6 +8,9 @@ export const schema = makeSchema({
     types: [
         nexusPrismaScalars,
         resolvers,
+    ],
+    plugins: [
+        fieldAuthorizePlugin(),
     ],
 });
 
