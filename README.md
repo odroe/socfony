@@ -46,7 +46,7 @@ Wecome to Pull Request. For major changes, please open an issue first.
 
 Join the WeChat discussion group and communicate directly with developers or other Socfony users.
 
-![Socfony WeChat Group](https://raw.githubusercontent.com/odroe/socfony/main/graph/join-wechat-qrcode.png)
+<img src="https://raw.githubusercontent.com/odroe/socfony/main/graph/join-wechat-qrcode.png" alt="Socfony WeChat Group" width="200" />
 
 ## License
 
