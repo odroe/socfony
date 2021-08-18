@@ -23,7 +23,7 @@ git clone https://github.com/odroe/socfony
     ```
 2. Edit database connection configuration in `.env` file:
     ```bash
-    DATABASE_URL="mysql://socfony:socfony@localhost:3306/socfony"
+    DATABASE_URL="mysql://[username]:[passwprd]@[address]:3306/socfony"
     ```
 3. Configuration database table:
     ```bash
