@@ -1,15 +1,17 @@
 {
+  "private": true,
   "name": "socfony",
+  "description": "Socfony is an open source social application, and basic security modules and social function modules have been preset in the software. Whether it is to deploy Socfony directly or as a basis for program development is wonderful.",
   "version": "1.0.0",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only --no-notify src/main.ts",
-    "build": "ncc build src/main.ts -o dist"
+    "dev": "ts-node-dev --respawn --transpile-only --no-notify main.ts",
+    "build": "ncc build main.ts -o dist"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/odroe/socfony.git"
   },
-  "author": "Sichuan Odroe Tec Ltd.",
+  "author": "Odroe, Inc. <hello@odroe.com>",
   "license": "BSD-3-Clause",
   "bugs": {
     "url": "https://github.com/odroe/socfony/issues"

@@ -3,7 +3,7 @@ import { mutationField, nonNull, nullable, stringArg } from "nexus";
 import { User } from "nexus-prisma";
 import { PrismaClient, User as UserInterface } from '@prisma/client';
 import { FastifyRequest } from "fastify";
-import { ajv } from "../runtime/ajv";
+import { ajv } from "../../services/ajv";
 import { AccessTokenEntity } from "./access-token.entity";
 import { nanoid } from "nanoid";
 import crypto from 'crypto';

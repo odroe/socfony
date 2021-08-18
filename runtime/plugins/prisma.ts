@@ -1,5 +1,5 @@
 import fp from 'fastify-plugin';
-import { prisma } from '../prisma';
+import { prisma } from '../../services';
 
 /**
  * Apply Prisma client instance to fastify instance and request

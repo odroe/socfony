@@ -3,7 +3,7 @@ import { nullable, queryField, core, idArg, stringArg } from "nexus";
 import { User } from "nexus-prisma";
 import { UserEntity } from "./user.entity";
 import schema from './find-one-user.schema.json';
-import { ajv } from "../runtime/ajv";
+import { ajv } from "../../services/ajv";
 import { Prisma } from "@prisma/client";
 
 // Create the query args.

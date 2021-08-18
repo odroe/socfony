@@ -1,5 +1,5 @@
 import { app } from "./runtime";
-import { apolloServer } from "./apollo-server";
+import { apolloServer } from "./runtime";
 
 // Create the main app runtime.
 async function main() {
