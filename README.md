@@ -11,6 +11,7 @@ Socfony is an open source social application, and basic security modules and soc
 ## Download
 
 Use Git to clone the project:
+
 ```bash
 git clone https://github.com/odroe/socfony
 ```
@@ -18,21 +19,21 @@ git clone https://github.com/odroe/socfony
 ## Usage
 
 1. Install Npm dependencies:
-    ```bash
-    npm install
-    ```
+   ```bash
+   npm install
+   ```
 2. Edit database connection configuration in `.env` file:
-    ```bash
-    DATABASE_URL="mysql://[username]:[passwprd]@[address]:3306/socfony"
-    ```
+   ```bash
+   DATABASE_URL="mysql://[username]:[passwprd]@[address]:3306/socfony"
+   ```
 3. Configuration database table:
-    ```bash
-    npx prisma db push
-    ```
+   ```bash
+   npx prisma db push
+   ```
 4. Run the application:
-    ```bash
-    npm run dev
-    ```
+   ```bash
+   npm run dev
+   ```
 
 ## Documentation
 

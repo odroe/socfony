@@ -1,2 +1,2 @@
-export * from './access-token.entity';
-export * from './sign-in.mutation';
+export * from "./access-token.entity";
+export * from "./sign-in.mutation";
