@@ -10,42 +10,9 @@ Socfony is an open source social application, and basic security modules and soc
 
 ## TODO
 
-- [ ] Unit tests
-- [ ] Documentation
-- [ ] Docker
-- [ ] Send validate SMS
-- [ ] Register
-- [ ] Update user's data
-- [ ] Update user's password
-- [ ] Update user's email
-- [ ] Update user's phone
-- [ ] Update user's avatar
-- [ ] Tencent COS driver
-- [ ] Moment create
-- [ ] Like a moment
-- [ ] Comment a moment
-- [ ] Delete a moment
-- [ ] Like a comment
-- [ ] Delete a comment
-- [ ] Follow a user
-- [ ] Unfollow a user
-- [ ] Notification
-- [ ] User chat
-- Community
-  - [ ] Create a community
-  - [ ] Join a community
-  - [ ] Set a community's admin
-  - [ ] Delete a community
-  - [ ] Delete a community's admin
-  - Category
-    - [ ] Create a category
-    - [ ] Delete a category
-  - Discussion
-    - [ ] Create a discussion
-    - [ ] Delete a discussion
-    - [ ] Comment a discussion
-    - [ ] Delete a discussion's comment
-    - [ ] Like a discussion
+Before the official version is released, we still have a lot of work to be done.
+
+> If you follow our development progress, please visit [TODO](https://github.com/odroe/socfony/issues/128)
 
 ## Download
 
