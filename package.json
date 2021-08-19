@@ -28,7 +28,8 @@
     "libphonenumber-js": "^1.9.23",
     "nanoid": "^3.1.25",
     "nexus": "^1.1.0",
-    "nexus-prisma": "^0.30.0"
+    "nexus-prisma": "^0.30.0",
+    "tencentcloud-sdk-nodejs": "^4.0.184"
   },
   "devDependencies": {
     "@types/node": "^16.6.1",
