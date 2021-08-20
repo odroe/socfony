@@ -32,7 +32,7 @@
     "tencentcloud-sdk-nodejs": "^4.0.184"
   },
   "devDependencies": {
-    "@types/node": "^16.6.1",
+    "@types/node": "^16.6.2",
     "@vercel/ncc": "^0.29.1",
     "prettier": "^2.3.2",
     "prisma": "2.27.0",
