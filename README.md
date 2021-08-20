@@ -57,7 +57,7 @@ Join the WeChat discussion group and communicate directly with developers or oth
 
 ## License
 
-BSD 3-Clause License
+BSD 3-Clause License.
 
 Copyright (c) 2021, [Odroe, Inc.](https://odroe.com)
 All rights reserved.
