@@ -1,0 +1,11 @@
+.DS_Store
+.vscode
+.idea
+.git
+.github
+.env
+graph
+prisma
+!prisma/schema.prisma
+dist
+node_modules

@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only --no-notify main.ts",
     "build": "ncc build main.ts -o dist",
+    "build:prisma": "prisma generate",
     "format": "prettier --write .",
     "seed": "node prisma/seed",
     "seed:build": "ncc build prisma/seed-src/main.ts -o prisma/seed-dist",
