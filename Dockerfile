@@ -2,7 +2,7 @@
 FROM node:lts-alpine as builder
 WORKDIR /socfony
 COPY ./ ./
-RUN npm ci --ignore-scripts
+RUN npm ci
 RUN npm run build:prisma
 RUN npm run build
 
