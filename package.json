@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only --no-notify main.ts",
     "build": "ncc build main.ts -o dist",
+    "build:seed": "",
     "format": "prettier --write ."
   },
   "repository": {
@@ -29,6 +30,7 @@
     "nanoid": "^3.1.25",
     "nexus": "^1.1.0",
     "nexus-prisma": "^0.30.0",
+    "storage-box": "^0.0.4",
     "tencentcloud-sdk-nodejs": "^4.0.184"
   },
   "devDependencies": {

@@ -47,7 +47,7 @@ model User {
 /// Access token.
 model AccessToken {
   /// The access token's token.
-  token String @db.VarChar(128) @id
+  token String @id @db.VarChar(128)
 
   /// The access token's user ID.
   userId String @db.Char(64)
@@ -65,4 +65,20 @@ model AccessToken {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([userId])
+}
+
+/// Storage Box
+model StorageBox {
+  /// The Storage Box name.
+  name String @db.VarChar(48)
+
+  /// The Storage box item key.
+  key String @db.VarChar(48)
+
+  /// The Storage box item value.
+  value Json @db.Json
+
+  @@unique([name, key])
+  @@index([name])
+  @@index([key])
 }
