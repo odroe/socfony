@@ -6,7 +6,7 @@ import { FastifyRequest } from "fastify";
 import { ajv } from "../../services/ajv";
 import { AccessTokenEntity } from "./access-token.entity";
 import { nanoid } from "nanoid";
-import crypto from "crypto";
+import { pbkdf2Sync } from "crypto";
 
 // Define the args for the "signIn" mutation.
 const args = <const>{
@@ -53,7 +53,7 @@ function validatePassword(user: UserInterface, password: string): boolean {
   }
 
   // Using PBKDF2 to generate a hash from the password.
-  const hash = crypto.pbkdf2Sync(password, user.id, 10000, 64, "sha512");
+  const hash = pbkdf2Sync(password, user.id, 10000, 64, "sha512");
 
   return hash.toString("hex") === user.password;
 }

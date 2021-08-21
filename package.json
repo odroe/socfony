@@ -6,8 +6,10 @@
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only --no-notify main.ts",
     "build": "ncc build main.ts -o dist",
-    "build:seed": "",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "seed": "node prisma/seed",
+    "seed:build": "ncc build prisma/seed-src/main.ts -o prisma/seed-dist",
+    "seed:dev": "ts-node-dev --respawn --transpile-only --no-notify prisma/seed-src/main.ts"
   },
   "repository": {
     "type": "git",
