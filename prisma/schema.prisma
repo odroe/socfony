@@ -10,14 +10,9 @@ datasource db {
 }
 
 // Generate a JsvaScript client.
-generator Client {
+generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["referentialActions", "nApi"]
-}
-
-// Generate a Nexus GraphQL schema client.
-generator Nexus {
-  provider = "nexus-prisma"
 }
 
 /// User-based account meta.
@@ -67,8 +62,8 @@ model AccessToken {
   @@index([userId])
 }
 
-/// Storage Box
-model StorageBox {
+/// Setting
+model Setting {
   /// The Storage Box name.
   name String @db.VarChar(48)
 

@@ -1,23 +1,10 @@
 {
   "private": true,
   "name": "socfony",
-  "description": "Socfony is an open source social application, and basic security modules and social function modules have been preset in the software. Whether it is to deploy Socfony directly or as a basis for program development is wonderful.",
-  "version": "1.0.0",
-  "scripts": {
-    "format": "prettier --write ."
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/odroe/socfony.git"
-  },
-  "author": "Odroe Inc. <hello@odroe.com>",
+  "author": "Odore Inc. <hello@odroe.com> (https://odroe.com/)",
   "license": "BSD-3-Clause",
-  "bugs": {
-    "url": "https://github.com/odroe/socfony/issues"
-  },
-  "homepage": "https://github.com/odroe/socfony#readme",
-  "dependencies": {},
-  "devDependencies": {
-    "prettier": "^2.3.2"
-  }
+  "workspaces": [
+    "client-api",
+    "packages/**"
+  ]
 }
