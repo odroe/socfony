@@ -1,47 +1,50 @@
 import { Client } from "tencentcloud-sdk-nodejs/tencentcloud/services/sms/v20210111/sms_client";
+import { Credential } from "tencentcloud-sdk-nodejs/tencentcloud/common/interface";
 import { SendSmsRequest } from "tencentcloud-sdk-nodejs/tencentcloud/services/sms/v20210111/sms_models";
-import { getCredential } from "./credential";
 import { tencentCloudStorageBox } from "./storage-box";
 
-export namespace SMS {
-  let internal: Client;
+/**
+ * SMS config
+ */
+export interface SmsConfig {
+  credential: Omit<Credential, "token">;
+  region: string;
+  request: Omit<SendSmsRequest, "PhoneNumberSet">;
+}
 
-  async function getClient(): Promise<Client> {
-    const credential = await getCredential();
-    if (
-      internal &&
-      internal.credential.secretId === credential.secretId &&
-      internal.credential.secretKey === credential.secretKey
-    ) {
-      return internal;
-    }
+/**
+ * Get SMS config.
+ */
+function getConfig(): Promise<SmsConfig> {
+  return tencentCloudStorageBox.get<SmsConfig>("send-validate-user-sms");
+}
 
-    return (internal = new Client({
-      credential,
-      region: "ap-shanghai",
-    }));
-  }
+/**
+ * Send a SMS to user.
+ * @param phone Phone number.
+ * @param code Code.
+ * @returns Send status.
+ * @throws Error if send failed.
+ */
+export async function sendValidateUserSms(phone: string, code: string) {
+  // Get config.
+  const { request, ...clientOptions } = await getConfig();
 
-  async function getRequest(
-    phone: string,
-    code: string
-  ): Promise<SendSmsRequest> {
-    const request = await tencentCloudStorageBox.get<SendSmsRequest>(
-      "validate-user-sms"
-    );
-    request.TemplateParamSet = request.TemplateParamSet?.map((value) =>
-      value.replace("{code}", code)
-    );
-    request.PhoneNumberSet = [phone];
+  // Create client.
+  const client = new Client(clientOptions);
 
-    return request;
-  }
+  // Create SMS template params.
+  const params =
+    request.TemplateParamSet?.map((item) => item.replace("{code}", code)) || [];
 
-  export async function send(phone: string, code: string) {
-    // Get SendSmsRequest config
-    const request = await getRequest(phone, code);
-    const client = await getClient();
+  // Create SMS send params.
+  const options: SendSmsRequest = Object.assign({}, request, {
+    TemplateParamSet: [phone],
+    PhoneNumberSet: params,
+  });
 
-    return await client.SendSms(request);
-  }
+  // Send SMS.
+  const response = await client.SendSms(options);
+
+  return response.SendStatusSet.pop();
 }

@@ -1,12 +1,22 @@
 import { JSONSchemaType } from "ajv";
-import { mutationField, nonNull, nullable, stringArg } from "nexus";
+import { enumType, mutationField, nonNull, nullable, stringArg, } from "nexus";
 import { User } from "nexus-prisma";
 import { PrismaClient, User as UserInterface } from "@prisma/client";
 import { FastifyRequest } from "fastify";
 import { ajv } from "../../services/ajv";
 import { AccessTokenEntity } from "./access-token.entity";
-import { nanoid } from "nanoid";
 import { pbkdf2Sync } from "crypto";
+
+enum _SignInType {
+  password = 'password',
+  otp = 'otp',
+}
+
+export const SignInType = enumType({
+  name: 'SignInType',
+  members: _SignInType,
+  description: 'Sign in type',
+});
 
 // Define the args for the "signIn" mutation.
 const args = <const>{
@@ -14,6 +24,7 @@ const args = <const>{
   email: nullable(stringArg({ description: User.email.description })),
   phone: nullable(stringArg({ description: User.mobile.description })),
   password: nonNull(stringArg({ description: User.password.description })),
+  passwordType: nonNull(SignInType.asArg()),
 };
 
 type ArgsValue = Record<keyof typeof args, string>;
@@ -26,25 +37,31 @@ const schema: JSONSchemaType<ArgsValue> = {
     phone: { type: "string", format: "phone-number" },
     name: { type: "string", pattern: "^[a-zA-Z][a-zA-Z0-9]+$" },
     password: { type: "string" },
+    passwordType: {
+      type: "string",
+      enum: ["password", "otp"]
+    },
   },
-  required: ["password"],
-  oneOf: [
-    { required: ["email"] },
-    { required: ["mobile"] },
-    { required: ["name"] },
-  ],
+  required: ["password", "passwordType"],
+  if: {
+    properties: {
+      passwordType: { const: "otp" }
+    }
+  },
+  then: {
+    required: ["phone"]
+  },
+  else: {
+    oneOf: [
+      { required: ["email"] },
+      { required: ["phone"] },
+      { required: ["name"] },
+    ],
+  }
 };
 
 // create a Ajv validate function for the args
 const validate = ajv.compile(schema);
-
-// user find resolve
-function userResolve(
-  prisma: PrismaClient,
-  where: Omit<ArgsValue, "password">
-): Promise<UserInterface> {
-  return prisma.user.findUnique({ where, rejectOnNotFound: true }) as any;
-}
 
 // Validate user password.
 function validatePassword(user: UserInterface, password: string): boolean {
@@ -66,20 +83,11 @@ export const SignInMutation = mutationField("signIn", {
     if (validate(args) === false) {
       throw new Error("ajv-validate/json:" + JSON.stringify(validate.errors));
     }
-    const { password, ...where } = args;
-    const user = await userResolve(prisma, where);
-
-    if (validatePassword(user, password) === false) {
-      throw new Error("User password not match");
+    const { password, passwordType, ...where } = args;
+    
+    if (passwordType === _SignInType.otp) {
+      return loginAutoReguster(prisma, where);
     }
-
-    return prisma.accessToken.create({
-      data: {
-        userId: user.id,
-        token: nanoid(64),
-        expiredAt: new Date(),
-        refreshExpiredAt: new Date(),
-      },
-    });
+    
   },
 });
