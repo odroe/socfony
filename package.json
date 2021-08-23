@@ -4,45 +4,20 @@
   "description": "Socfony is an open source social application, and basic security modules and social function modules have been preset in the software. Whether it is to deploy Socfony directly or as a basis for program development is wonderful.",
   "version": "1.0.0",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only --no-notify main.ts",
-    "build": "ncc build main.ts -o dist",
-    "build:prisma": "prisma generate",
-    "format": "prettier --write .",
-    "seed": "node prisma/seed",
-    "seed:build": "ncc build prisma/seed-src/main.ts -o prisma/seed-dist",
-    "seed:dev": "ts-node-dev --respawn --transpile-only --no-notify prisma/seed-src/main.ts"
+    "format": "prettier --write ."
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/odroe/socfony.git"
   },
-  "author": "Odroe, Inc. <hello@odroe.com>",
+  "author": "Odroe Inc. <hello@odroe.com>",
   "license": "BSD-3-Clause",
   "bugs": {
     "url": "https://github.com/odroe/socfony/issues"
   },
   "homepage": "https://github.com/odroe/socfony#readme",
-  "dependencies": {
-    "@prisma/client": "^2.27.0",
-    "ajv": "^8.6.2",
-    "apollo-server-fastify": "^3.1.2",
-    "dayjs": "^1.10.6",
-    "fastify": "^3.20.2",
-    "fastify-plugin": "^3.0.0",
-    "graphql": "^15.5.1",
-    "libphonenumber-js": "^1.9.23",
-    "nanoid": "^3.1.25",
-    "nexus": "^1.1.0",
-    "nexus-prisma": "^0.30.0",
-    "storage-box": "^0.0.4",
-    "tencentcloud-sdk-nodejs": "^4.0.186"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@types/node": "^16.6.2",
-    "@vercel/ncc": "^0.29.2",
-    "prettier": "^2.3.2",
-    "prisma": "2.27.0",
-    "ts-node-dev": "^1.1.8",
-    "typescript": "^4.3.5"
+    "prettier": "^2.3.2"
   }
 }
