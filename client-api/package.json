@@ -1,6 +1,6 @@
 {
   "name": "@socfony/client-api",
-  "version": "1.0.0-dev.0",
+  "version": "1.0.0-dev.1",
   "description": "Socfony is an open source social application, and basic security modules and social function modules have been preset in the software. Whether it is to deploy Socfony directly or as a basis for program development is wonderful.",
   "author": "Odroe Inc. <hello@odroe.com> (https://odroe.com/)",
   "private": true,
