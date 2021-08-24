@@ -10,11 +10,7 @@
   "scripts": {
     "build": "tsc --build"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/odroe/socfony.git",
-    "directory": "packages/prisma"
-  },
+  "repository": "https://github.com/odroe/socfony",
   "author": "Odroe Inc. <hello@odroe.com> (https://odroe.com/)",
   "license": "BSD-3-Clause",
   "bugs": {
