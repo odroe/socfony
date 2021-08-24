@@ -11,10 +11,10 @@ import { UsersModule } from './users/users.module';
       // playground: true,
       path: '/',
       sortSchema: true,
-      fieldResolverEnhancers: ["guards"],
+      fieldResolverEnhancers: ['guards'],
       buildSchemaOptions: {
-        numberScalarMode: "integer",
-        dateScalarMode: "isoDate",
+        numberScalarMode: 'integer',
+        dateScalarMode: 'isoDate',
       },
     }),
     UsersModule,

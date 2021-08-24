@@ -1,4 +1,4 @@
-import { ConsoleLogger } from "@nestjs/common";
+import { ConsoleLogger } from '@nestjs/common';
 
 export const SEEDER = 'Seeder';
 
