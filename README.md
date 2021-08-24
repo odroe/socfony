@@ -46,6 +46,14 @@ git clone https://github.com/odroe/socfony
 
 > TODO: Write documentation
 
+## Code of Conduct
+
+We as members, contributors, and leaders pledge to make participation in our community a harassment-free experience for everyone, regardless of age, body size, visible or invisible disability, ethnicity, sex characteristics, gender identity and expression, level of experience, education, socio-economic status, nationality, personal appearance, race, religion, or sexual identity and orientation.
+
+We pledge to act and interact in ways that contribute to an open, welcoming, diverse, inclusive, and healthy community.
+
+More read at [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+
 ## Contribution
 
 Wecome to Pull Request. For major changes, please open an issue first.
