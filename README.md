@@ -22,6 +22,9 @@ Use Git to clone the project:
 git clone https://github.com/odroe/socfony
 ```
 
+- [Download the latest release](https://github.com/odroe/socfony/releases)
+- [Download the latest development version ZIP](https://github.com/odroe/socfony/archive/refs/heads/main.zip)
+
 ## Usage
 
 1. Install Npm dependencies:
