@@ -1,7 +1,7 @@
 # This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
 # For more information see: https://help.github.com/actions/language-and-framework-guides/publishing-nodejs-packages
 
-name: Node.js Package
+name: Node.js Packages
 
 on:
   release:
@@ -15,7 +15,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 16
-      - run: npm ci -ws
+      - run: npm ci -w packages
       # Need more commands. await!
 
   publish-npm:
@@ -27,9 +27,9 @@ jobs:
         with:
           node-version: 16
           registry-url: https://registry.npmjs.org/
-      - run: npm ci -ws
-      - run: npm run build -ws
-      - run: npm publish -ws
+      - run: npm ci -w packages
+      - run: npm run build -w packages
+      - run: npm publish -w packages
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
 
@@ -45,8 +45,8 @@ jobs:
         with:
           node-version: 16
           registry-url: https://npm.pkg.github.com/
-      - run: npm ci -ws
-      - run: npm run build -ws
-      - run: npm publish -ws
+      - run: npm ci -w packages
+      - run: npm run build -w packages
+      - run: npm publish -w packages
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
