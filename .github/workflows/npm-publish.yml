@@ -44,7 +44,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 16
-          registry-url: https://npm.pkg.github.com/
+          registry-url: https://github.com/odroe/socfony
       - run: npm ci -w packages
       - run: npm run build -w packages
       - run: npm publish -w packages
