@@ -14,6 +14,6 @@
   "workspaces": [
     "client-api",
     "prisma/seeder",
-    "packages/**"
+    "packages/*"
   ]
 }
