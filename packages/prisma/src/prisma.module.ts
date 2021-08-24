@@ -27,8 +27,8 @@ function resolveClient<T extends PrismaClientInterface>(client?: Type<T>): Type<
 
 @Module({})
 export class PrismaModule {
-    static forRoot<T extends PrismaClientInterface>(options: PrismaOptions<T>): DynamicModule {
-        const { client, ...args } = options;
+    static forRoot<T extends PrismaClientInterface>(options?: PrismaOptions<T>): DynamicModule {
+        const { client, ...args } = options || {};
         const __internal = resolveClient(client);
 
         const provider = prismaProviderFactory(__internal);
@@ -45,15 +45,17 @@ export class PrismaModule {
         };
     }
 
-    static forRootAsync<T extends PrismaClientInterface>(options: PrismaModuleAsyncOptions<T>): DynamicModule {
-        const client = resolveClient(options.client);
-        const provider = prismaProviderFactory(client);
+    static forRootAsync<T extends PrismaClientInterface>(options?: PrismaModuleAsyncOptions<T>): DynamicModule {
+        const { client, inject, useFactory, imports } = options || {};
+
+        const __internal = resolveClient(client);
+        const provider = prismaProviderFactory(__internal);
         const optionsProvider: FactoryProvider<PrismaClientOptions | Promise<PrismaClientOptions>> = {
             provide: PRISMA_MODULE_OPTIONS,
-            inject: options.inject,
+            inject: inject,
             async useFactory(...args: any[]) {
-                if (options.useFactory && typeof options.useFactory === 'function') {
-                    return await options.useFactory(...args);
+                if (useFactory && typeof useFactory === 'function') {
+                    return await useFactory(...args);
                 }
 
                 return {};
@@ -63,7 +65,7 @@ export class PrismaModule {
         return {
             global: true,
             module: PrismaModule,
-            imports: options.imports,
+            imports: imports,
             providers: [optionsProvider, provider],
             exports: [provider],
         };
