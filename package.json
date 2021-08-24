@@ -73,6 +73,7 @@
     "testEnvironment": "node"
   },
   "workspaces": [
-    "prisma/seeder"
+    "prisma/seeder",
+    "packages/*"
   ]
 }
