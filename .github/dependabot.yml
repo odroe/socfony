@@ -9,3 +9,11 @@ updates:
     directory: '/'
     schedule:
       interval: 'daily'
+  - package-ecosystem: 'npm'
+    directory: '/prisma/seeder'
+    schedule:
+      interval: 'daily'
+  - package-ecosystem: 'npm'
+    directory: '/packages/prisma'
+    schedule:
+      interval: 'daily'
