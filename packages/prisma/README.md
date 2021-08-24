@@ -67,7 +67,7 @@ export class AppModule {}
  import { PrismaModule } from '@socfony/prisma';
  
  @Module({
-     imports: [PrismaModule.forAsyncRoot({
+     imports: [PrismaModule.forRootAsync({
          useFactory: async () => {
              // Custom code.
              return {/* ...Options */}
