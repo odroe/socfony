@@ -1,6 +1,9 @@
 import { Module } from '@nestjs/common';
+import { PrismaModule } from '@socfony/prisma';
 
 @Module({
-  imports: [],
+  imports: [
+    PrismaModule.forRoot(),
+  ],
 })
 export class AppModule {}
