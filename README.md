@@ -34,7 +34,7 @@ git clone https://github.com/odroe/socfony
    ```
 3. Configuration database table:
    ```bash
-   npx prisma deploy
+   npx prisma migrate deploy
    npm run start -w prisma/seeder
    ```
 4. Run Client GraphQL API application:
