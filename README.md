@@ -26,7 +26,7 @@ git clone https://github.com/odroe/socfony
 
 1. Install Npm dependencies:
    ```bash
-   npm install
+   npm install -ws
    ```
 2. Edit database connection configuration in `.env` file:
    ```bash
@@ -34,11 +34,12 @@ git clone https://github.com/odroe/socfony
    ```
 3. Configuration database table:
    ```bash
-   npx prisma db push
+   npx prisma deploy
+   npm run start -w prisma/seeder
    ```
-4. Run the application:
+4. Run Client GraphQL API application:
    ```bash
-   npm run dev
+   npm run start -w client-api
    ```
 
 ## Documentation
