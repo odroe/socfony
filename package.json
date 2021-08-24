@@ -15,5 +15,8 @@
     "client-api",
     "prisma/seeder",
     "packages/*"
-  ]
+  ],
+  "scripts": {
+    "preinstall": "npm ci -w packages && npm build -w packages"
+  }
 }
