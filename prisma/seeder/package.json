@@ -1,14 +1,14 @@
 {
-  "name": "socfony",
+  "name": "@socfony/seeder",
   "version": "0.0.1",
-  "description": "Socfony is an open source social application, and basic security modules and social function modules have been preset in the software. Whether it is to deploy Socfony directly or as a basis for program development is wonderful.",
+  "description": "Database seeder for Socfony",
   "author": "Odroe Inc. <hello@odroe.com> (https://odroe.com/)",
   "private": true,
   "license": "BSD-3-Clause",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
-    "format": "prettier --write .",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
@@ -23,11 +23,8 @@
   "dependencies": {
     "@nestjs/common": "^8.0.0",
     "@nestjs/core": "^8.0.0",
-    "@nestjs/graphql": "^9.0.0-next.7",
     "@nestjs/platform-express": "^8.0.0",
     "@prisma/client": "^2.29.1",
-    "apollo-server-express": "^3.1.2",
-    "graphql": "^15.5.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0"
@@ -72,7 +69,7 @@
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   },
-  "workspaces": [
-    "prisma/seeder"
-  ]
+  "prisma": {
+    "schema": "../schema.prisma"
+  }
 }
