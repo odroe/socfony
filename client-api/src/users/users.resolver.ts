@@ -1,33 +1,39 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
 import { UsersService } from './users.service';
-import { User } from './entities/user.entity';
-import { CreateUserInput } from './dto/create-user.input';
-import { UpdateUserInput } from './dto/update-user.input';
+import { CustomFields, User, UserInclude } from './entities/user.entity';
+import { PrismaClient, User as PrismaUser } from '@prisma/client';
+import { UserFindUniqueInput } from './dto/user-find-unique.input';
+
+type NeedResolveKV = Pick<User, keyof CustomFields | keyof UserInclude>;
+
+type UsersResolveInterface = {
+  [K in keyof NeedResolveKV]: (...args: any[]) => NeedResolveKV[K] | Promise<NeedResolveKV[K]>;
+};
 
 @Resolver(() => User)
-export class UsersResolver {
-  constructor(private readonly usersService: UsersService) {}
+export class UsersResolver implements UsersResolveInterface {
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly prisma: PrismaClient,
+  ) {}
 
-  @Mutation(() => User)
-  createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-    return this.usersService.create(createUserInput);
+  @ResolveField()
+  hasSetPassword(@Parent() { password }: PrismaUser) {
+    return !!password;
   }
 
+  @Query(() => User, { name: 'user' })
+  findUnique(@Args('where', { type: () => UserFindUniqueInput }) where: UserFindUniqueInput) {
+    return this.prisma.user.findUnique({ where });
+  }
+
+  // TODO
   @Query(() => [User], { name: 'users' })
   findAll() {
     return this.usersService.findAll();
   }
 
-  @Query(() => User, { name: 'user' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.usersService.findOne(id);
-  }
-
-  @Mutation(() => User)
-  updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
-    return this.usersService.update(updateUserInput.id, updateUserInput);
-  }
-
+  // TODO
   @Mutation(() => User)
   removeUser(@Args('id', { type: () => Int }) id: number) {
     return this.usersService.remove(id);
