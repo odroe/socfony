@@ -4,6 +4,7 @@
         "target": "ESNext",
         "strict": true,
         "declaration": true,
+        "declarationMap": false,
         "removeComments": false,
         "incremental": true,
         "esModuleInterop": true,
