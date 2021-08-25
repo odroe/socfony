@@ -17,6 +17,6 @@
     "packages/*"
   ],
   "scripts": {
-    "preinstall": "npm ci -w packages --ignore-scripts && npm run build -w packages"
+    "postinstall": "npm run build -w packages"
   }
 }
