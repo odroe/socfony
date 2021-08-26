@@ -20,7 +20,7 @@ Before the official version is released, we still have a lot of work to be done.
    <img src="https://github.githubassets.com/pinned-octocat.svg" height="24" />
 </a>
 <a href="https://gitee.com/odroe/socfony">
-   <img src="https://gitee.com/static/images/logo_gitee_g_red.svg" height="24" />
+   <img src="https://gitee.com/static/images/logo-en.svg" height="24" />
 </a>
 <a href="https://gitlab.com/odroe/socfony">
    <img src="https://about.gitlab.com/images/press/press-kit-icon.svg" height="24" />
