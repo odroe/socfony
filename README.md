@@ -16,9 +16,9 @@ Before the official version is released, we still have a lot of work to be done.
 
 ## Mirrors
 
-- [Github repository](https://github.com/odroe/socfony)
-- [Gitlab repository](https://gitlab.com/odroe/socfony)
-- [Gitee repository](https://gitee.com/odroe/socfony)
+[![Socfony in GitHub](https://github.githubassets.com/pinned-octocat.svg)](https://github.com/odroe/socfony)
+[![Socfony in Gitee](https://gitee.com/static/images/logo-black.svg)](https://gitee.com/odroe/socfony)
+[![Socfony in GitLab](https://about.gitlab.com/images/icons/logos/slp-logo.svg)](https://gitlab.com/odroe/socfony)
 
 ## Download
 
