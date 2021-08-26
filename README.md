@@ -14,6 +14,12 @@ Before the official version is released, we still have a lot of work to be done.
 
 > If you follow our development progress, please visit [TODO](https://github.com/odroe/socfony/issues/128)
 
+## Mirrors
+
+- [Github repository](https://github.com/odroe/socfony)
+- [Gitlab repository](https://gitlab.com/odroe/socfony)
+- [Gitee repository](https://gitee.com/odroe/socfony)
+
 ## Download
 
 Use Git to clone the project:
