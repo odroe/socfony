@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { PrismaModule } from '@socfony/prisma';
 import { UsersModule } from './users/users.module';
+import { AccessTokenModule } from './access-token/access-token.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { UsersModule } from './users/users.module';
         dateScalarMode: 'isoDate',
       },
     }),
+    AccessTokenModule,
     UsersModule,
   ],
 })

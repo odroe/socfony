@@ -17,6 +17,7 @@ export class UsersResolver implements UsersResolveInterface {
     private readonly prisma: PrismaClient,
   ) {}
 
+  // TODO. Chack the user is viewer.
   @ResolveField()
   hasSetPassword(@Parent() { password }: PrismaUser) {
     return !!password;
