@@ -3,6 +3,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { PrismaModule } from '@socfony/prisma';
 import { UsersModule } from './users/users.module';
 import { AccessTokenModule } from './access-token/access-token.module';
+import { StorageBoxModule } from './storage-box/storage-box.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { AccessTokenModule } from './access-token/access-token.module';
     }),
     AccessTokenModule,
     UsersModule,
+    StorageBoxModule,
   ],
 })
 export class AppModule {}
