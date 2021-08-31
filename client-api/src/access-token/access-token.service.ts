@@ -1,14 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { AccessToken, PrismaClient, User } from '@prisma/client';
 import { pbkdf2Sync } from 'crypto';
-import dayjs from 'dayjs';
+import dayjs, { UnitTypeShort } from 'dayjs';
 import { nanoid } from 'nanoid';
+import { StorageBox } from 'src/storage-box/storage-box.module';
+import { StorageBoxInterface } from 'storage-box';
 import { SignInArgument, SignType } from './dto/sign-in.arg';
+
+interface AuthSetting {
+    value: number;
+    unit: UnitTypeShort;
+}
 
 @Injectable()
 export class AccessTokenService {
     constructor(
         private readonly prisma: PrismaClient,
+        @StorageBox('auth') private readonly box: StorageBoxInterface,
     ) {}
 
     async signIn({ password, type, where }: SignInArgument) {
@@ -22,13 +30,15 @@ export class AccessTokenService {
         }
     }
 
-    createAccessToken(user: User) {
+    async createAccessToken(user: User) {
+        const setting = this.#mergeDefaultSetting(await this.box.get('expired'));
+        const refresh = this.#mergeDefaultSetting(await this.box.get('refresh'));
         const accessToken = this.prisma.accessToken.create({
             data: {
                 token: nanoid(128),
                 userId: user.id,
-                expiredAt: dayjs().add(1, 'day').toDate(),
-                refreshExpiredAt: dayjs().add(1, 'day').toDate(),
+                expiredAt: dayjs().add(setting.value, setting.unit).toDate(),
+                refreshExpiredAt: dayjs().add(refresh.value, refresh.unit).toDate(),
             },
         });
 
@@ -42,5 +52,14 @@ export class AccessTokenService {
         }
 
         return this.createAccessToken(user);
+    }
+
+    #mergeDefaultSetting(setting: AuthSetting): AuthSetting {
+        const defaultSetting = {
+            value: 7,
+            unit: 'd',
+        };
+
+        return { ...defaultSetting, ...setting };
     }
 }
