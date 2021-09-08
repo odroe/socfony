@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient, User } from '@prisma/client';
 import { pbkdf2Sync } from 'crypto';
-import dayjs from 'dayjs';
+import * as dayjs from 'dayjs';
 import { nanoid } from 'nanoid';
 import { StorageBox } from 'src/storage-box';
 import { StorageBoxInterface } from 'storage-box';
