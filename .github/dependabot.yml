@@ -16,21 +16,3 @@ updates:
     directory: '/'
     schedule:
       interval: 'daily'
-  
-  # Client API
-  - package-ecosystem: 'npm'
-    directory: '/client-api'
-    schedule:
-      interval: 'daily'
-
-  # Database seeder
-  - package-ecosystem: 'npm'
-    directory: '/prisma/seeder'
-    schedule:
-      interval: 'daily'
-
-  # Prisma binding NextJS package
-  - package-ecosystem: 'npm'
-    directory: '/packages/prisma'
-    schedule:
-      interval: 'daily'
