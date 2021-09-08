@@ -1,5 +1,6 @@
 import { DynamicModule, Inject, Module, FactoryProvider } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
+import { PrismaModule } from 'src/prisma';
 import { StorageBox as _StorageBox, StorageBoxInterface } from 'storage-box';
 import { StorageBoxPrismaDrive } from './prisma.drive';
 
@@ -7,7 +8,9 @@ const boxname = (name: string) => `storage-box://${name}`;
 
 export const StorageBox = (name: string) => Inject(boxname(name));
 
-@Module({})
+@Module({
+    imports: [PrismaModule],
+})
 export class StorageBoxModule {
     static box(name: string): DynamicModule {
         const provider: FactoryProvider = {

@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { AccessToken, PrismaClient, User } from '@prisma/client';
+import { PrismaClient, User } from '@prisma/client';
 import { pbkdf2Sync } from 'crypto';
-import dayjs, { UnitTypeShort } from 'dayjs';
+import dayjs from 'dayjs';
 import { nanoid } from 'nanoid';
-import { StorageBox } from 'src/storage-box/storage-box.module';
+import { StorageBox } from 'src/storage-box';
 import { StorageBoxInterface } from 'storage-box';
 import { SignInArgument, SignType } from './dto/sign-in.arg';
 
 interface AuthSetting {
     value: number;
-    unit: UnitTypeShort;
+    unit: dayjs.UnitTypeShort;
 }
 
 @Injectable()

@@ -19,7 +19,7 @@ export class StorageBoxPrismaDrive implements StorageBoxDriveInterface {
             rejectOnNotFound: false,
         });
 
-        return line.value as T;
+        return line?.value as T;
     }
 
     set<T>(key: string, value: T): Promise<void> {

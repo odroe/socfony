@@ -11,4 +11,5 @@ async function bootstrap() {
   const logger = new ConsoleLogger();
   logger.log(`Server listening on ${url.replace('[::1]', 'localhost')}`);
 }
+
 bootstrap();
