@@ -11,7 +11,7 @@ updates:
     schedule:
       interval: "daily"
 
-  # Root workspace
+  # Socfony project
   - package-ecosystem: 'npm'
     directory: '/'
     schedule:
