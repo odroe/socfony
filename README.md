@@ -77,11 +77,11 @@ Wecome to Pull Request. For major changes, please open an issue first.
 
 Join the WeChat discussion group and communicate directly with developers or other Socfony users.
 
-<img src="graph/join-wechat-qrcode.jpg" alt="Socfony WeChat Group" width="200" />
+<img src="graphs/join-wechat-qrcode.jpg" alt="Socfony WeChat Group" width="200" />
 
 ## License
 
 BSD 3-Clause License.
 
-Copyright (c) 2021, [Odroe, Inc.](https://odroe.com)
+Copyright (c) 2021, [Odroe Inc.](https://odroe.com)
 All rights reserved.
