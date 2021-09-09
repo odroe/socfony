@@ -1,14 +1,25 @@
-name: Test NCC build
-on: [push, pull_request]
+name: NCC build test
+
+on: [main, pull_request]
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x, 16.x]
+    
     steps:
-      - uses: actions/checkout@v2
-      - name: Install dependencies
-        uses: actions/setup-node@v2
-        run: npm ci
-      - name: Install NCC
-        run: npm i -g @vercel/ncc
-      - name: Run build
-        run: ncc build src/main.ts -o dist
+    - uses: actions/checkout@v2
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Build
+      run: |
+        npm i -g @vercel/ncc
+        npm ci
+        ncc build src/main.ts -o dist
