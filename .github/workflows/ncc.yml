@@ -1,11 +1,10 @@
 name: Test NCC build
 on: [push, pull_request]
 jobs:
-  - name: Build
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Chackout
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
       - name: Install dependencies
         uses: actions/setup-node@v2
         run: npm ci
