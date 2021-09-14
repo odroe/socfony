@@ -28,6 +28,8 @@ export class AccessTokenService {
         if (type === SignType.PASSWORD) {
             return this.#withPasswordLogin(user, password);
         }
+
+        // TOTO: Using OTP login.
     }
 
     async createAccessToken(user: User) {
