@@ -27,10 +27,7 @@ model User {
   email String? @unique @db.VarChar(128)
 
   /// The user's mobile number.
-  mobile String? @unique @db.VarChar(15)
-
-  /// The user's password.
-  password String? @db.VarChar(128)
+  phone String? @unique @db.VarChar(15)
 
   /// The user's registered at.
   registeredAt DateTime @default(now())

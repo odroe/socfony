@@ -3,13 +3,7 @@ import { Prisma } from '@prisma/client';
 
 export type UserInclude = {};
 
-export interface CustomFields {
-  hasSetPassword: boolean;
-}
-
-type UserOmitFields = 'password';
-
-type UserInterface = Omit<Prisma.UserGetPayload<{ include: UserInclude }> & CustomFields, UserOmitFields>;
+type UserInterface = Prisma.UserGetPayload<{ include: UserInclude }>;
 
 @ObjectType()
 export class User implements UserInterface {
@@ -23,11 +17,8 @@ export class User implements UserInterface {
   email: string;
 
   @Field(() => String, { nullable: true, description: 'The User\'s phone number' })
-  mobile: string;
+  phone: string;
 
   @Field(() => GraphQLISODateTime, { description: 'The user\'s registered at.' })
   registeredAt: Date;
-
-  @Field(() => Boolean, { description: 'The user\'s has set password' })
-  hasSetPassword: boolean;
 }
