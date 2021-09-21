@@ -6,16 +6,16 @@ import { VerificationCodeResolver } from './verification-code.resolver';
 import { VerificationCodeService } from './verification-code.service';
 
 @Module({
-    imports: [
-        StorageBoxModule.box('sms'),
-        StorageBoxModule.box('vendor'),
-        StorageBoxModule.box('cache'),
-    ],
-    providers: [
-        SmsClient,
-        SmsVerificationCodeService,
-        VerificationCodeService,
-        VerificationCodeResolver,
-    ],
+  imports: [
+    StorageBoxModule.box('sms'),
+    StorageBoxModule.box('vendor'),
+    StorageBoxModule.box('cache'),
+  ],
+  providers: [
+    SmsClient,
+    SmsVerificationCodeService,
+    VerificationCodeService,
+    VerificationCodeResolver,
+  ],
 })
 export class VerificationCodeModule {}

@@ -7,42 +7,42 @@ import { StorageBoxInterface } from 'storage-box';
 import { SignInArgument } from './dto/sign-in.arg';
 
 interface AuthSetting {
-    value: number;
-    unit: dayjs.UnitTypeShort;
+  value: number;
+  unit: dayjs.UnitTypeShort;
 }
 
 @Injectable()
 export class AccessTokenService {
-    constructor(
-        private readonly prisma: PrismaClient,
-        @StorageBox('auth') private readonly box: StorageBoxInterface,
-    ) {}
+  constructor(
+    private readonly prisma: PrismaClient,
+    @StorageBox('auth') private readonly box: StorageBoxInterface,
+  ) {}
 
-    async signIn({ account, code }: SignInArgument) {
-        // TODO.
-    }
+  async signIn({ account, code }: SignInArgument) {
+    // TODO.
+  }
 
-    async createAccessToken(user: User) {
-        const setting = this.#mergeDefaultSetting(await this.box.get('expired'));
-        const refresh = this.#mergeDefaultSetting(await this.box.get('refresh'));
-        const accessToken = this.prisma.accessToken.create({
-            data: {
-                token: nanoid(128),
-                userId: user.id,
-                expiredAt: dayjs().add(setting.value, setting.unit).toDate(),
-                refreshExpiredAt: dayjs().add(refresh.value, refresh.unit).toDate(),
-            },
-        });
+  async createAccessToken(user: User) {
+    const setting = this.#mergeDefaultSetting(await this.box.get('expired'));
+    const refresh = this.#mergeDefaultSetting(await this.box.get('refresh'));
+    const accessToken = this.prisma.accessToken.create({
+      data: {
+        token: nanoid(128),
+        userId: user.id,
+        expiredAt: dayjs().add(setting.value, setting.unit).toDate(),
+        refreshExpiredAt: dayjs().add(refresh.value, refresh.unit).toDate(),
+      },
+    });
 
-        return accessToken;
-    }
+    return accessToken;
+  }
 
-    #mergeDefaultSetting(setting: AuthSetting): AuthSetting {
-        const defaultSetting = {
-            value: 7,
-            unit: 'd',
-        };
+  #mergeDefaultSetting(setting: AuthSetting): AuthSetting {
+    const defaultSetting = {
+      value: 7,
+      unit: 'd',
+    };
 
-        return { ...defaultSetting, ...setting };
-    }
+    return { ...defaultSetting, ...setting };
+  }
 }

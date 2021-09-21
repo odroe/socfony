@@ -7,18 +7,21 @@ type UserInterface = Prisma.UserGetPayload<{ include: UserInclude }>;
 
 @ObjectType()
 export class User implements UserInterface {
-  @Field(() => ID, { description: 'The user\'s ID' })
+  @Field(() => ID, { description: "The user's ID" })
   id: string;
 
-  @Field(() => String, { nullable: true, description: 'The user\'s name' })
+  @Field(() => String, { nullable: true, description: "The user's name" })
   name: string;
 
-  @Field(() => String, { nullable: true, description: 'The user\'s email' })
+  @Field(() => String, { nullable: true, description: "The user's email" })
   email: string;
 
-  @Field(() => String, { nullable: true, description: 'The User\'s phone number' })
+  @Field(() => String, {
+    nullable: true,
+    description: "The User's phone number",
+  })
   phone: string;
 
-  @Field(() => GraphQLISODateTime, { description: 'The user\'s registered at.' })
+  @Field(() => GraphQLISODateTime, { description: "The user's registered at." })
   registeredAt: Date;
 }

@@ -9,12 +9,13 @@ type UsersResolveInterface = {
 
 @Resolver(() => User)
 export class UsersResolver implements UsersResolveInterface {
-  constructor(
-    private readonly prisma: PrismaClient,
-  ) {}
+  constructor(private readonly prisma: PrismaClient) {}
 
   @Query(() => User, { name: 'user' })
-  findUnique(@Args('where', { type: () => UserFindUniqueInput }) where: UserFindUniqueInput) {
+  findUnique(
+    @Args('where', { type: () => UserFindUniqueInput })
+    where: UserFindUniqueInput,
+  ) {
     return this.prisma.user.findUnique({
       where,
       rejectOnNotFound: true,

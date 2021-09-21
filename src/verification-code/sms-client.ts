@@ -8,36 +8,56 @@ import ms from 'ms';
 
 @Injectable()
 export class SmsClient {
-    constructor(
-        @StorageBox('sms') private readonly smsStorageBox: StorageBoxInterface,
-        @StorageBox('vendor') private readonly vendorStorageBox: StorageBoxInterface,
-    ) {}
+  constructor(
+    @StorageBox('sms') private readonly smsStorageBox: StorageBoxInterface,
+    @StorageBox('vendor')
+    private readonly vendorStorageBox: StorageBoxInterface,
+  ) {}
 
-    async #createClient(): Promise<Client> {
-        const credential = await this.vendorStorageBox.get<Credential>('tencentcloud');
-        const region = await this.smsStorageBox.get<string>('region');
+  async #createClient(): Promise<Client> {
+    const credential = await this.vendorStorageBox.get<Credential>(
+      'tencentcloud',
+    );
+    const region = await this.smsStorageBox.get<string>('region');
 
-        return new Client({
-            credential,
-            region,
-        });
-    }
+    return new Client({
+      credential,
+      region,
+    });
+  }
 
-    async send(phone: string, args: {
-        context?: string,
-        code: string,
-        term: number,
-    }): Promise<void> {
-        const client = await this.#createClient();
-        const params = await this.smsStorageBox.get<Pick<SendSmsRequest, 'ExtendCode' | 'SenderId' | 'SignName' | 'SmsSdkAppId' | 'TemplateId' | 'TemplateParamSet'>>('params');
+  async send(
+    phone: string,
+    args: {
+      context?: string;
+      code: string;
+      term: number;
+    },
+  ): Promise<void> {
+    const client = await this.#createClient();
+    const params = await this.smsStorageBox.get<
+      Pick<
+        SendSmsRequest,
+        | 'ExtendCode'
+        | 'SenderId'
+        | 'SignName'
+        | 'SmsSdkAppId'
+        | 'TemplateId'
+        | 'TemplateParamSet'
+      >
+    >('params');
 
-        const templateParamSet = params.TemplateParamSet.map(param => param.replace('{code}', args.code).replace('{term}', ms(args.term * 1000, { long: true })));
+    const templateParamSet = params.TemplateParamSet.map((param) =>
+      param
+        .replace('{code}', args.code)
+        .replace('{term}', ms(args.term * 1000, { long: true })),
+    );
 
-        await client.SendSms({
-            ...params,
-            PhoneNumberSet: [phone],
-            SessionContext: args.context,
-            TemplateParamSet: templateParamSet,
-        });
-    }
+    await client.SendSms({
+      ...params,
+      PhoneNumberSet: [phone],
+      SessionContext: args.context,
+      TemplateParamSet: templateParamSet,
+    });
+  }
 }

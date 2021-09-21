@@ -9,20 +9,24 @@ const boxname = (name: string) => `storage-box://${name}`;
 export const StorageBox = (name: string) => Inject(boxname(name));
 
 @Module({
-    imports: [PrismaModule],
+  imports: [PrismaModule],
 })
 export class StorageBoxModule {
-    static box(name: string): DynamicModule {
-        const provider: FactoryProvider = {
-            provide: boxname(name),
-            inject: [PrismaClient],
-            useFactory: (prisma: PrismaClient) => new _StorageBox(name, (box: StorageBoxInterface) => new StorageBoxPrismaDrive(prisma, box)),
-        };
+  static box(name: string): DynamicModule {
+    const provider: FactoryProvider = {
+      provide: boxname(name),
+      inject: [PrismaClient],
+      useFactory: (prisma: PrismaClient) =>
+        new _StorageBox(
+          name,
+          (box: StorageBoxInterface) => new StorageBoxPrismaDrive(prisma, box),
+        ),
+    };
 
-        return {
-            module: StorageBoxModule,
-            providers: [provider],
-            exports: [provider],
-        };
-    }
+    return {
+      module: StorageBoxModule,
+      providers: [provider],
+      exports: [provider],
+    };
+  }
 }
