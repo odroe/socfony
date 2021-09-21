@@ -4,7 +4,7 @@ CREATE TABLE `Setting` (
     `key` VARCHAR(48) NOT NULL,
     `value` JSON NOT NULL,
 
-    INDEX `Setting.name_index`(`name`),
-    INDEX `Setting.key_index`(`key`),
-    UNIQUE INDEX `Setting.name_key_unique`(`name`, `key`)
+    INDEX `Setting_name_idx`(`name`),
+    INDEX `Setting_key_idx`(`key`),
+    UNIQUE INDEX `Setting_name_key_key`(`name`, `key`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

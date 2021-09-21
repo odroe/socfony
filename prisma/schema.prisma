@@ -15,7 +15,7 @@ generator client {
   binaryTargets = ["native"]
 }
 
-/// User-based account meta.
+/// User account meta.
 model User {
   /// The user's ID.
   id String @id @db.Char(64)
