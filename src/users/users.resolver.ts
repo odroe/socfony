@@ -1,7 +1,6 @@
-import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
-import { UsersService } from './users.service';
+import { Resolver, Query, Args } from '@nestjs/graphql';
 import { User, UserInclude } from './entities/user.entity';
-import { PrismaClient, User as PrismaUser } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { UserFindUniqueInput } from './dto/user-find-unique.input';
 
 type UsersResolveInterface = {
@@ -11,7 +10,6 @@ type UsersResolveInterface = {
 @Resolver(() => User)
 export class UsersResolver implements UsersResolveInterface {
   constructor(
-    private readonly usersService: UsersService,
     private readonly prisma: PrismaClient,
   ) {}
 

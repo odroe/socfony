@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient, User } from '@prisma/client';
-import { pbkdf2Sync } from 'crypto';
 import * as dayjs from 'dayjs';
 import { nanoid } from 'nanoid';
 import { StorageBox } from 'src/storage-box';
 import { StorageBoxInterface } from 'storage-box';
-import { SignInArgument, SignType } from './dto/sign-in.arg';
+import { SignInArgument } from './dto/sign-in.arg';
 
 interface AuthSetting {
     value: number;
@@ -19,17 +18,8 @@ export class AccessTokenService {
         @StorageBox('auth') private readonly box: StorageBoxInterface,
     ) {}
 
-    async signIn({ password, type, where }: SignInArgument) {
-        const user = await this.prisma.user.findUnique({
-            where,
-            rejectOnNotFound: true,
-        });
-
-        if (type === SignType.PASSWORD) {
-            return this.#withPasswordLogin(user, password);
-        }
-
-        // TOTO: Using OTP login.
+    async signIn({ account, code }: SignInArgument) {
+        // TODO.
     }
 
     async createAccessToken(user: User) {
@@ -45,15 +35,6 @@ export class AccessTokenService {
         });
 
         return accessToken;
-    }
-
-    async #withPasswordLogin(user: User, password: string) {
-        const hash = pbkdf2Sync(password, user.id, 10000, 64, 'sha512').toString('hex');
-        if (user.password !== hash) {
-            throw new Error('Invalid password');
-        }
-
-        return this.createAccessToken(user);
     }
 
     #mergeDefaultSetting(setting: AuthSetting): AuthSetting {
