@@ -4,8 +4,6 @@ import { StorageBox } from 'src/storage-box';
 import { StorageBoxInterface } from 'storage-box';
 import crypto = require('crypto');
 
-const md5 = crypto.createHash('md5');
-
 export type VerificationCodeStoreValue = {
   context: string;
   code: string;
@@ -22,14 +20,14 @@ export class VerificationCodeService {
   async store(
     data: VerificationCodeStoreValue,
   ): Promise<VerificationCodeStoreValue> {
-    data.account = md5.update(data.account).digest('hex');
+    data.account = crypto.createHmac('sha512', data.context).update(data.account).digest('hex');
 
     await this.cache.set(data.context, data);
 
     return data;
   }
 
-  async verify<T>(
+  async verify(
     args: Pick<VerificationCodeStoreValue, 'account' | 'code' | 'context'> & {
       remove?: boolean;
     },
@@ -37,7 +35,7 @@ export class VerificationCodeService {
     const value = await this.cache.get<VerificationCodeStoreValue>(
       args.context,
     );
-    const accountHex = md5.update(args.account).digest('hex');
+    const accountHex = crypto.createHmac('sha512', args.context).update(args.account).digest('hex');
 
     if (!value) {
       return false;
