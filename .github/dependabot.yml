@@ -6,10 +6,10 @@
 version: 2
 updates:
   # GitHub Actions
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: 'github-actions'
+    directory: '/'
     schedule:
-      interval: "daily"
+      interval: 'daily'
 
   # Socfony project
   - package-ecosystem: 'npm'

@@ -3,7 +3,7 @@ name: NCC build test
 on: [push, pull_request]
 
 env:
-  NODE_VERSION: "16.x"
+  NODE_VERSION: '16.x'
 
 jobs:
   build:
@@ -11,14 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ env.NODE_VERSION }}
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ env.NODE_VERSION }}
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
 
-    - name: Build
-      run: |
-        npm i -g @vercel/ncc
-        npm ci
-        ncc build src/main.ts -o dist
+      - name: Build
+        run: |
+          npm i -g @vercel/ncc
+          npm ci
+          ncc build src/main.ts -o dist
