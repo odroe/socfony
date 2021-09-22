@@ -17,5 +17,6 @@ import { VerificationCodeService } from './verification-code.service';
     VerificationCodeService,
     VerificationCodeResolver,
   ],
+  exports: [SmsVerificationCodeService, VerificationCodeService],
 })
 export class VerificationCodeModule {}

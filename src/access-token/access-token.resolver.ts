@@ -10,8 +10,9 @@ import {
   AccessToken as AccessTokenInterface,
   PrismaClient,
 } from '@prisma/client';
+import { parsePhoneNumberWithError } from 'libphonenumber-js';
 import { AccessTokenService } from './access-token.service';
-import { SignInArgument } from './dto/sign-in.arg';
+import { LoginArguments } from './dto/login.args';
 import { AccessToken } from './entites/access-token.entity';
 
 type NeedResolveFields = keyof Prisma.AccessTokenInclude;
@@ -41,14 +42,10 @@ export class AccessTokenResolver implements AccessTokenResolveInterface {
   @Mutation(() => AccessToken, {
     description: 'Sign In, create a access token',
   })
-  signIn(@Args() args: SignInArgument) {
-    return this.accessTokenService.signIn(args);
-  }
-
-  @Mutation(() => AccessToken, {
-    description: 'Sign Up, create a access token',
-  })
-  signUp() {
-    // TODO: implement
+  login(@Args() args: LoginArguments) {
+    return this.accessTokenService.login({
+      ...args,
+      phone: parsePhoneNumberWithError(args.phone).format('E.164'),
+    });
   }
 }

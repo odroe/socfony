@@ -20,7 +20,10 @@ export class VerificationCodeService {
   async store(
     data: VerificationCodeStoreValue,
   ): Promise<VerificationCodeStoreValue> {
-    data.account = crypto.createHmac('sha512', data.context).update(data.account).digest('hex');
+    data.account = crypto
+      .createHmac('sha512', data.context)
+      .update(data.account)
+      .digest('hex');
 
     await this.cache.set(data.context, data);
 
@@ -35,7 +38,10 @@ export class VerificationCodeService {
     const value = await this.cache.get<VerificationCodeStoreValue>(
       args.context,
     );
-    const accountHex = crypto.createHmac('sha512', args.context).update(args.account).digest('hex');
+    const accountHex = crypto
+      .createHmac('sha512', args.context)
+      .update(args.account)
+      .digest('hex');
 
     if (!value) {
       return false;
@@ -52,7 +58,7 @@ export class VerificationCodeService {
     return true;
   }
 
-  destroy(context: string): Promise<void> {
-    return this.cache.remove(context);
+  async destroy(context: string): Promise<void> {
+    return await this.cache.remove(context);
   }
 }

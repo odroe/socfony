@@ -2,7 +2,7 @@ import { Field, GraphQLISODateTime, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class VerificationCodeResponse {
-  @Field(() => String, { description: 'Current request context ID' })
+  @Field(() => String, { description: 'Verification code context ID.' })
   context: string;
 
   @Field(() => GraphQLISODateTime, { description: 'Expired at.' })

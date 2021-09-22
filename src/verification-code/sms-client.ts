@@ -2,9 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { StorageBox } from 'src/storage-box';
 import { StorageBoxInterface } from 'storage-box';
 import { Client } from 'tencentcloud-sdk-nodejs/tencentcloud/services/sms/v20210111/sms_client';
-import { SendSmsRequest } from 'tencentcloud-sdk-nodejs/tencentcloud/services/sms/v20210111/sms_models';
+import {
+  SendSmsRequest,
+  SendSmsResponse,
+} from 'tencentcloud-sdk-nodejs/tencentcloud/services/sms/v20210111/sms_models';
 import { Credential } from 'tencentcloud-sdk-nodejs/tencentcloud/common/interface';
-import ms from 'ms';
 
 @Injectable()
 export class SmsClient {
@@ -23,6 +25,7 @@ export class SmsClient {
     return new Client({
       credential,
       region,
+      profile: {},
     });
   }
 
@@ -33,7 +36,7 @@ export class SmsClient {
       code: string;
       term: number;
     },
-  ): Promise<void> {
+  ): Promise<SendSmsResponse> {
     const client = await this.#createClient();
     const params = await this.smsStorageBox.get<
       Pick<
@@ -50,10 +53,12 @@ export class SmsClient {
     const templateParamSet = params.TemplateParamSet.map((param) =>
       param
         .replace('{code}', args.code)
-        .replace('{term}', ms(args.term * 1000, { long: true })),
+        // https://cloud.tencent.com/document/product/382/39023#.E5.8F.98.E9.87.8F.E8.A7.84.E8.8C.83.3Ca-id.3D.22variable.22.3E.3C.2Fa.3E
+        // 限制为纯数字
+        .replace('{term}', `${args.term / 60}`),
     );
 
-    await client.SendSms({
+    return await client.SendSms({
       ...params,
       PhoneNumberSet: [phone],
       SessionContext: args.context,
