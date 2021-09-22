@@ -1,4 +1,4 @@
-import { ClassProvider, Module } from '@nestjs/common';
+import { ClassProvider, Global, Module } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 
 const PrismaProvider: ClassProvider<PrismaClient> = {
@@ -6,15 +6,9 @@ const PrismaProvider: ClassProvider<PrismaClient> = {
   useClass: class extends PrismaClient {},
 };
 
+@Global()
 @Module({
   providers: [PrismaProvider],
   exports: [PrismaProvider],
 })
-export class PrismaModule {
-  static forRoot() {
-    return {
-      global: true,
-      module: PrismaModule,
-    };
-  }
-}
+export class PrismaModule {}

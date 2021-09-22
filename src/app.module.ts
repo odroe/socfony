@@ -4,6 +4,7 @@ import { AccessTokenModule } from './access-token/access-token.module';
 import { PrismaModule } from './prisma';
 import { UsersModule } from './users/users.module';
 import { VerificationCodeModule } from './verification-code/verification-code.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -16,8 +17,10 @@ import { VerificationCodeModule } from './verification-code/verification-code.mo
         numberScalarMode: 'integer',
         dateScalarMode: 'isoDate',
       },
+      context: ({ req }) => req,
     }),
-    PrismaModule.forRoot(),
+    AuthModule,
+    PrismaModule,
     AccessTokenModule,
     UsersModule,
     VerificationCodeModule,
