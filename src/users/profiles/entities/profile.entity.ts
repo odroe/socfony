@@ -1,5 +1,6 @@
 import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { Gender, Prisma, User as UserInterface } from '@prisma/client';
+import { Media } from 'src/media/entittes/media.entity';
 import { User } from 'src/users/entities/user.entity';
 
 export type UserProfileInclude = Record<
@@ -29,7 +30,10 @@ export class UserProfile implements UserProfileInterface {
   @Field(() => String, { description: 'User bio', nullable: true })
   bio: string;
 
-  @Field(() => String, { description: 'User avatar', nullable: true })
+  @Field(() => Media, {
+    description: 'User avatar',
+    nullable: true,
+  })
   avatar: string;
 
   @Field(() => String, { description: 'User location', nullable: true })

@@ -5,6 +5,7 @@ import { PrismaModule } from './prisma';
 import { UsersModule } from './users/users.module';
 import { VerificationCodeModule } from './verification-code/verification-code.module';
 import { AuthModule } from './auth/auth.module';
+import { MediaModule } from './media/media.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { AuthModule } from './auth/auth.module';
     AccessTokenModule,
     UsersModule,
     VerificationCodeModule,
+    MediaModule,
   ],
 })
 export class AppModule {}

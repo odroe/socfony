@@ -29,4 +29,13 @@ export class UserProfilesResolver implements UserProfilesResolverInterface {
       rejectOnNotFound: false,
     });
   }
+
+  @ResolveField()
+  avatar(@Parent() { avatar }: UserProfile) {
+    if (avatar) {
+      return { resource: avatar };
+    }
+
+    return null;
+  }
 }
