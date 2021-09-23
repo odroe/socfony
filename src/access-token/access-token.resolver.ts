@@ -6,8 +6,8 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import {
-  Prisma,
   AccessToken as AccessTokenInterface,
+  Prisma,
   PrismaClient,
 } from '@prisma/client';
 import { parsePhoneNumberWithError } from 'libphonenumber-js';

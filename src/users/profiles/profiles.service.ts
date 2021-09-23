@@ -1,4 +1,4 @@
-import { PrismaClient, User, Prisma, UserProfile } from '@prisma/client';
+import { PrismaClient, User, UserProfile } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

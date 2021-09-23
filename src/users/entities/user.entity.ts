@@ -1,4 +1,4 @@
-import { ObjectType, Field, ID, GraphQLISODateTime } from '@nestjs/graphql';
+import { Field, GraphQLISODateTime, ID, ObjectType } from '@nestjs/graphql';
 import { Prisma, UserProfile as UserProfileInterface } from '@prisma/client';
 import { UserProfile } from '../profiles/entities/profile.entity';
 

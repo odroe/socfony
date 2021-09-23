@@ -1,8 +1,8 @@
-import { Resolver, Query, Args, ResolveField, Parent } from '@nestjs/graphql';
+import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { User, UserInclude } from './entities/user.entity';
 import {
-  PrismaClient,
   AccessToken,
+  PrismaClient,
   User as UserInterface,
 } from '@prisma/client';
 import { UserFindUniqueInput } from './dto/user-find-unique.input';
