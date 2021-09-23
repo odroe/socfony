@@ -1,16 +1,24 @@
 import { Resolver, Query, Args, ResolveField, Parent } from '@nestjs/graphql';
 import { User, UserInclude } from './entities/user.entity';
-import { PrismaClient, AccessToken } from '@prisma/client';
+import {
+  PrismaClient,
+  AccessToken,
+  User as UserInterface,
+} from '@prisma/client';
 import { UserFindUniqueInput } from './dto/user-find-unique.input';
 import { GetAccessToken } from 'src/auth/auth.decorator';
+import { UserProfilesService } from './profiles/profiles.service';
 
-type UsersResolveInterface = {
+type UsersResolverInterface = {
   [K in keyof UserInclude]: (...args: any[]) => User[K] | Promise<User[K]>;
 };
 
 @Resolver(() => User)
-export class UsersResolver implements UsersResolveInterface {
-  constructor(private readonly prisma: PrismaClient) {}
+export class UsersResolver implements UsersResolverInterface {
+  constructor(
+    private readonly prisma: PrismaClient,
+    private readonly profileService: UserProfilesService,
+  ) {}
 
   @Query(() => User, { name: 'user' })
   findUnique(
@@ -45,5 +53,10 @@ export class UsersResolver implements UsersResolveInterface {
     }
 
     return `${email.substr(0, 1)}****${email.substr(email.indexOf('@'))}`;
+  }
+
+  @ResolveField()
+  profile(@Parent() user: UserInterface) {
+    return this.profileService.resolveProfile(user);
   }
 }

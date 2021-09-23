@@ -1,7 +1,11 @@
 import { ObjectType, Field, ID, GraphQLISODateTime } from '@nestjs/graphql';
-import { Prisma } from '@prisma/client';
+import { Prisma, UserProfile as UserProfileInterface } from '@prisma/client';
+import { UserProfile } from '../profiles/entities/profile.entity';
 
-export type UserInclude = {};
+export type UserInclude = Record<
+  keyof Pick<Prisma.UserInclude, 'profile'>,
+  true
+>;
 
 type UserInterface = Prisma.UserGetPayload<{ include: UserInclude }>;
 
@@ -24,4 +28,7 @@ export class User implements UserInterface {
 
   @Field(() => GraphQLISODateTime, { description: "The user's registered at." })
   registeredAt: Date;
+
+  @Field(() => UserProfile, { description: 'User profile.' })
+  profile: UserProfileInterface;
 }
