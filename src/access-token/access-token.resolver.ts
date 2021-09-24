@@ -1,5 +1,6 @@
 import {
   Args,
+  GraphQLISODateTime,
   Mutation,
   Parent,
   ResolveField,
@@ -11,6 +12,7 @@ import {
   PrismaClient,
 } from '@prisma/client';
 import { parsePhoneNumberWithError } from 'libphonenumber-js';
+import { Auth, GetAccessToken } from 'src/auth/auth.decorator';
 import { AccessTokenService } from './access-token.service';
 import { LoginArguments } from './dto/login.args';
 import { AccessToken } from './entites/access-token.entity';
@@ -47,5 +49,18 @@ export class AccessTokenResolver implements AccessTokenResolveInterface {
       ...args,
       phone: parsePhoneNumberWithError(args.phone).format('E.164'),
     });
+  }
+
+  @Auth()
+  @Mutation(() => GraphQLISODateTime, {
+    description: 'Sign out, delete current token.',
+  })
+  async signOut(@GetAccessToken() accessToken: AccessTokenInterface) {
+    // delete current token
+    await this.prisma.accessToken.delete({
+      where: { token: accessToken.token },
+    });
+
+    return new Date();
   }
 }
