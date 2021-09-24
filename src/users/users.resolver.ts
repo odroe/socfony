@@ -5,9 +5,10 @@ import {
   PrismaClient,
   User as UserInterface,
 } from '@prisma/client';
-import { UserFindUniqueInput } from './dto/user-find-unique.input';
+import { UserWhereUniqueInput } from './dto/user-where-unique.input';
 import { GetAccessToken } from 'src/auth/auth.decorator';
 import { UserProfilesService } from './profiles/profiles.service';
+import { UserFindManyArgs } from './dto/user-find-many.args';
 
 type UsersResolverInterface = {
   [K in keyof UserInclude]: (...args: any[]) => User[K] | Promise<User[K]>;
@@ -20,15 +21,27 @@ export class UsersResolver implements UsersResolverInterface {
     private readonly profileService: UserProfilesService,
   ) {}
 
-  @Query(() => User, { name: 'user' })
+  @Query(() => User, { name: 'user', description: 'Using unique find a user.' })
   findUnique(
-    @Args('where', { type: () => UserFindUniqueInput })
-    where: UserFindUniqueInput,
+    @Args('where', { type: () => UserWhereUniqueInput })
+    where: UserWhereUniqueInput,
   ) {
     return this.prisma.user.findUnique({
       where,
       rejectOnNotFound: true,
     });
+  }
+
+  @Query(() => [User], {
+    name: 'users',
+    description: 'Find many users.',
+    nullable: true,
+  })
+  findMany(
+    @Args({ type: () => UserFindManyArgs })
+    args: UserFindManyArgs,
+  ) {
+    return this.prisma.user.findMany(args);
   }
 
   @ResolveField()
