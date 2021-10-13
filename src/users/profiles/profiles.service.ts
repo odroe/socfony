@@ -1,5 +1,6 @@
 import { PrismaClient, User, UserProfile } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
+import { UserProfileUpdateInput } from './dto/user-profile-update.input';
 
 @Injectable()
 export class UserProfilesService {
@@ -19,5 +20,14 @@ export class UserProfilesService {
     }
 
     return profile;
+  }
+
+  async updateUserProfile(user: string | User, data: UserProfileUpdateInput): Promise<UserProfile> {
+    const profile = await this.resolveProfile(user);
+
+    return this.prisma.userProfile.update({
+      where: { userId: profile.userId },
+      data,
+    });
   }
 }

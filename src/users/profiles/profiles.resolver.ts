@@ -1,6 +1,9 @@
 import { Prisma, PrismaClient, User } from '@prisma/client';
-import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Parent, ResolveField, Resolver } from '@nestjs/graphql';
 import { UserProfile, UserProfileInclude } from './entities/profile.entity';
+import { UserProfileUpdateInput } from './dto/user-profile-update.input';
+import { UserProfilesService } from './profiles.service';
+import { Auth, GetUser } from 'src/auth/auth.decorator';
 
 type UserProfilesResolverInterface = {
   [K in keyof UserProfileInclude]: (
@@ -10,7 +13,10 @@ type UserProfilesResolverInterface = {
 
 @Resolver(() => UserProfile)
 export class UserProfilesResolver implements UserProfilesResolverInterface {
-  constructor(private readonly prisma: PrismaClient) {}
+  constructor(
+    private readonly prisma: PrismaClient,
+    private readonly userProfilesService: UserProfilesService,
+  ) {}
 
   @ResolveField()
   async user(
@@ -37,5 +43,14 @@ export class UserProfilesResolver implements UserProfilesResolverInterface {
     }
 
     return null;
+  }
+
+  @Auth()
+  @Mutation(() => UserProfile, { description: 'Update user profile' })
+  async updateUserProfile(
+    @GetUser() user: User,
+    @Args('data') data: UserProfileUpdateInput,
+  ) {
+    return this.userProfilesService.updateUserProfile(user, data);
   }
 }
