@@ -1,0 +1,16 @@
+name: server
+description: A simple command-line application.
+version: 1.0.0
+publish_to: none
+# homepage: https://www.example.com
+
+environment:
+  sdk: '>=2.14.3 <3.0.0'
+
+dependencies: 
+  grpc: ^3.0.2
+  socfony_protobuf: 
+    path: ../shared/protobuf
+
+dev_dependencies:
+  lints: ^1.0.0
