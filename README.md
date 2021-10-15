@@ -12,7 +12,7 @@ Socfony is all developed in Dart language and uses gRPC API. You can deploy SOcf
 
 ## Reamap
 
-Socfony is currently in the early development stage. For more development content, please visit (Projects page)(https://github.com/odroe/socfony/projects).
+Socfony is currently in the early development stage. For more development content, please visit [Projects page](https://github.com/odroe/socfony/projects).
 
 ## Get Started
 
