@@ -8,7 +8,7 @@ Socfony is an open source social application, and basic security modules and soc
 - [**Socfony Shared**](shared) - A set of shared packages.
 - **Socfony Client** - A client that connects to the Socfony server.
 
-Socfony is all developed in Dart language and uses gRPC API. You can deploy SOcfony directly or use it as a basic application. It's very nice to develop.
+Socfony is all developed in Dart language and uses gRPC API. You can deploy Socfony directly or use it as a basic application. It's very nice to develop.
 
 ## Reamap
 
