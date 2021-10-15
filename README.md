@@ -24,9 +24,13 @@ $ git clone https://github.com/odroe/socfony
 
 We have more options for mirror warehouses. Below are the mirror addresses of our major code hosting platforms:
 
-- [GitHub](https://github.com/odroe/socfony)
-- [GitLab](https://gitlab.com/odroe/socfony)
-- [Gitee](https://gitee.com/odroe/socfony)
+<div align="center>
+    <a href="https://github.com/odroe/socfony">GitHub</a>
+    <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+    <a href="https://gitlab.com/odroe/socfony">GitLab</a>
+    <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+    <a href="https://gitee.com/odroe/socfony">Gitee</a>
+<div>
 
 > Although we have mirror repositories on other git warehouse platforms, we only do development work in GitHub repositories.
 
