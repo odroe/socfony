@@ -1,0 +1,5 @@
+#!/bin/dart
+
+import 'bin/socfony.dart' as app;
+
+main(List<String> args) => app.main(args);
