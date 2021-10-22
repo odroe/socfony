@@ -1,31 +1,43 @@
 import 'dart:convert';
 
-import 'package:crypto/crypto.dart';
 import 'package:http/http.dart';
 
-import '../../../tencentcloud_sms.dart';
+import '../../base.dart';
 
 part 'options.dart';
 
-String hash256(String data) => sha256.convert(utf8.encode(data)).toString();
-Digest hmacSha256(List<int> key, String data) => Hmac(sha256, key).convert(utf8.encode(data));
-
+/// Tencend cloud SMS action.
+/// See: https://cloud.tencent.com/document/product/382/55981
+/// 
+/// [client] - Tencent cloud SMS client.
 class TencentCloudSMSSendAction {
+
+  /// Tencent cloud SMS client.
   final TencentCloudSMS client;
 
+  /// Tencent cloud SMS action.
+  /// 
+  /// [client] - Tencent cloud SMS client.
   const TencentCloudSMSSendAction(this.client);
 
+  /// Send SMS.
+  /// 
+  /// [options] - Send SMS options.
   Future<Response> send(SendTencentCloudSMSOptions options) async {
+    // Create request url.
     final Uri url = Uri.https(client.endpoint, '/');
-    final DateTime now = DateTime.now();
-    // DateTime now = DateTime.parse('2021-10-20T18:50:35.742246');
-    final Map<String, dynamic> body = await options.toJson(this);
-    final String jsonEncodedBody = json.encode(body);
-    final String authorization = client.sign(jsonEncodedBody, now);
 
-    print('\n');
-    print(jsonEncodedBody);
-     print('\n');
+    // Get now time.
+    final DateTime now = DateTime.now();
+
+    // Get request body.
+    final Map<String, dynamic> body = await options.toMap(this);
+
+    // Get request json encoded body.
+    final String jsonEncodedBody = json.encode(body);
+
+    // create request authorization.
+    final String authorization = client.sign(jsonEncodedBody, now);
 
     return await post(url, headers: {
       'X-TC-Action': 'SendSms',
