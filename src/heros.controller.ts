@@ -4,7 +4,7 @@ import { GrpcMethod } from "@nestjs/microservices";
 
 @Controller()
 export class HerosController {
-    @GrpcMethod('HeroesService', 'FindOne')
+  @GrpcMethod('HeroesService', 'FindOne')
   findOne(data: any, metadata: Metadata, call: ServerUnaryCall<any, any>) {
     const items = [
       { id: 1, name: 'John' },
