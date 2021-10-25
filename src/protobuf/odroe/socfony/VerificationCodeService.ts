@@ -12,10 +12,10 @@ export interface VerificationCodeServiceClient extends grpc.Client {
   /**
    * Send a verification code to the specified phone number.
    */
-  send(argument: _google_protobuf_StringValue, metadata: grpc.Metadata, options: grpc.CallOptions, callback: (error?: grpc.ServiceError, result?: _google_protobuf_Empty__Output) => void): grpc.ClientUnaryCall;
-  send(argument: _google_protobuf_StringValue, metadata: grpc.Metadata, callback: (error?: grpc.ServiceError, result?: _google_protobuf_Empty__Output) => void): grpc.ClientUnaryCall;
-  send(argument: _google_protobuf_StringValue, options: grpc.CallOptions, callback: (error?: grpc.ServiceError, result?: _google_protobuf_Empty__Output) => void): grpc.ClientUnaryCall;
-  send(argument: _google_protobuf_StringValue, callback: (error?: grpc.ServiceError, result?: _google_protobuf_Empty__Output) => void): grpc.ClientUnaryCall;
+  Send(argument: _google_protobuf_StringValue, metadata: grpc.Metadata, options: grpc.CallOptions, callback: (error?: grpc.ServiceError, result?: _google_protobuf_Empty__Output) => void): grpc.ClientUnaryCall;
+  Send(argument: _google_protobuf_StringValue, metadata: grpc.Metadata, callback: (error?: grpc.ServiceError, result?: _google_protobuf_Empty__Output) => void): grpc.ClientUnaryCall;
+  Send(argument: _google_protobuf_StringValue, options: grpc.CallOptions, callback: (error?: grpc.ServiceError, result?: _google_protobuf_Empty__Output) => void): grpc.ClientUnaryCall;
+  Send(argument: _google_protobuf_StringValue, callback: (error?: grpc.ServiceError, result?: _google_protobuf_Empty__Output) => void): grpc.ClientUnaryCall;
   /**
    * Send a verification code to the specified phone number.
    */
@@ -27,10 +27,10 @@ export interface VerificationCodeServiceClient extends grpc.Client {
   /**
    * Send a verification code to the authenticated user's phone number.
    */
-  sendByAuthenticatedUser(argument: _google_protobuf_Empty, metadata: grpc.Metadata, options: grpc.CallOptions, callback: (error?: grpc.ServiceError, result?: _google_protobuf_Empty__Output) => void): grpc.ClientUnaryCall;
-  sendByAuthenticatedUser(argument: _google_protobuf_Empty, metadata: grpc.Metadata, callback: (error?: grpc.ServiceError, result?: _google_protobuf_Empty__Output) => void): grpc.ClientUnaryCall;
-  sendByAuthenticatedUser(argument: _google_protobuf_Empty, options: grpc.CallOptions, callback: (error?: grpc.ServiceError, result?: _google_protobuf_Empty__Output) => void): grpc.ClientUnaryCall;
-  sendByAuthenticatedUser(argument: _google_protobuf_Empty, callback: (error?: grpc.ServiceError, result?: _google_protobuf_Empty__Output) => void): grpc.ClientUnaryCall;
+  SendByAuthenticatedUser(argument: _google_protobuf_Empty, metadata: grpc.Metadata, options: grpc.CallOptions, callback: (error?: grpc.ServiceError, result?: _google_protobuf_Empty__Output) => void): grpc.ClientUnaryCall;
+  SendByAuthenticatedUser(argument: _google_protobuf_Empty, metadata: grpc.Metadata, callback: (error?: grpc.ServiceError, result?: _google_protobuf_Empty__Output) => void): grpc.ClientUnaryCall;
+  SendByAuthenticatedUser(argument: _google_protobuf_Empty, options: grpc.CallOptions, callback: (error?: grpc.ServiceError, result?: _google_protobuf_Empty__Output) => void): grpc.ClientUnaryCall;
+  SendByAuthenticatedUser(argument: _google_protobuf_Empty, callback: (error?: grpc.ServiceError, result?: _google_protobuf_Empty__Output) => void): grpc.ClientUnaryCall;
   /**
    * Send a verification code to the authenticated user's phone number.
    */
@@ -48,16 +48,16 @@ export interface VerificationCodeServiceHandlers extends grpc.UntypedServiceImpl
   /**
    * Send a verification code to the specified phone number.
    */
-  send: grpc.handleUnaryCall<_google_protobuf_StringValue__Output, _google_protobuf_Empty>;
+  Send: grpc.handleUnaryCall<_google_protobuf_StringValue__Output, _google_protobuf_Empty>;
   
   /**
    * Send a verification code to the authenticated user's phone number.
    */
-  sendByAuthenticatedUser: grpc.handleUnaryCall<_google_protobuf_Empty__Output, _google_protobuf_Empty>;
+  SendByAuthenticatedUser: grpc.handleUnaryCall<_google_protobuf_Empty__Output, _google_protobuf_Empty>;
   
 }
 
 export interface VerificationCodeServiceDefinition extends grpc.ServiceDefinition {
-  send: MethodDefinition<_google_protobuf_StringValue, _google_protobuf_Empty, _google_protobuf_StringValue__Output, _google_protobuf_Empty__Output>
-  sendByAuthenticatedUser: MethodDefinition<_google_protobuf_Empty, _google_protobuf_Empty, _google_protobuf_Empty__Output, _google_protobuf_Empty__Output>
+  Send: MethodDefinition<_google_protobuf_StringValue, _google_protobuf_Empty, _google_protobuf_StringValue__Output, _google_protobuf_Empty__Output>
+  SendByAuthenticatedUser: MethodDefinition<_google_protobuf_Empty, _google_protobuf_Empty, _google_protobuf_Empty__Output, _google_protobuf_Empty__Output>
 }

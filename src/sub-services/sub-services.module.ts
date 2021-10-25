@@ -1,7 +1,7 @@
-import { Module } from "@nestjs/common";
-import { VerificationCodeSubServiceModule } from "./verification-code";
+import { Module } from '@nestjs/common';
+import { VerificationCodeSubServiceModule } from './verification-code';
 
 @Module({
-    imports: [VerificationCodeSubServiceModule],
+  imports: [VerificationCodeSubServiceModule],
 })
 export class SubServicesModule {}

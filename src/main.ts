@@ -1,11 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { GrpcOptions, Transport } from '@nestjs/microservices';
 import * as dotenv from 'dotenv';
-import { join } from 'path';
+import * as path from 'path';
 import { AppModule } from './app.module';
 
 // Load environment variables from .env file, where API keys and passwords are configured
 dotenv.config();
+
+// compatible @vercel/ncc
+const protoFilePath = path.join(__dirname, '../protos/socfony.proto');
 
 // Create microservice bootstrap
 async function bootstrap() {
@@ -13,7 +16,7 @@ async function bootstrap() {
     transport: Transport.GRPC,
     options: {
       package: 'odroe.socfony',
-      protoPath: join(__dirname, '../protos/socfony.proto'),
+      protoPath: protoFilePath,
       url: process.env.GRPC_LISTEN_ADDRESS,
     },
   });
@@ -25,4 +28,3 @@ async function bootstrap() {
 
 // Start microservice
 bootstrap();
-
