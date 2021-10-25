@@ -10,10 +10,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Setting {
+  key String @id @db.VarChar(199)
+  value Json
+}
+
+model VerificationCode {
+  id String @id @db.Char(64)
+  phone String @db.VarChar(199)
+  code String @db.VarChar(50)
+  createdAt DateTime @default(now())
+  expiredAt DateTime
+
+  @@unique([phone, code])
+  @@index([phone])
+  @@index([createdAt])
+  @@index([expiredAt])
+}
+
 model User {
   id String @id @db.Char(64)
   name String? @unique @db.VarChar(199)
-  email String? @unique @db.VarChar(199)
   phone String? @unique @db.VarChar(199)
   createdAt DateTime @default(now())
 }

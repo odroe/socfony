@@ -1,16 +1,15 @@
 syntax = "proto3";
 
-package com.odroe.socfony;
+package odroe.socfony;
 
-service HeroesService {
-    rpc FindOne (HeroById) returns (Hero) {}
-  }
-  
-  message HeroById {
-    int32 id = 1;
-  }
-  
-  message Hero {
-    int32 id = 1;
-    string name = 2;
-  }
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+
+// Verification code service.
+service VerificationCodeService {
+  // Send a verification code to the specified phone number.
+  rpc Send(google.protobuf.StringValue) returns (google.protobuf.Empty);
+
+  // Send a verification code to the authenticated user's phone number.
+  rpc SendByAuthenticatedUser(google.protobuf.Empty) returns (google.protobuf.Empty);
+}

@@ -12,7 +12,7 @@ async function bootstrap() {
   const app = await NestFactory.createMicroservice<GrpcOptions>(AppModule, {
     transport: Transport.GRPC,
     options: {
-      package: 'com.odroe.socfony',
+      package: 'odroe.socfony',
       protoPath: join(__dirname, '../protos/socfony.proto'),
       url: process.env.GRPC_LISTEN_ADDRESS,
     },
