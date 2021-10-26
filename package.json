@@ -10,7 +10,7 @@
     "build": "rimraf dist && ncc build src/main.ts -o dist",
     "format": "prettier --write .",
     "serve": "nest start --watch",
-    "protobuf": "proto-loader-gen-types --grpcLib=@grpc/grpc-js -O src/protobuf --includeComments protos/socfony.proto"
+    "protobuf": "rimraf src/protobuf && proto-loader-gen-types --grpcLib=@grpc/grpc-js -O src/protobuf --includeComments protos/socfony.proto"
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.4.1",

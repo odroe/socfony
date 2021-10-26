@@ -5,11 +5,49 @@ package odroe.socfony;
 import "google/protobuf/empty.proto";
 import "google/protobuf/wrappers.proto";
 
-// Verification code service.
+///-----------------------------------------------------------------------------
+/// Common messages
+///-----------------------------------------------------------------------------
+
+// A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+message DateTime {
+  string value = 1;
+}
+
+///-----------------------------------------------------------------------------
+/// VerificationCodeService - Service for send SMS verification code
+///-----------------------------------------------------------------------------
 service VerificationCodeService {
   // Send a verification code to the specified phone number.
   rpc Send(google.protobuf.StringValue) returns (google.protobuf.Empty);
 
   // Send a verification code to the authenticated user's phone number.
   rpc SendByAuthenticatedUser(google.protobuf.Empty) returns (google.protobuf.Empty);
+}
+
+///-----------------------------------------------------------------------------
+/// AccessTokenService - Service for managing access tokens.
+///-----------------------------------------------------------------------------
+service AccessTokenService {
+  // Create a new access token.
+  // If the phone don't registered user, it will be created.
+  rpc Create(CreateAccessTokenRequest) returns (AccessToken);
+
+  // Delete on Authorization token.
+  rpc Delete(google.protobuf.Empty) returns (google.protobuf.Empty);
+
+  // Refresh on Authorization token.
+  rpc Refresh(google.protobuf.Empty) returns (AccessToken);
+}
+
+message AccessToken {
+  string token = 1;
+  string userId = 2;
+  DateTime expiredAt = 3;
+  DateTime refreshExpiredAt = 4;
+}
+
+message CreateAccessTokenRequest {
+  string phone = 1;
+  string code = 2;
 }
