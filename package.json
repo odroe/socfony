@@ -16,7 +16,7 @@
     "@grpc/grpc-js": "^1.4.2",
     "@grpc/proto-loader": "^0.6.6",
     "@nestjs/common": "^8.1.2",
-    "@nestjs/core": "^8.0.0",
+    "@nestjs/core": "^8.1.2",
     "@nestjs/microservices": "^8.1.2",
     "@prisma/client": "^3.3.0",
     "dayjs": "^1.10.7",
