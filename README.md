@@ -25,44 +25,14 @@ Socfony is currently in the early development stage. For more development conten
 
 ## Get Started
 
-1. We now clone Socfony Git repository:
-
-```bash
-$ git clone https://github.com/odroe/socfony && cd socfony
-```
-
-2. Install Socfony dependencies:
-
-```bash
-$ npm install
-```
-
-3. Build Socfony protobuf files:
-
-```bash
-$ npm run protobuf
-```
-
-4. Configure environment variables:
-
-```bash
-$ export GRPC_LISTEN_ADDRESS=0.0.0.0:3000
-$ export DATABASE_URL=mysql://root:password@localhost:3306/socfony
-```
-
-> **Note**: If it is troublesome to set environment variables every time you run, you can copy `.env.example` as the `.env` file and edit it for configuration.
-
-5. Create database:
-
-```bash
-$ npx prisma db push
-```
-
-6. Run Socfony server:
-
-```bash
-$ npm run serve
-```
+| Step | Code                                                       | Description                     |
+| :--: | ---------------------------------------------------------- | ------------------------------- |
+|  1   | `git clone https://github.com/odroe/socfony && cd socfony` | Clone the project               |
+|  2   | `npm install`                                              | Install dependencies            |
+|  3   | `npm run protobuf`                                         | Generate protobuf files         |
+|  4   | Copy the `.env.example` file to `.env`                     | Configure environment variables |
+|  5   | `npx prisma db push`                                       | Create database                 |
+|  6   | `npm run serve`                                            | Run server                      |
 
 ## Documentation
 
