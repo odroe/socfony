@@ -1,5 +1,7 @@
 <img align="right" width="120px" src="graphs/socfony.png" alt="Socfony Logo">
 
+# Socfony
+
 <div align="center">
     <a href="https://github.com/odroe/socfony">GitHub</a>
     <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
@@ -7,8 +9,6 @@
     <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
     <a href="https://gitee.com/odroe/socfony">Gitee</a>
 </div>
-
-# Socfony
 
 Socfony is an open source social application, and basic security modules and social function modules have been preset in the software. Whether it is to deploy Socfony directly or as a basis for program development is wonderful.
 
