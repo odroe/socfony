@@ -1,4 +1,6 @@
-<img align="right" width="120px" src="graphs/socfony.png" alt="Socfony Logo">
+<a href="https://odroe.com">
+    <img align="right" width="120px" src="graphs/socfony.png" alt="Socfony Logo">
+</a>
 
 # Socfony
 
