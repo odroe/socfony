@@ -1,8 +1,8 @@
 {
   "name": "socfony",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Socfony is an open source social application, and basic security modules and social function modules have been preset in the software. Whether it is to deploy Socfony directly or as a basis for program development is wonderful.",
+  "author": "Odroe Inc. <hello@odroe.com> (https://odroe.com/)",
   "private": true,
   "license": "BSD-3-Clause",
   "scripts": {
