@@ -30,7 +30,7 @@ export class VerificationCodeService {
   }
 
   async delete(phone: string, code: string): Promise<void> {
-    this.prisma.$transaction([
+    await this.prisma.$transaction([
       this.prisma.verificationCode.delete({
         where: {
           phone_code: { phone, code },

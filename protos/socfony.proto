@@ -31,16 +31,16 @@ service VerificationCodeService {
 service AccessTokenService {
   // Create a new access token.
   // If the phone don't registered user, it will be created.
-  rpc Create(CreateAccessTokenRequest) returns (AccessToken);
+  rpc Create(CreateAccessTokenRequest) returns (AccessTokenResponse);
 
   // Delete on Authorization token.
   rpc Delete(google.protobuf.Empty) returns (google.protobuf.Empty);
 
   // Refresh on Authorization token.
-  rpc Refresh(google.protobuf.Empty) returns (AccessToken);
+  rpc Refresh(google.protobuf.Empty) returns (AccessTokenResponse);
 }
 
-message AccessToken {
+message AccessTokenResponse {
   string token = 1;
   string userId = 2;
   DateTime expiredAt = 3;

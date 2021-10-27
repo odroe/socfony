@@ -1,4 +1,4 @@
-import { Metadata, ServerUnaryCall, status } from '@grpc/grpc-js';
+import { Metadata, status } from '@grpc/grpc-js';
 import { Controller } from '@nestjs/common';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
 import { PrismaClient } from '@prisma/client';
@@ -6,6 +6,7 @@ import { parsePhoneNumberWithError, PhoneNumber } from 'libphonenumber-js';
 import { Empty } from 'src/protobuf/google/protobuf/Empty';
 import { StringValue } from 'src/protobuf/google/protobuf/StringValue';
 import {
+  AccessTokenService,
   VerificationCodeMessage,
   VerificationCodeService as VerificationCodeBusinessService,
 } from '../../business';
@@ -15,14 +16,11 @@ export class VerificationCodeSubServiceController {
   constructor(
     private readonly prisma: PrismaClient,
     private readonly service: VerificationCodeBusinessService,
+    private readonly accessTokenService: AccessTokenService,
   ) {}
 
   @GrpcMethod('VerificationCodeService', 'Send')
-  async send(
-    data: StringValue,
-    _metadata: Metadata,
-    _call: ServerUnaryCall<StringValue, Empty>,
-  ): Promise<Empty> {
+  async send(data: StringValue): Promise<Empty> {
     const phone = this.#verifyPhoneNumber(data.value);
 
     try {
@@ -34,6 +32,37 @@ export class VerificationCodeSubServiceController {
     } catch (error) {
       throw new RpcException({
         code: status.INTERNAL,
+        message: error.message,
+      });
+    }
+
+    return {};
+  }
+
+  @GrpcMethod('VerificationCodeService', 'SendByAuthenticatedUser')
+  async sendByAuthenticatedUser(
+    data: Empty,
+    metadata: Metadata,
+  ): Promise<Empty> {
+    const [authorization] = metadata.get('authorization');
+
+    try {
+      const accessToken = await this.accessTokenService.verify(
+        typeof authorization === 'string'
+          ? authorization
+          : Buffer.from(authorization).toString(),
+        { include: true },
+      );
+
+      const message = await VerificationCodeMessage.createMessage(
+        this.prisma,
+        accessToken.User.phone,
+      );
+
+      this.service.send(message);
+    } catch (error) {
+      throw new RpcException({
+        code: status.UNAUTHENTICATED,
         message: error.message,
       });
     }

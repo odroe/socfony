@@ -25,7 +25,7 @@ export class AccessTokenService {
    * @param user Need to be logged in user.
    * @returns AccessToken
    */
-  async create(user: User): Promise<AccessToken> {
+  async create(user: User | string): Promise<AccessToken> {
     this.#delteExpiredTokens();
 
     const [expiredAt, refreshExpiredAt] = await this.#createExpires();
@@ -33,7 +33,7 @@ export class AccessTokenService {
     return this.prisma.accessToken.create({
       data: {
         token: nanoid(128),
-        userId: user.id,
+        userId: typeof user === 'string' ? user : user.id,
         expiredAt,
         refreshExpiredAt,
       },
@@ -87,6 +87,29 @@ export class AccessTokenService {
         refreshExpiredAt,
       },
     });
+  }
+
+  async verify(
+    token: string,
+    { include = false, refresh = false } = {},
+  ): Promise<
+    Prisma.AccessTokenGetPayload<{
+      include: {
+        User: typeof include;
+      };
+    }>
+  > {
+    const accessToken = await this.find(token, include);
+
+    if (!accessToken) {
+      throw new Error('Access token not found.');
+    } else if (
+      accessToken[refresh ? 'refreshExpiredAt' : 'expiredAt'] < new Date()
+    ) {
+      throw new Error('Access token expired.');
+    }
+
+    return accessToken;
   }
 
   /**

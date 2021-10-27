@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { VerificationCodeSubServiceController } from './verification-code.controller';
-import { VerificationCodeModule } from '../../business';
+import { AccessTokenModule, VerificationCodeModule } from '../../business';
 
 @Module({
-  imports: [VerificationCodeModule],
+  imports: [VerificationCodeModule, AccessTokenModule],
   controllers: [VerificationCodeSubServiceController],
 })
 export class VerificationCodeSubServiceModule {}
