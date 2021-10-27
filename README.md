@@ -1,5 +1,13 @@
 <img align="right" width="120px" src="graphs/socfony.png" alt="Socfony Logo">
 
+<div align="center">
+    <a href="https://github.com/odroe/socfony">GitHub</a>
+    <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+    <a href="https://gitlab.com/odroe/socfony">GitLab</a>
+    <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+    <a href="https://gitee.com/odroe/socfony">Gitee</a>
+</div>
+
 # Socfony
 
 Socfony is an open source social application, and basic security modules and social function modules have been preset in the software. Whether it is to deploy Socfony directly or as a basis for program development is wonderful.
@@ -17,23 +25,44 @@ Socfony is currently in the early development stage. For more development conten
 
 ## Get Started
 
-We now clone Socfony's Git repository:
+1. We now clone Socfony Git repository:
 
 ```bash
-$ git clone https://github.com/odroe/socfony
+$ git clone https://github.com/odroe/socfony && cd socfony
 ```
 
-We have more options for mirror warehouses. Below are the mirror addresses of our major code hosting platforms:
+2. Install Socfony dependencies:
 
-<div align="center">
-    <a href="https://github.com/odroe/socfony">GitHub</a>
-    <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-    <a href="https://gitlab.com/odroe/socfony">GitLab</a>
-    <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-    <a href="https://gitee.com/odroe/socfony">Gitee</a>
-</div>
+```bash
+$ npm install
+```
 
-> Although we have mirror repositories on other git warehouse platforms, we only do development work in GitHub repositories.
+3. Build Socfony protobuf files:
+
+```bash
+$ npm run protobuf
+```
+
+4. Configure environment variables:
+
+```bash
+$ export GRPC_LISTEN_ADDRESS=0.0.0.0:3000
+$ export DATABASE_URL=mysql://root:password@localhost:3306/socfony
+```
+
+> **Note**: If it is troublesome to set environment variables every time you run, you can copy `.env.example` as the `.env` file and edit it for configuration.
+
+5. Create database:
+
+```bash
+$ npx prisma db push
+```
+
+6. Run Socfony server:
+
+```bash
+$ npm run serve
+```
 
 ## Documentation
 
