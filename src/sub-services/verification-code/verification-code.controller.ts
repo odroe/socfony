@@ -3,6 +3,7 @@ import { Controller } from '@nestjs/common';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
 import { PrismaClient } from '@prisma/client';
 import { parsePhoneNumberWithError, PhoneNumber } from 'libphonenumber-js';
+import { auth } from 'src/grpc-helper';
 import { Empty } from 'src/protobuf/google/protobuf/Empty';
 import { StringValue } from 'src/protobuf/google/protobuf/StringValue';
 import {
@@ -24,12 +25,20 @@ export class VerificationCodeSubServiceController {
     const phone = this.#verifyPhoneNumber(data.value);
 
     try {
+      console.log(1);
       const message = await VerificationCodeMessage.createMessage(
         this.prisma,
         phone,
       );
-      this.service.send(message);
+      console.log(2);
+      try {
+        this.service.send(message);
+      } catch (error) {
+        console.log(5);
+      }
+      console.log(4);
     } catch (error) {
+      console.log(3);
       throw new RpcException({
         code: status.INTERNAL,
         message: error.message,
@@ -41,19 +50,16 @@ export class VerificationCodeSubServiceController {
 
   @GrpcMethod('VerificationCodeService', 'SendByAuthenticatedUser')
   async sendByAuthenticatedUser(
-    data: Empty,
+    _data: Empty,
     metadata: Metadata,
   ): Promise<Empty> {
-    const [authorization] = metadata.get('authorization');
+    const accessToken = await auth({
+      accessTokenService: this.accessTokenService,
+      metadata,
+      include: true,
+    });
 
     try {
-      const accessToken = await this.accessTokenService.verify(
-        typeof authorization === 'string'
-          ? authorization
-          : Buffer.from(authorization).toString(),
-        { include: true },
-      );
-
       const message = await VerificationCodeMessage.createMessage(
         this.prisma,
         accessToken.User.phone,
@@ -62,7 +68,7 @@ export class VerificationCodeSubServiceController {
       this.service.send(message);
     } catch (error) {
       throw new RpcException({
-        code: status.UNAUTHENTICATED,
+        code: status.INTERNAL,
         message: error.message,
       });
     }

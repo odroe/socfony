@@ -8,6 +8,7 @@ import { AccessTokenResponse } from 'src/protobuf/odroe/socfony/AccessTokenRespo
 import { CreateAccessTokenRequest } from 'src/protobuf/odroe/socfony/CreateAccessTokenRequest';
 import { nanoid } from 'nanoid';
 import { Empty } from 'src/protobuf/google/protobuf/Empty';
+import { auth } from 'src/grpc-helper';
 
 @Controller()
 export class AccessTokenSubServiceController {
@@ -58,24 +59,14 @@ export class AccessTokenSubServiceController {
 
   @GrpcMethod('AccessTokenService', 'Delete')
   async delete(_request: Empty, metadata: Metadata): Promise<Empty> {
-    const [authorization] = metadata.get('authorization');
+    const accessToken = await auth({
+      accessTokenService: this.accessTokenService,
+      metadata,
+    });
 
-    try {
-      const accessToken = await this.accessTokenService.verify(
-        typeof authorization === 'string'
-          ? authorization
-          : Buffer.from(authorization).toString(),
-      );
-
-      await this.prisma.accessToken.delete({
-        where: { token: accessToken.token },
-      });
-    } catch (error) {
-      throw new RpcException({
-        code: status.UNAUTHENTICATED,
-        message: error.message,
-      });
-    }
+    await this.prisma.accessToken.delete({
+      where: { token: accessToken.token },
+    });
 
     return {};
   }
@@ -85,34 +76,23 @@ export class AccessTokenSubServiceController {
     _request: Empty,
     metadata: Metadata,
   ): Promise<AccessTokenResponse> {
-    const [authorization] = metadata.get('authorization');
+    const accessToken = await auth({
+      accessTokenService: this.accessTokenService,
+      metadata,
+    });
 
-    try {
-      const accessToken = await this.accessTokenService.verify(
-        typeof authorization === 'string'
-          ? authorization
-          : Buffer.from(authorization).toString(),
-        { refresh: true },
-      );
+    const newAccessToken = await this.accessTokenService.refresh(
+      accessToken.token,
+    );
 
-      const newAccessToken = await this.accessTokenService.refresh(
-        accessToken.token,
-      );
-
-      return {
-        userId: accessToken.userId,
-        token: newAccessToken.token,
-        expiredAt: { value: newAccessToken.expiredAt.toISOString() },
-        refreshExpiredAt: {
-          value: newAccessToken.refreshExpiredAt.toISOString(),
-        },
-      };
-    } catch (error) {
-      throw new RpcException({
-        code: status.UNAUTHENTICATED,
-        message: error.message,
-      });
-    }
+    return {
+      userId: accessToken.userId,
+      token: newAccessToken.token,
+      expiredAt: { value: newAccessToken.expiredAt.toISOString() },
+      refreshExpiredAt: {
+        value: newAccessToken.refreshExpiredAt.toISOString(),
+      },
+    };
   }
 
   /**
