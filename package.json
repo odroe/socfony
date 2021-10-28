@@ -21,7 +21,7 @@
     "@prisma/client": "^3.3.0",
     "dayjs": "^1.10.7",
     "dotenv": "^10.0.0",
-    "libphonenumber-js": "^1.9.38",
+    "libphonenumber-js": "^1.9.39",
     "nanoid": "^3.1.30",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
