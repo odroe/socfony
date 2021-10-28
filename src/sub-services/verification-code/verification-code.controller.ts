@@ -25,20 +25,12 @@ export class VerificationCodeSubServiceController {
     const phone = this.#verifyPhoneNumber(data.value);
 
     try {
-      console.log(1);
       const message = await VerificationCodeMessage.createMessage(
         this.prisma,
         phone,
       );
-      console.log(2);
-      try {
-        this.service.send(message);
-      } catch (error) {
-        console.log(5);
-      }
-      console.log(4);
+      this.service.send(message);
     } catch (error) {
-      console.log(3);
       throw new RpcException({
         code: status.INTERNAL,
         message: error.message,
