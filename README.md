@@ -30,7 +30,7 @@ Socfony is currently in the early development stage. For more development conten
 1. We now clone Socfony Git repository:
 
 ```bash
-git clone https://github.com/odroe/socfony && cd socfony
+git clone https://github.com/odroe/socfony && cd socfony/server
 ```
 
 2. Install Socfony dependencies:
