@@ -14,8 +14,8 @@
 
 Socfony is an open source social application, and basic security modules and social function modules have been preset in the software. Whether it is to deploy Socfony directly or as a basis for program development is wonderful.
 
-- [**Socfony Server**](https://github.com/odroe/socfony) - Socfony server gRPC service.
-- [**Socfony App**](https://github.com/odroe/socfony-app) - Socfony application.
+- [**Socfony Server**](server) - Socfony server gRPC service.
+- [**Socfony App**](app) - Socfony application.
 
 Socfony server adopts Node.js runtime environment, TypeScript language and Nest.js framework to develop gRPC API.
 
