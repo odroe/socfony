@@ -8,7 +8,7 @@ import { AppModule } from './app.module';
 dotenv.config();
 
 // compatible @vercel/ncc
-const protoFilePath = path.join(__dirname, '../protos/socfony.proto');
+const protoFilePath = path.join(__dirname, '../../protos/socfony.proto');
 
 // Create microservice bootstrap
 async function bootstrap() {
