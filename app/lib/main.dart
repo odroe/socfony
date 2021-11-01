@@ -1,7 +1,3 @@
-import 'package:socfony/app.dart';
+import 'app.dart';
 
-void main() {
-  const App app = App();
-
-  app.run();
-}
+void main() => App.run();

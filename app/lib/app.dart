@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:get/route_manager.dart';
+import 'package:socfony/screens/home.dart';
 
-import 'routes/app_pages.dart';
-import 'routes/app_routes.dart';
 import 'theme.dart';
 
 class App extends StatelessWidget {
@@ -10,13 +8,12 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetCupertinoApp(
-      title: "Socfony",
-      theme: AppTheme.theme,
-      getPages: AppPages.pages,
-      initialRoute: AppRoutes.home,
+    return const CupertinoApp(
+      title: 'Socfony',
+      theme: AppTheme.defaultTheme,
+      home: HomeScreen(),
     );
   }
 
-  void run() => runApp(this);
+  static void run() => runApp(const App());
 }

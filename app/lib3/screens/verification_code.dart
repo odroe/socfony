@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import '../theme.dart';
+import '../../lib/theme.dart';
 
 class VerificationCodeScreen extends StatelessWidget {
   const VerificationCodeScreen({Key? key}) : super(key: key);

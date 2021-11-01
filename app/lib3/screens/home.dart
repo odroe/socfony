@@ -1,17 +1,16 @@
 import 'package:flutter/cupertino.dart';
-import 'package:socfony/theme.dart';
-import 'package:socfony/widgets/login_dialog.dart';
+import 'package:get/get.dart';
+
+import '../routes/app_routes.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
-
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
-        items: const <BottomNavigationBarItem>[
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(CupertinoIcons.quote_bubble),
             activeIcon: Icon(CupertinoIcons.quote_bubble_fill),
@@ -33,19 +32,15 @@ class HomeScreen extends StatelessWidget {
             label: '我的',
           ),
         ],
-        onTap: (index) {
-          LoginDialog(
-            context: context,
-          ).show();
+        onTap: (int index) {
+          Get.toNamed(AppRoutes.login);
         },
       ),
       tabBuilder: (context, index) {
         return CupertinoPageScaffold(
           child: Center(
-            child: Text(
-              'View: $index',
-              style: theme.textTheme.headline.resolveFrom(context),
-            ),
+            child: Text('View: $index',
+                style: CupertinoTheme.of(context).textTheme.textStyle),
           ),
         );
       },
