@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:socfony/theme.dart';
-import 'package:socfony/widgets/login_dialog.dart';
+
+import '../theme.dart';
+import '../widgets/login_dialog.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);

@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:socfony/theme.dart';
-import 'package:socfony/widgets/card_wrapper.dart';
 
-import 'divider.dart';
+import '../theme.dart';
+import 'card_wrapper.dart';
 import 'verification_code_dialog.dart';
 
 class LoginDialog extends StatelessWidget {

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:socfony/theme.dart';
+
+import '../theme.dart';
 
 class Divider extends StatelessWidget {
   final double? height;
