@@ -18,7 +18,7 @@
     "@nestjs/common": "^8.1.2",
     "@nestjs/core": "^8.1.2",
     "@nestjs/microservices": "^8.1.2",
-    "@prisma/client": "^3.3.0",
+    "@prisma/client": "^3.4.0",
     "dayjs": "^1.10.7",
     "dotenv": "^10.0.0",
     "libphonenumber-js": "^1.9.39",
