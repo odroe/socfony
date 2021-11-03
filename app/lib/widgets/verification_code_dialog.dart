@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 import '../theme.dart';
+import 'card_wrapper.dart';
 
 class VerificationCodeDialog<T> extends StatelessWidget {
   final BuildContext context;
@@ -43,17 +44,25 @@ class VerificationCodeDialog<T> extends StatelessWidget {
         children: [
           const Text('验证码已发送到你的手机'),
           const SizedBox(height: 12),
-          CupertinoTextField(
-            controller: _controller,
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            placeholder: '请输入验证码',
-            keyboardType: TextInputType.number,
-            autofocus: true,
-            suffix: _VerificationCodeDialogFetchButton(
-              authorization: authorization,
-              phoneNumber: phoneNumber,
+          CardWrapper(
+            padding: EdgeInsets.zero,
+            child: CupertinoTextField(
+              controller: _controller,
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              placeholder: '请输入验证码',
+              keyboardType: TextInputType.number,
+              autofocus: true,
+              suffix: _VerificationCodeDialogFetchButton(
+                authorization: authorization,
+                phoneNumber: phoneNumber,
+              ),
+              maxLength: 6,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  style: BorderStyle.none,
+                ),
+              ),
             ),
-            maxLength: 6,
           ),
         ],
       ),
