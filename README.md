@@ -12,63 +12,17 @@
     <a href="https://gitee.com/odroe/socfony">Gitee</a>
 </div>
 
-Socfony is an open source social application, and basic security modules and social function modules have been preset in the software. Whether it is to deploy Socfony directly or as a basis for program development is wonderful.
+Socfony 是一款**完全开源**的基础 App。程序中具有完备的社交功能，例如动态、圈子、好友、私信等。使用 Socfony 可以快速搭建一个社交 App，并且在此基础上添加功能也非常轻松。
 
-- [**Socfony Server**](server) - Socfony server gRPC service.
-- [**Socfony App**](app) - Socfony application.
+- [**Socfony Server**](server) - Socfony 的 gRPC 服务端
+- [**Socfony App**](app) - Socfony 使用 Flutter 的 App 实现
 
-Socfony server adopts Node.js runtime environment, TypeScript language and Nest.js framework to develop gRPC API.
+Socfony 服务端运行在 Node.js 环境下，Socfony 移动端 App 使用 Flutter 实现。
+客户端和服务端使用 gRPC 进行数据交换。
 
-Socfony App uses the Flutter framework for cross-platform development
+## 发展路线
 
-## Reamap
-
-Socfony is currently in the early development stage. For more development content, please visit [Projects page](https://github.com/odroe/socfony/projects).
-
-## Get Started
-
-1. We now clone Socfony Git repository:
-
-```bash
-git clone https://github.com/odroe/socfony && cd socfony/server
-```
-
-2. Install Socfony dependencies:
-
-```bash
-npm install
-```
-
-3. Build Socfony protobuf files:
-
-```bash
-npm run protobuf
-```
-
-4. Configure environment variables:
-
-```bash
-export GRPC_LISTEN_ADDRESS=0.0.0.0:3000
-export DATABASE_URL=mysql://root:password@localhost:3306/socfony
-```
-
-> **Note**: If it is troublesome to set environment variables every time you run, you can copy `.env.example` as the `.env` file and edit it for configuration.
-
-5. Create database:
-
-```bash
-npx prisma db push
-```
-
-6. Run Socfony server:
-
-```bash
-npm run serve
-```
-
-## Documentation
-
-TODO
+Socfony 目前处于早期开发阶段，更多的开发计划请访问 [Projects 页面](https://github.com/odroe/socfony/projects)
 
 ## License
 
