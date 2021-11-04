@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 import 'package:socfony/screens/home.dart';
 
+import 'services/auth.dart';
 import 'theme.dart';
 
 class App extends StatelessWidget {
@@ -8,10 +10,15 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const CupertinoApp(
-      title: 'Socfony',
-      theme: AppTheme.defaultTheme,
-      home: HomeScreen(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthService()),
+      ],
+      child: const CupertinoApp(
+        title: 'Socfony',
+        theme: AppTheme.defaultTheme,
+        home: HomeScreen(),
+      ),
     );
   }
 

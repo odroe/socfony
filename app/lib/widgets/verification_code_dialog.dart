@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
+import 'package:socfony/services/verification_code.dart';
 
 import '../theme.dart';
 import 'card_wrapper.dart';
@@ -8,8 +11,7 @@ class VerificationCodeDialog<T> extends StatelessWidget {
   final String? title;
   final String? doneButtonText;
   final String? phoneNumber;
-  final bool? authorization;
-  final Future<T> Function(String) onDone;
+  final void Function(String, void Function()) onDone;
 
   VerificationCodeDialog.authorization({
     Key? key,
@@ -17,8 +19,7 @@ class VerificationCodeDialog<T> extends StatelessWidget {
     this.title,
     this.doneButtonText,
     required this.onDone,
-    this.phoneNumber,
-  })  : authorization = true,
+  })  : phoneNumber = null,
         super(key: key);
 
   VerificationCodeDialog.phoneNumber({
@@ -28,8 +29,7 @@ class VerificationCodeDialog<T> extends StatelessWidget {
     this.doneButtonText,
     required this.onDone,
     required this.phoneNumber,
-  })  : authorization = false,
-        super(key: key);
+  }) : super(key: key);
 
   String get convertTitle => title ?? '验证码';
   String get convertDoneButtonText => doneButtonText ?? '验证';
@@ -53,7 +53,6 @@ class VerificationCodeDialog<T> extends StatelessWidget {
               keyboardType: TextInputType.number,
               autofocus: true,
               suffix: _VerificationCodeDialogFetchButton(
-                authorization: authorization,
                 phoneNumber: phoneNumber,
               ),
               maxLength: 6,
@@ -75,32 +74,95 @@ class VerificationCodeDialog<T> extends StatelessWidget {
         ),
         CupertinoDialogAction(
           child: Text(convertDoneButtonText),
-          onPressed: () async {
-            final T result = await onDone(_controller.text);
-            Navigator.of(context).pop<T>(result);
-          },
+          onPressed: () => onVerification(context),
         ),
       ],
     );
   }
 
-  Future<T?> show() => showCupertinoDialog<T>(
+  void onVerification(BuildContext context) {
+    if (_controller.text.length != 6) {
+      showCupertinoDialog(
         context: context,
-        builder: (BuildContext context) => this,
-        barrierDismissible: false,
+        builder: (context) => CupertinoAlertDialog(
+          title: const Text('验证码错误'),
+          content: const Text('请输入正确的验证码'),
+          actions: <Widget>[
+            CupertinoDialogAction(
+              child: const Text('确定'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        ),
       );
+      return;
+    }
+
+    onDone(_controller.text, () => Navigator.of(context).pop(_controller.text));
+  }
+
+  Future<T?> show() async {
+    final onCloseSendingDialog = showSendingDialog(context);
+    final onSend = createSendHandler(context, phoneNumber);
+
+    try {
+      await onSend();
+      onCloseSendingDialog();
+    } catch (e) {
+      onCloseSendingDialog();
+      showCupertinoDialog(
+        context: context,
+        builder: (context) => CupertinoAlertDialog(
+          title: const Text('验证码发送失败'),
+          content: const Text('请稍后再试'),
+          actions: <Widget>[
+            CupertinoDialogAction(
+              child: const Text('确定'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        ),
+      );
+
+      return null;
+    }
+
+    return showCupertinoDialog<T>(
+      context: context,
+      builder: (BuildContext context) => this,
+      barrierDismissible: false,
+    );
+  }
+
+  static Future<void> Function() createSendHandler(BuildContext context,
+      [String? phoneNumber]) {
+    if (phoneNumber != null && phoneNumber.isNotEmpty) {
+      return () => VerificationCodeService.send(phoneNumber);
+    }
+
+    return () => VerificationCodeService.sendWithAuth(context);
+  }
+
+  static void Function() showSendingDialog(BuildContext context) {
+    showCupertinoDialog(
+      context: context,
+      builder: (context) => const CupertinoAlertDialog(
+        title: Text('验证码发送中...'),
+        content: CupertinoActivityIndicator(),
+      ),
+    );
+
+    return () => Navigator.of(context).pop();
+  }
 }
 
 class _VerificationCodeDialogFetchButton extends StatefulWidget {
   final String? phoneNumber;
-  final bool? authorization;
 
   const _VerificationCodeDialogFetchButton({
     Key? key,
     required this.phoneNumber,
-    required this.authorization,
-  })  : assert(authorization == true || (phoneNumber != null)),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   __VerificationCodeDialogFetchButtonState createState() =>
@@ -109,15 +171,74 @@ class _VerificationCodeDialogFetchButton extends StatefulWidget {
 
 class __VerificationCodeDialogFetchButtonState
     extends State<_VerificationCodeDialogFetchButton> {
+  Timer? _timer;
+  int _countdown = 60;
+
+  @override
+  void initState() {
+    super.initState();
+    _startCountdown();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final CupertinoThemeData theme = AppTheme.of(context);
-
     return CupertinoButton(
       padding: const EdgeInsets.only(right: 12),
-      child: Text('重新获取',
-          style: theme.textTheme.footnote.copyWith(color: theme.primaryColor)),
-      onPressed: () {},
+      child: Text(
+        _countdown == 0 ? '重新获取' : '$_countdown s',
+        style: theme.textTheme.footnote.copyWith(
+          color: theme.primaryColor,
+        ),
+      ),
+      onPressed: _countdown == 0 ? () => _fetch(context) : null,
     );
+  }
+
+  void _startCountdown() {
+    _timer?.cancel();
+    _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
+      if (_countdown == 0) {
+        timer.cancel();
+        return;
+      }
+      setState(() {
+        _countdown--;
+      });
+    });
+  }
+
+  void _fetch(BuildContext context) async {
+    final onCloseSendingDialog =
+        VerificationCodeDialog.showSendingDialog(context);
+    final onSend =
+        VerificationCodeDialog.createSendHandler(context, widget.phoneNumber);
+
+    try {
+      _startCountdown();
+      await onSend();
+      onCloseSendingDialog();
+    } catch (e) {
+      onCloseSendingDialog();
+      showCupertinoDialog(
+        context: context,
+        builder: (context) => CupertinoAlertDialog(
+          title: const Text('验证码发送失败'),
+          content: const Text('请稍后再试'),
+          actions: <Widget>[
+            CupertinoDialogAction(
+              child: const Text('确定'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        ),
+      );
+    }
   }
 }

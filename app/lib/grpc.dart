@@ -3,7 +3,7 @@ import 'package:grpc/grpc.dart';
 import 'src/protobuf/socfony.pbgrpc.dart';
 
 /// gRPC server host.
-const String _host = '192.158.0.5';
+const String _host = '127.0.0.1';
 
 /// gRPC server port.
 const int _port = 3000;
@@ -11,6 +11,7 @@ const int _port = 3000;
 /// gRPC channel options.
 const ChannelOptions _options = ChannelOptions(
   userAgent: 'Socfony/0.0.1',
+  credentials: ChannelCredentials.insecure(),
 );
 
 abstract class Grpc {
