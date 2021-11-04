@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
 import '../theme.dart';
-import '../widgets/login_dialog.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -34,11 +33,6 @@ class HomeScreen extends StatelessWidget {
             label: '我的',
           ),
         ],
-        onTap: (index) {
-          LoginDialog(
-            context: context,
-          ).show();
-        },
       ),
       tabBuilder: (context, index) {
         return CupertinoPageScaffold(
