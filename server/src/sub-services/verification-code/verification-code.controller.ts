@@ -51,21 +51,7 @@ export class VerificationCodeSubServiceController {
       include: true,
     });
 
-    try {
-      const message = await VerificationCodeMessage.createMessage(
-        this.prisma,
-        accessToken.User.phone,
-      );
-
-      this.service.send(message);
-    } catch (error) {
-      throw new RpcException({
-        code: status.INTERNAL,
-        message: error.message,
-      });
-    }
-
-    return {};
+    return this.send({ value: accessToken.User.phone });
   }
 
   #verifyPhoneNumber(phone: string): string {
