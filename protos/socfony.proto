@@ -51,3 +51,45 @@ message CreateAccessTokenRequest {
   string phone = 1;
   string code = 2;
 }
+
+///-----------------------------------------------------------------------------
+/// UserService - Service for users.
+///-----------------------------------------------------------------------------
+service UserService {
+  // Find a user.
+  rpc FindOne(FindOneUserRequest) returns (UserResponse);
+
+  // Find many users.
+  rpc FindMany(FindManyUserRequest) returns (ManyUsersResponse);
+}
+
+// User response.
+message UserResponse {
+  string id = 1;
+  DateTime createdAt = 4;
+  optional string name = 2;
+  optional string phone = 3;
+}
+
+// Many users response
+message ManyUsersResponse {
+  repeated UserResponse users = 1;
+}
+
+// Find one user request.
+message FindOneUserRequest {
+  // ID/phone/name one of required.
+  oneof kind {
+    string id = 1;
+    string phone = 2;
+    string name = 3;
+  }
+  
+  optional FindOneUserRequest AND = 4;
+  optional FindOneUserRequest OR = 5;
+}
+
+// Find many users request.
+message FindManyUserRequest {
+  repeated FindOneUserRequest conditions = 1;
+}
