@@ -3,7 +3,7 @@ import { Controller } from '@nestjs/common';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
 import { PrismaClient } from '@prisma/client';
 import { parsePhoneNumberWithError, PhoneNumber } from 'libphonenumber-js';
-import { auth } from 'src/grpc-helper';
+import { auth } from 'src/helpers';
 import { Empty } from 'src/protobuf/google/protobuf/Empty';
 import { StringValue } from 'src/protobuf/google/protobuf/StringValue';
 import {

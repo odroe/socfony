@@ -8,7 +8,7 @@ import { AccessTokenResponse } from 'src/protobuf/odroe/socfony/AccessTokenRespo
 import { CreateAccessTokenRequest } from 'src/protobuf/odroe/socfony/CreateAccessTokenRequest';
 import { nanoid } from 'nanoid';
 import { Empty } from 'src/protobuf/google/protobuf/Empty';
-import { auth } from 'src/grpc-helper';
+import { auth } from 'src/helpers';
 
 @Controller()
 export class AccessTokenSubServiceController {

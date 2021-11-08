@@ -33,7 +33,7 @@ service AccessTokenService {
   // If the phone don't registered user, it will be created.
   rpc Create(CreateAccessTokenRequest) returns (AccessTokenResponse);
 
-  // Delete on Authorization token.
+// Delete on Authorization token.
   rpc Delete(google.protobuf.Empty) returns (google.protobuf.Empty);
 
   // Refresh on Authorization token.
@@ -61,6 +61,9 @@ service UserService {
 
   // Find many users.
   rpc FindMany(FindManyUserRequest) returns (ManyUsersResponse);
+
+  // update authenticated user name.
+  rpc update(google.protobuf.StringValue) returns (UserResponse);
 }
 
 // User response.
@@ -84,12 +87,24 @@ message FindOneUserRequest {
     string phone = 2;
     string name = 3;
   }
-  
-  optional FindOneUserRequest AND = 4;
-  optional FindOneUserRequest OR = 5;
 }
 
 // Find many users request.
 message FindManyUserRequest {
   repeated FindOneUserRequest conditions = 1;
+}
+
+///-----------------------------------------------------------------------------
+/// User safe service for phone verification.
+///-----------------------------------------------------------------------------
+service UserPhoneSafeService {
+  // Update a phone number to the authenticated user.
+  rpc Update(UpdateUserPhoneSafeRequest) returns (google.protobuf.Empty);
+}
+
+// Update a phone number to the authenticated user request
+message UpdateUserPhoneSafeRequest {
+  string phone = 1;
+  string code = 2;
+  optional string oldPhoneCode = 3;
 }
