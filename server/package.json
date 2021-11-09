@@ -15,7 +15,7 @@
   "dependencies": {
     "@grpc/grpc-js": "^1.4.3",
     "@grpc/proto-loader": "^0.6.6",
-    "@nestjs/common": "^8.1.2",
+    "@nestjs/common": "^8.2.0",
     "@nestjs/core": "^8.1.2",
     "@nestjs/microservices": "^8.1.2",
     "@prisma/client": "^3.4.1",
