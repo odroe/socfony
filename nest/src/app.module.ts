@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
-import { GlobalModule } from './global';
 import { SubServicesModule } from './sub-services';
 
 @Module({
-  imports: [GlobalModule, SubServicesModule],
+  imports: [SubServicesModule],
 })
 export class AppModule {}

@@ -1,0 +1,40 @@
+{
+  "name": "socfony",
+  "version": "0.0.1",
+  "description": "Socfony is an open source social application, and basic security modules and social function modules have been preset in the software. Whether it is to deploy Socfony directly or as a basis for program development is wonderful.",
+  "author": "Odroe Inc. <hello@odroe.com> (https://odroe.com/)",
+  "private": true,
+  "license": "BSD-3-Clause",
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "rimraf dist && ncc build src/main.ts -o dist",
+    "format": "prettier --write .",
+    "serve": "nest start --watch",
+    "protobuf": "rimraf src/protobuf && proto-loader-gen-types --grpcLib=@grpc/grpc-js -O src/protobuf --includeComments ../protos/socfony.proto"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.4.2",
+    "@grpc/proto-loader": "^0.6.6",
+    "@nestjs/common": "^8.1.2",
+    "@nestjs/core": "^8.1.2",
+    "@nestjs/microservices": "^8.1.2",
+    "@prisma/client": "^3.4.0",
+    "dayjs": "^1.10.7",
+    "dotenv": "^10.0.0",
+    "libphonenumber-js": "^1.9.42",
+    "nanoid": "^3.1.30",
+    "reflect-metadata": "^0.1.13",
+    "rimraf": "^3.0.2",
+    "rxjs": "^7.2.0",
+    "tencentcloud-sdk-nodejs": "^4.0.230"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^8.0.0",
+    "@nestjs/schematics": "^8.0.0",
+    "@types/node": "^16.11.6",
+    "@vercel/ncc": "^0.31.1",
+    "prettier": "^2.3.2",
+    "prisma": "^3.4.0",
+    "typescript": "^4.3.5"
+  }
+}

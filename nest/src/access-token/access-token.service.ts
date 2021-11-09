@@ -102,11 +102,11 @@ export class AccessTokenService {
     const accessToken = await this.find(token, include);
 
     if (!accessToken) {
-      throw new Error('Access token not found.');
+      throw new Error('Token 不存在');
     } else if (
       accessToken[refresh ? 'refreshExpiredAt' : 'expiredAt'] < new Date()
     ) {
-      throw new Error('Access token expired.');
+      throw new Error('Token 已过期');
     }
 
     return accessToken;
