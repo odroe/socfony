@@ -1,3 +1,5 @@
+import { status } from '@grpc/grpc-js';
+import { RpcException } from '@nestjs/microservices';
 import { PrismaClient } from '@prisma/client';
 import * as dayjs from 'dayjs';
 import { customAlphabet } from 'nanoid';
@@ -65,7 +67,10 @@ export class VerificationCodeMessage extends SendSmsMessageOptions {
     });
 
     if (!options || !options.value) {
-      throw new Error('Tencent cloud SMS setting not found');
+      throw new RpcException({
+        code: status.INTERNAL,
+        message: '短信配置未配置',
+      });
     }
 
     return new VerificationCodeMessage(

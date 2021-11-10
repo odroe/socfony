@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Setting {
+model Configuration {
   key   String @id @db.VarChar(199)
   value Json
 }

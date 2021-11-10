@@ -1,0 +1,99 @@
+syntax = "proto3";
+
+package odroe.socfony;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+// import "google/protobuf/timestamp.proto";
+
+///-----------------------------------------------------------------------------
+/// VerificationCodeMutatuion - Send a verification code to the user's phone
+///-----------------------------------------------------------------------------
+service VerificationCodeMutation {
+  // Send a verification code to the user's phone
+  rpc Send(google.protobuf.StringValue) returns (google.protobuf.Empty);
+}
+
+// ///-----------------------------------------------------------------------------
+// /// AccessTokenService - Service for managing access tokens.
+// ///-----------------------------------------------------------------------------
+// service AccessTokenService {
+//   // Create a new access token.
+//   // If the phone don't registered user, it will be created.
+//   rpc create(CreateAccessTokenRequest) returns (AccessTokenResponse);
+
+// // Delete on Authorization token.
+//   rpc delete(google.protobuf.Empty) returns (google.protobuf.Empty);
+
+//   // Refresh on Authorization token.
+//   rpc refresh(google.protobuf.Empty) returns (AccessTokenResponse);
+// }
+
+// message AccessTokenResponse {
+//   string token = 1;
+//   string userId = 2;
+//   google.protobuf.Timestamp expiredAt = 3;
+//   google.protobuf.Timestamp refreshExpiredAt = 4;
+// }
+
+// message CreateAccessTokenRequest {
+//   string phone = 1;
+//   string code = 2;
+// }
+
+// ///-----------------------------------------------------------------------------
+// /// UserService - Service for users.
+// ///-----------------------------------------------------------------------------
+// service UserService {
+//   // Find a user.
+//   rpc findOne(FindOneUserRequest) returns (UserResponse);
+
+//   // Find many users.
+//   rpc findMany(FindManyUserRequest) returns (ManyUsersResponse);
+
+//   // update authenticated user name.
+//   rpc update(google.protobuf.StringValue) returns (UserResponse);
+// }
+
+// // User response.
+// message UserResponse {
+//   string id = 1;
+//   google.protobuf.Timestamp createdAt = 4;
+//   optional string name = 2;
+//   optional string phone = 3;
+// }
+
+// // Many users response
+// message ManyUsersResponse {
+//   repeated UserResponse users = 1;
+// }
+
+// // Find one user request.
+// message FindOneUserRequest {
+//   // ID/phone/name one of required.
+//   oneof kind {
+//     string id = 1;
+//     string phone = 2;
+//     string name = 3;
+//   }
+// }
+
+// // Find many users request.
+// message FindManyUserRequest {
+//   repeated FindOneUserRequest conditions = 1;
+// }
+
+// ///-----------------------------------------------------------------------------
+// /// User safe service for phone verification.
+// ///-----------------------------------------------------------------------------
+// service UserPhoneSafeService {
+//   // Update a phone number to the authenticated user.
+//   rpc Update(UpdateUserPhoneSafeRequest) returns (google.protobuf.Empty);
+// }
+
+// // Update a phone number to the authenticated user request
+// message UpdateUserPhoneSafeRequest {
+//   string phone = 1;
+//   string code = 2;
+//   optional string oldPhoneCode = 3;
+// }
