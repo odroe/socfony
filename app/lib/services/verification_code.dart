@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:provider/src/provider.dart';
+import 'package:provider/provider.dart';
 import 'package:socfony/services/auth.dart';
 import 'package:socfony/src/protobuf/google/protobuf/empty.pb.dart';
 import 'package:socfony/src/protobuf/google/protobuf/wrappers.pb.dart';

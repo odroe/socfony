@@ -4,25 +4,17 @@ package odroe.socfony;
 
 import "google/protobuf/empty.proto";
 import "google/protobuf/wrappers.proto";
-
-///-----------------------------------------------------------------------------
-/// Common messages
-///-----------------------------------------------------------------------------
-
-// A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-message DateTime {
-  string value = 1;
-}
+import "google/protobuf/timestamp.proto";
 
 ///-----------------------------------------------------------------------------
 /// VerificationCodeService - Service for send SMS verification code
 ///-----------------------------------------------------------------------------
 service VerificationCodeService {
   // Send a verification code to the specified phone number.
-  rpc Send(google.protobuf.StringValue) returns (google.protobuf.Empty);
+  rpc send(google.protobuf.StringValue) returns (google.protobuf.Empty);
 
   // Send a verification code to the authenticated user's phone number.
-  rpc SendByAuthenticatedUser(google.protobuf.Empty) returns (google.protobuf.Empty);
+  rpc sendByAuthenticatedUser(google.protobuf.Empty) returns (google.protobuf.Empty);
 }
 
 ///-----------------------------------------------------------------------------
@@ -31,20 +23,20 @@ service VerificationCodeService {
 service AccessTokenService {
   // Create a new access token.
   // If the phone don't registered user, it will be created.
-  rpc Create(CreateAccessTokenRequest) returns (AccessTokenResponse);
+  rpc create(CreateAccessTokenRequest) returns (AccessTokenResponse);
 
 // Delete on Authorization token.
-  rpc Delete(google.protobuf.Empty) returns (google.protobuf.Empty);
+  rpc delete(google.protobuf.Empty) returns (google.protobuf.Empty);
 
   // Refresh on Authorization token.
-  rpc Refresh(google.protobuf.Empty) returns (AccessTokenResponse);
+  rpc refresh(google.protobuf.Empty) returns (AccessTokenResponse);
 }
 
 message AccessTokenResponse {
   string token = 1;
   string userId = 2;
-  DateTime expiredAt = 3;
-  DateTime refreshExpiredAt = 4;
+  google.protobuf.Timestamp expiredAt = 3;
+  google.protobuf.Timestamp refreshExpiredAt = 4;
 }
 
 message CreateAccessTokenRequest {
@@ -57,10 +49,10 @@ message CreateAccessTokenRequest {
 ///-----------------------------------------------------------------------------
 service UserService {
   // Find a user.
-  rpc FindOne(FindOneUserRequest) returns (UserResponse);
+  rpc findOne(FindOneUserRequest) returns (UserResponse);
 
   // Find many users.
-  rpc FindMany(FindManyUserRequest) returns (ManyUsersResponse);
+  rpc findMany(FindManyUserRequest) returns (ManyUsersResponse);
 
   // update authenticated user name.
   rpc update(google.protobuf.StringValue) returns (UserResponse);
@@ -69,7 +61,7 @@ service UserService {
 // User response.
 message UserResponse {
   string id = 1;
-  DateTime createdAt = 4;
+  google.protobuf.Timestamp createdAt = 4;
   optional string name = 2;
   optional string phone = 3;
 }
