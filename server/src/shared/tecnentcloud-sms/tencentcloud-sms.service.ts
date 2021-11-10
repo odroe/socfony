@@ -18,7 +18,7 @@ export class TencentcloudSmsService {
   }
 
   async getTencentCloudCredential(): Promise<Credential> {
-    const credential = await this.prisma.setting.findUnique({
+    const credential = await this.prisma.configuration.findUnique({
       where: { key: 'tencentcloud' },
     });
 

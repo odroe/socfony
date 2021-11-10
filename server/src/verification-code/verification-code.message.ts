@@ -61,7 +61,7 @@ export class VerificationCodeMessage extends SendSmsMessageOptions {
     prisma: PrismaClient,
     to: string,
   ): Promise<VerificationCodeMessage> {
-    const options = await prisma.setting.findUnique({
+    const options = await prisma.configuration.findUnique({
       where: { key: 'tencentcloud-sms' },
       rejectOnNotFound: false,
     });
