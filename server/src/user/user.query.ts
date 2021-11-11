@@ -23,16 +23,40 @@ export class UserQuery {
         }),
     });
 
-    return this.#tranformUserEntity(user);
+    return (await this.#tranformUserEntity(user)).toObject();
   }
 
-  async #tranformUserEntity(user: User): Promise<UserEntity.AsObject> {
+  @GrpcMethod()
+  async findMany(request: { conditions: UserFindOneRequest.AsObject[] }) {
+    if (!request.conditions?.length) {
+      return { users: [] };
+    } else if (request.conditions.length > 60) {
+      throw new RpcException({
+        code: status.INVALID_ARGUMENT,
+        message: '查询条件不能超过60个',
+      });
+    }
+
+    const data = await this.prisma.user.findMany({
+      where: { OR: request.conditions },
+    });
+
+    const users = await Promise.all(
+      data.map(async (user) =>
+        (await this.#tranformUserEntity(user)).toObject(),
+      ),
+    );
+
+    return { users };
+  }
+
+  async #tranformUserEntity(user: User): Promise<UserEntity> {
     const entity = new UserEntity();
     entity.setId(user.id);
     entity.setName(user.name);
     entity.setPhone(phoneNumberDesensitization(user.phone));
     entity.setCreatedAt(Timestamp.fromDate(user.createdAt));
 
-    return entity.toObject();
+    return entity;
   }
 }
