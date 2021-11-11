@@ -3,6 +3,8 @@ import { Injectable } from '@nestjs/common';
 import { TencentcloudSmsService } from 'src/shared';
 import { VerificationCodeMessage } from './verification-code.message';
 import { nanoid } from 'nanoid';
+import { RpcException } from '@nestjs/microservices';
+import { status } from '@grpc/grpc-js';
 
 @Injectable()
 export class VerificationCodeService {
@@ -13,17 +15,30 @@ export class VerificationCodeService {
 
   async send(message: VerificationCodeMessage) {
     this.#save(message);
-    return this.tencentcloudSmsService.send(message);
+    try {
+        return await this.tencentcloudSmsService.send(message);
+    } catch (error) {
+        throw new RpcException(error);
+    }
   }
 
   async verify(phone: string, code: string): Promise<VerificationCode> {
     const verificationCode = await this.#find(phone);
     if (!verificationCode) {
-      throw new Error('Verification code not found.');
+      throw new RpcException({
+          code: status.NOT_FOUND,
+          message: '验证码不存在',
+      });
     } else if (verificationCode.code !== code) {
-      throw new Error('Verification code is incorrect.');
+        throw new RpcException({
+            code: status.UNKNOWN,
+            message: '验证码不正确',
+        });
     } else if (verificationCode.expiredAt < new Date()) {
-      throw new Error('Verification code is expired.');
+        throw new RpcException({
+            code: status.UNKNOWN,
+            message: '验证码已过期',
+        });
     }
 
     return verificationCode;

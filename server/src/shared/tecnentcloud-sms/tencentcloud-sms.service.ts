@@ -28,7 +28,7 @@ export class TencentcloudSmsService {
       !(credential.value as Credential).secretId ||
       !(credential.value as Credential).secretKey
     ) {
-      throw new Error('TencentCloud credential not found');
+      throw new Error('腾讯云配置没有找到');
     }
 
     return credential.value as Credential;
