@@ -53,59 +53,55 @@ message AccessTokenEntity {
   google.protobuf.Timestamp refresh_expired_at = 4;
 }
 
-// ///-----------------------------------------------------------------------------
-// /// UserService - Service for users.
-// ///-----------------------------------------------------------------------------
-// service UserService {
-//   // Find a user.
-//   rpc findOne(FindOneUserRequest) returns (UserResponse);
+//-----------------------------------------------------------------------------
+// User Query/Mutation - User query and mutation services
+//-----------------------------------------------------------------------------
 
-//   // Find many users.
-//   rpc findMany(FindManyUserRequest) returns (ManyUsersResponse);
+// UserQuery - User query service
+service UserQuery {
+  // find one user
+  rpc FindOne(UserFindOneRequest) returns (UserEntity);
 
-//   // update authenticated user name.
-//   rpc update(google.protobuf.StringValue) returns (UserResponse);
-// }
+  // find many users
+  rpc FindMany(UserFindManyRequest) returns (UserEntityList);
+}
 
-// // User response.
-// message UserResponse {
-//   string id = 1;
-//   google.protobuf.Timestamp createdAt = 4;
-//   optional string name = 2;
-//   optional string phone = 3;
-// }
+// UserFindOneRequest - Find one user request
+message UserFindOneRequest {
+  oneof kind {
+    // User ID
+    string id = 1;
 
-// // Many users response
-// message ManyUsersResponse {
-//   repeated UserResponse users = 1;
-// }
+    // User phone number
+    string phone = 2;
 
-// // Find one user request.
-// message FindOneUserRequest {
-//   // ID/phone/name one of required.
-//   oneof kind {
-//     string id = 1;
-//     string phone = 2;
-//     string name = 3;
-//   }
-// }
+    // User name
+    string name = 3;
+  }
+}
 
-// // Find many users request.
-// message FindManyUserRequest {
-//   repeated FindOneUserRequest conditions = 1;
-// }
+// UserEntityList - User entity list
+message UserEntityList {
+  // The user entity list
+  repeated UserEntity users = 1;
+}
 
-// ///-----------------------------------------------------------------------------
-// /// User safe service for phone verification.
-// ///-----------------------------------------------------------------------------
-// service UserPhoneSafeService {
-//   // Update a phone number to the authenticated user.
-//   rpc Update(UpdateUserPhoneSafeRequest) returns (google.protobuf.Empty);
-// }
+// UserFindManyRequest - Find many user request
+message UserFindManyRequest {
+  repeated UserFindOneRequest conditions = 1;
+}
 
-// // Update a phone number to the authenticated user request
-// message UpdateUserPhoneSafeRequest {
-//   string phone = 1;
-//   string code = 2;
-//   optional string oldPhoneCode = 3;
-// }
+// UserEntity - User entity
+message UserEntity {
+  // User ID
+  string id = 1;
+
+  // User phone number
+  optional string phone = 2;
+
+  // User name
+  optional string name = 3;
+
+  // User registed at
+  google.protobuf.Timestamp created_at = 4;
+}

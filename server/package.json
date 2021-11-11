@@ -10,7 +10,7 @@
     "build": "rimraf dist && ncc build src/main.ts -o dist -a",
     "format": "prettier --write .",
     "serve": "rimraf dist && nest start --watch",
-    "protobuf": "bash protobuf.sh"
+    "protobuf": "bash scripts/protobuf.sh"
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.4.4",
