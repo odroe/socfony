@@ -16,9 +16,9 @@ export class VerificationCodeService {
   async send(message: VerificationCodeMessage) {
     this.#save(message);
     try {
-        return await this.tencentcloudSmsService.send(message);
+      return await this.tencentcloudSmsService.send(message);
     } catch (error) {
-        throw new RpcException(error);
+      throw new RpcException(error);
     }
   }
 
@@ -26,19 +26,19 @@ export class VerificationCodeService {
     const verificationCode = await this.#find(phone);
     if (!verificationCode) {
       throw new RpcException({
-          code: status.NOT_FOUND,
-          message: '验证码不存在',
+        code: status.NOT_FOUND,
+        message: '验证码不存在',
       });
     } else if (verificationCode.code !== code) {
-        throw new RpcException({
-            code: status.UNKNOWN,
-            message: '验证码不正确',
-        });
+      throw new RpcException({
+        code: status.UNKNOWN,
+        message: '验证码不正确',
+      });
     } else if (verificationCode.expiredAt < new Date()) {
-        throw new RpcException({
-            code: status.UNKNOWN,
-            message: '验证码已过期',
-        });
+      throw new RpcException({
+        code: status.UNKNOWN,
+        message: '验证码已过期',
+      });
     }
 
     return verificationCode;

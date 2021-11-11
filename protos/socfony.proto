@@ -4,7 +4,7 @@ package odroe.socfony;
 
 import "google/protobuf/empty.proto";
 import "google/protobuf/wrappers.proto";
-// import "google/protobuf/timestamp.proto";
+import "google/protobuf/timestamp.proto";
 
 ///-----------------------------------------------------------------------------
 /// VerificationCodeMutatuion - Send a verification code to the user's phone
@@ -14,32 +14,44 @@ service VerificationCodeMutation {
   rpc Send(google.protobuf.StringValue) returns (google.protobuf.Empty);
 }
 
-// ///-----------------------------------------------------------------------------
-// /// AccessTokenService - Service for managing access tokens.
-// ///-----------------------------------------------------------------------------
-// service AccessTokenService {
-//   // Create a new access token.
-//   // If the phone don't registered user, it will be created.
-//   rpc create(CreateAccessTokenRequest) returns (AccessTokenResponse);
+///-----------------------------------------------------------------------------
+/// AccessTokenMutation - Access token muatation
+///-----------------------------------------------------------------------------
+service AccessTokenMutation {
+  // Create a new access token
+  // The phone if don't registered, The phone will be register a new user.
+  rpc Create(CreateAccessTokenRequest) returns (AccessTokenEntity);
 
-// // Delete on Authorization token.
-//   rpc delete(google.protobuf.Empty) returns (google.protobuf.Empty);
+  // Delete an access token
+  rpc Delete(google.protobuf.Empty) returns (google.protobuf.Empty);
 
-//   // Refresh on Authorization token.
-//   rpc refresh(google.protobuf.Empty) returns (AccessTokenResponse);
-// }
+  // Refresh an access token
+  rpc Refresh(google.protobuf.Empty) returns (AccessTokenEntity);
+}
 
-// message AccessTokenResponse {
-//   string token = 1;
-//   string userId = 2;
-//   google.protobuf.Timestamp expiredAt = 3;
-//   google.protobuf.Timestamp refreshExpiredAt = 4;
-// }
+// CreateAccessTokenRequest - Request to create an access token
+message CreateAccessTokenRequest {
+  // The user's phone number
+  string phone = 1;
 
-// message CreateAccessTokenRequest {
-//   string phone = 1;
-//   string code = 2;
-// }
+  // The user's verification code
+  string code = 2;
+}
+
+// AccessTokenEntity - Access token entity
+message AccessTokenEntity {
+  // The access token
+  string token = 1;
+
+  // The access token owner user id
+  string user_id = 2;
+
+  // The access token expired at
+  google.protobuf.Timestamp expired_at = 3;
+
+  // The access token refresh expired at
+  google.protobuf.Timestamp refresh_expired_at = 4;
+}
 
 // ///-----------------------------------------------------------------------------
 // /// UserService - Service for users.
