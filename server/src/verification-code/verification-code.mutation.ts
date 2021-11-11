@@ -42,13 +42,9 @@ export class VerificationCodeMutation {
       return parsePhoneNumber(data.value).format('E.164');
     }
 
-    const [authentication] = metadata.get('authorization');
-    const decoded =
-      typeof authentication === 'string'
-        ? authentication
-        : authentication.toString();
+    console.log(data);
 
-    const token = await this.accessTokenService.verify(decoded, {
+    const token = await this.accessTokenService.verifyWithMatadata(metadata, {
       include: true,
     });
 

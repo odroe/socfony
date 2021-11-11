@@ -2,6 +2,8 @@ import { AccessToken, PrismaClient, User, Prisma } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
 import { nanoid } from 'nanoid';
 import * as dayjs from 'dayjs';
+import { Metadata, status } from '@grpc/grpc-js';
+import { RpcException } from '@nestjs/microservices';
 
 interface AccessTokenExpiresSet {
   value?: number;
@@ -68,6 +70,13 @@ export class AccessTokenService {
     });
   }
 
+  async delete(token: string | AccessToken): Promise<void> {
+    this.#delteExpiredTokens();
+    await this.prisma.accessToken.delete({
+      where: { token: typeof token === 'string' ? token : token.token },
+    });
+  }
+
   /**
    * refresh access token.
    *
@@ -102,14 +111,39 @@ export class AccessTokenService {
     const accessToken = await this.find(token, include);
 
     if (!accessToken) {
-      throw new Error('Token 不存在');
+      throw new RpcException({
+        code: status.UNAUTHENTICATED,
+        message: 'Token 不合法',
+      });
     } else if (
       accessToken[refresh ? 'refreshExpiredAt' : 'expiredAt'] < new Date()
     ) {
-      throw new Error('Token 已过期');
+      throw new RpcException({
+        code: status.UNAUTHENTICATED,
+        message: 'Token 已过期',
+      });
     }
 
     return accessToken;
+  }
+
+  async verifyWithMatadata(
+    metadata: Metadata,
+    { include = false, refresh = false } = {},
+  ): Promise<
+    Prisma.AccessTokenGetPayload<{
+      include: {
+        User: typeof include;
+      };
+    }>
+  > {
+    const [authentication] = metadata.get('authorization');
+    const decoded =
+      typeof authentication === 'string'
+        ? authentication
+        : authentication.toString();
+
+    return this.verify(decoded, { include, refresh });
   }
 
   /**

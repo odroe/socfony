@@ -1,7 +1,8 @@
-import { status } from '@grpc/grpc-js';
+import { Metadata, status } from '@grpc/grpc-js';
 import { Controller } from '@nestjs/common';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
 import { PrismaClient, User } from '@prisma/client';
+import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import { Timestamp } from 'google-protobuf/google/protobuf/timestamp_pb';
 import { parsePhoneNumberWithError, PhoneNumber } from 'libphonenumber-js';
 import { nanoid } from 'nanoid';
@@ -42,9 +43,39 @@ export class AccessTokenMutation {
       Timestamp.fromDate(accessToken.refreshExpiredAt),
     );
 
-    console.log(entity.toObject());
+    return entity.toObject();
+  }
+
+  @GrpcMethod()
+  async refresh(
+    _empty: any,
+    metadata: Metadata,
+  ): Promise<AccessTokenEntity.AsObject> {
+    const accessToken = await this.accessTokenService.verifyWithMatadata(
+      metadata,
+      {
+        refresh: true,
+      },
+    );
+    const result = await this.accessTokenService.refresh(accessToken.token);
+    const entity = new AccessTokenEntity();
+
+    entity.setToken(result.token);
+    entity.setUserId(accessToken.userId);
+    entity.setExpiredAt(Timestamp.fromDate(result.expiredAt));
+    entity.setRefreshExpiredAt(Timestamp.fromDate(result.refreshExpiredAt));
 
     return entity.toObject();
+  }
+
+  @GrpcMethod()
+  async delete(_empty: any, metadata: Metadata): Promise<Empty.AsObject> {
+    const accessToken = await this.accessTokenService.verifyWithMatadata(
+      metadata,
+    );
+    this.accessTokenService.delete(accessToken);
+
+    return new Empty().toObject();
   }
 
   /**
