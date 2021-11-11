@@ -1,9 +1,9 @@
 #!/bin/bash
 
 BIN_DIR=$(dirname $0);
-PROTO_PATH=$BIN_DIR/../protos/socfony.proto;
-OUTPUT_DIR=$BIN_DIR/src/protobuf;
-TS_PLUGIN_BIN=$BIN_DIR/node_modules/.bin/protoc-gen-ts;
+PROTO_PATH=$BIN_DIR/../../protos/socfony.proto;
+OUTPUT_DIR=$BIN_DIR/..src/protobuf;
+TS_PLUGIN_BIN=$BIN_DIR/../node_modules/.bin/protoc-gen-ts;
 
 rm -rf $OUTPUT_DIR;
 mkdir -p $OUTPUT_DIR;
