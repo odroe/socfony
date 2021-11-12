@@ -68,7 +68,7 @@ model UserProfile {
 }
 
 enum Gender {
-  Man
   Woman
+  Man
   Unknown
 }

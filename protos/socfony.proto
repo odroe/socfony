@@ -138,3 +138,40 @@ message UserEntityList {
   // The user entity list
   repeated UserEntity users = 1;
 }
+
+//-----------------------------------------------------------------------------
+// User profile Query/Mutation - User profile query and mutation services
+//-----------------------------------------------------------------------------
+
+// UserProfileQuery - User profile query service
+service UserProfileQuery {
+  rpc Find(google.protobuf.StringValue) returns (UserProfileEntity);
+}
+
+// UserProfileEntity - User profile entity
+message UserProfileEntity {
+  enum Gender {
+    Woman   = 0;
+    Man     = 1;
+    Unknown = 2;
+  }
+
+  // User ID
+  string id = 1;
+
+  // User name
+  optional string name = 2;
+
+  // User avatar
+  optional string avatar = 3;
+
+  // User bio
+  optional string bio = 4;
+
+  // User birthday
+  optional int32 birthday = 5;
+
+  // User gender
+  optional Gender gender = 6;
+}
+
