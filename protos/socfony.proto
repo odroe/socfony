@@ -69,6 +69,24 @@ service UserQuery {
   rpc Search(UserSearchRequest) returns (UserEntityList);
 }
 
+// UserMutation - User mutation service
+service UserMutation {
+  // Update user phone number
+  rpc UpdatePhone(UserUpdatePhoneRequest) returns (UserEntity);
+}
+
+// UserUpdatePhoneRequest - Request to update user phone number
+message UserUpdatePhoneRequest {
+  // new phone number
+  string phone = 1;
+
+  // new phone code
+  string code = 2;
+
+  // old phone code
+  string old_phone_code = 3;
+}
+
 // UserFindOneRequest - Find one user request
 message UserFindOneRequest {
   oneof kind {
