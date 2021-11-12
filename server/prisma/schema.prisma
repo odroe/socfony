@@ -48,8 +48,27 @@ model User {
   phone       String?       @unique @db.VarChar(199)
   createdAt   DateTime      @default(now())
   AccessToken AccessToken[]
+  Profile     UserProfile?
+
+  @@index([createdAt])
+}
+
+model UserProfile {
+  userId   String  @id @db.Char(64)
+  avatar   String? @db.VarChar(199)
+  name     String? @db.VarChar(100)
+  bio      String? @db.Text
+  birthday Int?    @db.Int
+  gender   Gender  @default(Unknown)
+  User     User    @relation(fields: [userId], references: [id])
 
   @@index([name])
-  @@index([phone])
-  @@index([createdAt])
+  @@index([gender])
+  @@index([birthday])
+}
+
+enum Gender {
+  Man
+  Woman
+  Unknown
 }
