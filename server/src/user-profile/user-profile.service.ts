@@ -32,4 +32,18 @@ export class UserProfileService {
   ): UserProfileEntity.GenderMap[keyof UserProfileEntity.GenderMap] {
     return UserProfileEntity.Gender[gender];
   }
+
+  // GRPC gender tranform to Prisma gender
+  grpcGender2gender(
+    gender: UserProfileEntity.GenderMap[keyof UserProfileEntity.GenderMap],
+  ): Gender {
+    switch (gender) {
+      case UserProfileEntity.Gender.WOMAN:
+        return Gender.WOMAN;
+      case UserProfileEntity.Gender.MAN:
+        return Gender.MAN;
+    }
+
+    return Gender.UNKNOWN;
+  }
 }

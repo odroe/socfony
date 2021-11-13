@@ -151,6 +151,30 @@ service UserProfileQuery {
   rpc Find(google.protobuf.StringValue) returns (UserProfileEntity);
 }
 
+// UserProfileMutation - User profile mutation service
+service UserProfileMutation {
+  // Update user profile
+  rpc Update(UserProfileUpdateRequest) returns (UserProfileEntity);
+}
+
+// UserProfileUpdateRequest - Request to update user profile
+message UserProfileUpdateRequest {
+  // User avatar
+  optional string avatar = 1;
+
+  // User name.
+  optional string name = 2;
+
+  // User bio
+  optional string bio = 3;
+
+  // User birthday
+  optional int32 birthday = 4;
+
+  // User gender
+  optional UserProfileEntity.Gender gender = 5;
+}
+
 // UserProfileEntity - User profile entity
 message UserProfileEntity {
   enum Gender {
