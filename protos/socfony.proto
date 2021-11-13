@@ -73,6 +73,9 @@ service UserQuery {
 service UserMutation {
   // Update user phone number
   rpc UpdatePhone(UserUpdatePhoneRequest) returns (UserEntity);
+
+  // Update user name.
+  rpc UpdateName(google.protobuf.StringValue) returns (UserEntity);
 }
 
 // UserUpdatePhoneRequest - Request to update user phone number
@@ -151,9 +154,9 @@ service UserProfileQuery {
 // UserProfileEntity - User profile entity
 message UserProfileEntity {
   enum Gender {
-    Woman   = 0;
-    Man     = 1;
-    Unknown = 2;
+    WOMAN   = 0;
+    MAN     = 1;
+    UNKNOWN = 2;
   }
 
   // User ID

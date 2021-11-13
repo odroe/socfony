@@ -2,10 +2,11 @@ import { Metadata, status } from '@grpc/grpc-js';
 import { Controller } from '@nestjs/common';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
 import { PrismaClient } from '@prisma/client';
+import { StringValue } from 'google-protobuf/google/protobuf/wrappers_pb';
 import { AccessTokenService } from 'src/access-token/access-token.service';
 import { formatPhoneToE164 } from 'src/shared';
 import { VerificationCodeService } from 'src/verification-code/verification-code.service';
-import { UserUpdatePhoneRequest } from '../protobuf/socfony_pb';
+import { UserEntity, UserUpdatePhoneRequest } from '../protobuf/socfony_pb';
 import { UserService } from './user.service';
 
 @Controller()
@@ -21,7 +22,7 @@ export class UserMutation {
   async updatePhone(
     request: UserUpdatePhoneRequest.AsObject & { old_phone_code: string },
     metadata: Metadata,
-  ) {
+  ): Promise<UserEntity.AsObject> {
     // 格式化手机号码
     const formatedPhoneNumber = formatPhoneToE164(request.phone);
 
@@ -74,6 +75,46 @@ export class UserMutation {
     const newUser = await this.prisma.user.update({
       where: { id: user.id },
       data: { phone: formatedPhoneNumber },
+    });
+
+    // 返回用户信息
+    return this.userService.createEntity(newUser).toObject();
+  }
+
+  @GrpcMethod()
+  async updateName(
+    request: StringValue.AsObject,
+    metadata: Metadata,
+  ): Promise<UserEntity.AsObject> {
+    // 获取验证的用户
+    const { User: user } = await this.accessTokenService.verifyWithMatadata(
+      metadata,
+      {
+        include: true,
+      },
+    );
+
+    // 获取排除当前用户的用户信息
+    const exists = await this.prisma.user.findFirst({
+      where: {
+        name: request.value,
+        id: { not: user.id },
+      },
+      rejectOnNotFound: false,
+    });
+
+    // 判断用户是否存在
+    if (exists) {
+      throw new RpcException({
+        code: status.INVALID_ARGUMENT,
+        message: '该用户名已被使用',
+      });
+    }
+
+    // 更新用户名
+    const newUser = await this.prisma.user.update({
+      where: { id: user.id },
+      data: { name: request.value },
     });
 
     // 返回用户信息

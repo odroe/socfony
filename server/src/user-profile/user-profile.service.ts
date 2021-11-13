@@ -30,13 +30,6 @@ export class UserProfileService {
   gender2grpcGender(
     gender: Gender,
   ): UserProfileEntity.GenderMap[keyof UserProfileEntity.GenderMap] {
-    switch (gender) {
-      case Gender.Man:
-        return UserProfileEntity.Gender.MAN;
-      case Gender.Woman:
-        return UserProfileEntity.Gender.WOMAN;
-    }
-
-    return UserProfileEntity.Gender.UNKNOWN;
+    return UserProfileEntity.Gender[gender];
   }
 }
