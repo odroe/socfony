@@ -178,9 +178,9 @@ message UserProfileUpdateRequest {
 // UserProfileEntity - User profile entity
 message UserProfileEntity {
   enum Gender {
-    WOMAN   = 0;
-    MAN     = 1;
-    UNKNOWN = 2;
+    woman   = 0;
+    man     = 1;
+    unknown = 2;
   }
 
   // User ID

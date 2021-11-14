@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
-import 'package:socfony/services/verification_code.dart';
+import 'package:socfony/services/verification_code_service.dart';
 
 import '../theme.dart';
 import 'card_wrapper.dart';
@@ -136,11 +136,7 @@ class VerificationCodeDialog<T> extends StatelessWidget {
 
   static Future<void> Function() createSendHandler(BuildContext context,
       [String? phoneNumber]) {
-    if (phoneNumber != null && phoneNumber.isNotEmpty) {
-      return () => VerificationCodeService.send(phoneNumber);
-    }
-
-    return () => VerificationCodeService.sendWithAuth(context);
+    return () => VerificationCodeService(context).send(phoneNumber);
   }
 
   static void Function() showSendingDialog(BuildContext context) {

@@ -59,7 +59,7 @@ model UserProfile {
   name     String? @db.VarChar(100)
   bio      String? @db.Text
   birthday Int?    @db.Int
-  gender   Gender  @default(UNKNOWN)
+  gender   Gender  @default(unknown)
   User     User    @relation(fields: [userId], references: [id])
 
   @@index([name])
@@ -68,7 +68,7 @@ model UserProfile {
 }
 
 enum Gender {
-  WOMAN
-  MAN
-  UNKNOWN
+  woman
+  man
+  unknown
 }

@@ -1,7 +1,5 @@
 import 'package:grpc/grpc.dart';
 
-import 'src/protobuf/socfony.pbgrpc.dart';
-
 /// gRPC server host.
 const String _host = '127.0.0.1';
 
@@ -10,20 +8,9 @@ const int _port = 3000;
 
 /// gRPC channel options.
 const ChannelOptions _options = ChannelOptions(
-  userAgent: 'Socfony/0.0.1',
+  userAgent: 'Socfony/1.0.0',
   credentials: ChannelCredentials.insecure(),
 );
 
-abstract class Grpc {
-  /// gRPC client channel.
-  static ClientChannel get channel =>
-      ClientChannel(_host, port: _port, options: _options);
-
-  /// Access token sub service
-  static AccessTokenServiceClient get accessToken =>
-      AccessTokenServiceClient(channel);
-
-  /// Verification code sub service
-  static VerificationCodeServiceClient get verificationCode =>
-      VerificationCodeServiceClient(channel);
-}
+final ClientChannel channel =
+    ClientChannel(_host, port: _port, options: _options);

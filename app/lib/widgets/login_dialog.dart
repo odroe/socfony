@@ -3,7 +3,7 @@ import 'package:grpc/grpc.dart';
 import 'package:provider/provider.dart';
 
 import '../theme.dart';
-import '../services/auth.dart';
+import '../services/auth_service.dart';
 import '../src/protobuf/socfony.pb.dart';
 import 'card_wrapper.dart';
 import 'verification_code_dialog.dart';
@@ -45,15 +45,11 @@ class _LoginDialogController with ChangeNotifier {
     );
 
     try {
-      final bool result = await context
-          .read<AuthService>()
-          .authenticate(CreateAccessTokenRequest(
-            phone: '+86' + phoneNumber!,
-            code: code,
-          ));
+      final AuthService auth = context.read<AuthService>();
+      await auth.login('+86' + phoneNumber!, code);
       Navigator.of(context).pop();
 
-      if (result) {
+      if (auth.isAuthenticated) {
         onCloseVerificationCodeDialog();
         Navigator.of(context).pop();
       }
