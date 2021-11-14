@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:grpc/grpc_web.dart';
+import 'package:grpc/grpc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socfony/grpc.dart';
 import 'package:socfony/src/protobuf/google/protobuf/empty.pb.dart';
@@ -22,12 +22,13 @@ class AuthService with ChangeNotifier {
   static AuthService get instance => _singleton ??= AuthService._internal();
 
   /// Initialize AuthService.
-  static Future<void> init() async {
+  static Future<void> initialize() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? accessTokenString = prefs.getString(_key);
 
-    if (accessTokenString != null) {
+    if (accessTokenString != null && prefs.containsKey(_key)) {
       instance._entity = AccessTokenEntity.fromJson(accessTokenString);
+      await instance.refresh();
     }
   }
 

@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:grpc/grpc_web.dart';
+import 'package:grpc/grpc.dart';
 import 'package:provider/provider.dart';
 import 'package:socfony/grpc.dart';
 import 'package:socfony/services/auth_service.dart';
@@ -14,7 +14,7 @@ class VerificationCodeService {
   CallOptions get callOptions => context.read<AuthService>().callOptions;
 
   Future<void> send([String? phone]) async {
-    final request = StringValue(value: phone);
+    final request = StringValue(value: phone != null ? '+86' + phone : null);
 
     await VerificationCodeMutationClient(channel)
         .send(request, options: callOptions);

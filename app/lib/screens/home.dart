@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
+import 'package:socfony/widgets/login_dialog.dart';
 
 import '../theme.dart';
 
@@ -10,6 +12,7 @@ class HomeScreen extends StatelessWidget {
     final theme = AppTheme.of(context);
 
     return CupertinoTabScaffold(
+      controller: context.read<CupertinoTabController>(),
       tabBar: CupertinoTabBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -33,6 +36,7 @@ class HomeScreen extends StatelessWidget {
             label: '我的',
           ),
         ],
+        onTap: (index) => onChangeTabIndex(context, index),
       ),
       tabBuilder: (context, index) {
         return CupertinoPageScaffold(
@@ -45,5 +49,11 @@ class HomeScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  void onChangeTabIndex(BuildContext context, int index) {
+    if ([2, 3].contains(index)) {
+      LoginDialog(context: context).canAuthenticate();
+    }
   }
 }

@@ -1,10 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:grpc/grpc.dart';
 import 'package:provider/provider.dart';
 
 import '../theme.dart';
 import '../services/auth_service.dart';
-import '../src/protobuf/socfony.pb.dart';
 import 'card_wrapper.dart';
 import 'verification_code_dialog.dart';
 
@@ -106,6 +107,26 @@ class LoginDialog extends StatelessWidget {
         ),
         barrierDismissible: true,
       );
+
+  FutureOr<T?> canAuthenticate<T>({
+    Future<T?> Function()? onAuthenticated,
+    Future<T?> Function()? onNotAuthenticated,
+    bool show = true,
+  }) async {
+    if (context.read<AuthService>().isAuthenticated) {
+      return onAuthenticated != null ? await onAuthenticated() : null;
+    } else if (show == false) {
+      return onNotAuthenticated != null ? await onNotAuthenticated() : null;
+    }
+
+    await this.show();
+
+    return canAuthenticate(
+      onAuthenticated: onAuthenticated,
+      onNotAuthenticated: onNotAuthenticated,
+      show: false,
+    );
+  }
 }
 
 class _PhoneNumberTextField extends StatelessWidget {
