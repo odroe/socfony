@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import 'package:socfony/services/app_service.dart';
+import 'package:socfony/services/state_service.dart';
 
 import 'app.dart';
+import 'services/app_service.dart';
 import 'services/auth_service.dart';
 
 Future<void> main() async {
@@ -20,9 +21,10 @@ class _ProviderWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => AppService()),
         ChangeNotifierProvider.value(value: AuthService.instance),
         ChangeNotifierProvider(create: (_) => CupertinoTabController()),
+        ChangeNotifierProvider(create: (_) => StateService()),
+        ChangeNotifierProvider(create: (_) => AppService()),
       ],
       child: const App(),
     );

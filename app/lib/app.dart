@@ -9,9 +9,12 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context
+        .select<AppService, CupertinoThemeData>((service) => service.theme);
+
     return CupertinoApp(
       title: context.read<AppService>().title,
-      theme: context.watch<AppService>().theme,
+      theme: theme,
       home: const HomeScreen(),
     );
   }

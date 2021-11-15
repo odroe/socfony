@@ -34,6 +34,7 @@ export class UserProfileQuery {
     entity.setAvatar(profile.avatar);
     entity.setGender(this.userProfileService.gender2grpcGender(profile.gender));
     entity.setBirthday(profile.birthday);
+    entity.setBio(profile.bio);
 
     return entity.toObject();
   }

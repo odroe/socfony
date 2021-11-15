@@ -30,9 +30,6 @@ export class UserProfileService {
   gender2grpcGender(
     gender: Gender,
   ): UserProfileEntity.GenderMap[keyof UserProfileEntity.GenderMap] {
-    // console.log(UserProfileEntity.Gender);
-    console.log(Gender);
-
     return UserProfileEntity.Gender[gender.toUpperCase()];
   }
 

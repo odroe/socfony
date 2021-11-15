@@ -1,9 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:socfony/services/auth_service.dart';
+import 'package:socfony/services/state_service.dart';
+import 'package:socfony/src/protobuf/google/protobuf/wrappers.pb.dart';
+import 'package:socfony/src/protobuf/socfony.pb.dart';
+import 'package:socfony/src/protobuf/socfony.pbgrpc.dart';
 import 'package:socfony/theme.dart';
 import 'package:socfony/widgets/card_wrapper.dart';
 import 'package:socfony/widgets/not_authenticated.dart';
+
+import '../grpc.dart';
 
 class HomeProfile extends StatelessWidget {
   const HomeProfile({Key? key}) : super(key: key);
@@ -134,42 +140,101 @@ class _ProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userId = context.select<AuthService, String>((service) => service.entity!.userId);
+    final String id = context.select<AuthService, String>(
+      (service) => service.entity!.userId,
+    );
 
     return CardWrapper(
       margin: const EdgeInsets.all(16),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Padding(
-            padding: EdgeInsets.only(right: 12),
-            child: Icon(CupertinoIcons.profile_circled, size: 48),
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Seven的代码太渣',
-                    style: AppTheme.of(context)
-                        .textTheme
-                        .subheadline
-                        .resolveFrom(context)),
-                Text(
-                  '暂无介绍～',
-                  style: AppTheme.of(context)
-                      .textTheme
-                      .caption2
-                      .resolveFrom(context, secondary: true),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+      child: FutureBuilder(
+        future: _fetch(context, id),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState != ConnectionState.done) {
+            return const Center(
+              child: CupertinoActivityIndicator(),
+            );
+          }
+
+          final UserEntity? user = context.select<StateService, UserEntity?>(
+            (service) =>
+                service.find<UserEntity>((element) => element.id == id),
+          );
+          final UserProfileEntity? profile =
+              context.select<StateService, UserProfileEntity?>(
+            (service) =>
+                service.find<UserProfileEntity>((element) => element.id == id),
+          );
+
+          return Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(right: 12),
+                child: Icon(CupertinoIcons.profile_circled, size: 48),
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: profile?.name.isNotEmpty == true
+                                ? profile!.name
+                                : '',
+                          ),
+                          TextSpan(
+                            text:
+                                '@${user?.name.isNotEmpty == true ? user!.name : user?.id}',
+                            style: AppTheme.of(context)
+                                .textTheme
+                                .caption1
+                                .resolveFrom(context, secondary: true),
+                          ),
+                        ],
+                      ),
+                      style: AppTheme.of(context)
+                          .textTheme
+                          .subheadline
+                          .resolveFrom(context),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      profile?.bio.isNotEmpty == true ? profile!.bio : '暂无介绍～',
+                      style: AppTheme.of(context)
+                          .textTheme
+                          .footnote
+                          .resolveFrom(context, secondary: true),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
                 ),
-                // const Text('Profile'),
-              ],
-            ),
-          ),
-          const Icon(CupertinoIcons.forward),
-        ],
+              ),
+              const Icon(CupertinoIcons.forward),
+            ],
+          );
+        },
       ),
     );
+  }
+
+  Future<UserEntity> _fetch(BuildContext context, String id) async {
+    final callOptions = context.read<AuthService>().callOptions;
+    final user = await UserQueryClient(channel)
+        .findOne(UserFindOneRequest()..id = id, options: callOptions);
+    final profile = await UserProfileQueryClient(channel)
+        .find(StringValue()..value = user.id, options: callOptions);
+
+    // Update state
+    final service = context.read<StateService>();
+    service.update<UserEntity>(user, (element) => element.id == user.id);
+    service.update<UserProfileEntity>(
+        profile, (element) => element.id == user.id);
+
+    return user;
   }
 }

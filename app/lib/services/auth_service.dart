@@ -63,11 +63,15 @@ class AuthService with ChangeNotifier {
   /// Refresh token.
   Future<void> refresh() async {
     final Empty request = Empty();
-    _entity = await AccessTokenMutationClient(channel)
-        .refresh(request, options: callOptions);
-
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(_key, _entity!.writeToJson());
+    try {
+      _entity = await AccessTokenMutationClient(channel)
+          .refresh(request, options: callOptions);
+      prefs.setString(_key, _entity!.writeToJson());
+    } catch (e) {
+      prefs.remove(_key);
+      _entity = null;
+    }
 
     notifyListeners();
   }
