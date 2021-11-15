@@ -72,11 +72,32 @@ class _TextStyleFactory extends TextStyle {
 }
 
 extension AppTextStyle on TextStyle {
-  TextStyle resolveFrom(BuildContext context) => copyWith(
-        color: CupertinoDynamicColor.maybeResolve(color, context),
-        backgroundColor:
-            CupertinoDynamicColor.maybeResolve(backgroundColor, context),
-      );
+  TextStyle resolveFrom(
+    BuildContext context, {
+    bool secondary = false,
+    bool teritiary = false,
+    bool quaternary = false,
+  }) {
+    final Color? color = (secondary || teritiary || quaternary)
+        ? const CupertinoDynamicColor.withBrightness(
+            color: Color(0xFF3C3C43),
+            darkColor: Color(0xFFEBEBF5),
+          )
+        : this.color;
+    final double opacity = secondary
+        ? 0.6
+        : teritiary
+            ? 0.3
+            : quaternary
+                ? 0.18
+                : 1.0;
+    return copyWith(
+      color: CupertinoDynamicColor.maybeResolve(color, context)
+          ?.withOpacity(opacity),
+      backgroundColor:
+          CupertinoDynamicColor.maybeResolve(backgroundColor, context),
+    );
+  }
 }
 
 extension AppThemeData on CupertinoThemeData {

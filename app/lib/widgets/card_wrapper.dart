@@ -38,7 +38,10 @@ class CardWrapper extends StatelessWidget {
       ));
       childrenWithDividers.add(divider);
     });
-    childrenWithDividers.add(children.last);
+    childrenWithDividers.add(Padding(
+      child: children.last,
+      padding: EdgeInsets.only(right: padding.right),
+    ));
 
     return CardWrapper(
       padding: padding.copyWith(right: 0),

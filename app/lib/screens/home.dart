@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:socfony/widgets/login_dialog.dart';
 
 import '../theme.dart';
+import 'home_profile.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -39,6 +40,10 @@ class HomeScreen extends StatelessWidget {
         onTap: (index) => onChangeTabIndex(context, index),
       ),
       tabBuilder: (context, index) {
+        switch (index) {
+          case 3:
+            return const HomeProfile();
+        }
         return CupertinoPageScaffold(
           child: Center(
             child: Text(
