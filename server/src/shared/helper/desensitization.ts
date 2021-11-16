@@ -8,7 +8,7 @@ export function phoneNumberDesensitization(
 
     return `${result.countryCallingCode} ${result.nationalNumber.replace(
       /^(\d{3})\d+(\d{2})/,
-      '$1****$2',
+      '$1******$2',
     )}`;
   }
 

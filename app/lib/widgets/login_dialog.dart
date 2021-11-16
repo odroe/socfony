@@ -108,7 +108,7 @@ class LoginDialog extends StatelessWidget {
         barrierDismissible: true,
       );
 
-  FutureOr<T?> canAuthenticate<T>({
+  Future<T?> canAuthenticate<T>({
     Future<T?> Function()? onAuthenticated,
     Future<T?> Function()? onNotAuthenticated,
     bool show = true,

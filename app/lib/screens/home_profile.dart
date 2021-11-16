@@ -10,6 +10,7 @@ import 'package:socfony/widgets/card_wrapper.dart';
 import 'package:socfony/widgets/not_authenticated.dart';
 
 import '../grpc.dart';
+import 'account_security.dart';
 
 class HomeProfile extends StatelessWidget {
   const HomeProfile({Key? key}) : super(key: key);
@@ -45,25 +46,27 @@ class HomeProfile extends StatelessWidget {
                           .resolveFrom(context),
                     ),
                   ),
-                  const Icon(CupertinoIcons.forward),
                 ],
               ),
-              Row(
-                children: [
-                  const Icon(CupertinoIcons.checkmark_shield),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      '账户安全',
-                      style: AppTheme.of(context)
-                          .textTheme
-                          .subheadline
-                          .resolveFrom(context),
-                    ),
+              GestureDetector(
+                  child: Row(
+                    children: [
+                      const Icon(CupertinoIcons.checkmark_shield),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          '账户安全',
+                          style: AppTheme.of(context)
+                              .textTheme
+                              .subheadline
+                              .resolveFrom(context),
+                        ),
+                      ),
+                    ],
                   ),
-                  const Icon(CupertinoIcons.forward),
-                ],
-              ),
+                  onTap: () {
+                    AccountSecurity(context).go();
+                  }),
             ],
           ),
           CardWrapper.divider(
@@ -85,7 +88,6 @@ class HomeProfile extends StatelessWidget {
                           .resolveFrom(context),
                     ),
                   ),
-                  const Icon(CupertinoIcons.forward),
                 ],
               ),
               Row(
@@ -108,7 +110,6 @@ class HomeProfile extends StatelessWidget {
                         .caption1
                         .resolveFrom(context, secondary: true),
                   ),
-                  const Icon(CupertinoIcons.forward),
                 ],
               ),
               Row(
@@ -124,7 +125,6 @@ class HomeProfile extends StatelessWidget {
                           .resolveFrom(context),
                     ),
                   ),
-                  const Icon(CupertinoIcons.forward),
                 ],
               ),
             ],
