@@ -101,7 +101,7 @@ class _PageView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 6),
+              padding: const EdgeInsets.only(left: 12),
               child: Text(
                 '受信任的电话号码',
                 style: AppTheme.of(context)
@@ -121,7 +121,7 @@ class _PageView extends StatelessWidget {
         ),
         const _PhoneCard(),
         Padding(
-          padding: const EdgeInsets.only(left: 6, top: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 12).copyWith(top: 4),
           child: Text(
             '受信任的电话号码用于在登录时验证您的身份。',
             style: AppTheme.of(context)
@@ -150,7 +150,10 @@ class _PhoneCard extends StatelessWidget {
     );
     return CardWrapper(
       margin: EdgeInsets.zero,
-      child: Text(phone),
+      child: Text(
+        phone,
+        style: AppTheme.of(context).textTheme.textStyle.resolveFrom(context),
+      ),
     );
   }
 }
@@ -225,12 +228,12 @@ class _EditPhoneScreen extends StatelessWidget {
           CardWrapper.divider(
             dividerMargin: const EdgeInsets.symmetric(vertical: 8),
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text('+86 中国大陆'),
-                  Icon(CupertinoIcons.forward),
-                ],
+              Text(
+                '+86 中国大陆',
+                style: AppTheme.of(context)
+                    .textTheme
+                    .textStyle
+                    .resolveFrom(context),
               ),
               CupertinoTextField(
                 autofocus: true,

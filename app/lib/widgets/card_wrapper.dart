@@ -6,11 +6,11 @@ import 'divider.dart';
 class CardWrapper extends StatelessWidget {
   final EdgeInsets margin;
   final EdgeInsets padding;
-  final Widget child;
+  final Widget? child;
 
   const CardWrapper({
     Key? key,
-    required this.child,
+    this.child,
     this.margin = EdgeInsets.zero,
     this.padding = const EdgeInsets.all(12),
   }) : super(key: key);
@@ -24,6 +24,13 @@ class CardWrapper extends StatelessWidget {
     Color dividerColor = CupertinoColors.separator,
     EdgeInsets dividerMargin = EdgeInsets.zero,
   }) {
+    if (children.isEmpty) {
+      return CardWrapper(
+        margin: margin,
+        padding: padding,
+      );
+    }
+
     final List<Widget> childrenWithDividers = <Widget>[];
     final Divider divider = Divider(
       margin: dividerMargin,

@@ -11,6 +11,7 @@ import 'package:socfony/widgets/not_authenticated.dart';
 
 import '../grpc.dart';
 import 'account_security.dart';
+import 'update_user_data.dart';
 
 class HomeProfileScreen extends StatelessWidget {
   const HomeProfileScreen({Key? key}) : super(key: key);
@@ -33,20 +34,25 @@ class HomeProfileScreen extends StatelessWidget {
               left: 38,
             ),
             children: [
-              Row(
-                children: [
-                  const Icon(CupertinoIcons.pencil),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      '资料更新',
-                      style: AppTheme.of(context)
-                          .textTheme
-                          .subheadline
-                          .resolveFrom(context),
+              GestureDetector(
+                child: Row(
+                  children: [
+                    const Icon(CupertinoIcons.pencil),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        '编辑资料',
+                        style: AppTheme.of(context)
+                            .textTheme
+                            .subheadline
+                            .resolveFrom(context),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
+                onTap: () {
+                  UpdateUserDataScreen(context).go();
+                },
               ),
               GestureDetector(
                   child: Row(
