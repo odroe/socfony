@@ -13,7 +13,10 @@ class NotAuthenticated extends StatelessWidget {
         children: [
           Text(
             '你还没有登录哦',
-            style: AppTheme.of(context).textTheme.headline,
+            style: AppTheme.of(context)
+                    .textTheme
+                    .textStyle
+                    .resolveFrom(context),
           ),
           CupertinoButton(
             child: const Text('登录'),

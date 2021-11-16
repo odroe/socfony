@@ -1,7 +1,7 @@
 import 'package:grpc/grpc.dart';
 
 /// gRPC server host.
-const String _host = '127.0.0.1';
+const String _host = '192.168.0.5';
 
 /// gRPC server port.
 const int _port = 3000;
