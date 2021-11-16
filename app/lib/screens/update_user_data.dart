@@ -207,7 +207,7 @@ class _UserAvavarCard extends StatelessWidget {
 
     return Center(
       child: SizedBox.square(
-        dimension: 80,
+        dimension: 120,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(80),
           child: Container(
@@ -219,7 +219,7 @@ class _UserAvavarCard extends StatelessWidget {
                 const Center(
                   child: Icon(
                     CupertinoIcons.person_solid,
-                    size: 80,
+                    size: 120,
                   ),
                 ),
                 Positioned(

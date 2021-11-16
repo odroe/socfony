@@ -144,7 +144,7 @@ class _ProfileCard extends StatelessWidget {
     );
 
     return CardWrapper(
-      margin: const EdgeInsets.all(16),
+      margin: const EdgeInsets.all(12),
       child: FutureBuilder(
         future: _fetch(context, id),
         builder: (context, snapshot) {
@@ -169,7 +169,7 @@ class _ProfileCard extends StatelessWidget {
             children: [
               const Padding(
                 padding: EdgeInsets.only(right: 12),
-                child: Icon(CupertinoIcons.profile_circled, size: 48),
+                child: Icon(CupertinoIcons.profile_circled, size: 64),
               ),
               Expanded(
                 child: Column(
