@@ -42,7 +42,7 @@ class HomeScreen extends StatelessWidget {
       tabBuilder: (context, index) {
         switch (index) {
           case 3:
-            return const HomeProfile();
+            return const HomeProfileScreen();
         }
         return CupertinoPageScaffold(
           child: Center(

@@ -101,7 +101,7 @@ class VerificationCodeDialog<T> extends StatelessWidget {
     onDone(_controller.text, () => Navigator.of(context).pop(_controller.text));
   }
 
-  Future<T?> show() async {
+  Future<String?> show() async {
     final onCloseSendingDialog = showSendingDialog(context);
     final onSend = createSendHandler(context, phoneNumber);
 
@@ -127,7 +127,7 @@ class VerificationCodeDialog<T> extends StatelessWidget {
       return null;
     }
 
-    return showCupertinoDialog<T>(
+    return showCupertinoDialog<String>(
       context: context,
       builder: (BuildContext context) => this,
       barrierDismissible: false,

@@ -12,8 +12,8 @@ import 'package:socfony/widgets/not_authenticated.dart';
 import '../grpc.dart';
 import 'account_security.dart';
 
-class HomeProfile extends StatelessWidget {
-  const HomeProfile({Key? key}) : super(key: key);
+class HomeProfileScreen extends StatelessWidget {
+  const HomeProfileScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +65,7 @@ class HomeProfile extends StatelessWidget {
                     ],
                   ),
                   onTap: () {
-                    AccountSecurity(context).go();
+                    AccountSecurityScreen(context).go();
                   }),
             ],
           ),
@@ -96,19 +96,12 @@ class HomeProfile extends StatelessWidget {
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      '主题',
+                      '外观',
                       style: AppTheme.of(context)
                           .textTheme
                           .subheadline
                           .resolveFrom(context),
                     ),
-                  ),
-                  Text(
-                    '跟随系统',
-                    style: AppTheme.of(context)
-                        .textTheme
-                        .caption1
-                        .resolveFrom(context, secondary: true),
                   ),
                 ],
               ),
