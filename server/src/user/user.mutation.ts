@@ -60,22 +60,24 @@ export class UserMutation {
     // 验证久手机号码验证码
     const oldPhoneCode = await this.verificationCodeService.verify(
       user.phone,
-      request.old_phone_code,
+      request.old_phone_code ?? request.oldPhoneCode,
     );
-    this.verificationCodeService.delete(user.phone, oldPhoneCode.code);
 
     // 验证用户新手机号码验证码
     const newPhoneCode = await this.verificationCodeService.verify(
       formatedPhoneNumber,
       request.code,
     );
-    this.verificationCodeService.delete(formatedPhoneNumber, newPhoneCode.code);
 
     // 更新用户手机号码
     const newUser = await this.prisma.user.update({
       where: { id: user.id },
       data: { phone: formatedPhoneNumber },
     });
+
+    // 删除验证码
+    this.verificationCodeService.delete(formatedPhoneNumber, newPhoneCode.code);
+    this.verificationCodeService.delete(user.phone, oldPhoneCode.code);
 
     // 返回用户信息
     return this.userService.createEntity(newUser).toObject();
