@@ -1,5 +1,7 @@
 import 'package:grpc/grpc.dart';
 
+export 'package:grpc/grpc.dart' show GrpcError;
+
 /// gRPC server host.
 const String _host = '192.168.0.5';
 

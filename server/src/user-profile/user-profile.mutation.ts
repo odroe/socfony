@@ -34,7 +34,7 @@ export class UserProfileMutation {
     const profile = await this.prisma.userProfile.update({
       where: { userId: currentProfile.userId },
       data: Object.assign({}, request, {
-        gender: request.gender
+        gender: Object.values(UserProfileEntity.Gender).includes(request.gender)
           ? this.userProfileService.grpcGender2gender(request.gender)
           : currentProfile.gender,
       }),
