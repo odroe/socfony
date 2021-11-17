@@ -310,8 +310,9 @@ class _UserProfileBioCardState extends State<_UserProfileBioCard> {
             placeholder: '请输入简介内容',
             controller: controller,
             maxLines: 5,
-            maxLength: 200,
+            maxLength: 500,
             autofocus: true,
+            keyboardType: TextInputType.multiline,
           )
         : Text(
             bio != null && bio.isNotEmpty ? bio : '暂无简介～',
