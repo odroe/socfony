@@ -271,11 +271,54 @@ class _ProfileCard extends StatelessWidget {
   }
 }
 
-class _UserProfileBioCard extends StatelessWidget {
+class _UserProfileBioCard extends StatefulWidget {
   const _UserProfileBioCard({Key? key}) : super(key: key);
 
   @override
+  State<_UserProfileBioCard> createState() => _UserProfileBioCardState();
+}
+
+class _UserProfileBioCardState extends State<_UserProfileBioCard> {
+  late TextEditingController controller;
+  late bool isEditing;
+
+  @override
+  void initState() {
+    final String id = context.read<AuthService>().entity!.userId;
+    final String? bio = context
+        .read<StateService>()
+        .find<UserProfileEntity>((element) => element.id == id)
+        ?.bio;
+
+    controller = TextEditingController(text: bio);
+    isEditing = false;
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final String id = context.read<AuthService>().entity!.userId;
+    final String? bio = context.select<StateService, String?>(
+      (service) =>
+          service.find<UserProfileEntity>((element) => element.id == id)?.bio,
+    );
+
+    final Widget widget = isEditing
+        ? CupertinoTextField(
+            decoration: const BoxDecoration(),
+            placeholder: '请输入简介内容',
+            controller: controller,
+            maxLines: 5,
+            maxLength: 200,
+            autofocus: true,
+          )
+        : Text(
+            bio != null && bio.isNotEmpty ? bio : '暂无简介～',
+            style:
+                AppTheme.of(context).textTheme.textStyle.resolveFrom(context),
+          );
+
     return CardWrapper(
       padding: const EdgeInsets.symmetric(horizontal: 12).copyWith(bottom: 12),
       child: Column(
@@ -294,12 +337,53 @@ class _UserProfileBioCard extends StatelessWidget {
               CupertinoButton(
                 alignment: Alignment.centerRight,
                 padding: EdgeInsets.zero,
-                child: const Text('编辑'),
-                onPressed: () {},
+                child: Text(isEditing ? '完成' : '编辑'),
+                onPressed: isEditing ? onDone : onEdit,
               ),
             ],
           ),
-          Text('测试测试测试', style: AppTheme.of(context).textTheme.textStyle),
+          widget,
+        ],
+      ),
+    );
+  }
+
+  onEdit() => setState(() => isEditing = true);
+
+  onDone() async {
+    FocusScope.of(context).unfocus();
+    final request = UserProfileUpdateRequest()..bio = controller.text;
+
+    try {
+      final profile = await UserProfileMutationClient(channel)
+          .update(request, options: context.read<AuthService>().callOptions);
+
+      context.read<StateService>().update<UserProfileEntity>(
+            profile,
+            (element) => element.id == profile.id,
+          );
+
+      setState(() {
+        isEditing = false;
+      });
+    } catch (e) {
+      _showAlert(e is GrpcError ? e.message! : e.toString());
+    }
+  }
+
+  _showAlert(String mesasge) {
+    showCupertinoDialog(
+      context: context,
+      builder: (context) => CupertinoAlertDialog(
+        title: const Text('提示'),
+        content: Text(mesasge),
+        actions: [
+          CupertinoDialogAction(
+            child: const Text('确定'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
         ],
       ),
     );
