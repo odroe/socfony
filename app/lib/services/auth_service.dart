@@ -28,7 +28,7 @@ class AuthService with ChangeNotifier {
 
     if (accessTokenString != null && prefs.containsKey(_key)) {
       instance._entity = AccessTokenEntity.fromJson(accessTokenString);
-      await instance.refresh();
+      instance.refresh();
     }
   }
 
