@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:grpc/grpc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:socfony/grpc.dart';
+import 'package:socfony/configuration.dart';
 import 'package:socfony/src/protobuf/google/protobuf/empty.pb.dart';
 import 'package:socfony/src/protobuf/socfony.pb.dart';
 import 'package:socfony/src/protobuf/socfony.pbgrpc.dart';

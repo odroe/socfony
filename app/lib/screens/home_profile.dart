@@ -9,7 +9,7 @@ import 'package:socfony/theme.dart';
 import 'package:socfony/widgets/card_wrapper.dart';
 import 'package:socfony/widgets/not_authenticated.dart';
 
-import '../grpc.dart';
+import '../configuration.dart';
 import 'account_security.dart';
 import 'update_user_data.dart';
 

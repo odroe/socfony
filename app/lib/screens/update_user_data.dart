@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:grpc/grpc.dart' show GrpcError;
 import 'package:provider/provider.dart';
 import 'package:socfony/services/auth_service.dart';
 import 'package:socfony/services/state_service.dart';
@@ -9,7 +10,7 @@ import 'package:socfony/src/protobuf/socfony.pbgrpc.dart';
 import 'package:socfony/theme.dart';
 import 'package:socfony/widgets/card_wrapper.dart';
 
-import '../grpc.dart';
+import '../configuration.dart';
 
 class UpdateUserDataScreen extends StatelessWidget {
   final BuildContext context;

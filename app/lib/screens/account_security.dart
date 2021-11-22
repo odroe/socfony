@@ -10,7 +10,7 @@ import 'package:socfony/widgets/card_wrapper.dart';
 import 'package:socfony/widgets/login_dialog.dart';
 import 'package:socfony/widgets/verification_code_dialog.dart';
 
-import '../grpc.dart';
+import '../configuration.dart';
 
 class AccountSecurityScreen extends StatelessWidget {
   final BuildContext context;
