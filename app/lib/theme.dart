@@ -1,136 +1,84 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-extension AppTextThemeData on CupertinoTextThemeData {
-  TextStyle get largeTitle => const _TextStyleFactory(
-        fontSize: 34.0,
-        fontWeight: FontWeight.bold,
-      );
+final TextTheme textTheme = TextTheme(
+  headline1: GoogleFonts.roboto(
+      fontSize: 96, fontWeight: FontWeight.w300, letterSpacing: -1.5),
+  headline2: GoogleFonts.roboto(
+      fontSize: 60, fontWeight: FontWeight.w300, letterSpacing: -0.5),
+  headline3: GoogleFonts.roboto(fontSize: 48, fontWeight: FontWeight.w400),
+  headline4: GoogleFonts.roboto(
+      fontSize: 34, fontWeight: FontWeight.w400, letterSpacing: 0.25),
+  headline5: GoogleFonts.roboto(fontSize: 24, fontWeight: FontWeight.w400),
+  headline6: GoogleFonts.roboto(
+      fontSize: 20, fontWeight: FontWeight.w500, letterSpacing: 0.15),
+  subtitle1: GoogleFonts.roboto(
+      fontSize: 16, fontWeight: FontWeight.w400, letterSpacing: 0.15),
+  subtitle2: GoogleFonts.roboto(
+      fontSize: 14, fontWeight: FontWeight.w500, letterSpacing: 0.1),
+  bodyText1: GoogleFonts.roboto(
+      fontSize: 16, fontWeight: FontWeight.w400, letterSpacing: 0.5),
+  bodyText2: GoogleFonts.roboto(
+      fontSize: 14, fontWeight: FontWeight.w400, letterSpacing: 0.25),
+  button: GoogleFonts.roboto(
+      fontSize: 14, fontWeight: FontWeight.w500, letterSpacing: 1.25),
+  caption: GoogleFonts.roboto(
+      fontSize: 12, fontWeight: FontWeight.w400, letterSpacing: 0.4),
+  overline: GoogleFonts.roboto(
+      fontSize: 10, fontWeight: FontWeight.w400, letterSpacing: 1.5),
+);
 
-  TextStyle get title1 => const _TextStyleFactory(
-        fontSize: 28.0,
-        fontWeight: FontWeight.bold,
-      );
+final ThemeData lightThemeData = ThemeData.from(
+  colorScheme: const ColorScheme.light(
+    primary: Color(0xff5e6ce7),
+    primaryVariant: Color(0xff2730bd),
+  ),
+  textTheme: textTheme,
+);
 
-  TextStyle get title2 => const _TextStyleFactory(
-        fontSize: 22.0,
-        fontWeight: FontWeight.bold,
-      );
+final ThemeData darkThemeData = ThemeData.from(
+  colorScheme: const ColorScheme.dark(
+    primary: Color(0xFF5e6ce7),
+    primaryVariant: Color(0xff2730bd),
+  ),
+  textTheme: textTheme,
+);
 
-  TextStyle get title3 => const _TextStyleFactory(
-        fontSize: 20.0,
-        fontWeight: FontWeight.w600,
-      );
+ThemeData theme(ThemeData data) {
+  final ColorScheme colorScheme = data.colorScheme;
 
-  TextStyle get headline => const _TextStyleFactory(
-        fontSize: 17.0,
-        fontWeight: FontWeight.w500,
-      );
-
-  TextStyle get body => const _TextStyleFactory(
-        fontSize: 17.0,
-        fontWeight: FontWeight.w600,
-      );
-
-  TextStyle get callout => const _TextStyleFactory(
-        fontSize: 16.0,
-        fontWeight: FontWeight.w600,
-      );
-
-  TextStyle get subheadline => const _TextStyleFactory(
-        fontSize: 15.0,
-        fontWeight: FontWeight.w600,
-      );
-
-  TextStyle get footnote => const _TextStyleFactory(
-        fontSize: 13.0,
-        fontWeight: FontWeight.w600,
-      );
-
-  TextStyle get caption1 => const _TextStyleFactory(
-        fontSize: 12.0,
-        fontWeight: FontWeight.w500,
-      );
-
-  TextStyle get caption2 => const _TextStyleFactory(
-        fontSize: 11.0,
-        fontWeight: FontWeight.w600,
-      );
-}
-
-class _TextStyleFactory extends TextStyle {
-  const _TextStyleFactory({
-    required double fontSize,
-    required FontWeight fontWeight,
-  }) : super(
-          fontSize: fontSize,
-          fontWeight: fontWeight,
-          color: const CupertinoDynamicColor.withBrightness(
-            color: Color(0xFF000000),
-            darkColor: Color(0xFFFFFFFF),
-          ),
-        );
-}
-
-extension AppTextStyle on TextStyle {
-  TextStyle resolveFrom(
-    BuildContext context, {
-    bool secondary = false,
-    bool teritiary = false,
-    bool quaternary = false,
-  }) {
-    final Color? color = (secondary || teritiary || quaternary)
-        ? const CupertinoDynamicColor.withBrightness(
-            color: Color(0xFF3C3C43),
-            darkColor: Color(0xFFEBEBF5),
-          )
-        : this.color;
-    final double opacity = secondary
-        ? 0.6
-        : teritiary
-            ? 0.3
-            : quaternary
-                ? 0.18
-                : 1.0;
-    return copyWith(
-      color: CupertinoDynamicColor.maybeResolve(color, context)
-          ?.withOpacity(opacity),
-      backgroundColor:
-          CupertinoDynamicColor.maybeResolve(backgroundColor, context),
-    );
-  }
-}
-
-extension AppThemeData on CupertinoThemeData {
-  CupertinoDynamicColor get cardBackgroundColor =>
-      const CupertinoDynamicColor.withBrightness(
-        color: Color(0xFFFFFFFF),
-        darkColor: Color(0xFF1D1D1D),
-      );
-}
-
-class AppTheme extends CupertinoTheme {
-  const AppTheme({
-    Key? key,
-    required CupertinoThemeData data,
-    required Widget child,
-  }) : super(
-          key: key,
-          child: child,
-          data: data,
-        );
-
-  static const CupertinoThemeData defaultTheme = CupertinoThemeData(
-    primaryColor: Color(0xFF5E6CE7),
-    scaffoldBackgroundColor: CupertinoDynamicColor.withBrightness(
-      color: CupertinoColors.systemGrey6,
-      darkColor: CupertinoColors.black,
+  return data.copyWith(
+    appBarTheme: AppBarTheme(
+      color: colorScheme.background,
+      elevation: 0,
+      iconTheme: IconThemeData(
+        color: colorScheme.onBackground,
+      ),
+      foregroundColor: colorScheme.onBackground,
+      centerTitle: true,
     ),
-    barBackgroundColor: CupertinoDynamicColor.withBrightness(
-      color: Color(0xFFFFFFFF),
-      darkColor: Color(0xFF1D1D1D),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: colorScheme.background,
+      elevation: 0,
+      selectedItemColor: colorScheme.primary,
+      unselectedItemColor: colorScheme.onBackground,
+    ),
+    bottomAppBarTheme: BottomAppBarTheme(
+      color: colorScheme.background,
+      elevation: 0,
+    ),
+    tabBarTheme: TabBarTheme(
+      labelColor: colorScheme.onBackground,
+      unselectedLabelColor: colorScheme.onBackground,
+      indicator: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: colorScheme.primary,
+            width: 2,
+          ),
+        ),
+      ),
+      indicatorSize: TabBarIndicatorSize.tab,
     ),
   );
-
-  static CupertinoThemeData of(BuildContext context) =>
-      CupertinoTheme.of(context);
 }

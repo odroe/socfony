@@ -1,4 +1,4 @@
-name: socfony
+name: app
 description: Socfony is an open source social application, and basic security modules and social function modules have been preset in the software. Whether it is to deploy Socfony directly or as a basis for program development is wonderful.
 
 # The following line prevents the package from being accidentally published to
@@ -36,8 +36,10 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   grpc: ^3.0.2
-  provider: ^6.0.1
   shared_preferences: ^2.0.8
+  provider: ^6.0.1
+  google_fonts: ^2.1.0
+  flutter_svg: ^0.23.0+1
 
 dev_dependencies:
   flutter_test:
@@ -60,11 +62,12 @@ flutter:
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
-  uses-material-design: false
+  uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/
+    - assets/socfony.png
+    - assets/bottom_navigation_bar/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

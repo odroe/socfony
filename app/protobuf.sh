@@ -21,6 +21,6 @@ protoc \
 dart pub global deactivate protoc_plugin;
 
 find ${OUTPUT_DIR} -type f -name "*.pbjson.dart" | xargs rm;
-# find ${OUTPUT_DIR} -type f -name "*.pbenum.dart" | xargs rm;
+find ${OUTPUT_DIR}/google -type f -name "*.pbenum.dart" | xargs rm;
 
 dart format ${OUTPUT_DIR};

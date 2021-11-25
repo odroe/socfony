@@ -1,10 +1,9 @@
 import 'package:flutter/widgets.dart';
-import 'package:grpc/grpc.dart';
 import 'package:provider/provider.dart';
-import 'package:socfony/configuration.dart';
-import 'package:socfony/services/auth_service.dart';
-import 'package:socfony/src/protobuf/google/protobuf/wrappers.pb.dart';
-import 'package:socfony/src/protobuf/socfony.pbgrpc.dart';
+
+import '../configuration.dart';
+import '../grpc.dart';
+import 'auth_service.dart';
 
 class VerificationCodeService {
   final BuildContext context;

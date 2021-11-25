@@ -1,10 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:grpc/grpc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:socfony/configuration.dart';
-import 'package:socfony/src/protobuf/google/protobuf/empty.pb.dart';
-import 'package:socfony/src/protobuf/socfony.pb.dart';
-import 'package:socfony/src/protobuf/socfony.pbgrpc.dart';
+
+import '../configuration.dart';
+import '../grpc.dart';
 
 class AuthService with ChangeNotifier {
   // Cache key and metadata key.
@@ -16,19 +15,20 @@ class AuthService with ChangeNotifier {
   /// AuthService entity.
   AccessTokenEntity? get entity => _entity;
 
-  AuthService._internal();
+  AuthService._internal() {
+    onInitialize();
+  }
 
-  /// Singleton instance.
-  static AuthService get instance => _singleton ??= AuthService._internal();
+  factory AuthService() => _singleton ??= AuthService._internal();
 
   /// Initialize AuthService.
-  static Future<void> initialize() async {
+  Future<void> onInitialize() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? accessTokenString = prefs.getString(_key);
 
     if (accessTokenString != null && prefs.containsKey(_key)) {
-      instance._entity = AccessTokenEntity.fromJson(accessTokenString);
-      instance.refresh();
+      _entity = AccessTokenEntity.fromJson(accessTokenString);
+      refresh();
     }
   }
 
@@ -82,11 +82,6 @@ class AuthService with ChangeNotifier {
       _entity!.expiredAt.toDateTime().isAfter(DateTime.now());
 
   /// Get auth call options.
-  CallOptions get callOptions {
-    if (isAuthenticated) {
-      return CallOptions(metadata: <String, String>{_key: _entity!.token});
-    }
-
-    return CallOptions();
-  }
+  CallOptions get callOptions =>
+      CallOptions(metadata: <String, String>{_key: _entity?.token ?? ""});
 }
