@@ -78,7 +78,7 @@ ThemeData theme(ThemeData data) {
           ),
         ),
       ),
-      indicatorSize: TabBarIndicatorSize.tab,
+      indicatorSize: TabBarIndicatorSize.label,
     ),
   );
 }
