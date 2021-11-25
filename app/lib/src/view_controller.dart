@@ -1,19 +1,21 @@
 import 'package:flutter/widgets.dart';
 
-abstract class Controller {
+abstract class ViewController {
+  @protected
   late BuildContext _context;
 
+  @protected
   BuildContext get context => _context;
 }
 
-class ViewElement<T extends Controller> extends StatelessElement {
-  ViewElement(View<T> widget) : super(widget) {
+class ViewElement<T extends ViewController> extends StatelessElement {
+  ViewElement(ViewWidget<T> widget) : super(widget) {
     widget.controller._context = this;
   }
 }
 
-abstract class View<T extends Controller> extends StatelessWidget {
-  const View({Key? key}) : super(key: key);
+abstract class ViewWidget<T extends ViewController> extends StatelessWidget {
+  const ViewWidget({Key? key}) : super(key: key);
 
   @protected
   T get controller;
