@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'framework.dart';
-import 'screens/home_screen.dart';
-import 'services/auth_service.dart';
+import 'grpc.dart';
+import 'modules/auth/auth_store.dart';
+import 'modules/main/main_screen.dart';
 import 'theme.dart';
 
 class App extends StatelessWidget {
@@ -11,12 +13,9 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: _createStoreState),
-        ChangeNotifierProvider(create: (_) => AuthService()),
-      ],
-      child: const _InternalApp(),
+    return ChangeNotifierProvider(
+      create: _createStoreState,
+      child: const _InternalApp()
     );
   }
 
@@ -31,10 +30,12 @@ class App extends StatelessWidget {
   }
 }
 
-class _InternalApp extends StatelessWidget {
+class _InternalApp extends StatefulWidget {
   const _InternalApp({Key? key}) : super(key: key);
 
   @override
+  State<_InternalApp> createState() => _InternalAppState();
+
   Widget build(BuildContext context) {
     final ThemeData? themeData = context.store.watch<ThemeData>();
 
@@ -42,7 +43,33 @@ class _InternalApp extends StatelessWidget {
       title: 'Socfony',
       theme: theme(themeData ?? lightThemeData),
       darkTheme: theme(themeData ?? darkThemeData),
-      home: const HomeScreen(),
+      home: const MainScreen(),
     );
+  }
+}
+
+class _InternalAppState extends State<_InternalApp> {
+  @override
+  Widget build(BuildContext context) => widget.build(context);
+
+  @override
+  void initState() {
+    super.initState();
+
+    initAuthStore();
+  }
+
+  Future<void> initAuthStore() async  {
+    final pref = await SharedPreferences.getInstance();
+    final token = pref.getString(AuthStore.key);
+
+    if (token == null || token.isEmpty) {
+      return;
+    }
+
+    final AccessTokenEntity entity = AccessTokenEntity.fromJson(token);
+    final AuthStore store = AuthStore(entity);
+
+    this.store.write<AuthStore>(store);
   }
 }

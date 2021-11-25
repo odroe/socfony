@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-class HomeMomentsScreen extends StatefulWidget {
-  const HomeMomentsScreen({Key? key}) : super(key: key);
+class MainMomentsScreen extends StatefulWidget {
+  const MainMomentsScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeMomentsScreen> createState() => _HomeMomentsScreenState();
+  State<MainMomentsScreen> createState() => _MainMomentsScreenState();
 }
 
-class _HomeMomentsScreenState extends State<HomeMomentsScreen>
+class _MainMomentsScreenState extends State<MainMomentsScreen>
     with
-        AutomaticKeepAliveClientMixin<HomeMomentsScreen>,
-        SingleTickerProviderStateMixin<HomeMomentsScreen> {
+        AutomaticKeepAliveClientMixin<MainMomentsScreen>,
+        SingleTickerProviderStateMixin<MainMomentsScreen> {
   late final TabController tabController;
 
   @override

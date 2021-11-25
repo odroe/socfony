@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class HomeMeScrren extends StatefulWidget {
-  const HomeMeScrren({Key? key}) : super(key: key);
+class MainMeScreen extends StatefulWidget {
+  const MainMeScreen({Key? key}) : super(key: key);
 
   @override
-  _HomeMeScrrenState createState() => _HomeMeScrrenState();
+  _MainMeScrrenState createState() => _MainMeScrrenState();
 }
 
-class _HomeMeScrrenState extends State<HomeMeScrren>
-    with AutomaticKeepAliveClientMixin<HomeMeScrren> {
+class _MainMeScrrenState extends State<MainMeScreen>
+    with AutomaticKeepAliveClientMixin<MainMeScreen> {
   @override
   Widget build(BuildContext context) {
     super.build(context);

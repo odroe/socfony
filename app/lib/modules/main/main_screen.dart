@@ -1,12 +1,12 @@
-import '../framework.dart';
 import 'package:app/widgets/svg_icon.dart';
+import 'package:app/framework.dart';
 import 'package:flutter/material.dart';
 
-import 'widgets/home/me_screen.dart';
-import 'widgets/home/moments_screen.dart';
+import 'main_me_screen.dart';
+import 'main_moments_screen.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class MainScreen extends StatelessWidget {
+  const MainScreen({ Key? key }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,19 +15,17 @@ class HomeScreen extends StatelessWidget {
           (PageController? controller) => controller?.hasClients == true
               ? controller!.page!.round()
               : controller?.initialPage ?? 0,
-        ) ??
-        controller?.initialPage ??
-        0;
+        )!;
 
     return Scaffold(
       body: PageView(
         controller: controller,
         physics: const NeverScrollableScrollPhysics(),
         children: const <Widget>[
-          HomeMomentsScreen(),
+          MainMomentsScreen(),
           Text('社区'),
           Text('消息'),
-          HomeMeScrren(),
+          MainMeScreen(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
