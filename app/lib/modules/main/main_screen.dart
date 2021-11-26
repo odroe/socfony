@@ -89,8 +89,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void onJumpToPage(int page) async {
-    final List<int> needAuthPages = [2, 3];
-    if (needAuthPages.contains(page)) {
+    if ([2, 3].contains(page)) {
       return await AuthStore.can<void>(
         context,
         next: (_) => controller.jumpToPage(page),
