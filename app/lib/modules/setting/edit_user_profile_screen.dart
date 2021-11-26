@@ -71,10 +71,7 @@ class _EditUserProfileScreenScaffold extends StatelessWidget {
           _UserGender(),
           _UserBirthday(),
           Divider(thickness: 12),
-          ListTile(
-            title: Text('简介'),
-            trailing: Icon(Icons.edit),
-          ),
+          _UserBio(),
         ],
       ),
     );
@@ -490,5 +487,106 @@ class _UserBirthday extends StatelessWidget {
         duration: const Duration(seconds: 3),
       ),
     );
+  }
+}
+
+class _UserBio extends StatefulWidget {
+  const _UserBio({Key? key}) : super(key: key);
+
+  @override
+  State<_UserBio> createState() => _UserBioState();
+}
+
+class _UserBioState extends State<_UserBio> {
+  late final TextEditingController controller;
+
+  bool isEditing = false;
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    final String userId = store.read<AuthStore>()!.userId;
+    controller = TextEditingController(
+        text: store
+            .read<UserProfileEntity>(
+              (element) => element.id == userId,
+            )
+            ?.bio);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final String userId = context.store.read<AuthStore>()!.userId;
+    final String? bio = context.store.select<UserProfileEntity, String?>(
+      (element) => element?.bio,
+      where: (element) => element.id == userId,
+    );
+
+    final Widget child = isEditing
+        ? TextField(
+            enabled: !isLoading,
+            autofocus: true,
+            controller: controller,
+            decoration: const InputDecoration(
+              hintText: '请输入个人简介',
+              border: InputBorder.none,
+            ),
+            maxLines: 6,
+            maxLength: 300,
+          )
+        : Text(bio != null && bio.isNotEmpty ? bio : '这个人很懒，什么都没有留下~');
+
+    final Widget button = isLoading
+        ? const SizedBox(
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+            ),
+            width: 18,
+            height: 18,
+          )
+        : isEditing
+            ? TextButton(
+                child: const Text('保存'),
+                onPressed: onSave,
+              )
+            : IconButton(
+                color: Theme.of(context).primaryColor,
+                icon: const Icon(Icons.edit),
+                onPressed: () => setState(() => isEditing = true),
+              );
+
+    return ListTile(
+      title: const Text('简介'),
+      subtitle: child,
+      trailing: button,
+    );
+  }
+
+  onSave() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      final UserProfileUpdateRequest request = UserProfileUpdateRequest()
+        ..bio = controller.text;
+      final UserProfileEntity response =
+          await UserProfileMutationClient(channel).update(request,
+              options: context.store.read<AuthStore>()?.callOptions);
+
+      context.store.write<UserProfileEntity>(
+        response,
+        where: (element) => element.id == response.id,
+      );
+    } catch (e) {
+      print(e);
+    }
+
+    setState(() {
+      isLoading = false;
+      isEditing = false;
+    });
   }
 }
