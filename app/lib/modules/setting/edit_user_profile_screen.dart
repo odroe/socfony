@@ -4,7 +4,6 @@ import 'package:app/grpc.dart' hide ConnectionState;
 import 'package:app/modules/auth/auth_store.dart';
 import 'package:app/widgets/user_avatar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class EditUserProfileScreen extends StatelessWidget {
   static Future<void> show(BuildContext context) async {
@@ -69,11 +68,7 @@ class _EditUserProfileScreenScaffold extends StatelessWidget {
           SizedBox(height: 24),
           Divider(thickness: 12),
           _UserNickname(),
-          ListTile(
-            title: Text('性别'),
-            subtitle: Text('男'),
-            trailing: Icon(Icons.chevron_right),
-          ),
+          _UserGender(),
           ListTile(
             title: Text('生日'),
             subtitle: Text('2020-01-01'),
@@ -270,6 +265,120 @@ class _UpdateUserNicknameDialogState extends State<_UpdateUserNicknameDialog> {
   }
 
   showAlert(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(seconds: 3),
+      ),
+    );
+  }
+}
+
+class _UserGender extends StatelessWidget {
+  const _UserGender({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final String userId = context.store.read<AuthStore>()!.userId;
+    final UserProfileEntity_Gender? gender =
+        context.store.select<UserProfileEntity, UserProfileEntity_Gender>(
+      (element) => element?.gender,
+      where: (element) => element.id == userId,
+    );
+
+    return ListTile(
+      title: const Text('性别'),
+      subtitle: Text(gender2str(gender)),
+      trailing: const Icon(Icons.chevron_right),
+      onTap: () => showGenderSelector(context),
+    );
+  }
+
+  String gender2str(UserProfileEntity_Gender? gender) {
+    switch (gender) {
+      case UserProfileEntity_Gender.man:
+        return '男';
+      case UserProfileEntity_Gender.woman:
+        return '女';
+      case UserProfileEntity_Gender.unknown:
+      default:
+        return '未设置';
+    }
+  }
+
+  void showGenderSelector(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => BottomSheet(
+        onClosing: () => Navigator.of(context).pop(),
+        builder: (context) => SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text('性别'),
+                const SizedBox(height: 8),
+                TextButton(
+                  child: const Text('男'),
+                  onPressed: () =>
+                      update(context, UserProfileEntity_Gender.man),
+                ),
+                TextButton(
+                  child: const Text('女'),
+                  onPressed: () =>
+                      update(context, UserProfileEntity_Gender.woman),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void update(BuildContext context, UserProfileEntity_Gender gender) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext conetxt) => AlertDialog(
+        title: const Text('性别'),
+        content: TextButton.icon(
+          icon: const SizedBox(
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+            ),
+            width: 18,
+            height: 18,
+          ),
+          label: const Text('修改中...'),
+          onPressed: null,
+        ),
+      ),
+    );
+
+    try {
+      final UserProfileUpdateRequest request = UserProfileUpdateRequest()
+        ..gender = gender;
+      final UserProfileEntity response =
+          await UserProfileMutationClient(channel).update(request,
+              options: context.store.read<AuthStore>()?.callOptions);
+
+      context.store.write<UserProfileEntity>(
+        response,
+        where: (element) => element.id == response.id,
+      );
+
+      Navigator.of(context).pop();
+    } catch (e) {
+      showAlert(context, e.toString());
+      Navigator.of(context).pop();
+    } finally {
+      Navigator.of(context).pop();
+    }
+  }
+
+  void showAlert(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
