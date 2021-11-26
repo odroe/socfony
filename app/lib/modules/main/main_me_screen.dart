@@ -192,7 +192,7 @@ class _UserBio extends StatelessWidget {
     );
 
     return Text(
-      bio != null && bio.isNotEmpty ? bio : '该用户很懒，暂无简介～',
+      bio != null && bio.isNotEmpty ? bio : '这个人很懒，什么都没有留下~',
       maxLines: 3,
       overflow: TextOverflow.ellipsis,
     );

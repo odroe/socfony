@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'edit_user_profile_screen.dart';
+
 class SettingScreen extends StatelessWidget {
   static Future<void> show(BuildContext context) async {
     await Navigator.of(context).push(
@@ -22,29 +24,32 @@ class SettingScreen extends StatelessWidget {
       body: ListView(
         children: <Widget>[
           ListTile(
-            title: Text('个人资料'),
-            trailing: Icon(Icons.chevron_right),
+            title: const Text('个人资料'),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () {
+              EditUserProfileScreen.show(context);
+            },
           ),
-          ListTile(
+          const ListTile(
             title: Text('账户与安全'),
             trailing: Icon(Icons.chevron_right),
           ),
-          Divider(thickness: 6),
-          ListTile(
+          const Divider(thickness: 6),
+          const ListTile(
             title: Text('主题'),
             trailing: Icon(Icons.chevron_right),
           ),
-          Divider(thickness: 6),
-          ListTile(
+          const Divider(thickness: 6),
+          const ListTile(
             title: Text('清除缓存'),
             trailing: Icon(Icons.chevron_right),
           ),
-          ListTile(
+          const ListTile(
             title: Text('关于 Socfony'),
             trailing: Icon(Icons.chevron_right),
           ),
           TextButton(
-            child: Text('退出账号'),
+            child: const Text('退出账号'),
             onPressed: () {},
           ),
         ],
