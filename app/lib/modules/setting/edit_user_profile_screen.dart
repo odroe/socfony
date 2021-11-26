@@ -69,11 +69,7 @@ class _EditUserProfileScreenScaffold extends StatelessWidget {
           Divider(thickness: 12),
           _UserNickname(),
           _UserGender(),
-          ListTile(
-            title: Text('生日'),
-            subtitle: Text('2020-01-01'),
-            trailing: Icon(Icons.chevron_right),
-          ),
+          _UserBirthday(),
           Divider(thickness: 12),
           ListTile(
             title: Text('简介'),
@@ -376,6 +372,115 @@ class _UserGender extends StatelessWidget {
     } finally {
       Navigator.of(context).pop();
     }
+  }
+
+  void showAlert(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(seconds: 3),
+      ),
+    );
+  }
+}
+
+class _UserBirthday extends StatelessWidget {
+  const _UserBirthday({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final String userId = context.store.read<AuthStore>()!.userId;
+    final int? birthday = context.store.select<UserProfileEntity, int>(
+      (element) => element?.birthday,
+      where: (element) => element.id == userId,
+    );
+
+    return ListTile(
+      title: const Text('生日'),
+      subtitle: Text(birthdat2str(birthday)),
+      trailing: const Icon(Icons.chevron_right),
+      onTap: () => showBirthdaySelector(context, birthday),
+    );
+  }
+
+  DateTime? birthday2date(int? birthday) {
+    if (birthday == null || birthday.toString().length != 8) {
+      return null;
+    }
+
+    final int year = birthday ~/ 10000;
+    final int month = (birthday % 10000) ~/ 100;
+    final int day = birthday % 100;
+
+    return DateTime(year, month, day);
+  }
+
+  String birthdat2str(int? birthday) {
+    final DateTime? date = birthday2date(birthday);
+    if (date == null) {
+      return '未设置';
+    }
+
+    return '${date.year}年${date.month}月${date.day}日';
+  }
+
+  int date2intBirthday(DateTime date) {
+    return date.year * 10000 + date.month * 100 + date.day;
+  }
+
+  showBirthdaySelector(BuildContext context, int? birthday) async {
+    final DateTime now = DateTime.now();
+    final DateTime min = DateTime(now.year - 100, 1, 1);
+    final DateTime initialDate = birthday2date(birthday) ?? now;
+
+    final DateTime? selected = await showDatePicker(
+      context: context,
+      initialDate: initialDate,
+      firstDate: min,
+      lastDate: now,
+    );
+
+    if (selected == null || initialDate == selected) {
+      return;
+    }
+
+    final int value = date2intBirthday(selected);
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('生日'),
+        content: TextButton.icon(
+          icon: const SizedBox(
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+            ),
+            width: 18,
+            height: 18,
+          ),
+          label: const Text('修改中...'),
+          onPressed: null,
+        ),
+      ),
+    );
+
+    try {
+      final UserProfileUpdateRequest request = UserProfileUpdateRequest()
+        ..birthday = value;
+      final UserProfileEntity response =
+          await UserProfileMutationClient(channel).update(request,
+              options: context.store.read<AuthStore>()?.callOptions);
+
+      context.store.write<UserProfileEntity>(
+        response,
+        where: (element) => element.id == response.id,
+      );
+    } catch (e) {
+      showAlert(context, e.toString());
+    }
+
+    Navigator.of(context).pop();
   }
 
   void showAlert(BuildContext context, String message) {
