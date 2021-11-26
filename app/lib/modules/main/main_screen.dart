@@ -1,3 +1,4 @@
+import 'package:app/modules/auth/auth_store.dart';
 import 'package:app/widgets/svg_icon.dart';
 import 'package:app/framework.dart';
 import 'package:flutter/material.dart';
@@ -5,31 +6,50 @@ import 'package:flutter/material.dart';
 import 'main_me_screen.dart';
 import 'main_moments_screen.dart';
 
-class MainScreen extends StatelessWidget {
-  const MainScreen({ Key? key }) : super(key: key);
+class MainScreen extends StatefulWidget {
+  const MainScreen({Key? key}) : super(key: key);
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  late final PageController controller;
+
+  int currentPage = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    PageController? controller = store.read<PageController>();
+    if (controller == null) {
+      controller = PageController(initialPage: currentPage);
+      store.state.items.add(controller);
+    }
+
+    this.controller = controller;
+    this.controller.addListener(listener);
+  }
+
+  @override
+  void dispose() {
+    controller.removeListener(listener);
+    super.dispose();
+  }
+
+  void listener() {
+    setState(() {
+      currentPage = controller.page!.round();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final PageController? controller = context.store.read<PageController>();
-    final int currentIndex = context.store.select<PageController, int>(
-          (PageController? controller) => controller?.hasClients == true
-              ? controller!.page!.round()
-              : controller?.initialPage ?? 0,
-        )!;
-
     return Scaffold(
-      body: PageView(
-        controller: controller,
-        physics: const NeverScrollableScrollPhysics(),
-        children: const <Widget>[
-          MainMomentsScreen(),
-          Text('社区'),
-          Text('消息'),
-          MainMeScreen(),
-        ],
-      ),
+      body: const _PageView(),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
+        currentIndex: currentPage,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: SvgIcon('assets/bottom_navigation_bar/home.svg',
@@ -63,11 +83,40 @@ class MainScreen extends StatelessWidget {
             label: '我',
           ),
         ],
-        onTap: (index) {
-          controller?.jumpToPage(index);
-          context.store.write(controller);
-        },
+        onTap: onJumpToPage,
       ),
+    );
+  }
+
+  void onJumpToPage(int page) async {
+    final List<int> needAuthPages = [2, 3];
+    if (needAuthPages.contains(page)) {
+      return await AuthStore.can<void>(
+        context,
+        next: (_) => controller.jumpToPage(page),
+      );
+    }
+
+    controller.jumpToPage(page);
+  }
+}
+
+class _PageView extends StatelessWidget {
+  const _PageView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final PageController? controller = context.store.read<PageController>();
+
+    return PageView(
+      controller: controller,
+      physics: const NeverScrollableScrollPhysics(),
+      children: const <Widget>[
+        MainMomentsScreen(),
+        Text('消息'),
+        Text('消息'),
+        MainMeScreen(),
+      ],
     );
   }
 }

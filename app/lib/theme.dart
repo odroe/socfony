@@ -67,6 +67,11 @@ ThemeData theme(ThemeData data) {
       color: colorScheme.background,
       elevation: 0,
     ),
+    checkboxTheme: CheckboxThemeData(
+      checkColor: MaterialStateProperty.all<Color>(colorScheme.onPrimary),
+      fillColor: MaterialStateProperty.all<Color>(colorScheme.primary),
+      overlayColor: MaterialStateProperty.all<Color>(colorScheme.primary),
+    ),
     tabBarTheme: TabBarTheme(
       labelColor: colorScheme.onBackground,
       unselectedLabelColor: colorScheme.onBackground,

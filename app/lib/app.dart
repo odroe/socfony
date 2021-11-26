@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'framework.dart';
-import 'grpc.dart';
 import 'modules/auth/auth_store.dart';
 import 'modules/main/main_screen.dart';
 import 'theme.dart';
@@ -14,20 +12,12 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: _createStoreState,
-      child: const _InternalApp()
+      create: (_) => StoreState(),
+      child: const _InternalApp(),
     );
   }
 
   void run() => runApp(this);
-
-  StoreState _createStoreState(BuildContext context) {
-    return StoreState()
-      ..write(PageController(
-        initialPage: 0,
-        keepPage: true,
-      ));
-  }
 }
 
 class _InternalApp extends StatefulWidget {
@@ -59,17 +49,10 @@ class _InternalAppState extends State<_InternalApp> {
     initAuthStore();
   }
 
-  Future<void> initAuthStore() async  {
-    final pref = await SharedPreferences.getInstance();
-    final token = pref.getString(AuthStore.key);
-
-    if (token == null || token.isEmpty) {
-      return;
+  Future<void> initAuthStore() async {
+    final AuthStore? store = await AuthStore.load();
+    if (store is AuthStore) {
+      context.store.write<AuthStore>(store);
     }
-
-    final AccessTokenEntity entity = AccessTokenEntity.fromJson(token);
-    final AuthStore store = AuthStore(entity);
-
-    this.store.write<AuthStore>(store);
   }
 }
