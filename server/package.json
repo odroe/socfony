@@ -7,9 +7,10 @@
   "license": "BSD-3-Clause",
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "rimraf dist && ncc build src/main.ts -o dist -a",
+    "predev": "rimraf dist",
+    "dev": "nest start --watch",
+    "build": "ncc build src/main.ts -o dist -a",
     "format": "prettier --write .",
-    "serve": "rimraf dist && nest start --watch",
     "protobuf": "bash scripts/protobuf.sh"
   },
   "dependencies": {
