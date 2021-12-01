@@ -110,9 +110,9 @@ class _MeScreenScaffold extends StatelessWidget {
   }
 
   TabBar get tabBar => TabBar(
-              indicatorSize: TabBarIndicatorSize.tab,
-              tabs: tabs.map((String tab) => Tab(text: tab)).toList(),
-            );
+        indicatorSize: TabBarIndicatorSize.tab,
+        tabs: tabs.map((String tab) => Tab(text: tab)).toList(),
+      );
 }
 
 class _Username extends StatelessWidget {
