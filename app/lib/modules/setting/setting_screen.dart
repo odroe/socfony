@@ -21,10 +21,10 @@ class SettingScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('设置'),
         automaticallyImplyLeading: true,
-        elevation: 1.0,
       ),
       body: ListView(
         children: <Widget>[
+          const SizedBox(height: 8.0),
           Card(
             elevation: 0,
             margin: EdgeInsets.zero,

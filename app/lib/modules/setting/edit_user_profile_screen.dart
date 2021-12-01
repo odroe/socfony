@@ -62,16 +62,32 @@ class _EditUserProfileScreenScaffold extends StatelessWidget {
         title: const Text('个人资料'),
       ),
       body: ListView(
-        children: const <Widget>[
-          SizedBox(height: 24),
-          _UpdateUserAvatarCard(),
-          SizedBox(height: 24),
-          Divider(thickness: 12),
-          _UserNickname(),
-          _UserGender(),
-          _UserBirthday(),
-          Divider(thickness: 12),
-          _UserBio(),
+        children: <Widget>[
+          const _UpdateUserAvatarCard(),
+          const SizedBox(height: 6),
+          Card(
+            elevation: 0,
+            margin: EdgeInsets.zero,
+            child: Column(
+              children: ListTile.divideTiles(
+                context: context,
+                tiles: const <Widget>[
+                  _UserNickname(),
+                  _UserGender(),
+                  _UserBirthday(),
+                ],
+              ).toList(),
+            ),
+          ),
+          const SizedBox(height: 6),
+          const Card(
+            elevation: 0,
+            margin: EdgeInsets.zero,
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 12),
+              child: _UserBio(),
+            ),
+          ),
         ],
       ),
     );
@@ -85,39 +101,47 @@ class _UpdateUserAvatarCard extends StatelessWidget {
   Widget build(BuildContext context) {
     const double size = 84;
 
-    return Center(
-      child: SizedBox(
-        width: size,
-        height: size,
-        child: Stack(
-          alignment: Alignment.center,
-          fit: StackFit.expand,
-          children: <Widget>[
-            const UserAvatar(size: size),
-            Positioned(
-              bottom: 0,
-              right: 0,
-              child: Container(
-                width: size / 3,
-                height: size / 3,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary,
-                  borderRadius: BorderRadius.circular(size / 4),
-                  border: Border.all(
-                    color: Theme.of(context).colorScheme.onPrimary,
-                    width: 2,
+    return Card(
+      elevation: 0,
+      margin: EdgeInsets.zero,
+      shape: const RoundedRectangleBorder(),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 12, bottom: 24),
+        child: Center(
+          child: SizedBox(
+            width: size,
+            height: size,
+            child: Stack(
+              alignment: Alignment.center,
+              fit: StackFit.expand,
+              children: <Widget>[
+                const UserAvatar(size: size),
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: Container(
+                    width: size / 3,
+                    height: size / 3,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary,
+                      borderRadius: BorderRadius.circular(size / 4),
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        width: 2,
+                      ),
+                    ),
+                    child: Center(
+                      child: Icon(
+                        Icons.camera_alt,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        size: size / 6,
+                      ),
+                    ),
                   ),
                 ),
-                child: Center(
-                  child: Icon(
-                    Icons.camera_alt,
-                    color: Theme.of(context).colorScheme.onPrimary,
-                    size: size / 6,
-                  ),
-                ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

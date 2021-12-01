@@ -64,15 +64,27 @@ class _AccountSecurityScreenScaffold extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
-          ListTile(
-            title: const Text('账户'),
-            subtitle: const Text('socfony'),
-            trailing: const Icon(Icons.chevron_right),
-          ),
-          ListTile(
-            title: const Text('手机号码'),
-            subtitle: const Text('+8617723308434'),
-            trailing: const Icon(Icons.chevron_right),
+          const SizedBox(height: 6),
+          Card(
+            elevation: 0,
+            margin: EdgeInsets.zero,
+            child: Column(
+              children: ListTile.divideTiles(
+                context: context,
+                tiles: const <Widget>[
+                  ListTile(
+                    title: Text('账户'),
+                    subtitle: Text('socfony'),
+                    trailing: Icon(Icons.chevron_right),
+                  ),
+                  ListTile(
+                    title: Text('手机号码'),
+                    subtitle: Text('+8617723308434'),
+                    trailing: Icon(Icons.chevron_right),
+                  ),
+                ],
+              ).toList(),
+            ),
           ),
         ],
       ),
