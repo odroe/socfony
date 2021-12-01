@@ -1,3 +1,3 @@
 import 'app.dart';
 
-void main() => const App().run();
+void main() => App.run();

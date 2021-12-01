@@ -1,6 +1,6 @@
 import 'package:app/configuration.dart';
 import 'package:app/framework.dart';
-import 'package:app/grpc.dart';
+import 'package:app/grpc.dart' hide ConnectionState;
 import 'package:app/modules/auth/auth_store.dart';
 import 'package:app/modules/setting/setting_screen.dart';
 import 'package:app/widgets/user_avatar.dart';
@@ -25,7 +25,7 @@ class _MainMeScrrenState extends State<MainMeScreen>
       initialData: userId,
       future: fetch(userId),
       builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
-        if (snapshot.hasData) {
+        if (snapshot.connectionState == ConnectionState.done) {
           return const _MeScreenScaffold();
         } else {
           return const Center(child: CircularProgressIndicator());
@@ -60,99 +60,59 @@ class _MainMeScrrenState extends State<MainMeScreen>
 class _MeScreenScaffold extends StatelessWidget {
   const _MeScreenScaffold({Key? key}) : super(key: key);
 
+  List<String> get tabs => const <String>['动态', '喜欢', '评论'];
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        title: const _Username(),
-        actions: [
-          IconButton(
-            tooltip: '设置',
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              SettingScreen.show(context);
-            },
-          ),
-        ],
-      ),
-      body: ListView(
-        children: const <Widget>[
-          _UserCard(),
-          Divider(
-            thickness: 10,
-            height: 36,
+    return DefaultTabController(
+      length: tabs.length,
+      child: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            pinned: true,
+            title: const _Username(),
+            centerTitle: false,
+            expandedHeight: 200,
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.settings),
+                onPressed: () {
+                  SettingScreen.show(context);
+                },
+              ),
+            ],
+            bottom: tabBar,
+            flexibleSpace: FlexibleSpaceBar(
+              background: Container(
+                margin: EdgeInsets.only(
+                  bottom: tabBar.preferredSize.height,
+                  top: MediaQuery.of(context).padding.top + kToolbarHeight,
+                  right: 16,
+                  left: 16,
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Expanded(
+                      child: _UserBio(),
+                    ),
+                    UserAvatar(
+                      size: 80,
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
         ],
       ),
     );
   }
-}
 
-class _UserCard extends StatelessWidget {
-  const _UserCard({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Column(
-        children: [
-          Row(
-            children: const <Widget>[
-              Expanded(
-                child: _UserBio(),
-              ),
-              SizedBox(width: 20),
-              _UserAvatar(),
-            ],
-          ),
-          Row(
-            children: [
-              Column(
-                children: [
-                  Text(
-                    '387',
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  Text(
-                    '动态',
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-                ],
-              ),
-              const SizedBox(width: 34),
-              Column(
-                children: [
-                  Text(
-                    '14',
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  Text(
-                    '关注',
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-                ],
-              ),
-              const SizedBox(width: 34),
-              Column(
-                children: [
-                  Text(
-                    '109.6K',
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  Text(
-                    '粉丝',
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
+  TabBar get tabBar => TabBar(
+              indicatorSize: TabBarIndicatorSize.tab,
+              tabs: tabs.map((String tab) => Tab(text: tab)).toList(),
+            );
 }
 
 class _Username extends StatelessWidget {
@@ -193,19 +153,8 @@ class _UserBio extends StatelessWidget {
 
     return Text(
       bio != null && bio.isNotEmpty ? bio : '这个人很懒，什么都没有留下~',
-      maxLines: 3,
+      maxLines: 5,
       overflow: TextOverflow.ellipsis,
-    );
-  }
-}
-
-class _UserAvatar extends StatelessWidget {
-  const _UserAvatar({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const UserAvatar(
-      size: 84,
     );
   }
 }

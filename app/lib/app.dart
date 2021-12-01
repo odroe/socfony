@@ -7,7 +7,15 @@ import 'modules/main/main_screen.dart';
 import 'theme.dart';
 
 class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+  App._internal({Key? key}) : super(key: key) {
+    WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((_) {
+      onInitAuthStore();
+      onInitTheme();
+    });
+  }
+
+  @protected
+  StoreState get store => StoreState();
 
   @override
   Widget build(BuildContext context) {
@@ -17,42 +25,37 @@ class App extends StatelessWidget {
     );
   }
 
-  void run() => runApp(this);
+  @protected
+  void onInitAuthStore() async {
+    final AuthStore? auth = await AuthStore.load();
+    if (auth != null) {
+      store.write<AuthStore>(auth);
+    }
+  }
+
+  @protected
+  void onInitTheme() {
+    store.write<ThemeMode>(ThemeMode.system);
+  }
+
+  static void run() => runApp(App._internal());
 }
 
-class _InternalApp extends StatefulWidget {
+class _InternalApp extends StatelessWidget {
   const _InternalApp({Key? key}) : super(key: key);
 
   @override
-  State<_InternalApp> createState() => _InternalAppState();
-
   Widget build(BuildContext context) {
-    final ThemeData? themeData = context.store.watch<ThemeData>();
+    final ThemeMode? mode = context.store.watch<ThemeMode>();
+    final Color? color = context.store.watch<Color>();
+    final theme = AppTheme(color);
 
     return MaterialApp(
       title: 'Socfony',
-      theme: theme(themeData ?? lightThemeData),
-      darkTheme: theme(themeData ?? darkThemeData),
+      theme: theme.light,
+      darkTheme: theme.dark,
+      themeMode: mode,
       home: const MainScreen(),
     );
-  }
-}
-
-class _InternalAppState extends State<_InternalApp> {
-  @override
-  Widget build(BuildContext context) => widget.build(context);
-
-  @override
-  void initState() {
-    super.initState();
-
-    initAuthStore();
-  }
-
-  Future<void> initAuthStore() async {
-    final AuthStore? store = await AuthStore.load();
-    if (store is AuthStore) {
-      context.store.write<AuthStore>(store);
-    }
   }
 }
