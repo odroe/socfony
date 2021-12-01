@@ -87,7 +87,7 @@ message UserUpdatePhoneRequest {
   string code = 2;
 
   // old phone code
-  string old_phone_code = 3;
+  optional string old_phone_code = 3;
 }
 
 // UserFindOneRequest - Find one user request

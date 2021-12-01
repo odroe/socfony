@@ -42,8 +42,6 @@ export class VerificationCodeMutation {
       return parsePhoneNumber(data.value).format('E.164');
     }
 
-    console.log(data);
-
     const token = await this.accessTokenService.verifyWithMatadata(metadata, {
       include: true,
     });

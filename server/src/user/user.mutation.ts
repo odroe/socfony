@@ -1,7 +1,7 @@
 import { Metadata, status } from '@grpc/grpc-js';
 import { Controller } from '@nestjs/common';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, VerificationCode } from '@prisma/client';
 import { StringValue } from 'google-protobuf/google/protobuf/wrappers_pb';
 import { AccessTokenService } from 'src/access-token/access-token.service';
 import { formatPhoneToE164 } from 'src/shared';
@@ -58,10 +58,13 @@ export class UserMutation {
     }
 
     // 验证久手机号码验证码
-    const oldPhoneCode = await this.verificationCodeService.verify(
-      user.phone,
-      request.old_phone_code ?? request.oldPhoneCode,
-    );
+    let oldPhoneCode: VerificationCode;
+    if (user.phone) {
+      oldPhoneCode = await this.verificationCodeService.verify(
+        user.phone,
+        request.old_phone_code ?? request.oldPhoneCode,
+      );
+    }
 
     // 验证用户新手机号码验证码
     const newPhoneCode = await this.verificationCodeService.verify(
@@ -76,8 +79,10 @@ export class UserMutation {
     });
 
     // 删除验证码
-    this.verificationCodeService.delete(formatedPhoneNumber, newPhoneCode.code);
-    this.verificationCodeService.delete(user.phone, oldPhoneCode.code);
+    this.verificationCodeService.delete(newPhoneCode.phone, newPhoneCode.code);
+    if (oldPhoneCode) {
+      this.verificationCodeService.delete(oldPhoneCode.phone, oldPhoneCode.code);
+    }
 
     // 返回用户信息
     return this.userService.createEntity(newUser).toObject();
