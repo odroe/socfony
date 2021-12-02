@@ -31,6 +31,8 @@ final TextTheme _kTextTheme = TextTheme(
 const Color _kPrimaryColor = Color(0xff5e6ce7);
 
 class AppTheme {
+  static const Color defaultPrimaryColor = _kPrimaryColor;
+
   const AppTheme([Color? color]) : primaryColor = color ?? _kPrimaryColor;
 
   final Color primaryColor;

@@ -1,6 +1,7 @@
 import 'package:app/grpc.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'configuration.dart';
 import 'framework.dart';
@@ -37,8 +38,25 @@ class App extends StatelessWidget {
   }
 
   @protected
-  void onInitTheme() {
-    store.write<ThemeMode>(ThemeMode.system);
+  void onInitTheme() async {
+    final prefs = await SharedPreferences.getInstance();
+    final mode = prefs.getInt('ThemeMode');
+    final color = prefs.getInt('ThemeColor');
+
+    store.write<Color>(
+        color != null ? Color(color) : AppTheme.defaultPrimaryColor);
+
+    switch (mode) {
+      case 1:
+        store.write<ThemeMode>(ThemeMode.light);
+        break;
+      case 2:
+        store.write<ThemeMode>(ThemeMode.dark);
+        break;
+      default:
+        store.write<ThemeMode>(ThemeMode.system);
+        break;
+    }
   }
 
   @protected

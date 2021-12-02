@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'account_security_screen.dart';
 import 'edit_user_profile_screen.dart';
+import 'theme_screen.dart';
 
 class SettingScreen extends StatelessWidget {
   static Future<void> show(BuildContext context) async {
@@ -28,6 +29,7 @@ class SettingScreen extends StatelessWidget {
           Card(
             elevation: 0,
             margin: EdgeInsets.zero,
+            shape: const RoundedRectangleBorder(),
             child: Column(
               children: ListTile.divideTiles(
                 context: context,
@@ -50,18 +52,23 @@ class SettingScreen extends StatelessWidget {
               ).toList(),
             ),
           ),
-          const SizedBox(height: 16),
-          const Card(
+          const SizedBox(height: 8),
+          Card(
+            shape: const RoundedRectangleBorder(),
             elevation: 0,
             margin: EdgeInsets.zero,
             child: ListTile(
-              title: Text('主题'),
-              trailing: Icon(Icons.chevron_right),
+              title: const Text('主题'),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () {
+                ThemeScreen.show(context);
+              },
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 8),
           Card(
             elevation: 0,
+            shape: const RoundedRectangleBorder(),
             margin: EdgeInsets.zero,
             child: Column(
               children: ListTile.divideTiles(
