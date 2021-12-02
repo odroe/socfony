@@ -1,6 +1,8 @@
+import 'package:app/grpc.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'configuration.dart';
 import 'framework.dart';
 import 'modules/auth/auth_store.dart';
 import 'modules/main/main_screen.dart';
@@ -30,12 +32,29 @@ class App extends StatelessWidget {
     final AuthStore? auth = await AuthStore.load();
     if (auth != null) {
       store.write<AuthStore>(auth);
+      refreshAccessToken(auth);
     }
   }
 
   @protected
   void onInitTheme() {
     store.write<ThemeMode>(ThemeMode.system);
+  }
+
+  @protected
+  void refreshAccessToken(AuthStore auth) async {
+    try {
+      final token = await AccessTokenMutationClient(channel).refresh(
+        Empty(),
+        options: auth.callOptions,
+      );
+      final newAuth = AuthStore(token);
+
+      store.write<AuthStore>(AuthStore(token));
+      newAuth.save();
+    } catch (e) {
+      store.delete<AuthStore>();
+    }
   }
 
   static void run() => runApp(App._internal());

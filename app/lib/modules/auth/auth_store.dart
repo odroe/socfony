@@ -40,7 +40,12 @@ class AuthStore {
       return null;
     }
 
-    return AuthStore(AccessTokenEntity.fromJson(json));
+    final auth = AuthStore(AccessTokenEntity.fromJson(json));
+    if (auth.isRefreshExpired) {
+      return null;
+    }
+
+    return auth;
   }
 
   static Future<T?> can<T>(
