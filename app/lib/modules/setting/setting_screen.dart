@@ -1,4 +1,8 @@
+import 'package:app/modules/auth/auth_store.dart';
+import 'package:app/modules/main/main_screen.dart';
+import 'package:app/src/store/store_context.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'account_security_screen.dart';
 import 'edit_user_profile_screen.dart';
@@ -98,7 +102,12 @@ class SettingScreen extends StatelessWidget {
                 ),
               ),
               child: const Text('退出账号'),
-              onPressed: () {},
+              onPressed: () async {
+                final prefs = await SharedPreferences.getInstance();
+                context.store.write<UniqueKey>(UniqueKey());
+                context.store.delete<AuthStore>();
+                prefs.remove(AuthStore.key);
+              },
             ),
           ),
         ],

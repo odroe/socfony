@@ -85,9 +85,11 @@ class _InternalApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeMode? mode = context.store.watch<ThemeMode>();
     final Color? color = context.store.watch<Color>();
+    final UniqueKey? key = context.store.watch<UniqueKey>();
     final theme = AppTheme(color);
 
     return MaterialApp(
+      key: key,
       title: 'Socfony',
       theme: theme.light,
       darkTheme: theme.dark,
