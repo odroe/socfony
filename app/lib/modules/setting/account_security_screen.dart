@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:app/configuration.dart';
 import 'package:app/framework.dart';
 import 'package:app/grpc.dart' hide ConnectionState;
 import 'package:app/modules/auth/auth_store.dart';
+import 'package:app/utils/phone_number.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class AccountSecurityScreen extends StatelessWidget {
   static void show(BuildContext context) {
@@ -86,7 +90,7 @@ class _AccountSecurityScreenScaffold extends StatelessWidget {
 }
 
 class _AccountName extends StatelessWidget {
-  const _AccountName({ Key? key }) : super(key: key);
+  const _AccountName({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +104,7 @@ class _AccountName extends StatelessWidget {
 
     return ListTile(
       title: const Text('账户'),
-      subtitle: username !=null && username.isNotEmpty ?  Text(username) : null,
+      subtitle: username != null && username.isNotEmpty ? Text(username) : null,
       trailing: const Icon(Icons.chevron_right),
       onTap: () => _AccountNameUpdate.show(context),
     );
@@ -108,7 +112,7 @@ class _AccountName extends StatelessWidget {
 }
 
 class _AccountNameUpdate extends StatefulWidget {
-  const _AccountNameUpdate({ Key? key }) : super(key: key);
+  const _AccountNameUpdate({Key? key}) : super(key: key);
 
   @override
   __AccountNameUpdateState createState() => __AccountNameUpdateState();
@@ -132,9 +136,11 @@ class __AccountNameUpdateState extends State<_AccountNameUpdate> {
     super.initState();
 
     final String userId = store.read<AuthStore>()!.userId;
-    final String? username = store.read<UserEntity>(
-      (entity) => entity.id == userId,
-    )!.name;
+    final String? username = store
+        .read<UserEntity>(
+          (entity) => entity.id == userId,
+        )!
+        .name;
     _controller = TextEditingController(text: username);
   }
 
@@ -147,7 +153,7 @@ class __AccountNameUpdateState extends State<_AccountNameUpdate> {
       ),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        children: <Widget> [
+        children: <Widget>[
           const SizedBox(height: 24),
           TextField(
             autofocus: true,
@@ -162,7 +168,8 @@ class __AccountNameUpdateState extends State<_AccountNameUpdate> {
               ),
               filled: true,
               fillColor: Theme.of(context).cardColor,
-              contentPadding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
             ),
             maxLength: 12,
             inputFormatters: [
@@ -174,8 +181,8 @@ class __AccountNameUpdateState extends State<_AccountNameUpdate> {
           ElevatedButton(
             child: const Text('保存'),
             style: ButtonStyle(
-              padding:
-                  MaterialStateProperty.all(const EdgeInsets.symmetric(vertical: 12)),
+              padding: MaterialStateProperty.all(
+                  const EdgeInsets.symmetric(vertical: 12)),
               shape: MaterialStateProperty.all(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100),
@@ -191,9 +198,11 @@ class __AccountNameUpdateState extends State<_AccountNameUpdate> {
 
   void onSubmit() async {
     final String userId = store.read<AuthStore>()!.userId;
-    final String? oldName = store.read<UserEntity>(
-      (entity) => entity.id == userId,
-    )?.name;
+    final String? oldName = store
+        .read<UserEntity>(
+          (entity) => entity.id == userId,
+        )
+        ?.name;
     final String newName = _controller.text;
 
     if (oldName == newName) {
@@ -226,16 +235,16 @@ class __AccountNameUpdateState extends State<_AccountNameUpdate> {
   }
 }
 
-
 class _UserPhone extends StatelessWidget {
-  const _UserPhone({ Key? key }) : super(key: key);
+  const _UserPhone({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final String userId = context.store.read<AuthStore>()!.userId;
-    final String? phone = context.store.read<UserEntity>(
-      (entity) => entity.id == userId,
-    )?.phone;
+    final String? phone = context.store.select<UserEntity, String>(
+      (entity) => entity?.phone,
+      where: (entity) => entity.id == userId,
+    );
 
     return ListTile(
       title: const Text('手机号码'),
@@ -246,21 +255,39 @@ class _UserPhone extends StatelessWidget {
   }
 }
 
+class _UserPhoneUpdateController with ChangeNotifier {
+  final TextEditingController oldPhoneOtpController = TextEditingController();
+  final TextEditingController newPhoneOtpController = TextEditingController();
+  final TextEditingController newPhoneController = TextEditingController();
+
+  bool isSubmitting = false;
+
+  void setIsSubmitting(bool value) {
+    isSubmitting = value;
+    notifyListeners();
+  }
+
+  UserUpdatePhoneRequest get request => UserUpdatePhoneRequest()
+    ..oldPhoneCode = oldPhoneOtpController.text
+    ..code = newPhoneOtpController.text
+    ..phone = chinaPhoneWrapper(newPhoneController.text);
+}
+
 class _UserPhoneUpdate extends StatefulWidget {
-  const _UserPhoneUpdate({ Key? key }) : super(key: key);
+  const _UserPhoneUpdate({Key? key}) : super(key: key);
 
   @override
   __UserPhoneUpdateState createState() => __UserPhoneUpdateState();
 
   static void show(BuildContext context) async {
-    final bool? hasNext = await _PreSendPhoneCodeDialog.show(context);
-    if (hasNext == true) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => const _UserPhoneUpdate(),
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => ChangeNotifierProvider(
+          child: const _UserPhoneUpdate(),
+          create: (_) => _UserPhoneUpdateController(),
         ),
-      );
-    }
+      ),
+    );
   }
 }
 
@@ -274,121 +301,278 @@ class __UserPhoneUpdateState extends State<_UserPhoneUpdate> {
       ),
       body: ListView(
         children: [
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
           Card(
+            elevation: 0,
             margin: EdgeInsets.zero,
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                children: const [
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: '当前手机验证码',
-                    ),
+            child: ListTile(
+              leading: const Text('原号码验证码'),
+              title: TextField(
+                enabled:
+                    !context.read<_UserPhoneUpdateController>().isSubmitting,
+                controller: context
+                    .read<_UserPhoneUpdateController>()
+                    .oldPhoneOtpController,
+                decoration: const InputDecoration(
+                  hintText: '请输入验证码',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.zero,
+                    borderSide: BorderSide.none,
+                    gapPadding: 0,
                   ),
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: '新手机号码',
-                    ),
+                  contentPadding: EdgeInsets.zero,
+                ),
+              ),
+              trailing: const _UpdateUserPhoneSendOtpButton(false),
+            ),
+          ),
+          Card(
+            elevation: 0,
+            margin: EdgeInsets.zero,
+            child: ListTile(
+              leading: const Text('新的手机号码'),
+              title: TextField(
+                controller: context
+                    .read<_UserPhoneUpdateController>()
+                    .newPhoneController,
+                enabled:
+                    !context.read<_UserPhoneUpdateController>().isSubmitting,
+                decoration: const InputDecoration(
+                  hintText: '请输入新手机号码',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.zero,
+                    borderSide: BorderSide.none,
+                    gapPadding: 0,
                   ),
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: '新手机验证码',
-                    ),
-                  ),
-                ],
+                  contentPadding: EdgeInsets.zero,
+                ),
               ),
             ),
           ),
+          Card(
+            elevation: 0,
+            margin: EdgeInsets.zero,
+            child: ListTile(
+              leading: const Text('新号码验证码'),
+              title: TextField(
+                controller: context
+                    .read<_UserPhoneUpdateController>()
+                    .newPhoneOtpController,
+                enabled:
+                    !context.read<_UserPhoneUpdateController>().isSubmitting,
+                decoration: const InputDecoration(
+                  hintText: '请输入验证码',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.zero,
+                    borderSide: BorderSide.none,
+                  ),
+                  contentPadding: EdgeInsets.zero,
+                ),
+              ),
+              trailing: const _UpdateUserPhoneSendOtpButton(true),
+            ),
+          ),
+          const _UpdateUserPhoneButton(),
         ],
       ),
     );
   }
 }
 
-class _PreSendPhoneCodeDialog extends StatefulWidget {
-  const _PreSendPhoneCodeDialog({ Key? key }) : super(key: key);
+class _UpdateUserPhoneSendOtpButton extends StatefulWidget {
+  const _UpdateUserPhoneSendOtpButton(this.isNewPhone, {Key? key})
+      : super(key: key);
+
+  final bool isNewPhone;
 
   @override
-  __PreSendPhoneCodeDialogState createState() => __PreSendPhoneCodeDialogState();
-
-  static Future<bool?> show(BuildContext context) {
-    return Future.value(true);
-    final String userId = context.store.read<AuthStore>()!.userId;
-    final String? phone = context.store.read<UserEntity>(
-      (entity) => entity.id == userId,
-    )?.phone;
-    if (phone == null || phone.isEmpty) {
-      return Future.value(true);
-    }
-
-    return showDialog<bool>(
-      context: context,
-      builder: (context) => const _PreSendPhoneCodeDialog(),
-    );
-  }
+  State<_UpdateUserPhoneSendOtpButton> createState() =>
+      _UpdateUserPhoneSendOtpButtonState();
 }
 
-class __PreSendPhoneCodeDialogState extends State<_PreSendPhoneCodeDialog> {
-  bool _isSending = false;
+class _UpdateUserPhoneSendOtpButtonState
+    extends State<_UpdateUserPhoneSendOtpButton> {
+  bool isSending = false;
+  int counter = 0;
+  Timer? timer;
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Text('提示'),
-      content: const Text('更换手机号码将发送验证码到你当前绑定的手机号码以此来确认您的身份。'),
-      actions: _isSending
-        ? [
-          TextButton.icon(
-            icon: const SizedBox.square(
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-              ),
-              dimension: 24,
-            ),
-            label: const Text('正在发送...'),
-            onPressed: null,
-          )
-        ]
-        : [
-          TextButton(
-            child: const Text('取消'),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          ElevatedButton(
-            child: const Text('确认'),
-            onPressed: onSendOtp,
-          ),
-        ],
+    /// 按钮样式
+    final ButtonStyle style = ButtonStyle(
+      padding: MaterialStateProperty.all<EdgeInsets>(
+        const EdgeInsets.only(right: 24),
+      ),
+    );
+
+    // 按钮文字
+    String text = isSending
+        ? '发送中...'
+        : timer == null
+            ? '发送验证码'
+            : '重新获取';
+    if (!isSending && counter > 0) {
+      text = '${counter}s';
+    }
+
+    // 事件
+    void Function()? onPressed;
+    if ((timer == null || !timer!.isActive) && !isSending) {
+      onPressed = onSendOtp;
+    }
+    final bool isSubmitting = context.select<_UserPhoneUpdateController, bool>(
+      (controller) => controller.isSubmitting,
+    );
+    if (isSubmitting) {
+      onPressed = null;
+    }
+
+    return TextButton(
+      child: Text(text),
+      style: style,
+      onPressed: onPressed,
     );
   }
 
+  String get phone => widget.isNewPhone
+      ? context.read<_UserPhoneUpdateController>().newPhoneController.text
+      : '';
+
   void onSendOtp() async {
+    if (isSending) return;
+    if (widget.isNewPhone && phone.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('请输入新手机号码'),
+        ),
+      );
+      return;
+    } else if (widget.isNewPhone && validateChinaPhone(phone) == false) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('请输入正确的手机号码'),
+        ),
+      );
+      return;
+    }
+
+    final request = StringValue();
+    if (widget.isNewPhone) {
+      request.value = chinaPhoneWrapper(phone);
+    }
+
     setState(() {
-      _isSending = true;
+      isSending = true;
     });
 
     try {
-      await VerificationCodeMutationClient(channel).send(
-        StringValue(),
-        options: store.read<AuthStore>()?.callOptions,
-      );
-      Navigator.of(context).pop<bool>(true);
+      await VerificationCodeMutationClient(channel)
+          .send(request, options: store.read<AuthStore>()?.callOptions);
+      createTimer();
     } catch (e) {
-      await showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('提示'),
-          content: Text(e is GrpcError ? e.message! : '未知错误'),
-          actions: [
-            TextButton(
-              child: const Text('确认'),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ],
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e is GrpcError ? e.message! : '发送验证码失败'),
         ),
       );
+    }
+
+    setState(() {
+      isSending = false;
+    });
+  }
+
+  void createTimer() {
+    // 清除旧的计时器
+    timer?.cancel();
+
+    // 设置新的计时周期单位秒
+    setState(() {
+      counter = 60;
+    });
+
+    // 创建新的计时器
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        counter--;
+      });
+
+      if (counter == 0) {
+        timer.cancel();
+      }
+    });
+  }
+}
+
+class _UpdateUserPhoneButton extends StatelessWidget {
+  const _UpdateUserPhoneButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final bool isSubmitting = context.select<_UserPhoneUpdateController, bool>(
+      (controller) => controller.isSubmitting,
+    );
+
+    final Widget child = isSubmitting
+        ? SizedBox(
+            width: 24,
+            height: 24,
+            child: CircularProgressIndicator(
+              color: Theme.of(context).colorScheme.onPrimary,
+              strokeWidth: 2,
+            ),
+          )
+        : const Text('修改');
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24).copyWith(
+        top: 36,
+      ),
+      child: ElevatedButton(
+        onPressed: () => onSubmit(context),
+        child: child,
+        style: ButtonStyle(
+          padding: MaterialStateProperty.all(
+              const EdgeInsets.symmetric(vertical: 12)),
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(100),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  onSubmit(BuildContext context) async {
+    final _UserPhoneUpdateController controller =
+        context.read<_UserPhoneUpdateController>();
+    controller.setIsSubmitting(true);
+    final String userId = context.store.read<AuthStore>()!.userId;
+
+    try {
+      final response = await UserMutationClient(channel).updatePhone(
+        controller.request,
+        options: context.store.read<AuthStore>()?.callOptions,
+      );
+      context.store.write<UserEntity>(
+        response,
+        where: (entity) => entity.id == userId,
+      );
       Navigator.of(context).pop();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e is GrpcError ? e.message! : '修改失败'),
+        ),
+      );
+      controller.setIsSubmitting(false);
     }
   }
 }

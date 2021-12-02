@@ -278,6 +278,9 @@ class _UpdateUserNicknameDialogState extends State<_UpdateUserNicknameDialog> {
       Navigator.of(context).pop();
     } catch (e) {
       showAlert(e.toString());
+      setState(() {
+        isSubmitting = false;
+      });
     }
   }
 
