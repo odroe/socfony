@@ -40,18 +40,18 @@ model AccessToken {
 }
 
 model User {
-  id               String             @id @db.Char(64)
-  name             String?            @unique @db.VarChar(199)
-  phone            String?            @unique @db.VarChar(199)
-  createdAt        DateTime           @default(now())
-  AccessToken      AccessToken[]
-  Moment           Moment[]
-  UserLikeOnMoment UserLikeOnMoment[]
-  UserProfile      UserProfile?
-  UserStarOnMoment UserStarOnMoment[]
-  Comment          Comment[]
-
+  id                  String                @id @db.Char(64)
+  name                String?               @unique @db.VarChar(199)
+  phone               String?               @unique @db.VarChar(199)
+  createdAt           DateTime              @default(now())
+  AccessToken         AccessToken[]
+  Comment             Comment[]
+  Moment              Moment[]
   UserCommentOnMoment UserCommentOnMoment[]
+  UserLikeOnMoment    UserLikeOnMoment[]
+  UserProfile         UserProfile?
+  UserStarOnMoment    UserStarOnMoment[]
+
   @@index([createdAt])
 }
 
@@ -70,16 +70,16 @@ model UserProfile {
 }
 
 model Moment {
-  id               String             @id @db.Char(64)
-  userId           String             @db.Char(64)
-  title            String?            @db.VarChar(199)
-  body             String?            @db.Text
-  media            Json?
-  User             User               @relation(fields: [userId], references: [id])
-  UserLikeOnMoment UserLikeOnMoment[]
-  UserStarOnMoment UserStarOnMoment[]
+  id                  String                @id @db.Char(64)
+  userId              String                @db.Char(64)
+  title               String?               @db.VarChar(199)
+  body                String?               @db.Text
+  media               Json?
+  User                User                  @relation(fields: [userId], references: [id])
   UserCommentOnMoment UserCommentOnMoment[]
-  
+  UserLikeOnMoment    UserLikeOnMoment[]
+  UserStarOnMoment    UserStarOnMoment[]
+
   @@index([userId])
 }
 
@@ -113,11 +113,11 @@ model Comment {
   id        String   @id @db.Char(64)
   body      String   @db.Text
   userId    String   @db.Char(64)
-  User      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
+  User      User     @relation(fields: [userId], references: [id])
 
-  @@index([userId])
   @@index([createdAt])
+  @@index([userId])
 }
 
 model UserCommentOnMoment {
