@@ -6,7 +6,6 @@ import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import { StringValue } from 'google-protobuf/google/protobuf/wrappers_pb';
 import { AccessTokenService } from 'src/access-token/access-token.service';
 import { formatPhoneToE164 } from 'src/shared';
-import { StorageService } from 'src/storage/storage.service';
 import { VerificationCodeService } from 'src/verification-code/verification-code.service';
 import { UserEntity, UserUpdatePhoneRequest } from '../protobuf/socfony_pb';
 import { UserService } from './user.service';
@@ -18,7 +17,6 @@ export class UserMutation {
     private readonly verificationCodeService: VerificationCodeService,
     private readonly userService: UserService,
     private readonly prisma: PrismaClient,
-    private readonly storageService: StorageService,
   ) {}
 
   @GrpcMethod()
@@ -129,46 +127,5 @@ export class UserMutation {
 
     // 返回用户信息
     return this.userService.createEntity(newUser).toObject();
-  }
-
-  @GrpcMethod()
-  async updateAvatar(
-    request: StringValue.AsObject,
-    metadata: Metadata,
-  ): Promise<Empty.AsObject> {
-    // 获取验证的用户
-    const { userId } = await this.accessTokenService.verifyWithMatadata(
-      metadata,
-    );
-
-    // 验证头像文件是否存在
-    const exists = await this.storageService.exists(
-      request.value,
-      (data): boolean => {
-        for (const key in data?.headers ?? {}) {
-          if (key.toLowerCase() === 'content-type') {
-            const value: string = data.headers[key];
-
-            return value.startsWith('image') && data?.statusCode === 200;
-          }
-        }
-
-        return false;
-      },
-    );
-    if (exists[request.value] !== true) {
-      throw new RpcException({
-        code: status.INVALID_ARGUMENT,
-        message: '头像文件不存在',
-      });
-    }
-
-    // 更新用户头像
-    await this.prisma.userProfile.update({
-      where: { userId },
-      data: { avatar: request.value },
-    });
-
-    return new Empty().toObject();
   }
 }
