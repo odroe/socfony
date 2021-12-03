@@ -203,16 +203,23 @@ message UserProfileEntity {
 }
 
 //-----------------------------------------------------------------------------
-// Storage
+// Storage Mutation/Query
+// Storage file create upload/download link.
 //-----------------------------------------------------------------------------
+
+// StorageMutation - Storage mutation service
 service StorageMutation {
+  // Create a upload link.
   rpc Create(CreateStorageLinkRequest) returns (google.protobuf.StringValue);
 }
 
+// StorageQuery - Storage query service
 service StorageQuery {
+  // Get a download link.
   rpc Get(GetStorageLinkRequest) returns (google.protobuf.StringValue);
 }
 
+// Storage image file types.
 enum StorageImageType {
   jpeg = 0;
   png = 1;
@@ -220,16 +227,19 @@ enum StorageImageType {
   webp = 3;
 }
 
+// Storage video file types.
 enum StorageVideoType {
   mp4 = 0;
   webm = 1;
 }
 
+// Storage audio file types.
 enum StorageAudioType {
   mp3 = 0;
   wav = 1;
 }
 
+// Create a upload link request.
 message CreateStorageLinkRequest {
   oneof type {
     StorageImageType image = 1;
@@ -241,6 +251,7 @@ message CreateStorageLinkRequest {
   int32 length = 5;
 }
 
+// Get a download link request.
 message GetStorageLinkRequest {
   string key = 1;
   optional string query = 2;
