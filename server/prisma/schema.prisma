@@ -7,24 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Configuration {
-  key   String @id @db.VarChar(199)
-  value Json
-}
-
-model VerificationCode {
-  id        String   @id @db.Char(64)
-  phone     String   @db.VarChar(199)
-  code      String   @db.VarChar(50)
-  createdAt DateTime @default(now())
-  expiredAt DateTime
-
-  @@unique([phone, code])
-  @@index([createdAt])
-  @@index([expiredAt])
-  @@index([phone])
-}
-
 model AccessToken {
   userId           String   @db.Char(64)
   createdAt        DateTime @default(now())
@@ -36,6 +18,36 @@ model AccessToken {
   @@index([createdAt])
   @@index([expiredAt])
   @@index([refreshExpiredAt])
+  @@index([userId])
+}
+
+model Comment {
+  id        String   @id @db.Char(64)
+  body      String   @db.Text
+  userId    String   @db.Char(64)
+  createdAt DateTime @default(now())
+  User      User     @relation(fields: [userId], references: [id])
+
+  @@index([createdAt])
+  @@index([userId])
+}
+
+model Configuration {
+  key   String @id @db.VarChar(199)
+  value Json
+}
+
+model Moment {
+  id                  String                @id @db.Char(64)
+  userId              String                @db.Char(64)
+  title               String?               @db.VarChar(199)
+  body                String?               @db.Text
+  media               Json?
+  User                User                  @relation(fields: [userId], references: [id])
+  UserCommentOnMoment UserCommentOnMoment[]
+  UserLikeOnMoment    UserLikeOnMoment[]
+  UserStarOnMoment    UserStarOnMoment[]
+
   @@index([userId])
 }
 
@@ -53,33 +65,20 @@ model User {
   UserStarOnMoment    UserStarOnMoment[]
 
   @@index([createdAt])
-}
-
-model UserProfile {
-  userId   String             @id @db.Char(64)
-  avatar   String?            @db.VarChar(199)
-  name     String?            @db.VarChar(100)
-  bio      String?            @db.Text
-  birthday Int?
-  gender   UserProfile_gender @default(unknown)
-  User     User               @relation(fields: [userId], references: [id])
-
-  @@index([birthday])
-  @@index([gender])
   @@index([name])
+  @@index([phone])
 }
 
-model Moment {
-  id                  String                @id @db.Char(64)
-  userId              String                @db.Char(64)
-  title               String?               @db.VarChar(199)
-  body                String?               @db.Text
-  media               Json?
-  User                User                  @relation(fields: [userId], references: [id])
-  UserCommentOnMoment UserCommentOnMoment[]
-  UserLikeOnMoment    UserLikeOnMoment[]
-  UserStarOnMoment    UserStarOnMoment[]
+model UserCommentOnMoment {
+  userId    String   @db.Char(64)
+  momentId  String   @db.Char(64)
+  createdAt DateTime @default(now())
+  Moment    Moment   @relation(fields: [momentId], references: [id])
+  User      User     @relation(fields: [userId], references: [id])
 
+  @@id([userId, momentId])
+  @@index([createdAt])
+  @@index([momentId])
   @@index([userId])
 }
 
@@ -96,6 +95,20 @@ model UserLikeOnMoment {
   @@index([userId])
 }
 
+model UserProfile {
+  userId   String             @id @db.Char(64)
+  avatar   String?            @db.VarChar(199)
+  name     String?            @db.VarChar(100)
+  bio      String?            @db.Text
+  birthday Int?
+  gender   UserProfile_gender @default(unknown)
+  User     User               @relation(fields: [userId], references: [id])
+
+  @@index([birthday])
+  @@index([gender])
+  @@index([name])
+}
+
 model UserStarOnMoment {
   userId    String   @db.Char(64)
   momentId  String   @db.Char(64)
@@ -109,28 +122,17 @@ model UserStarOnMoment {
   @@index([userId])
 }
 
-model Comment {
+model VerificationCode {
   id        String   @id @db.Char(64)
-  body      String   @db.Text
-  userId    String   @db.Char(64)
+  phone     String   @db.VarChar(199)
+  code      String   @db.VarChar(50)
   createdAt DateTime @default(now())
-  User      User     @relation(fields: [userId], references: [id])
+  expiredAt DateTime
 
+  @@unique([phone, code])
   @@index([createdAt])
-  @@index([userId])
-}
-
-model UserCommentOnMoment {
-  userId    String   @db.Char(64)
-  momentId  String   @db.Char(64)
-  createdAt DateTime @default(now())
-  Moment    Moment   @relation(fields: [momentId], references: [id])
-  User      User     @relation(fields: [userId], references: [id])
-
-  @@id([userId, momentId])
-  @@index([createdAt])
-  @@index([momentId])
-  @@index([userId])
+  @@index([expiredAt])
+  @@index([phone])
 }
 
 enum UserProfile_gender {
