@@ -22,6 +22,11 @@ class Store {
         where: where,
       );
 
+  void update<T>(T Function(T) update, {StoreWhere<T>? where}) => state.update(
+        update,
+        where: where,
+      );
+
   void delete<T>([StoreWhere<T>? where]) => state.delete<T>(where);
 
   R? select<T, R>(StoreSelector<T, R> selector, {StoreWhere<T>? where}) =>
