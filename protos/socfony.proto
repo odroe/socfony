@@ -7,6 +7,37 @@ import "google/protobuf/wrappers.proto";
 import "google/protobuf/timestamp.proto";
 
 ///-----------------------------------------------------------------------------
+/// Common messages
+///-----------------------------------------------------------------------------
+
+// Media type
+message Media {
+  oneof kink {
+    MediaImage image = 1;
+    MediaVideo video = 2;
+    MediaAudio audio = 3;
+  }
+}
+
+// Images media type
+message MediaImage {
+  repeated string key = 1;
+}
+
+// Video media type
+message MediaVideo {
+  string video = 1;
+  string cover = 2;
+}
+
+// Audio media type
+message MediaAudio {
+  string audio = 1;
+  optional string cover = 2;
+}
+
+
+///-----------------------------------------------------------------------------
 /// VerificationCodeMutatuion - Send a verification code to the user's phone
 ///-----------------------------------------------------------------------------
 service VerificationCodeMutation {
@@ -53,9 +84,9 @@ message AccessTokenEntity {
   google.protobuf.Timestamp refresh_expired_at = 4;
 }
 
-//-----------------------------------------------------------------------------
-// User Query/Mutation - User query and mutation services
-//-----------------------------------------------------------------------------
+///-----------------------------------------------------------------------------
+/// User Query/Mutation - User query and mutation services
+///-----------------------------------------------------------------------------
 
 // UserQuery - User query service
 service UserQuery {
@@ -142,9 +173,9 @@ message UserEntityList {
   repeated UserEntity users = 1;
 }
 
-//-----------------------------------------------------------------------------
-// User profile Query/Mutation - User profile query and mutation services
-//-----------------------------------------------------------------------------
+///-----------------------------------------------------------------------------
+/// User profile Query/Mutation - User profile query and mutation services
+///-----------------------------------------------------------------------------
 
 // UserProfileQuery - User profile query service
 service UserProfileQuery {
@@ -255,4 +286,74 @@ message CreateStorageLinkRequest {
 message GetStorageLinkRequest {
   string key = 1;
   optional string query = 2;
+}
+
+//-----------------------------------------------------------------------------
+// Moment Query/Mutation - Moment query and mutation services
+//-----------------------------------------------------------------------------
+
+// MomentQuery - Moment query service
+service MomentQuery {
+  // Find one moment
+  rpc FindOne(google.protobuf.StringValue) returns (MomentEntity);
+
+  // Find many moments
+  rpc FindMany(MomentFindManyRequest) returns (MomentEntityList);
+
+  // Search moments
+  rpc Search(google.protobuf.StringValue) returns (MomentEntityList);
+}
+
+// MomentMutation - Moment mutation service
+service MomentMutation {
+  // Create a moment
+  rpc Create(CreateMomentRequest) returns (MomentEntity);
+
+  // Delete a moment
+  rpc Delete(google.protobuf.StringValue) returns (google.protobuf.Empty);
+}
+
+// MomentFindManyRequest - Find many moment request
+message MomentFindManyRequest {
+  repeated string id = 1;
+}
+
+// Create a moment request.
+message CreateMomentRequest {
+  optional string title = 1;
+  optional string body = 2;
+  optional Media media = 3;
+}
+
+// MomentEntity - Moment entity
+message MomentEntity {
+  // Moment ID
+  string id = 1;
+
+  // Moment title
+  optional string title = 2;
+
+  // Moment body
+  optional string body = 3;
+
+  // Moment media
+  optional Media media = 4;
+
+  // Moment created at
+  google.protobuf.Timestamp created_at = 5;
+
+  // Moment publisher ID
+  string user_id = 6;
+
+  // Has liked
+  bool liked = 7;
+
+  // Has starred
+  bool starred = 8;
+}
+
+// MomentEntityList - Moment entity list
+message MomentEntityList {
+  // The moment entity list
+  repeated MomentEntity moments = 1;
 }
