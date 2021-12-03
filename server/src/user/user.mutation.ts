@@ -81,7 +81,10 @@ export class UserMutation {
     // 删除验证码
     this.verificationCodeService.delete(newPhoneCode.phone, newPhoneCode.code);
     if (oldPhoneCode) {
-      this.verificationCodeService.delete(oldPhoneCode.phone, oldPhoneCode.code);
+      this.verificationCodeService.delete(
+        oldPhoneCode.phone,
+        oldPhoneCode.code,
+      );
     }
 
     // 返回用户信息

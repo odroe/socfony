@@ -74,7 +74,14 @@ export class UserQuery {
 
     const users = await this.prisma.user.findMany({
       where: {
-        OR: [{ name: { contains: request.keyword } }],
+        OR: [
+          { name: { contains: request.keyword } },
+          {
+            Profile: {
+              name: { contains: request.keyword },
+            },
+          },
+        ],
       },
       take: request.limit || 15,
       skip: request.offset ?? 0,

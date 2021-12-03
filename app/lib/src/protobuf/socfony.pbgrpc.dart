@@ -382,3 +382,86 @@ abstract class UserProfileMutationServiceBase extends $grpc.Service {
   $async.Future<$2.UserProfileEntity> update(
       $grpc.ServiceCall call, $2.UserProfileUpdateRequest request);
 }
+
+class StorageMutationClient extends $grpc.Client {
+  static final _$create =
+      $grpc.ClientMethod<$2.CreateStorageLinkRequest, $0.StringValue>(
+          '/odroe.socfony.StorageMutation/Create',
+          ($2.CreateStorageLinkRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $0.StringValue.fromBuffer(value));
+
+  StorageMutationClient($grpc.ClientChannel channel,
+      {$grpc.CallOptions? options,
+      $core.Iterable<$grpc.ClientInterceptor>? interceptors})
+      : super(channel, options: options, interceptors: interceptors);
+
+  $grpc.ResponseFuture<$0.StringValue> create(
+      $2.CreateStorageLinkRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$create, request, options: options);
+  }
+}
+
+abstract class StorageMutationServiceBase extends $grpc.Service {
+  $core.String get $name => 'odroe.socfony.StorageMutation';
+
+  StorageMutationServiceBase() {
+    $addMethod($grpc.ServiceMethod<$2.CreateStorageLinkRequest, $0.StringValue>(
+        'Create',
+        create_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $2.CreateStorageLinkRequest.fromBuffer(value),
+        ($0.StringValue value) => value.writeToBuffer()));
+  }
+
+  $async.Future<$0.StringValue> create_Pre($grpc.ServiceCall call,
+      $async.Future<$2.CreateStorageLinkRequest> request) async {
+    return create(call, await request);
+  }
+
+  $async.Future<$0.StringValue> create(
+      $grpc.ServiceCall call, $2.CreateStorageLinkRequest request);
+}
+
+class StorageQueryClient extends $grpc.Client {
+  static final _$get =
+      $grpc.ClientMethod<$2.GetStorageLinkRequest, $0.StringValue>(
+          '/odroe.socfony.StorageQuery/Get',
+          ($2.GetStorageLinkRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $0.StringValue.fromBuffer(value));
+
+  StorageQueryClient($grpc.ClientChannel channel,
+      {$grpc.CallOptions? options,
+      $core.Iterable<$grpc.ClientInterceptor>? interceptors})
+      : super(channel, options: options, interceptors: interceptors);
+
+  $grpc.ResponseFuture<$0.StringValue> get($2.GetStorageLinkRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$get, request, options: options);
+  }
+}
+
+abstract class StorageQueryServiceBase extends $grpc.Service {
+  $core.String get $name => 'odroe.socfony.StorageQuery';
+
+  StorageQueryServiceBase() {
+    $addMethod($grpc.ServiceMethod<$2.GetStorageLinkRequest, $0.StringValue>(
+        'Get',
+        get_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $2.GetStorageLinkRequest.fromBuffer(value),
+        ($0.StringValue value) => value.writeToBuffer()));
+  }
+
+  $async.Future<$0.StringValue> get_Pre($grpc.ServiceCall call,
+      $async.Future<$2.GetStorageLinkRequest> request) async {
+    return get(call, await request);
+  }
+
+  $async.Future<$0.StringValue> get(
+      $grpc.ServiceCall call, $2.GetStorageLinkRequest request);
+}

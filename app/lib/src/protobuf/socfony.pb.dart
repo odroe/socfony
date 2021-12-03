@@ -1172,3 +1172,274 @@ class UserProfileEntity extends $pb.GeneratedMessage {
   @$pb.TagNumber(6)
   void clearGender() => clearField(6);
 }
+
+enum CreateStorageLinkRequest_Type { image, video, audio, notSet }
+
+class CreateStorageLinkRequest extends $pb.GeneratedMessage {
+  static const $core.Map<$core.int, CreateStorageLinkRequest_Type>
+      _CreateStorageLinkRequest_TypeByTag = {
+    1: CreateStorageLinkRequest_Type.image,
+    2: CreateStorageLinkRequest_Type.video,
+    3: CreateStorageLinkRequest_Type.audio,
+    0: CreateStorageLinkRequest_Type.notSet
+  };
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'CreateStorageLinkRequest',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'odroe.socfony'),
+      createEmptyInstance: create)
+    ..oo(0, [1, 2, 3])
+    ..e<StorageImageType>(
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'image',
+        $pb.PbFieldType.OE,
+        defaultOrMaker: StorageImageType.jpeg,
+        valueOf: StorageImageType.valueOf,
+        enumValues: StorageImageType.values)
+    ..e<StorageVideoType>(
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'video',
+        $pb.PbFieldType.OE,
+        defaultOrMaker: StorageVideoType.mp4,
+        valueOf: StorageVideoType.valueOf,
+        enumValues: StorageVideoType.values)
+    ..e<StorageAudioType>(
+        3,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'audio',
+        $pb.PbFieldType.OE,
+        defaultOrMaker: StorageAudioType.mp3,
+        valueOf: StorageAudioType.valueOf,
+        enumValues: StorageAudioType.values)
+    ..a<$core.List<$core.int>>(
+        4,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'hash',
+        $pb.PbFieldType.OY)
+    ..a<$core.int>(
+        5,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'length',
+        $pb.PbFieldType.O3)
+    ..hasRequiredFields = false;
+
+  CreateStorageLinkRequest._() : super();
+  factory CreateStorageLinkRequest({
+    StorageImageType? image,
+    StorageVideoType? video,
+    StorageAudioType? audio,
+    $core.List<$core.int>? hash,
+    $core.int? length,
+  }) {
+    final _result = create();
+    if (image != null) {
+      _result.image = image;
+    }
+    if (video != null) {
+      _result.video = video;
+    }
+    if (audio != null) {
+      _result.audio = audio;
+    }
+    if (hash != null) {
+      _result.hash = hash;
+    }
+    if (length != null) {
+      _result.length = length;
+    }
+    return _result;
+  }
+  factory CreateStorageLinkRequest.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory CreateStorageLinkRequest.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
+  CreateStorageLinkRequest clone() =>
+      CreateStorageLinkRequest()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  CreateStorageLinkRequest copyWith(
+          void Function(CreateStorageLinkRequest) updates) =>
+      super.copyWith((message) => updates(message as CreateStorageLinkRequest))
+          as CreateStorageLinkRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static CreateStorageLinkRequest create() => CreateStorageLinkRequest._();
+  CreateStorageLinkRequest createEmptyInstance() => create();
+  static $pb.PbList<CreateStorageLinkRequest> createRepeated() =>
+      $pb.PbList<CreateStorageLinkRequest>();
+  @$core.pragma('dart2js:noInline')
+  static CreateStorageLinkRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CreateStorageLinkRequest>(create);
+  static CreateStorageLinkRequest? _defaultInstance;
+
+  CreateStorageLinkRequest_Type whichType() =>
+      _CreateStorageLinkRequest_TypeByTag[$_whichOneof(0)]!;
+  void clearType() => clearField($_whichOneof(0));
+
+  @$pb.TagNumber(1)
+  StorageImageType get image => $_getN(0);
+  @$pb.TagNumber(1)
+  set image(StorageImageType v) {
+    setField(1, v);
+  }
+
+  @$pb.TagNumber(1)
+  $core.bool hasImage() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearImage() => clearField(1);
+
+  @$pb.TagNumber(2)
+  StorageVideoType get video => $_getN(1);
+  @$pb.TagNumber(2)
+  set video(StorageVideoType v) {
+    setField(2, v);
+  }
+
+  @$pb.TagNumber(2)
+  $core.bool hasVideo() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearVideo() => clearField(2);
+
+  @$pb.TagNumber(3)
+  StorageAudioType get audio => $_getN(2);
+  @$pb.TagNumber(3)
+  set audio(StorageAudioType v) {
+    setField(3, v);
+  }
+
+  @$pb.TagNumber(3)
+  $core.bool hasAudio() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearAudio() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.List<$core.int> get hash => $_getN(3);
+  @$pb.TagNumber(4)
+  set hash($core.List<$core.int> v) {
+    $_setBytes(3, v);
+  }
+
+  @$pb.TagNumber(4)
+  $core.bool hasHash() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearHash() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.int get length => $_getIZ(4);
+  @$pb.TagNumber(5)
+  set length($core.int v) {
+    $_setSignedInt32(4, v);
+  }
+
+  @$pb.TagNumber(5)
+  $core.bool hasLength() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearLength() => clearField(5);
+}
+
+class GetStorageLinkRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'GetStorageLinkRequest',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'odroe.socfony'),
+      createEmptyInstance: create)
+    ..aOS(
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'image')
+    ..aOS(
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'query')
+    ..hasRequiredFields = false;
+
+  GetStorageLinkRequest._() : super();
+  factory GetStorageLinkRequest({
+    $core.String? image,
+    $core.String? query,
+  }) {
+    final _result = create();
+    if (image != null) {
+      _result.image = image;
+    }
+    if (query != null) {
+      _result.query = query;
+    }
+    return _result;
+  }
+  factory GetStorageLinkRequest.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory GetStorageLinkRequest.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
+  GetStorageLinkRequest clone() =>
+      GetStorageLinkRequest()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  GetStorageLinkRequest copyWith(
+          void Function(GetStorageLinkRequest) updates) =>
+      super.copyWith((message) => updates(message as GetStorageLinkRequest))
+          as GetStorageLinkRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GetStorageLinkRequest create() => GetStorageLinkRequest._();
+  GetStorageLinkRequest createEmptyInstance() => create();
+  static $pb.PbList<GetStorageLinkRequest> createRepeated() =>
+      $pb.PbList<GetStorageLinkRequest>();
+  @$core.pragma('dart2js:noInline')
+  static GetStorageLinkRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<GetStorageLinkRequest>(create);
+  static GetStorageLinkRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get image => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set image($core.String v) {
+    $_setString(0, v);
+  }
+
+  @$pb.TagNumber(1)
+  $core.bool hasImage() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearImage() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get query => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set query($core.String v) {
+    $_setString(1, v);
+  }
+
+  @$pb.TagNumber(2)
+  $core.bool hasQuery() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearQuery() => clearField(2);
+}

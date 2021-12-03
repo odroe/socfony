@@ -206,11 +206,11 @@ message UserProfileEntity {
 // Storage
 //-----------------------------------------------------------------------------
 service StorageMutation {
-  rpc create(CreateStorageLinkRequest) returns (google.protobuf.StringValue);
+  rpc Create(CreateStorageLinkRequest) returns (google.protobuf.StringValue);
 }
 
 service StorageQuery {
-  rpc get(GetStorageLinkRequest) returns (google.protobuf.StringValue);
+  rpc Get(GetStorageLinkRequest) returns (google.protobuf.StringValue);
 }
 
 enum StorageImageType {
@@ -231,14 +231,17 @@ enum StorageAudioType {
 }
 
 message CreateStorageLinkRequest {
-  oneof kind {
+  oneof type {
     StorageImageType image = 1;
     StorageVideoType video = 2;
     StorageAudioType audio = 3;
   }
+
+  string md5 = 4;
+  int32 length = 5;
 }
 
 message GetStorageLinkRequest {
-  string image = 1;
+  string key = 1;
   optional string query = 2;
 }
