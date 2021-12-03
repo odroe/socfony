@@ -77,7 +77,7 @@ export class UserQuery {
         OR: [
           { name: { contains: request.keyword } },
           {
-            Profile: {
+            UserProfile: {
               name: { contains: request.keyword },
             },
           },
