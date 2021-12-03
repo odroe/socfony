@@ -76,6 +76,8 @@ service UserMutation {
 
   // Update user name.
   rpc UpdateName(google.protobuf.StringValue) returns (UserEntity);
+
+  // Update User avatar
 }
 
 // UserUpdatePhoneRequest - Request to update user phone number

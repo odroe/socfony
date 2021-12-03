@@ -17,6 +17,11 @@ class Store {
   void write<T>(T value, {StoreWhere<T>? where}) =>
       state.write(value, where: where);
 
+  void upsert<T>(T Function(T?) update, {StoreWhere<T>? where}) => state.upsert(
+        update,
+        where: where,
+      );
+
   void delete<T>([StoreWhere<T>? where]) => state.delete<T>(where);
 
   R? select<T, R>(StoreSelector<T, R> selector, {StoreWhere<T>? where}) =>

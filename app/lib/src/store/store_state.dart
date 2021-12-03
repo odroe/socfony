@@ -43,6 +43,10 @@ class StoreState with ChangeNotifier {
     notifyListeners();
   }
 
+  void upsert<T>(T Function(T?) update, {StoreWhere<T>? where}) {
+    write(update(read<T>(where)), where: where);
+  }
+
   void delete<T>([StoreWhere<T>? where]) {
     final Iterable<T> result = this.where<T>(where);
 
