@@ -202,3 +202,43 @@ message UserProfileEntity {
   optional Gender gender = 6;
 }
 
+//-----------------------------------------------------------------------------
+// Storage
+//-----------------------------------------------------------------------------
+service StorageMutation {
+  rpc create(CreateStorageLinkRequest) returns (google.protobuf.StringValue);
+}
+
+service StorageQuery {
+  rpc get(GetStorageLinkRequest) returns (google.protobuf.StringValue);
+}
+
+enum StorageImageType {
+  jpeg = 0;
+  png = 1;
+  gif = 2;
+  webp = 3;
+}
+
+enum StorageVideoType {
+  mp4 = 0;
+  webm = 1;
+}
+
+enum StorageAudioType {
+  mp3 = 0;
+  wav = 1;
+}
+
+message CreateStorageLinkRequest {
+  oneof kind {
+    StorageImageType image = 1;
+    StorageVideoType video = 2;
+    StorageAudioType audio = 3;
+  }
+}
+
+message GetStorageLinkRequest {
+  string image = 1;
+  optional string query = 2;
+}
