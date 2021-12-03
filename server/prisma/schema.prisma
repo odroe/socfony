@@ -48,7 +48,10 @@ model User {
   Moment           Moment[]
   UserLikeOnMoment UserLikeOnMoment[]
   UserProfile      UserProfile?
+  UserStarOnMoment UserStarOnMoment[]
+  Comment          Comment[]
 
+  UserCommentOnMoment UserCommentOnMoment[]
   @@index([createdAt])
 }
 
@@ -74,11 +77,50 @@ model Moment {
   media            Json?
   User             User               @relation(fields: [userId], references: [id])
   UserLikeOnMoment UserLikeOnMoment[]
-
+  UserStarOnMoment UserStarOnMoment[]
+  UserCommentOnMoment UserCommentOnMoment[]
+  
   @@index([userId])
 }
 
 model UserLikeOnMoment {
+  userId    String   @db.Char(64)
+  momentId  String   @db.Char(64)
+  createdAt DateTime @default(now())
+  Moment    Moment   @relation(fields: [momentId], references: [id])
+  User      User     @relation(fields: [userId], references: [id])
+
+  @@id([userId, momentId])
+  @@index([createdAt])
+  @@index([momentId])
+  @@index([userId])
+}
+
+model UserStarOnMoment {
+  userId    String   @db.Char(64)
+  momentId  String   @db.Char(64)
+  createdAt DateTime @default(now())
+  Moment    Moment   @relation(fields: [momentId], references: [id])
+  User      User     @relation(fields: [userId], references: [id])
+
+  @@id([userId, momentId])
+  @@index([createdAt])
+  @@index([momentId])
+  @@index([userId])
+}
+
+model Comment {
+  id        String   @id @db.Char(64)
+  body      String   @db.Text
+  userId    String   @db.Char(64)
+  User      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model UserCommentOnMoment {
   userId    String   @db.Char(64)
   momentId  String   @db.Char(64)
   createdAt DateTime @default(now())
