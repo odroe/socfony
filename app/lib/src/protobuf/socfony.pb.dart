@@ -1220,12 +1220,11 @@ class CreateStorageLinkRequest extends $pb.GeneratedMessage {
         defaultOrMaker: StorageAudioType.mp3,
         valueOf: StorageAudioType.valueOf,
         enumValues: StorageAudioType.values)
-    ..a<$core.List<$core.int>>(
+    ..aOS(
         4,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
-            : 'hash',
-        $pb.PbFieldType.OY)
+            : 'md5')
     ..a<$core.int>(
         5,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
@@ -1239,7 +1238,7 @@ class CreateStorageLinkRequest extends $pb.GeneratedMessage {
     StorageImageType? image,
     StorageVideoType? video,
     StorageAudioType? audio,
-    $core.List<$core.int>? hash,
+    $core.String? md5,
     $core.int? length,
   }) {
     final _result = create();
@@ -1252,8 +1251,8 @@ class CreateStorageLinkRequest extends $pb.GeneratedMessage {
     if (audio != null) {
       _result.audio = audio;
     }
-    if (hash != null) {
-      _result.hash = hash;
+    if (md5 != null) {
+      _result.md5 = md5;
     }
     if (length != null) {
       _result.length = length;
@@ -1330,16 +1329,16 @@ class CreateStorageLinkRequest extends $pb.GeneratedMessage {
   void clearAudio() => clearField(3);
 
   @$pb.TagNumber(4)
-  $core.List<$core.int> get hash => $_getN(3);
+  $core.String get md5 => $_getSZ(3);
   @$pb.TagNumber(4)
-  set hash($core.List<$core.int> v) {
-    $_setBytes(3, v);
+  set md5($core.String v) {
+    $_setString(3, v);
   }
 
   @$pb.TagNumber(4)
-  $core.bool hasHash() => $_has(3);
+  $core.bool hasMd5() => $_has(3);
   @$pb.TagNumber(4)
-  void clearHash() => clearField(4);
+  void clearMd5() => clearField(4);
 
   @$pb.TagNumber(5)
   $core.int get length => $_getIZ(4);
@@ -1368,7 +1367,7 @@ class GetStorageLinkRequest extends $pb.GeneratedMessage {
         1,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
-            : 'image')
+            : 'key')
     ..aOS(
         2,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
@@ -1378,12 +1377,12 @@ class GetStorageLinkRequest extends $pb.GeneratedMessage {
 
   GetStorageLinkRequest._() : super();
   factory GetStorageLinkRequest({
-    $core.String? image,
+    $core.String? key,
     $core.String? query,
   }) {
     final _result = create();
-    if (image != null) {
-      _result.image = image;
+    if (key != null) {
+      _result.key = key;
     }
     if (query != null) {
       _result.query = query;
@@ -1420,16 +1419,16 @@ class GetStorageLinkRequest extends $pb.GeneratedMessage {
   static GetStorageLinkRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get image => $_getSZ(0);
+  $core.String get key => $_getSZ(0);
   @$pb.TagNumber(1)
-  set image($core.String v) {
+  set key($core.String v) {
     $_setString(0, v);
   }
 
   @$pb.TagNumber(1)
-  $core.bool hasImage() => $_has(0);
+  $core.bool hasKey() => $_has(0);
   @$pb.TagNumber(1)
-  void clearImage() => clearField(1);
+  void clearKey() => clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get query => $_getSZ(1);
