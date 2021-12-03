@@ -146,6 +146,7 @@ export class StorageService {
 
   public async exists<T extends string>(
     key: T | readonly T[],
+    where?: (data?: COS.HeadObjectResult) => boolean,
   ): Promise<Record<T, boolean>> {
     const keys: string[] = Array.isArray(key) ? key : [key];
     const client = await this.client();
@@ -159,7 +160,11 @@ export class StorageService {
       };
       result[value] = await new Promise<boolean>((resolve) => {
         client.headObject(options, (err, data) => {
-          resolve(!err && data.statusCode !== 404);
+          if (where) {
+            return resolve(where(data));
+          }
+
+          resolve(!err && data.statusCode === 200);
         });
       });
     }
