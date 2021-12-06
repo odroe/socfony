@@ -12,28 +12,25 @@ import "google/protobuf/timestamp.proto";
 
 // Media type
 message Media {
-  oneof kink {
-    MediaImage image = 1;
-    MediaVideo video = 2;
-    MediaAudio audio = 3;
+  oneof kind {
+    Image image = 1;
+    Video video = 2;
+    Audio audio = 3;
   }
-}
 
-// Images media type
-message MediaImage {
-  repeated string key = 1;
-}
+  message Image {
+    repeated string key = 1;
+  }
 
-// Video media type
-message MediaVideo {
-  string video = 1;
-  string cover = 2;
-}
+  message Video {
+    string src = 1;
+    string poster = 2;
+  }
 
-// Audio media type
-message MediaAudio {
-  string audio = 1;
-  optional string cover = 2;
+  message Audio {
+    string src = 1;
+    optional string poster = 2;
+  }
 }
 
 
@@ -344,12 +341,6 @@ message MomentEntity {
 
   // Moment publisher ID
   string user_id = 6;
-
-  // Has liked
-  bool liked = 7;
-
-  // Has starred
-  bool starred = 8;
 }
 
 // MomentEntityList - Moment entity list

@@ -43,6 +43,7 @@ model Moment {
   title               String?               @db.VarChar(199)
   body                String?               @db.Text
   media               Json?
+  createdAt           DateTime              @default(now())
   User                User                  @relation(fields: [userId], references: [id])
   UserCommentOnMoment UserCommentOnMoment[]
   UserLikeOnMoment    UserLikeOnMoment[]
