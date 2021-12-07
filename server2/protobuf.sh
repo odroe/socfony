@@ -1,7 +1,7 @@
 #!/bin/bash
 
 BIN_DIR=$(dirname $0);
-PROTO_PATH=$BIN_DIR/../protos/socfony.proto;
+PROTO_PATH=$BIN_DIR/../protos;
 OUTPUT_DIR=$BIN_DIR/lib/src/protobuf;
 
 rm -rf $OUTPUT_DIR;
@@ -11,8 +11,8 @@ dart pub global activate protoc_plugin;
 
 protoc \
   --dart_out=grpc:${OUTPUT_DIR} \
-  -I$(dirname $PROTO_PATH) \
-    $PROTO_PATH \
+  -I$PROTO_PATH \
+    $PROTO_PATH/*.proto \
     google/protobuf/empty.proto \
     google/protobuf/wrappers.proto \
     google/protobuf/timestamp.proto \

@@ -1,6 +1,7 @@
 import 'package:grpc/grpc.dart';
-import 'package:server2/services/hello.service.dart';
+
+import 'verification_code/verification_code.service.dart';
 
 final List<Service> services = [
-  HelloService(),
+  VerificationCodeService(),
 ];
