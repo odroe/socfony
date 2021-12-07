@@ -348,3 +348,7 @@ message MomentEntityList {
   // The moment entity list
   repeated MomentEntity moments = 1;
 }
+
+service HelloService {
+  rpc SayHello(google.protobuf.StringValue) returns (google.protobuf.StringValue);
+}
