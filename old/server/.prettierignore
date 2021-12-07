@@ -1,6 +1,0 @@
-.git
-dist
-node_modules
-src/protobuf
-
-package-lock.json

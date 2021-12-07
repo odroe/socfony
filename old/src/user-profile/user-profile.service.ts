@@ -1,5 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { UserProfile_gender, PrismaClient, User, UserProfile } from '@prisma/client';
+import {
+  UserProfile_gender,
+  PrismaClient,
+  User,
+  UserProfile,
+} from '@prisma/client';
 import { UserProfileEntity } from 'src/protobuf/socfony_pb';
 
 @Injectable()
