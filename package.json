@@ -1,0 +1,20 @@
+{
+  "private": true,
+  "name": "@socfony/server",
+  "version": "1.0.0",
+  "description": "Socfony is an open source social application, and basic security modules and social function modules have been preset in the software. Whether it is to deploy Socfony directly or as a basis for program development is wonderful.",
+  "author": "Odroe Inc. <hello@odroe.com> (https://odroe.com/)",
+  "license": "BSD-3-Clause",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/socfony/server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/socfony/server/issues"
+  },
+  "homepage": "https://github.com/socfony/server#readme",
+  "devDependencies": {
+    "@nestjs/cli": "^8.1.5",
+    "typescript": "^4.5.2"
+  }
+}
