@@ -1,20 +1,34 @@
 {
-  "private": true,
   "name": "@socfony/server",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Socfony is an open source social application, and basic security modules and social function modules have been preset in the software. Whether it is to deploy Socfony directly or as a basis for program development is wonderful.",
   "author": "Odroe Inc. <hello@odroe.com> (https://odroe.com/)",
+  "private": true,
   "license": "BSD-3-Clause",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/socfony/server.git"
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "nest build",
+    "format": "prettier --write .",
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "start:debug": "nest start --debug --watch",
+    "start:prod": "node dist/main"
   },
-  "bugs": {
-    "url": "https://github.com/socfony/server/issues"
+  "dependencies": {
+    "@nestjs/common": "^8.0.0",
+    "@nestjs/core": "^8.0.0",
+    "@nestjs/platform-express": "^8.0.0",
+    "@prisma/client": "^3.6.0",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.2.0"
   },
-  "homepage": "https://github.com/socfony/server#readme",
   "devDependencies": {
-    "@nestjs/cli": "^8.1.5",
-    "typescript": "^4.5.2"
+    "@nestjs/cli": "^8.0.0",
+    "@nestjs/schematics": "^8.0.0",
+    "@types/node": "^16.0.0",
+    "prettier": "^2.3.2",
+    "prisma": "^3.6.0",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.3.5"
   }
 }
