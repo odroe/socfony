@@ -1,20 +1,17 @@
 import { Module } from '@nestjs/common';
-import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
-import { UsersModule } from './users/users.module';
+import { AccessTokenModule } from 'access_token/access_token.module';
+import { SharedModule } from 'shared/shared.module';
+import { UserModule } from 'user/user.module';
+import { VerificationCodeModule } from 'verification_code/verification_code.module';
+import { GraphQL } from './graphql/graphql.module';
 
 @Module({
   imports: [
-    GraphQLModule.forRoot({
-      autoSchemaFile: true,
-      installSubscriptionHandlers: false,
-      playground: false,
-      plugins: [
-        ApolloServerPluginLandingPageLocalDefault(),
-      ],
-      path: '/',
-    }),
-    UsersModule,
+    SharedModule,
+    GraphQL,
+    AccessTokenModule,
+    VerificationCodeModule,
+    UserModule,
   ],
 })
 export class AppModule {}
