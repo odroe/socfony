@@ -5,9 +5,7 @@ export const GraphQL = GraphQLModule.forRoot({
   autoSchemaFile: true,
   installSubscriptionHandlers: false,
   playground: false,
-  plugins: [
-    ApolloServerPluginLandingPageLocalDefault(),
-  ],
+  plugins: [ApolloServerPluginLandingPageLocalDefault()],
   path: '/',
   buildSchemaOptions: {
     dateScalarMode: 'isoDate',

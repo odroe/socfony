@@ -1,11 +1,11 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
   referentialIntegrity = "prisma"
 }
 
@@ -15,7 +15,6 @@ model AccessToken {
   expiredAt        DateTime
   refreshExpiredAt DateTime
   token            String   @id @db.Char(128)
-  User             User     @relation(fields: [userId], references: [id])
 
   @@index([createdAt])
   @@index([expiredAt])
@@ -28,7 +27,6 @@ model Comment {
   body      String   @db.Text
   userId    String   @db.Char(64)
   createdAt DateTime @default(now())
-  User      User     @relation(fields: [userId], references: [id])
 
   @@index([createdAt])
   @@index([userId])
@@ -40,32 +38,21 @@ model Configuration {
 }
 
 model Moment {
-  id                  String                @id @db.Char(64)
-  userId              String                @db.Char(64)
-  title               String?               @db.VarChar(199)
-  body                String?               @db.Text
-  media               Json?
-  createdAt           DateTime              @default(now())
-  User                User                  @relation(fields: [userId], references: [id])
-  UserCommentOnMoment UserCommentOnMoment[]
-  UserLikeOnMoment    UserLikeOnMoment[]
-  UserStarOnMoment    UserStarOnMoment[]
+  id        String   @id @db.Char(64)
+  userId    String   @db.Char(64)
+  title     String?  @db.VarChar(199)
+  body      String?  @db.Text
+  media     Json?
+  createdAt DateTime @default(now())
 
   @@index([userId])
 }
 
 model User {
-  id                  String                @id @db.Char(64)
-  name                String?               @unique @db.VarChar(199)
-  phone               String?               @unique @db.VarChar(199)
-  createdAt           DateTime              @default(now())
-  AccessToken         AccessToken[]
-  Comment             Comment[]
-  Moment              Moment[]
-  UserCommentOnMoment UserCommentOnMoment[]
-  UserLikeOnMoment    UserLikeOnMoment[]
-  UserProfile         UserProfile?
-  UserStarOnMoment    UserStarOnMoment[]
+  id        String   @id @db.Char(64)
+  name      String?  @unique @db.VarChar(199)
+  phone     String?  @unique @db.VarChar(199)
+  createdAt DateTime @default(now())
 
   @@index([createdAt])
   @@index([name])
@@ -76,8 +63,6 @@ model UserCommentOnMoment {
   userId    String   @db.Char(64)
   momentId  String   @db.Char(64)
   createdAt DateTime @default(now())
-  Moment    Moment   @relation(fields: [momentId], references: [id])
-  User      User     @relation(fields: [userId], references: [id])
 
   @@id([userId, momentId])
   @@index([createdAt])
@@ -89,8 +74,6 @@ model UserLikeOnMoment {
   userId    String   @db.Char(64)
   momentId  String   @db.Char(64)
   createdAt DateTime @default(now())
-  Moment    Moment   @relation(fields: [momentId], references: [id])
-  User      User     @relation(fields: [userId], references: [id])
 
   @@id([userId, momentId])
   @@index([createdAt])
@@ -105,7 +88,6 @@ model UserProfile {
   bio      String?            @db.Text
   birthday Int?
   gender   UserProfile_gender @default(unknown)
-  User     User               @relation(fields: [userId], references: [id])
 
   @@index([birthday])
   @@index([gender])
@@ -116,8 +98,6 @@ model UserStarOnMoment {
   userId    String   @db.Char(64)
   momentId  String   @db.Char(64)
   createdAt DateTime @default(now())
-  Moment    Moment   @relation(fields: [momentId], references: [id])
-  User      User     @relation(fields: [userId], references: [id])
 
   @@id([userId, momentId])
   @@index([createdAt])
