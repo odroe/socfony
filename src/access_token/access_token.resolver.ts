@@ -1,6 +1,14 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { PrismaClient } from '.prisma/client';
+import {
+  Args,
+  Mutation,
+  Parent,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { parsePhoneNumber } from 'libphonenumber-js';
 import { Auth } from 'shared/auth/auth.decorator';
+import { User } from 'user/entities/user.entity';
 import { VerificationCodeService } from 'verification_code/verification_code.service';
 import { AccessTokenService } from './access_token.service';
 import { CreateAccessTokenArgs } from './dto/create_access_token.args';
@@ -9,6 +17,7 @@ import { AccessToken } from './entities/access_token.entity';
 @Resolver(() => AccessToken)
 export class AccessTokenResolver {
   constructor(
+    private readonly prisma: PrismaClient,
     private readonly accessTokenService: AccessTokenService,
     private readonly verificationCodeService: VerificationCodeService,
   ) {}
@@ -39,6 +48,11 @@ export class AccessTokenResolver {
     this.accessTokenService.delete(accessToken);
 
     return true;
+  }
+
+  @ResolveField(() => User)
+  user(@Parent() { userId }: AccessToken) {
+    return this.prisma.user.findUnique({ where: { id: userId } });
   }
 
   private validatePhone(phone: string): string {
