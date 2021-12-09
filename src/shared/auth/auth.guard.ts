@@ -1,4 +1,9 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { context2request } from './auth.helper';
 
@@ -15,7 +20,7 @@ export class AuthGuard implements CanActivate {
       return true;
     }
 
-    return false;
+    throw new UnauthorizedException();
   }
 
   private expiredField(

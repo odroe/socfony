@@ -1,9 +1,4 @@
-import {
-  ArgsType,
-  Field,
-  Int,
-  registerEnumType,
-} from '@nestjs/graphql';
+import { ArgsType, Field, Int, registerEnumType } from '@nestjs/graphql';
 
 export enum MediaType {
   IMAGE_JPG = '.jpg',
@@ -26,4 +21,7 @@ export class CreateUploadMediaArgs {
 
   @Field(() => MediaType)
   type!: MediaType;
+
+  @Field(() => String)
+  md5!: string;
 }

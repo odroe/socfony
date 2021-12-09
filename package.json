@@ -22,6 +22,7 @@
     "@prisma/client": "^3.6.0",
     "apollo-server-core": "^3.5.0",
     "apollo-server-express": "^3.5.0",
+    "cos-nodejs-sdk-v5": "^2.11.4",
     "express": "^4.17.1",
     "graphql": "^15.8.0",
     "libphonenumber-js": "^1.9.44",
