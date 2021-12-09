@@ -3,7 +3,7 @@ import { ExecutionContext } from '@nestjs/common';
 
 declare module 'express' {
   export interface Request {
-    accessToken(context: ExecutionContext): Prisma<AccessToken>;
-    user(context: ExecutionContext): Prisma<User>;
+    accessToken(context: ExecutionContext): Promise<AccessToken | null>;
+    user(context: ExecutionContext): Promise<User | null>;
   }
 }

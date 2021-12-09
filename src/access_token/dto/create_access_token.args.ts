@@ -11,5 +11,5 @@ export class CreateAccessTokenArgs extends PickType(
   declare phone: string;
 
   @Field(() => String)
-  otp: string;
+  otp!: string;
 }

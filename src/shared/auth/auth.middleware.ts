@@ -25,25 +25,34 @@ export class AuthMiddleware implements NestMiddleware<Request> {
         return null;
       }
 
-      return this.prisma.accessToken.findUnique({
+      const result = await this.prisma.accessToken.findUnique({
         where: { token },
         rejectOnNotFound: false,
       });
+
+      request.accessToken = async () => result;
+
+      return result;
     };
   }
 
   private createUserFn(): (context: ExecutionContext) => Promise<User | null> {
     return async (context: ExecutionContext): Promise<User | null> => {
+      const request = context2request(context);
       const accessToken = await this.createAccessTokenFn().call(this, context);
 
       if (!accessToken) {
         return null;
       }
 
-      return this.prisma.user.findUnique({
+      const result = await this.prisma.user.findUnique({
         where: { id: accessToken.userId },
         rejectOnNotFound: false,
       });
+
+      request.user = async () => result;
+
+      return result;
     };
   }
 }

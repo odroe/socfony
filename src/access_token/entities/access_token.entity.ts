@@ -6,20 +6,20 @@ import { User } from 'user/entities/user.entity';
 @ObjectType()
 export class AccessToken implements $AccessToken {
   @Field(() => ID)
-  userId: string;
+  userId!: string;
 
   @Field(() => DateTime)
-  createdAt: Date;
+  createdAt!: Date;
 
   @Field(() => DateTime)
-  expiredAt: Date;
+  expiredAt!: Date;
 
   @Field(() => DateTime)
-  refreshExpiredAt: Date;
+  refreshExpiredAt!: Date;
 
   @Field(() => String)
-  token: string;
+  token!: string;
 
   @Field(() => User)
-  user: User;
+  user!: User;
 }

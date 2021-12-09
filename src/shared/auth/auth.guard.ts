@@ -11,7 +11,7 @@ export class AuthGuard implements CanActivate {
     const field = this.expiredField(context);
     const accessToken = await request.accessToken(context);
 
-    if (accessToken && accessToken[field] && accessToken[field] > Date.now()) {
+    if (accessToken && accessToken[field] && accessToken[field] > new Date()) {
       return true;
     }
 
@@ -20,12 +20,12 @@ export class AuthGuard implements CanActivate {
 
   private expiredField(
     context: ExecutionContext,
-  ): 'exporedAt' | 'refreshExpiredAt' {
+  ): 'expiredAt' | 'refreshExpiredAt' {
     return (
-      this.reflector.get<'exporedAt' | 'refreshExpiredAt'>(
+      this.reflector.get<'expiredAt' | 'refreshExpiredAt'>(
         'type',
         context.getHandler(),
-      ) ?? 'exporedAt'
+      ) ?? 'expiredAt'
     );
   }
 }
