@@ -11,4 +11,8 @@ export class Media {
 
   @Field(() => String)
   url!: string;
+
+  toString(): string {
+    return this.key;
+  }
 }

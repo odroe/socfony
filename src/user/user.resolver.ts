@@ -12,11 +12,14 @@ import { Auth } from 'shared/auth/auth.decorator';
 import { VerificationCodeService } from 'verification_code/verification_code.service';
 import { UserUpdatePhoneArgs } from './dto/user_update_phone.args';
 import { User } from './entities/user.entity';
+import { UserProfile } from './profile/entities/user_profile.entity';
+import { UserProfileService } from './profile/user_profile.service';
 
 @Resolver(() => User)
 export class UserResolver {
   constructor(
     private readonly verificationCodeService: VerificationCodeService,
+    private readonly userProfileService: UserProfileService,
     private readonly prisma: PrismaClient,
   ) {}
 
@@ -103,5 +106,10 @@ export class UserResolver {
     }
 
     return null;
+  }
+
+  @ResolveField(() => UserProfile)
+  profile(@Parent() user: User) {
+    return this.userProfileService.resolve(user);
   }
 }
