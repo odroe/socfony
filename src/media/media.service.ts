@@ -95,7 +95,7 @@ export class MediaService {
         Key: value,
       };
 
-      results[value] = await new Promise((resolve, reject) => {
+      results[value] = await new Promise((resolve) => {
         client.headObject(request, (err, data) => {
           if (where) {
             return resolve(where(data));
