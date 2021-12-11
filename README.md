@@ -30,6 +30,10 @@ Socfony 目前处于早期开发阶段，更多的开发计划请访问 [Socfony
    npm install
    ```
 2. 创建配置文件，将 `.env.example` 拷贝一份命名为 `.env`，并修改其中的 `DATABASE_URL`。
+   ```bash
+   DATABASE_URL="mysql://root@localhost:3306/socfony"
+   # 查看所有数据库驱动连接选项：https://www.prisma.io/docs/reference/database-reference/connection-urls
+   ```
 3. 创建数据表结构：
    ```bash
    npx prisma db push
