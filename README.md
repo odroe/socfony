@@ -1,12 +1,12 @@
 <a href="https://odroe.com">
-    <img align="right" width="120px" src="graphs/socfony.png" alt="Socfony Logo">
+  <img align="right" width="120px" src="graphs/socfony.png" alt="Socfony Logo">
 </a>
 
 # Socfony
+
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsocfony%2Fserver.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fsocfony%2Fserver?ref=badge_shield)
 
-
-Socfony 是一款**完全开源**的基础 App。程序中具有完备的社交功能，例如动态、圈子、好友、私信等。使用 Socfony 可以快速搭建一个社交 App，并且在此基础上添加功能也非常轻松。
+Socfony 是一款**完全开源**的应用程序。程序中具有完备的社交功能，例如动态、圈子、好友、私信等。使用 Socfony 可以快速搭建一个社交 App，并且在此基础上添加功能也非常轻松。
 
 - [**Socfony Server**](https://github.com/socfony/server) - Socfony 的 GraphQL 服务端
 - [**Socfony App**](https://github.com/socfony/app) - Socfony 使用 Flutter 的 App 实现
@@ -68,6 +68,3 @@ Socfony 使用 [Prisma ORM](https://prisma.io) 作为数据驱动，在默认的
 BSD 3-Clause License.
 
 Copyright (c) 2021, [Odroe Inc.](https://odroe.com) All rights reserved.
-
-
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsocfony%2Fserver.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fsocfony%2Fserver?ref=badge_large)
