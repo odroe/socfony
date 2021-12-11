@@ -4,14 +4,6 @@
 
 # Socfony
 
-<div align="center">
-    <a href="https://github.com/odroe/socfony">GitHub</a>
-    <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-    <a href="https://gitlab.com/odroe/socfony">GitLab</a>
-    <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-    <a href="https://gitee.com/odroe/socfony">Gitee</a>
-</div>
-
 Socfony 是一款**完全开源**的基础 App。程序中具有完备的社交功能，例如动态、圈子、好友、私信等。使用 Socfony 可以快速搭建一个社交 App，并且在此基础上添加功能也非常轻松。
 
 - [**Socfony Server**](https://github.com/socfony/server) - Socfony 的 GraphQL 服务端
@@ -67,7 +59,7 @@ Socfony 使用 [Prisma ORM](https://prisma.io) 作为数据驱动，在默认的
   /// ...
   ```
 
-> 只有 MySQL 5.7 及更新版本和 PostgreSQL 支持 `json` 类型，或者使用 MariaDB 数据库。驱动选择 `mysql`。
+> 只有 MySQL 5.7 及更新版本和 PostgreSQL 支持 `json` 类型；或者使用 MariaDB 数据库，驱动选择 `mysql`。
 
 ## License
 
