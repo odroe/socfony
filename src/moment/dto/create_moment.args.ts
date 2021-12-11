@@ -1,4 +1,8 @@
-import { ArgsType, Field, InputType, PickType } from '@nestjs/graphql';
+// Copyright (c) 2021, Odroe Inc. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+import { ArgsType, Field, PickType } from '@nestjs/graphql';
 import { MultiMediaInput } from 'media/dto/multi_media.input';
 import { Moment } from 'moment/entities/moment.entity';
 
