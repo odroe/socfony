@@ -17,12 +17,58 @@ Socfony 是一款**完全开源**的基础 App。程序中具有完备的社交�
 - [**Socfony Server**](https://github.com/socfony/server) - Socfony 的 GraphQL 服务端
 - [**Socfony App**](https://github.com/socfony/app) - Socfony 使用 Flutter 的 App 实现
 
-Socfony 服务端运行在 Node.js 环境下，Socfony 移动端 App 使用 Flutter 实现。
-客户端和服务端使用 GraphQL 进行数据交换。
-
 ## 发展路线
 
 Socfony 目前处于早期开发阶段，更多的开发计划请访问 [Socfony RFCs](https://github.com/socfony/rfcs)
+
+## 快速开始
+
+克隆 Socfony 服务端代码：`git clone https://github.com/socfony/server`。
+
+1. 安装依赖：
+
+```bash
+npm install
+```
+
+2. 创建配置文件，将 `.env.example` 拷贝一份命名为 `.env`，并修改其中的 `DATABASE_URL`。
+3. 创建数据表结构：
+
+```bash
+npx prisma db push
+```
+
+4. 运行：
+
+```bash
+npm run start:dev
+```
+
+## 数据库
+
+Socfony 使用 [Prisma ORM](https://prisma.io) 作为数据驱动，在默认的 Prisma Schema 中使用 MySQL 作为数据源，
+你可以通过编辑 `prisma/schema.prisma` 文件来更改其他数据库支持。
+
+当前支持的数据库:
+
+- MySQL(MariaDB) 5.7 或者更高版本
+  ```prisma
+  /// ...
+  datasource db {
+    provider = "mysql"
+  }
+  /// ...
+  ```
+- PostgreSQL
+  ```prisma
+  /// ...
+  datasource db {
+    provider = "postgresql"
+  }
+  /// ...
+  ```
+
+> 只有 MySQL 5.7 及更新版本和 PostgreSQL 支持 `json` 类型，或者使用 MariaDB 数据库。驱动选择 `mysql`。
 
 ## License
 
