@@ -1,7 +1,7 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Moment as $Moment, Prisma } from '@prisma/client';
 import { DateTime } from 'graphql/scalars/date_time.scalar';
-import { MultiMedia } from 'media/entities/multi_media';
+import { MultiMediaUnion } from 'media/unions/multi_media.union';
 import { User } from 'user/entities/user.entity';
 
 /**
@@ -38,7 +38,10 @@ export class Moment implements $Moment {
   /**
    * Moment media.
    */
-  @Field(() => [MultiMedia], { description: 'Moment image', nullable: true })
+  @Field(() => [MultiMediaUnion], {
+    description: 'Moment image',
+    nullable: 'itemsAndList',
+  })
   declare media: Prisma.JsonValue;
 
   /**

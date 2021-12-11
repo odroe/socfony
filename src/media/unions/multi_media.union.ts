@@ -1,9 +1,9 @@
 import { createUnionType } from '@nestjs/graphql';
-import { Media } from './media.entity';
-import { MediaAudio } from './media_audio.entity';
-import { MediaVideo } from './media_video.entity';
+import { Media } from '../entities/media.entity';
+import { MediaAudio } from '../entities/media_audio.entity';
+import { MediaVideo } from '../entities/media_video.entity';
 
-export const MultiMedia = createUnionType({
+export const MultiMediaUnion = createUnionType({
   name: 'MultiMedia',
   types: () => [Media, MediaAudio, MediaVideo],
   resolveType: (value) => {
