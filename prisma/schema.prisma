@@ -59,15 +59,15 @@ model User {
   @@index([phone])
 }
 
-model UserCommentOnMoment {
-  userId    String   @db.Char(64)
+model CommentOnMoment {
+  commentId String   @db.Char(64)
   momentId  String   @db.Char(64)
   createdAt DateTime @default(now())
 
-  @@id([userId, momentId])
+  @@id([commentId, momentId])
   @@index([createdAt])
   @@index([momentId])
-  @@index([userId])
+  @@index([commentId])
 }
 
 model UserLikeOnMoment {

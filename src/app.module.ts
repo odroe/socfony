@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AccessTokenModule } from 'access_token/access_token.module';
+import { CommentModule } from 'comment/comment.module';
 import { MediaModule } from 'media/media.module';
 import { MomentModule } from 'moment/moment.module';
 import { SharedModule } from 'shared/shared.module';
@@ -16,6 +17,7 @@ import { GraphQL } from './graphql/graphql.module';
     UserModule,
     MediaModule,
     MomentModule,
+    CommentModule,
   ],
 })
 export class AppModule {}

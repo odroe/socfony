@@ -1,6 +1,6 @@
-import { Field, InputType, Int, registerEnumType } from '@nestjs/graphql';
+import { Field, InputType, registerEnumType } from '@nestjs/graphql';
 
-enum MultiMediaItemType {
+export enum MultiMediaItemType {
   IMAGE,
   VIDEO,
   AUDIO,

@@ -1,5 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Moment as $Moment, Prisma } from '@prisma/client';
+import { Comment } from 'comment/entities/comment.entity';
 import { DateTime } from 'graphql/scalars/date_time.scalar';
 import { MultiMediaUnion } from 'media/unions/multi_media.union';
 import { User } from 'user/entities/user.entity';
@@ -55,4 +56,7 @@ export class Moment implements $Moment {
    */
   @Field(() => User, { description: 'Moment owner' })
   user!: User;
+
+  @Field(() => [Comment], { description: 'Moment comments' })
+  comments!: Comment[];
 }
