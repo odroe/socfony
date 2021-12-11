@@ -26,23 +26,18 @@ Socfony 目前处于早期开发阶段，更多的开发计划请访问 [Socfony
 克隆 Socfony 服务端代码：`git clone https://github.com/socfony/server`。
 
 1. 安装依赖：
-
-```bash
-npm install
-```
-
+   ```bash
+   npm install
+   ```
 2. 创建配置文件，将 `.env.example` 拷贝一份命名为 `.env`，并修改其中的 `DATABASE_URL`。
 3. 创建数据表结构：
-
-```bash
-npx prisma db push
-```
-
+   ```bash
+   npx prisma db push
+   ```
 4. 运行：
-
-```bash
-npm run start:dev
-```
+   ```bash
+   npm run start:dev
+   ```
 
 ## 数据库
 
