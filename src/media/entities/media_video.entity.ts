@@ -1,0 +1,22 @@
+import { Field, ObjectType } from '@nestjs/graphql';
+import { Media } from './media.entity';
+
+/**
+ * Media Video Entity
+ */
+@ObjectType({
+  description: 'Media Video Entity',
+})
+export class MediaVideo {
+  /**
+   * Video src.
+   */
+  @Field(() => Media, { description: 'Video media' })
+  video!: Media;
+
+  /**
+   * Video poster.
+   */
+  @Field(() => String, { description: 'Video poster' })
+  poster!: Media;
+}
