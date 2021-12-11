@@ -46,7 +46,7 @@ Socfony 使用 [Prisma ORM](https://prisma.io) 作为数据驱动，在默认的
 
 当前支持的数据库:
 
-- MySQL(MariaDB) 5.7 或者更高版本
+- MySQL 5.7+ 或者 MariaDB
   ```prisma
   /// ...
   datasource db {
