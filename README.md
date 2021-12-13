@@ -5,12 +5,12 @@
 # Socfony
 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsocfony%2Fserver.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fsocfony%2Fserver?ref=badge_shield)
-[![CodeQL](https://github.com/socfony/server/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/socfony/server/actions/workflows/codeql-analysis.yml)
+[![CodeQL](https://github.com/odroe/socfony-server/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/socfony/server/actions/workflows/codeql-analysis.yml)
 
 Socfony 是一款**完全开源**的应用程序。程序中具有完备的社交功能，例如动态、圈子、好友、私信等。使用 Socfony 可以快速搭建一个社交 App，并且在此基础上添加功能也非常轻松。
 
-- [**Socfony Server**](https://github.com/socfony/server) - Socfony 的 GraphQL 服务端
-- [**Socfony App**](https://github.com/socfony/app) - Socfony 使用 Flutter 的 App 实现
+- [**Socfony Server**](https://github.com/odroe/socfony-server) - Socfony 的 GraphQL 服务端
+- [**Socfony App**](https://github.com/odroe/socfony-app) - Socfony 使用 Flutter 的 App 实现
 
 ## 发展路线
 
@@ -18,7 +18,7 @@ Socfony 目前处于早期开发阶段，更多的开发计划请访问 [Socfony
 
 ## 快速开始
 
-克隆 Socfony 服务端代码：`git clone https://github.com/socfony/server`。
+克隆 Socfony 服务端代码：`git clone https://github.com/odroe/socfony-server`。
 
 1. 安装依赖：
    ```bash
