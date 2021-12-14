@@ -31,19 +31,17 @@ class Container {
   static Container? _instance;
 
   /// Create a new container.
-  const Container._()
-      : _singletons = const [],
-        _namedSingletons = const <String, dynamic>{};
+  const Container._();
 
   /// Create the container instance.
   factory Container() =>
       (_instance ??= const Container._())..registerSingleton(_instance);
 
   /// List of registered singletons.
-  final List<dynamic> _singletons;
+  static final List<dynamic> _singletons = [];
 
   /// Map of registered singletons by name.
-  final Map<String, dynamic> _namedSingletons;
+  static final Map<String, dynamic> _namedSingletons = {};
 
   /// Validate the singleton name.
   ///
@@ -86,7 +84,7 @@ class Container {
   /// [T] The type of the singleton.
   ///
   /// [name] The name of the singleton.
-  T get<T>(String? name) {
+  T get<T>([String? name]) {
     final T? result = _getIsInstanceOrNull<T>(name);
     if (result == null) {
       return _getIsCreator<T>(name);
@@ -131,7 +129,16 @@ class Container {
       return _namedSingletons[name] as T;
     }
 
-    return _singletons.firstWhere((object) => object is T, orElse: () => null)
-        as T;
+    final typeList = _singletons.whereType<T>();
+    if (typeList.isNotEmpty) {
+      return typeList.single;
+    }
+
+    final typedMapValues = _namedSingletons.values.whereType<T>();
+    if (typedMapValues.isNotEmpty) {
+      return typedMapValues.single;
+    }
+
+    return null;
   }
 }
