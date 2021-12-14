@@ -6,9 +6,9 @@
 typedef ContainerCreator<T> = T Function(Container);
 
 /// Singleton container.
-/// 
+///
 /// This class is used to create lazy containers.
-/// 
+///
 /// Example:
 /// ```dart
 /// final container = Container()
@@ -17,13 +17,13 @@ typedef ContainerCreator<T> = T Function(Container);
 ///   // Register a factory.
 ///   ..register<MyClass>(() => MyClass())
 /// ;
-/// 
+///
 /// // Get a singleton.
 /// final myClass = container.get<MyClass>();
-/// 
+///
 /// // The container has a self reference
 /// final container2 = container.get<Container>();
-/// 
+///
 /// print(container == container2); // true
 /// ```
 class Container {
@@ -31,12 +31,13 @@ class Container {
   static Container? _instance;
 
   /// Create a new container.
-  const Container._(): 
-    _singletons = const [],
-    _namedSingletons = const <String, dynamic>{};
+  const Container._()
+      : _singletons = const [],
+        _namedSingletons = const <String, dynamic>{};
 
   /// Create the container instance.
-  factory Container() => (_instance ??= const Container._())..registerSingleton(_instance);
+  factory Container() =>
+      (_instance ??= const Container._())..registerSingleton(_instance);
 
   /// List of registered singletons.
   final List<dynamic> _singletons;
@@ -45,9 +46,9 @@ class Container {
   final Map<String, dynamic> _namedSingletons;
 
   /// Validate the singleton name.
-  /// 
+  ///
   /// [name] The name to validate.
-  /// 
+  ///
   /// Throws [ArgumentError] if the name is not valid.
   String? _validateName(String? name) {
     if (name != null && name.isEmpty) {
@@ -58,18 +59,19 @@ class Container {
   }
 
   /// Register a singleton using a factory.
-  /// 
+  ///
   /// [creator] The factory to create the singleton.
-  /// 
+  ///
   /// [name] The name of the singleton.
-  void register<T>(ContainerCreator<T> creator, { String? name }) => registerSingleton(creator, name: name);
+  void register<T>(ContainerCreator<T> creator, {String? name}) =>
+      registerSingleton(creator, name: name);
 
   /// Register a singleton.
-  /// 
+  ///
   /// [singleton] The singleton to register.
-  /// 
+  ///
   /// [name] The name of the singleton.
-  void registerSingleton<T>(T instance, { String? name }) {
+  void registerSingleton<T>(T instance, {String? name}) {
     final String? validatedName = _validateName(name);
     if (validatedName != null) {
       _namedSingletons[name!] = instance;
@@ -80,9 +82,9 @@ class Container {
   }
 
   /// Get a singleton.
-  /// 
+  ///
   /// [T] The type of the singleton.
-  /// 
+  ///
   /// [name] The name of the singleton.
   T get<T>(String? name) {
     final T? result = _getIsInstanceOrNull<T>(name);
@@ -94,11 +96,11 @@ class Container {
   }
 
   /// Get a singletion is creator.
-  /// 
+  ///
   /// [T] The type of the singleton.
-  /// 
+  ///
   /// [name] The name of the singleton.
-  /// 
+  ///
   /// Throws [ArgumentError] if the name is not valid.
   T _getIsCreator<T>(String? name) {
     final ContainerCreator<T>? creator = _getIsCreatorOrNull<T>(name);
@@ -113,14 +115,15 @@ class Container {
   }
 
   /// Get Creator or null.
-  /// 
+  ///
   /// [T] The type of the singleton.
-  /// 
+  ///
   /// [name] The name of the singleton.
-  ContainerCreator<T>? _getIsCreatorOrNull<T>(String? name) => _getIsInstanceOrNull<ContainerCreator<T>>(name);
+  ContainerCreator<T>? _getIsCreatorOrNull<T>(String? name) =>
+      _getIsInstanceOrNull<ContainerCreator<T>>(name);
 
   /// Get a singleton is instance.
-  /// 
+  ///
   /// [T] The type of the singleton.
   T? _getIsInstanceOrNull<T>(String? name) {
     final String? validatedName = _validateName(name);
@@ -128,6 +131,7 @@ class Container {
       return _namedSingletons[name] as T;
     }
 
-    return _singletons.firstWhere((object) => object is T, orElse: () => null) as T;
+    return _singletons.firstWhere((object) => object is T, orElse: () => null)
+        as T;
   }
 }
