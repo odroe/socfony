@@ -1,4 +1,6 @@
-node_modules
-dist
-# Keep environment variables out of version control
-.env
+# Files and directories created by pub.
+.dart_tool/
+.packages
+
+# Conventional directory for build output.
+build/
