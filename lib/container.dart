@@ -15,7 +15,7 @@ typedef ContainerCreator<T> = T Function(Container);
 ///   // Register a singleton.
 ///   ..registerSingleton<MyClass>(MyClass())
 ///   // Register a factory.
-///   ..register<MyClass>(() => MyClass())
+///   ..register<MyClass2>(() => MyClass2())
 /// ;
 ///
 /// // Get a singleton.
@@ -93,6 +93,18 @@ class Container {
     return result;
   }
 
+  /// Get a singleton.
+  ///
+  /// [T] The type of the singleton.
+  ///
+  /// [name] The name of the singleton.
+  T call<T>([String? name]) => get<T>(name);
+
+  /// Register a factory.
+  ///
+  /// [creator] The factory to create the singleton.
+  operator +(ContainerCreator creator) => register(creator);
+
   /// Get a singletion is creator.
   ///
   /// [T] The type of the singleton.
@@ -125,15 +137,19 @@ class Container {
   /// [T] The type of the singleton.
   T? _getIsInstanceOrNull<T>(String? name) {
     final String? validatedName = _validateName(name);
-    if (validatedName != null) {
-      return _namedSingletons[name] as T;
+    if (validatedName != null &&
+        _namedSingletons.containsKey(validatedName) &&
+        _namedSingletons[validatedName] is T) {
+      return _namedSingletons[name];
     }
 
+    // Get singletions by type.
     final typeList = _singletons.whereType<T>();
     if (typeList.isNotEmpty) {
       return typeList.single;
     }
 
+    // Get singletions by name in named singletons.
     final typedMapValues = _namedSingletons.values.whereType<T>();
     if (typedMapValues.isNotEmpty) {
       return typedMapValues.single;

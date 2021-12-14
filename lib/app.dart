@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file.
 
 import 'container.dart';
-import 'database_connection_pool.dart';
+import 'database/connection_pool.dart';
 import 'options.dart';
 
 class App {
@@ -16,25 +16,24 @@ class App {
 
   factory App(List<String> arguments) {
     if (_isRegistered == false) {
-      Container().register(_factory(arguments), name: 'app');
+      Container() + _factory(arguments);
       _isRegistered = true;
     }
 
-    return Container().get<App>();
+    return Container()<App>();
   }
 
   static ContainerCreator<App> _factory(List<String> arguments) =>
       (Container container) => App._(container, arguments).._onDependencies();
 
-  void run() {
+  void call() {
     print(
-      container.get<Options>().database,
+      container<Options>().database,
     );
   }
 
   void _onDependencies() {
-    container.register((container) => Options.fromArguments(arguments));
-    container.register((container) =>
-        DatabaseConnectionPool.fromString(container.get<Options>().database));
+    container + (_) => Options.fromArguments(arguments);
+    container + ($) => DatabaseConnectionPool.fromString($<Options>().database);
   }
 }

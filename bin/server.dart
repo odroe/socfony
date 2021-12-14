@@ -4,4 +4,4 @@
 
 import 'package:server/app.dart';
 
-void main(List<String> arguments) => App(arguments).run();
+void main(List<String> arguments) => App(arguments).call();
