@@ -3,7 +3,7 @@
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
-root_dir=$(dirname $0)/..;       # root directory of the project
+root_dir=$(dirname $0)/..;        # root directory of the project
 protos_dir=$root_dir/protos;      # directory containing the protos
 output_dir=$root_dir/lib/protos;  # directory to output the generated files
 
