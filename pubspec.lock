@@ -8,13 +8,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.6"
-  args:
-    dependency: "direct main"
-    description:
-      name: args
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.3.0"
   async:
     dependency: transitive
     description:
@@ -152,6 +145,13 @@ packages:
     dependency: transitive
     description:
       name: saslprep
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
+  single:
+    dependency: "direct main"
+    description:
+      name: single
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"

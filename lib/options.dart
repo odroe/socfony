@@ -1,7 +1,7 @@
-import 'package:args/args.dart';
+import 'dart:io';
 
 class Options {
-  const Options({
+  const Options._({
     required this.database,
     required this.port,
   });
@@ -9,15 +9,19 @@ class Options {
   final String database;
   final int port;
 
-  factory Options.fromArguments(List<String> arguments) {
-    final parser = ArgParser()
-      ..addOption('database', abbr: 'd', help: 'The path to the database.')
-      ..addOption('port',
-          abbr: 'p', help: 'The port to listen on.', defaultsTo: '8080');
-    final results = parser.parse(arguments);
-    return Options(
-      database: results['database'],
-      port: int.parse(results['port']),
+  factory Options.fromEnvironment() {
+    final String? database = Platform.environment['SOCFONY_DATABASE'];
+    final int port = Platform.environment['SOCFONY_PORT'] != null
+        ? int.tryParse(Platform.environment['SOCFONY_PORT']!) ?? 8080
+        : 8080;
+
+    if (database == null || database.isEmpty) {
+      throw Exception('SOCFONY_DATABASE environment variable is required');
+    }
+
+    return Options._(
+      database: database,
+      port: port,
     );
   }
 }
