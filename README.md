@@ -1,49 +1,35 @@
-A server app built using [Shelf](https://pub.dev/packages/shelf),
-configured to enable running with [Docker](https://www.docker.com/).
+Socfony 是一款完全开源的应用程序。程序中具有完备的社交功能，例如动态、圈子、好友、私信等。使用 Socfony 可以快速搭建一个社交 App，并且在此基础上添加功能也非常轻松。
 
-This sample code handles HTTP GET requests to `/` and `/echo/<message>`
+## 快速开始
 
-# Running the sample
-
-## Running with the Dart SDK
-
-You can run the example with the [Dart SDK](https://dart.dev/get-dart)
-like this:
-
-```
-$ dart run bin/server.dart
-Server listening on port 8080
+下载当前仓库代码:
+```sh
+git clone https://github.com/socfony/server
 ```
 
-And then from a second terminal:
-```
-$ curl http://0.0.0.0:8080
-Hello, World!
-$ curl http://0.0.0.0:8080/echo/I_love_Dart
-I_love_Dart
+### 安装依赖
+
+```sh
+dart pub get
 ```
 
-## Running with Docker
+### 启动服务
 
-If you have [Docker Desktop](https://www.docker.com/get-started) installed, you
-can build and run with the `docker` command:
-
-```
-$ docker build . -t myserver
-$ docker run -it -p 8080:8080 myserver
-Server listening on port 8080
+```sh
+dart run bin/server.dart
 ```
 
-And then from a second terminal:
-```
-$ curl http://0.0.0.0:8080
-Hello, World!
-$ curl http://0.0.0.0:8080/echo/I_love_Dart
-I_love_Dart
+## 使用 Docker 运行
+
+```sh
+docker build . -t socfony
+docker run -it -p 8080:8080 socfony
 ```
 
-You should see the logging printed in the first terminal:
-```
-2021-05-06T15:47:04.620417  0:00:00.000158 GET     [200] /
-2021-05-06T15:47:08.392928  0:00:00.001216 GET     [200] /echo/I_love_Dart
+## 开发
+
+如果你需要在程序中进行开发，并期望监听更改的文件，文件更改后自动重启服务。请使用下面命令：
+
+```sh
+dart run bin/dev.watch.dart
 ```

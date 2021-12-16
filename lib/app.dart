@@ -2,25 +2,40 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+import 'dart:io';
+
+import 'package:grpc/grpc.dart';
+import 'package:server/services.dart';
 import 'package:single/single.dart';
 
+import 'codec_registry.dart';
 import 'database/connection_pool.dart';
-import 'options.dart';
+import 'interceptors.dart';
+import 'configuration.dart';
 
-class App {
-  const App._();
+class App extends Server {
+  App._() : super(services, interceptors, codecRegistry);
 
   factory App() => App._().._onDependencies();
 
-  void run() {
-    // print(single<Options>());
-    print(2222222);
+  void run() async {
+    final address = InternetAddress.anyIPv4;
+    final port = single<Configuration>().port;
+
+    await serve(
+      address: address,
+      port: port,
+    );
+
+    print('Socfony Server listening on $port port for $address');
   }
 
   void _onDependencies() {
     single + () => this;
-    single + Options.fromEnvironment;
+    single + () => Configuration();
     single +
-        () => DatabaseConnectionPool.fromString(single<Options>().database);
+        () => DatabaseConnectionPool.fromString(
+              single<Configuration>().database,
+            );
   }
 }
