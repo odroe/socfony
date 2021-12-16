@@ -29,7 +29,7 @@
     "nanoid": "^3.1.30",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
-    "tencentcloud-sdk-nodejs": "^4.0.257"
+    "tencentcloud-sdk-nodejs": "^4.0.258"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.1.6",
