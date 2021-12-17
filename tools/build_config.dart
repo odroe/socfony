@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:yaml/yaml.dart';
 
 main() {
-  final Uri path = Platform.script.resolve('..').resolve('socfony.yml');
+  final Uri path = Platform.script.resolve('..').resolve('.socfony.yml');
   final String yaml = File(path.toFilePath()).readAsStringSync();
   final dynamic data = json.decode(json.encode(loadYaml(yaml)));
 
