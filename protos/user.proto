@@ -5,11 +5,13 @@
 syntax = "proto3";
 package com.socfony;
 
-// import "google/protobuf/wrappers.proto";
+import "google/protobuf/wrappers.proto";
 import "google/protobuf/timestamp.proto";
 
 service UserService {
     rpc FindUnique(UserFindUniqueRequest) returns (UserResponse);
+    rpc FindMany(UserFindManyRequest) returns (UserListResponse);
+    rpc Search(google.protobuf.StringValue) returns (UserListResponse);
 }
 
 message UserFindUniqueRequest {
@@ -20,9 +22,17 @@ message UserFindUniqueRequest {
     }
 }
 
+message UserFindManyRequest {
+    repeated UserFindUniqueRequest where = 1;
+}
+
 message UserResponse {
     string id = 1;
     string name = 2;
     string phone = 3;
     google.protobuf.Timestamp created_at = 4;
+}
+
+message UserListResponse {
+    repeated UserResponse users = 1;
 }
