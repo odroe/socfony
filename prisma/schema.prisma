@@ -1,0 +1,41 @@
+// Copyright (c) 2021, Odroe Inc. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+generator client {
+  provider = "echo \"Empty\""
+  previewFeatures = ["referentialIntegrity"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
+}
+
+model AccessToken {
+  user_id           String   @db.Char(64)
+  created_at        DateTime @default(now())
+  expired_at        DateTime
+  refresh_expired_at DateTime
+  token            String   @id @db.Char(128)
+
+  @@map("access_tokens")
+  @@index([user_id])
+  @@index([created_at])
+  @@index([expired_at])
+  @@index([refresh_expired_at])
+}
+
+model VerificationCode {
+  phone String
+  code String
+  created_at DateTime @default(now()) @db.Timestamptz()
+  expired_at DateTime @db.Timestamptz()
+
+  @@map("verification_codes")
+  @@id([phone, code])
+  @@index([phone])
+  @@index([code])
+  @@index([expired_at])
+}

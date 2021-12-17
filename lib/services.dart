@@ -4,4 +4,8 @@
 
 import 'package:grpc/grpc.dart';
 
-const List<Service> services = <Service>[];
+import 'services/verification_code.service.dart';
+
+final List<Service> services = <Service>[
+  VerificationCodeService(),
+];

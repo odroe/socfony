@@ -25,13 +25,13 @@ class App {
 
     await server.serve(
       address: address,
-      port: 8090,
+      port: port,
     );
 
     print('Socfony Server listening on $port port for $address');
   }
 
-  Future<void> close() => single<Server>().shutdown();
+  Future<void> close() async => await single<Server>().shutdown();
 
   void _onDependencies() {
     single + () => this;
