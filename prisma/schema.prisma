@@ -3,39 +3,53 @@
 // license that can be found in the LICENSE file.
 
 generator client {
-  provider = "echo \"Empty\""
+  provider        = "echo \"Empty\""
   previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider             = "postgresql"
+  url                  = env("DATABASE_URL")
   referentialIntegrity = "prisma"
 }
 
 model AccessToken {
-  user_id           String   @db.Char(64)
-  created_at        DateTime @default(now())
-  expired_at        DateTime
+  token              String    @id @db.Char(128)
+  user_id            String    @db.Char(64)
+  created_at         DateTime  @default(now())
+  expired_at         DateTime
   refresh_expired_at DateTime
-  token            String   @id @db.Char(128)
+  has_refreshed      Boolean @default(false)
 
-  @@map("access_tokens")
   @@index([user_id])
   @@index([created_at])
   @@index([expired_at])
+  @@index([has_refreshed])
   @@index([refresh_expired_at])
+  @@map("access_tokens")
 }
 
 model VerificationCode {
-  phone String
-  code String
-  created_at DateTime @default(now()) @db.Timestamptz()
-  expired_at DateTime @db.Timestamptz()
+  phone      String
+  code       String
+  created_at DateTime @default(now()) @db.Timestamptz
+  expired_at DateTime @db.Timestamptz
 
-  @@map("verification_codes")
   @@id([phone, code])
   @@index([phone])
   @@index([code])
   @@index([expired_at])
+  @@map("verification_codes")
+}
+
+model User {
+  id         String   @id @db.Char(64)
+  name       String?  @unique @db.VarChar(199)
+  phone      String?  @unique @db.VarChar(199)
+  created_at DateTime @default(now())
+
+  @@index([created_at])
+  @@index([name])
+  @@index([phone])
+  @@map("users")
 }

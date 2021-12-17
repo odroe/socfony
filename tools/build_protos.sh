@@ -11,6 +11,7 @@ output_dir=$root_dir/lib/protos;  # directory to output the generated files
 imports=(
     google/protobuf/empty.proto
     google/protobuf/wrappers.proto
+    google/protobuf/timestamp.proto
 );
 
 # Clean the output directory

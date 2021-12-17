@@ -5,6 +5,7 @@
 import 'dart:io';
 
 import 'package:grpc/grpc.dart';
+import 'package:server/auth.dart';
 import 'package:single/single.dart';
 
 import 'codec_registry.dart';
@@ -38,6 +39,7 @@ class App {
     single + () => Configuration();
     single + _createDatabaseConnectionPool();
     single + createServer();
+    single + Auth.fromSingle;
   }
 
   Server Function() createServer() =>
