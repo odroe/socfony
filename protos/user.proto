@@ -1,0 +1,28 @@
+// Copyright (c) 2021, Odroe Inc. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+syntax = "proto3";
+package com.socfony;
+
+// import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
+
+service UserService {
+    rpc FindOne(UserFindOneRequest) returns (UserResponse);
+}
+
+message UserFindOneRequest {
+    oneof kind {
+        string id = 1;
+        string name = 2;
+        string phone = 3;
+    }
+}
+
+message UserResponse {
+    string id = 1;
+    string name = 2;
+    string phone = 3;
+    google.protobuf.Timestamp created_at = 4;
+}

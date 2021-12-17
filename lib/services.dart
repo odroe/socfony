@@ -5,9 +5,11 @@
 import 'package:grpc/grpc.dart';
 
 import 'services/access_token.service.dart';
+import 'services/user.service.dart';
 import 'services/verification_code.service.dart';
 
 final List<Service> services = <Service>[
   AccessTokenService(),
   VerificationCodeService(),
+  UserService(),
 ];
