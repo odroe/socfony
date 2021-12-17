@@ -1,4 +1,4 @@
-database: postgresql://seven@localhost:5432/socfony
+database: postgresql://user:password@host:port/database
 port: 8080
 tencent_cloud_sms:
   app_id: 'your app id'

@@ -64,7 +64,7 @@ List<String> build(Map<String, dynamic> data, List<String> classes) {
     } else if (value is List) {
       lines.add('  final List<dynamic> $name = const ${json.encode(value)};');
     } else {
-      final _v = value is String ? '"$value"' : value;
+      final _v = value is String ? 'r"$value"' : value;
       lines.add('  final ${value.runtimeType} $name = $_v;');
     }
   }
