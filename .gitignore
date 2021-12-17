@@ -4,5 +4,6 @@
 .socfony.yml
 
 lib/configuration.dart
+lib/protos
 build
 node_modules
