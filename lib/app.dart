@@ -5,13 +5,13 @@
 import 'dart:io';
 
 import 'package:grpc/grpc.dart';
-import 'package:server/services.dart';
 import 'package:single/single.dart';
 
 import 'codec_registry.dart';
 import 'database/connection_pool.dart';
 import 'interceptors.dart';
 import 'configuration.dart';
+import 'services.dart';
 
 class App extends Server {
   App._() : super(services, interceptors, codecRegistry);
@@ -24,7 +24,7 @@ class App extends Server {
 
     await serve(
       address: address,
-      port: port,
+      port: 8090,
     );
 
     print('Socfony Server listening on $port port for $address');
