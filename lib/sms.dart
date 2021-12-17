@@ -1,25 +1,68 @@
+// Copyright (c) 2021, Odroe Inc. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 import 'package:easysms/easysms.dart';
+import 'package:single/single.dart';
 
-class VerificationCodeMessage extends Message {
-  @override
-  // TODO: implement content
-  String get content => throw UnimplementedError();
+import 'configuration.dart';
+import 'helpers/string.helper.dart';
+
+class SMS extends Message {
+  static TencentCloudGeteway Function() get fromSingle => () {
+        final options = single<Configuration>().tencentCloudSms;
+
+        return TencentCloudGeteway(
+          appId: options.appId,
+          secretId: options.secretId,
+          secretKey: options.secretKey,
+        );
+      };
+
+  SMS(this.phone) : code = StringHelper.numeric(6) {
+    try {
+      single<TencentCloudGeteway>();
+    } catch (e) {
+      single + fromSingle;
+    }
+  }
+
+  final String phone;
+  final String code;
+
+  int get minute => 5;
 
   @override
-  // TODO: implement data
-  List<String> get data => throw UnimplementedError();
+  String get content => code;
 
   @override
-  Future<void> initialize() {
-    // TODO: implement initialize
-    throw UnimplementedError();
+  List<String> get data {
+    final params = single<Configuration>().tencentCloudSms.templateParam;
+
+    return params.map<String>((element) {
+      final result = element.toString();
+
+      switch (result) {
+        case '<code>':
+          return code;
+        case '<minute>':
+          return minute.toString();
+      }
+
+      return result;
+    }).toList();
   }
 
   @override
-  // TODO: implement signName
-  String get signName => throw UnimplementedError();
+  Future<void> initialize() async {}
 
   @override
-  // TODO: implement template
-  String get template => throw UnimplementedError();
+  String get signName => single<Configuration>().tencentCloudSms.signName;
+
+  @override
+  String get template => single<Configuration>().tencentCloudSms.templateId;
+
+  void send() {
+    // single<TencentCloudGeteway>().send(phone, this);
+  }
 }

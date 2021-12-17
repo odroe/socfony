@@ -4,7 +4,7 @@ tencent_cloud_sms:
   app_id: 'your app id'
   secret_id: 'your secret id'
   secret_key: 'your secret key'
-  sing_name: 'your sign name'
+  sign_name: 'your sign name'
   template_id: 'your template id'
   template_param:
     - <code>
