@@ -9,10 +9,10 @@ package com.socfony;
 import "google/protobuf/timestamp.proto";
 
 service UserService {
-    rpc FindOne(UserFindOneRequest) returns (UserResponse);
+    rpc FindUnique(UserFindUniqueRequest) returns (UserResponse);
 }
 
-message UserFindOneRequest {
+message UserFindUniqueRequest {
     oneof kind {
         string id = 1;
         string name = 2;
