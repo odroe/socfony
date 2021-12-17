@@ -30,7 +30,7 @@ class Auth {
       r'SELECT * FROM access_tokens WHERE token = @token LIMIT 1 ORDER BY created_at DESC',
       substitutionValues: {'token': token},
     );
-    
+
     return results.single;
   }
 }

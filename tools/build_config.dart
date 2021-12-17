@@ -25,8 +25,10 @@ main() {
   }
 
   final String output = buffer.toString();
-  final String outputPath =
-      Platform.script.resolve('..').resolve('lib/configuration.dart').toFilePath();
+  final String outputPath = Platform.script
+      .resolve('..')
+      .resolve('lib/configuration.dart')
+      .toFilePath();
   File(outputPath).writeAsStringSync(output);
 
   // Build database env
@@ -44,7 +46,7 @@ main() {
 
 List<String> build(Map<String, dynamic> data, List<String> classes) {
   final List<String> lines = [];
-  
+
   for (var key in data.keys) {
     final name = toHump(key);
     final value = data[key];

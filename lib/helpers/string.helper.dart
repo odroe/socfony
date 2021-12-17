@@ -16,9 +16,9 @@ class StringHelper {
   }
 
   /// Using custom alphabet to generate random strings
-  /// 
+  ///
   /// [alphabet] is a string of characters to use in the random string
-  /// 
+  ///
   /// [length] is the length of the random string to generate
   static String custom(String alphabet, int length) {
     final StringBuffer buffer = StringBuffer();
@@ -31,14 +31,16 @@ class StringHelper {
   }
 
   /// Generate a random string of length [length]
-  /// 
+  ///
   /// alphabet used is [a-zA-Z0-9_-]
-  /// 
+  ///
   /// [length] is the length of the random string to generate
-  static String string(int length) => custom( r'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-', length);
+  static String string(int length) => custom(
+      r'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-',
+      length);
 
   /// Generate a numeric string of length [length]
-  /// 
+  ///
   /// [length] is the length of the random string to generate
   static String numeric(int length) => custom(r'0123456789', length);
 }

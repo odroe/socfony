@@ -20,7 +20,7 @@ class VerificationCodeService extends VerificationCodeServiceBase {
 
     print(result);
     print(request.value);
-    
+
     return Empty();
   }
 }
