@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-import 'dart:io';
-
 import 'package:grpc/grpc.dart';
 import 'package:server/auth.dart';
 import 'package:server/configuration.dart';
