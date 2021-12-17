@@ -13,16 +13,17 @@ import 'interceptors.dart';
 import 'configuration.dart';
 import 'services.dart';
 
-class App extends Server {
-  App._() : super(services, interceptors, codecRegistry);
+class App {
+  App._();
 
   factory App() => App._().._onDependencies();
 
-  void run() async {
+  Future<void> run() async {
     final address = InternetAddress.anyIPv4;
     final port = single<Configuration>().port;
+    final server = single<Server>();
 
-    await serve(
+    await server.serve(
       address: address,
       port: 8090,
     );
@@ -30,12 +31,20 @@ class App extends Server {
     print('Socfony Server listening on $port port for $address');
   }
 
+  Future<void> close() => single<Server>().shutdown();
+
   void _onDependencies() {
     single + () => this;
     single + () => Configuration();
-    single +
-        () => DatabaseConnectionPool.fromString(
-              single<Configuration>().database,
-            );
+    single + _createDatabaseConnectionPool();
+    single + createServer();
   }
+
+  Server Function() createServer() =>
+      () => Server(services, interceptors, codecRegistry);
+
+  DatabaseConnectionPool Function() _createDatabaseConnectionPool() =>
+      () => DatabaseConnectionPool.fromString(
+            single<Configuration>().database,
+          );
 }
