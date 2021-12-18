@@ -5,13 +5,12 @@
 syntax = "proto3";
 package com.socfony;
 
-import "google/protobuf/wrappers.proto";
 import "google/protobuf/timestamp.proto";
 
 service UserService {
     rpc FindUnique(UserFindUniqueRequest) returns (User);
     rpc FindMany(UserFindManyRequest) returns (UserListResponse);
-    rpc Search(google.protobuf.StringValue) returns (UserListResponse);
+    rpc Search(UserSearchRequest) returns (UserListResponse);
 }
 
 message UserFindUniqueRequest {
@@ -24,6 +23,12 @@ message UserFindUniqueRequest {
 
 message UserFindManyRequest {
     repeated UserFindUniqueRequest where = 1;
+}
+
+message UserSearchRequest {
+    string keyword = 1;
+    optional int32 limit = 2;
+    optional int32 offset = 3;
 }
 
 message User {

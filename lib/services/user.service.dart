@@ -5,7 +5,6 @@
 import 'package:grpc/grpc.dart';
 import 'package:server/database/connection_pool.dart';
 import 'package:server/protos/google/protobuf/timestamp.pb.dart';
-import 'package:server/protos/google/protobuf/wrappers.pb.dart';
 import 'package:server/protos/user.pbgrpc.dart';
 import 'package:single/single.dart';
 
@@ -124,8 +123,33 @@ class UserService extends UserServiceBase {
   }
 
   @override
-  Future<UserListResponse> search(ServiceCall call, StringValue request) {
-    // TODO: implement search
-    throw UnimplementedError();
+  Future<UserListResponse> search(
+      ServiceCall call, UserSearchRequest request) async {
+    final String keyword = request.keyword;
+    final int limit = request.hasLimit() ? request.limit : 15;
+    final int offset = request.hasOffset() ? request.offset : 0;
+    final database = await single<DatabaseConnectionPool>().getConnection();
+
+    // Search `name` field in users/user_profiles table.
+    final results = await database.mappedResultsQuery(
+      r'SELECT users.* FROM users LEFT JOIN user_profiles ON users.id = user_profiles.user_id WHERE users.name ILIKE @keyword OR user_profiles.name ILIKE @keyword LIMIT @limit OFFSET @offset',
+      substitutionValues: {
+        'keyword': keyword,
+        'limit': limit,
+        'offset': offset,
+      },
+    );
+
+    return UserListResponse(
+      users: results.map((element) {
+        final user = element['users']!;
+        final result = User();
+        result.id = user['id'];
+        result.name = user['name'];
+        result.phone = _desensitization(user['phone']);
+        result.createdAt = Timestamp.fromDateTime(user['created_at']);
+        return result;
+      }),
+    );
   }
 }
