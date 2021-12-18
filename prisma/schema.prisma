@@ -14,12 +14,12 @@ datasource db {
 }
 
 model AccessToken {
-  token              String    @id @db.Char(128)
-  user_id            String    @db.Char(64)
-  created_at         DateTime  @default(now())
+  token              String   @id @db.Char(128)
+  user_id            String   @db.Char(64)
+  created_at         DateTime @default(now())
   expired_at         DateTime
   refresh_expired_at DateTime
-  has_refreshed      Boolean @default(false)
+  has_refreshed      Boolean  @default(false)
 
   @@index([user_id])
   @@index([created_at])
@@ -55,11 +55,12 @@ model User {
 }
 
 model UserProfile {
-  user_id String @id @db.Char(64)
-  avatar String?
-  name String?
-  bio String? @db.Text
+  user_id  String  @id @db.Char(64)
+  avatar   String?
+  name     String?
+  bio      String? @db.Text
   birthday Int?
+  gender Int @default(3)
 
   @@index([name])
   @@index([birthday])

@@ -2,8 +2,8 @@
 .packages
 .env
 .socfony.yml
+.socfony_cache
 
 lib/configuration.dart
 lib/protos
 build
-node_modules
