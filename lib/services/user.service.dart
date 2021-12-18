@@ -11,7 +11,7 @@ import 'package:single/single.dart';
 
 class UserService extends UserServiceBase {
   @override
-  Future<UserResponse> findUnique(
+  Future<User> findUnique(
       ServiceCall call, UserFindUniqueRequest request) async {
     final UserFindUniqueRequest_Kind kind = request.whichKind();
     if (kind == UserFindUniqueRequest_Kind.notSet) {
@@ -33,7 +33,7 @@ class UserService extends UserServiceBase {
 
     final result = results.single['users']!;
 
-    return UserResponse()
+    return User()
       ..id = result['id']
       ..name = result['name']
       ..phone = _desensitization(result['phone'])
@@ -111,7 +111,7 @@ class UserService extends UserServiceBase {
 
     final users = results.map((element) {
       final user = element['users']!;
-      final result = UserResponse();
+      final result = User();
       result.id = user['id'];
       result.name = user['name'];
       result.phone = _desensitization(user['phone']);

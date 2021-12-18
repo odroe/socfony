@@ -53,3 +53,15 @@ model User {
   @@index([phone])
   @@map("users")
 }
+
+model UserProfile {
+  user_id String @id @db.Char(64)
+  avatar String?
+  name String?
+  bio String? @db.Text
+  birthday Int?
+
+  @@index([name])
+  @@index([birthday])
+  @@map("user_profiles")
+}

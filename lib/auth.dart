@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-import 'dart:convert';
-
 import 'package:grpc/grpc.dart';
 import 'package:server/database/connection_pool.dart';
 import 'package:server/protos/access_token.pb.dart';
@@ -24,8 +22,7 @@ class Auth {
     }
   }
 
-  Future<AccessTokenResponse?> getAccessToken(
-      [Map<String, String>? metadata]) async {
+  Future<AccessToken?> getAccessToken([Map<String, String>? metadata]) async {
     final String? token = getToken(metadata);
     if (token == null) {
       return null;
@@ -48,7 +45,7 @@ class Auth {
     }
 
     final value = result.single.value;
-    final response = AccessTokenResponse();
+    final response = AccessToken();
     response.token = value['token'];
     response.userId = value['user_id'];
     response.expiredAt = Timestamp.fromDateTime(value['expired_at']);
@@ -80,7 +77,7 @@ class Auth {
   }
 
   void validate({
-    AccessTokenResponse? accessToken,
+    AccessToken? accessToken,
     bool isRefresh = false,
   }) {
     if (accessToken == null) {

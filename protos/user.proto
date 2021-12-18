@@ -9,7 +9,7 @@ import "google/protobuf/wrappers.proto";
 import "google/protobuf/timestamp.proto";
 
 service UserService {
-    rpc FindUnique(UserFindUniqueRequest) returns (UserResponse);
+    rpc FindUnique(UserFindUniqueRequest) returns (User);
     rpc FindMany(UserFindManyRequest) returns (UserListResponse);
     rpc Search(google.protobuf.StringValue) returns (UserListResponse);
 }
@@ -26,7 +26,7 @@ message UserFindManyRequest {
     repeated UserFindUniqueRequest where = 1;
 }
 
-message UserResponse {
+message User {
     string id = 1;
     string name = 2;
     string phone = 3;
@@ -34,5 +34,5 @@ message UserResponse {
 }
 
 message UserListResponse {
-    repeated UserResponse users = 1;
+    repeated User users = 1;
 }

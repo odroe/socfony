@@ -9,8 +9,8 @@ import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 
 service AccessTokenService {
-    rpc Create(AccessTokenCreateRequest) returns (AccessTokenResponse);
-    rpc Refresh(google.protobuf.Empty) returns (AccessTokenResponse);
+    rpc Create(AccessTokenCreateRequest) returns (AccessToken);
+    rpc Refresh(google.protobuf.Empty) returns (AccessToken);
     rpc Revoke(google.protobuf.Empty) returns (google.protobuf.Empty);
 }
 
@@ -19,7 +19,7 @@ message AccessTokenCreateRequest {
     string otp = 2;
 }
 
-message AccessTokenResponse {
+message AccessToken {
     string token = 1;
     string user_id = 2;
     google.protobuf.Timestamp created_at = 3;

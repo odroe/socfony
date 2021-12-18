@@ -14,14 +14,14 @@ import 'package:single/single.dart';
 
 class AccessTokenService extends AccessTokenServiceBase {
   @override
-  Future<AccessTokenResponse> create(
+  Future<AccessToken> create(
       ServiceCall call, AccessTokenCreateRequest request) async {
     final done = await _validateOtp(request.phone, request.otp);
     final options = single<Configuration>().accessToken;
     final user = await _resolveUserFromPhone(request.phone);
 
     final now = DateTime.now();
-    final response = AccessTokenResponse();
+    final response = AccessToken();
     response.userId = user['id'];
     response.token = StringHelper.string(128);
     response.expiredAt =
@@ -47,7 +47,7 @@ class AccessTokenService extends AccessTokenServiceBase {
   }
 
   @override
-  Future<AccessTokenResponse> refresh(ServiceCall call, Empty request) async {
+  Future<AccessToken> refresh(ServiceCall call, Empty request) async {
     final accessToken =
         await single<Auth>().getAccessToken(call.clientMetadata);
     single<Auth>().validate(

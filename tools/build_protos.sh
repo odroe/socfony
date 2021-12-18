@@ -35,7 +35,7 @@ protoc ${protoc_params[*]};
 dart pub global deactivate protoc_plugin;
 
 # Clean unused files.
-find $output_dir -name '*.pbenum.dart' -delete;
+find $output_dir/google -name '*.pbenum.dart' -delete;
 find $output_dir -name '*.pbjson.dart' -delete;
 
 # Format generated Dart files.
