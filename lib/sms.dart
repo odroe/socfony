@@ -63,6 +63,6 @@ class SMS extends Message {
   String get template => single<Configuration>().tencentCloudSms.templateId;
 
   void send() {
-    // single<TencentCloudGeteway>().send(phone, this);
+    single<TencentCloudGeteway>().send(phone, this);
   }
 }
