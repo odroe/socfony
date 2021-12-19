@@ -190,4 +190,92 @@ class UserService extends UserServiceBase {
 
     return Empty();
   }
+
+  @override
+  Future<Empty> updatePhone(
+      ServiceCall call, UserUpdatePhoneRequest request) async {
+    final Auth auth = single<Auth>();
+    final accessToken = await auth.getAccessToken(call.clientMetadata);
+
+    // Validate access token.
+    auth.validate(accessToken: accessToken);
+
+    // Find request phone user.
+    final database = await single<DatabaseConnectionPool>().getConnection();
+    final results = await database.mappedResultsQuery(
+      'SELECT * FROM users WHERE phone = @phone',
+      substitutionValues: {
+        'phone': request.phone,
+      },
+    );
+
+    // If results not empty, and id not same current user id, phone is already used.
+    if (results.isNotEmpty &&
+        results.first['users']!['id'] != accessToken!.userId) {
+      throw GrpcError.invalidArgument('Phone ${request.phone} is already used');
+    }
+
+    // Get current user.
+    final user = await auth.getUser(call.clientMetadata);
+
+    // If current user phone is request phone, return.
+    if (user!['phone'] == request.phone) {
+      return Empty();
+    }
+
+    void Function()? done1;
+    // If current user phone is not empty, Check request pre_phone_otp.
+    if (user['phone'] != null || (user['phone'] as String).isNotEmpty) {
+      done1 = await _validateOtp(user['phone'], request.prePhoneOtp);
+    }
+
+    // Check request phone and otp
+    final done2 = await _validateOtp(request.phone, request.otp);
+
+    // Update current user phone.
+    await database.execute(
+      'UPDATE users SET phone = @phone WHERE id = @id',
+      substitutionValues: {
+        'phone': request.phone,
+        'id': accessToken!.userId,
+      },
+    );
+
+    // Done all.
+    done1?.call();
+    done2();
+
+    return Empty();
+  }
+
+  Future<void Function()> _validateOtp(String phone, String otp) async {
+    final database = await single<DatabaseConnectionPool>().getConnection();
+    final results = await database.mappedResultsQuery(
+      r'SELECT * FROM verification_codes WHERE phone = @phone AND otp = @otp',
+      substitutionValues: {
+        'phone': phone,
+        'otp': otp,
+      },
+    );
+
+    // If results is empty, otp is invalid.
+    if (results.isEmpty) {
+      throw GrpcError.invalidArgument('Invalid otp');
+    }
+
+    return () async {
+      // Delete verification code.
+      await database.execute(
+        r'DELETE FROM verification_codes WHERE phone = @phone AND otp = @otp',
+        substitutionValues: {
+          'phone': phone,
+          'otp': otp,
+        },
+      );
+      // Delete all expired verification code.
+      await database.execute(
+        r'DELETE FROM verification_codes WHERE created_at < NOW()',
+      );
+    };
+  }
 }

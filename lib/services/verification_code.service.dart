@@ -26,6 +26,16 @@ class VerificationCodeService extends VerificationCodeServiceBase {
       },
     );
 
+    _deleteAllExpired();
+
     return Empty();
+  }
+
+  void _deleteAllExpired() async {
+    final database = await single<DatabaseConnectionPool>().getConnection();
+    await database.execute(
+      r'DELETE FROM verification_codes WHERE expired_at < @now',
+      substitutionValues: {'now': DateTime.now()},
+    );
   }
 }

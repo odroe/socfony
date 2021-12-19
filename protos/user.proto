@@ -14,6 +14,13 @@ service UserService {
     rpc FindMany(UserFindManyRequest) returns (UserListResponse);
     rpc Search(UserSearchRequest) returns (UserListResponse);
     rpc UpdateName(google.protobuf.StringValue) returns (google.protobuf.Empty);
+    rpc UpdatePhone(UserUpdatePhoneRequest) returns (google.protobuf.Empty);
+}
+
+message UserUpdatePhoneRequest {
+    string phone = 1;
+    string otp = 2;
+    optional string pre_phone_otp = 3;
 }
 
 message UserFindUniqueRequest {
