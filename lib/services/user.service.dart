@@ -4,9 +4,13 @@
 
 import 'package:grpc/grpc.dart';
 import 'package:server/database/connection_pool.dart';
+import 'package:server/protos/google/protobuf/empty.pb.dart';
 import 'package:server/protos/google/protobuf/timestamp.pb.dart';
+import 'package:server/protos/google/protobuf/wrappers.pb.dart';
 import 'package:server/protos/user.pbgrpc.dart';
 import 'package:single/single.dart';
+
+import '../auth.dart';
 
 class UserService extends UserServiceBase {
   @override
@@ -151,5 +155,39 @@ class UserService extends UserServiceBase {
         return result;
       }),
     );
+  }
+
+  @override
+  Future<Empty> updateName(ServiceCall call, StringValue request) async {
+    final accessToken =
+        await single<Auth>().getAccessToken(call.clientMetadata);
+    single<Auth>().validate(accessToken: accessToken);
+
+    // Find user by name.
+    final database = await single<DatabaseConnectionPool>().getConnection();
+    final results = await database.mappedResultsQuery(
+      'SELECT * FROM users WHERE name = @name AND id != @id',
+      substitutionValues: {
+        'name': request.value,
+        'id': accessToken!.userId,
+      },
+    );
+
+    // If results not empty, name is already used.
+    if (results.isNotEmpty) {
+      throw GrpcError.invalidArgument(
+          'Account name ${request.value} is already used');
+    }
+
+    // Update current user name.
+    await database.execute(
+      'UPDATE users SET name = @name WHERE id = @id',
+      substitutionValues: {
+        'name': request.value,
+        'id': accessToken.userId,
+      },
+    );
+
+    return Empty();
   }
 }
