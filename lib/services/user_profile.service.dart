@@ -4,9 +4,13 @@
 
 import 'package:grpc/grpc.dart';
 import 'package:server/database/connection_pool.dart';
+import 'package:server/protos/access_token.pbgrpc.dart';
+import 'package:server/protos/google/protobuf/empty.pb.dart';
 import 'package:server/protos/google/protobuf/wrappers.pb.dart';
 import 'package:server/protos/user_profile.pbgrpc.dart';
 import 'package:single/single.dart';
+
+import '../auth.dart';
 
 class UserProfileService extends UserProfileServiceBase {
   @override
@@ -29,5 +33,53 @@ class UserProfileService extends UserProfileServiceBase {
       bio: result['bio'],
       gender: UserProfile_Gender.valueOf(result['gender']),
     );
+  }
+
+  @override
+  Future<Empty> update(
+      ServiceCall call, UserProfileUpdateRequest request) async {
+    final auth = single<Auth>();
+    final accessToken = await auth.getAccessToken(call.clientMetadata);
+
+    // Validate the access token.
+    auth.validate(accessToken: accessToken);
+
+    final Map<String, dynamic> variables = {};
+    final List<String> fields = [];
+
+    // Using request build the variables and fields.
+    if (request.hasName()) {
+      variables['name'] = request.name;
+      fields.add('name = @name');
+    }
+    if (request.hasBio()) {
+      variables['bio'] = request.bio;
+      fields.add('bio = @bio');
+    }
+    if (request.hasBirthday()) {
+      variables['birthday'] = request.birthday;
+      fields.add('birthday = @birthday');
+    }
+    if (request.hasGender()) {
+      variables['gender'] = request.gender.value;
+      fields.add('gender = @gender');
+    }
+
+    // If fields is empty.
+    if (fields.isEmpty) {
+      return Empty();
+    }
+
+    // Update the user profile.
+    final database = await single<DatabaseConnectionPool>().getConnection();
+    await database.execute(
+      'UPDATE user_profiles SET ${fields.join(', ')} WHERE user_id = @userId',
+      substitutionValues: {
+        'userId': accessToken!.userId,
+        ...variables,
+      },
+    );
+
+    return Empty();
   }
 }

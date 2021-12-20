@@ -6,9 +6,18 @@ syntax = "proto3";
 package com.socfony;
 
 import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
 
 service UserProfileService {
     rpc FindUnique(google.protobuf.StringValue) returns (UserProfile);
+    rpc Update(UserProfileUpdateRequest) returns (google.protobuf.Empty);
+}
+
+message UserProfileUpdateRequest {
+    optional string name = 1;
+    optional string bio = 2;
+    optional int32 birthday = 3;
+    optional UserProfile.Gender gender = 4;
 }
 
 message UserProfile {
