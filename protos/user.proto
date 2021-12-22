@@ -1,0 +1,53 @@
+// Copyright (c) 2021, Odroe Inc. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+syntax = "proto3";
+package com.socfony;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+
+service UserService {
+    rpc FindUnique(UserFindUniqueRequest) returns (User);
+    rpc FindMany(UserFindManyRequest) returns (UserListResponse);
+    rpc Search(UserSearchRequest) returns (UserListResponse);
+    rpc UpdateName(google.protobuf.StringValue) returns (google.protobuf.Empty);
+    rpc UpdatePhone(UserUpdatePhoneRequest) returns (google.protobuf.Empty);
+}
+
+message UserUpdatePhoneRequest {
+    string phone = 1;
+    string otp = 2;
+    optional string pre_phone_otp = 3;
+}
+
+message UserFindUniqueRequest {
+    oneof kind {
+        string id = 1;
+        string name = 2;
+        string phone = 3;
+    }
+}
+
+message UserFindManyRequest {
+    repeated UserFindUniqueRequest where = 1;
+}
+
+message UserSearchRequest {
+    string keyword = 1;
+    optional int32 limit = 2;
+    optional int32 offset = 3;
+}
+
+message User {
+    string id = 1;
+    string name = 2;
+    string phone = 3;
+    google.protobuf.Timestamp created_at = 4;
+}
+
+message UserListResponse {
+    repeated User users = 1;
+}

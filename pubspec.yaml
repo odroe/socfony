@@ -1,0 +1,25 @@
+# Copyright (c) 2021, Odroe Inc. All rights reserved.
+# Use of this source code is governed by a BSD-stype
+# license that can be found in the CLICENSE file.
+
+name: server
+description: A server app using the shelf package and Docker.
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: '>=2.15.0 <3.0.0'
+
+dependencies: 
+  crypto: ^3.0.1
+  easysms: ^1.0.0
+  grpc: ^3.0.2
+  minio: ^3.1.0
+  pool: ^1.5.0
+  postgres: ^2.4.3
+  protobuf: ^2.0.1
+  single: ^1.0.2
+
+dev_dependencies:
+  lints: ^1.0.0
+  yaml: ^3.1.0

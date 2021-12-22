@@ -1,0 +1,15 @@
+// Copyright (c) 2021, Odroe Inc. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+syntax = "proto3";
+package com.socfony;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+
+// Verification code service.
+service VerificationCodeService {
+    // Send a verification code to the given phone number.
+    rpc Send(google.protobuf.StringValue) returns (google.protobuf.Empty);
+}

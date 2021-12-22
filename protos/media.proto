@@ -1,0 +1,44 @@
+// Copyright (c) 2021, Odroe Inc. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+syntax = "proto3";
+package com.socfony;
+
+import "google/protobuf/wrappers.proto";
+
+service MediaService {
+  rpc CreateUploadLink(MediaCreateUploadLinkRequest) returns (google.protobuf.StringValue);
+  rpc url(MediaUrlRequest) returns (google.protobuf.StringValue);
+}
+
+message MediaUrlRequest {
+  string key = 1;
+  optional string process = 2;
+}
+
+message MediaImagesType {
+  repeated string key = 1;
+}
+
+message MediaVideoTyope {
+  string src = 1;
+  string poster = 2;
+}
+
+message MediaAudioType {
+  string src = 1;
+  optional string poster = 2;
+}
+
+message MediaCreateUploadLinkRequest {
+  oneof kind {
+    string image = 1;
+    MediaAudioType audio = 2;
+    MediaVideoTyope video = 3;
+  }
+
+  string md5 = 4;
+  int32 length = 5;
+  bytes matadata = 6;
+}

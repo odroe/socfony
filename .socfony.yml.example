@@ -1,0 +1,14 @@
+database: postgresql://user:password@host:port/database
+port: 8080
+access_token:
+  expired_in_days: 1
+  refresh_expired_in_days: 7
+tencent_cloud_sms:
+  app_id: 'your app id'
+  secret_id: 'your secret id'
+  secret_key: 'your secret key'
+  sign_name: 'your sign name'
+  template_id: 'your template id'
+  template_param:
+    - <code>
+    - <minute>

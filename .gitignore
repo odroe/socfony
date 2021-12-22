@@ -1,4 +1,9 @@
-node_modules
-dist
-# Keep environment variables out of version control
+.dart_tool
+.packages
 .env
+.socfony.yml
+.socfony_cache
+
+lib/configuration.dart
+lib/protos
+build
