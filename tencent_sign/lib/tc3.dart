@@ -67,7 +67,6 @@ class TC3 {
             (e) => [e.key, Uri.encodeComponent(e.value)].join('='),
           )
           .join('&'),
-      // uri.queryParameters.entries.map((e) => '${e.key}=${e.value}').join('&'),
       // CanonicalHeaders
       canonicalHeaders + '\n',
       // SignedHeaders

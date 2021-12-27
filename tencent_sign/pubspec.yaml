@@ -1,5 +1,5 @@
 name: tencent_sign
-description: A simple command-line application.
+description: Tencent Cloud APIs sign package.
 version: 1.0.0
 
 environment:
