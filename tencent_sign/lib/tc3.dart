@@ -130,26 +130,3 @@ class TC3 {
     return 'TC3-HMAC-SHA256 Credential=$secretId/$credentialScope, SignedHeaders=$signedHeaders, Signature=$signature';
   }
 }
-
-void main(List<String> args) {
-  final auth = TC3(
-    secretId: 'AKIDz8krbsJ5yKBZQpn74WFkmLPx3*******',
-    secretKey: 'Gu5t9xGARNpq86cd98joQYCN3*******',
-  );
-  final headers = <String, String>{
-    'Content-type': 'application/json; charset=utf-8',
-  };
-  final payload =
-      r'{"Limit": 1, "Filters": [{"Values": ["\u672a\u547d\u540d"], "Name": "instance-name"}]}';
-  final timestamp = DateTime.parse('2019-02-26 00:44:25+08:00');
-  final signature = auth.sign(
-    service: 'cvm',
-    uri: Uri.parse('https://cvm.tencentcloudapi.com'),
-    method: TC3_METHOD.post,
-    headers: headers,
-    payload: utf8.encode(payload),
-    timestamp: timestamp,
-  );
-
-  print(signature);
-}
