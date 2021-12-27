@@ -14,11 +14,14 @@ dependencies:
   crypto: ^3.0.1
   easysms: ^1.0.0
   grpc: ^3.0.2
+  http: ^0.13.4
   minio: ^3.1.0
   pool: ^1.5.0
   postgres: ^2.4.3
   protobuf: ^2.0.1
   single: ^1.0.2
+  tencent_sign: 
+    path: tencent_sign
 
 dev_dependencies:
   lints: ^1.0.0

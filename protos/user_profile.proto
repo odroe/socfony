@@ -18,6 +18,7 @@ message UserProfileUpdateRequest {
     optional string bio = 2;
     optional int32 birthday = 3;
     optional UserProfile.Gender gender = 4;
+    optional string avatar = 5;
 }
 
 message UserProfile {

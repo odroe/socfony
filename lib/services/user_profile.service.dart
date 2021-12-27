@@ -4,7 +4,6 @@
 
 import 'package:grpc/grpc.dart';
 import 'package:server/database/connection_pool.dart';
-import 'package:server/protos/access_token.pbgrpc.dart';
 import 'package:server/protos/google/protobuf/empty.pb.dart';
 import 'package:server/protos/google/protobuf/wrappers.pb.dart';
 import 'package:server/protos/user_profile.pbgrpc.dart';
@@ -63,6 +62,10 @@ class UserProfileService extends UserProfileServiceBase {
     if (request.hasGender()) {
       variables['gender'] = request.gender.value;
       fields.add('gender = @gender');
+    }
+    if (request.hasAvatar()) {
+      variables['avatar'] = request.avatar;
+      fields.add(r'avatar = @avatar');
     }
 
     // If fields is empty.

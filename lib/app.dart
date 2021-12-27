@@ -10,6 +10,7 @@ import 'package:single/single.dart';
 
 import 'codec_registry.dart';
 import 'database/connection_pool.dart';
+import 'get_federation_token.dart';
 import 'interceptors.dart';
 import 'configuration.dart';
 import 'services.dart';
@@ -40,6 +41,7 @@ class App {
     single + _createDatabaseConnectionPool();
     single + createServer();
     single + Auth.fromSingle;
+    single + () => GetFederationToken();
   }
 
   Server Function() createServer() =>
