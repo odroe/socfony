@@ -237,12 +237,12 @@ message CreateMomentRequest {
 message Moment {
   message Media {
     message Images {
-      repeated com.socfony.Media.Image image = 1;
+      repeated string images = 1;
     }
 
     oneof kind {
       // 图片
-      Images images = 1;
+      Images image = 1;
       // 视频
       com.socfony.Media.Video video = 2;
       // 音频

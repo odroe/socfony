@@ -6,6 +6,7 @@ import 'package:grpc/grpc.dart';
 import 'package:server/services/tencent_cloud.service.dart';
 
 import 'services/access_token.service.dart';
+import 'services/moment.service.dart';
 import 'services/user.service.dart';
 import 'services/user_profile.service.dart';
 
@@ -14,4 +15,5 @@ final List<Service> services = <Service>[
   UserService(),
   UserProfileService(),
   TencentCloudService(),
+  MomentService(),
 ];
