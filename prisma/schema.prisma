@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file.
 
 generator client {
-  provider        = "echo \"Empty\""
+  provider        = "echo \"Unnecessary\""
   previewFeatures = ["referentialIntegrity"]
 }
 
@@ -74,7 +74,6 @@ model Moment {
   media Json?
   user_id String @db.Char(64)
   created_at DateTime @default(now()) @db.Timestamptz
-  deleted_at DateTime? @db.Timestamptz
 
   @@index([created_at])
   @@index([user_id])
