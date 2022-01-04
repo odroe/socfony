@@ -1,4 +1,4 @@
-database: postgresql://user:password@host:port/database
+database: postgresql://seven@localhost:5432/socfony
 port: 8080
 access_token:
   expired_in_days: 1
@@ -12,3 +12,8 @@ tencent_cloud_sms:
   template_param:
     - <code>
     - <minute>
+storage:
+  secret_id: 'your secret id'
+  secret_key: 'your secret key'
+  region: 'ap-chengdu'
+  bucket: 'socfony-1301714186'

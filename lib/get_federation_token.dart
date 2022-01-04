@@ -5,13 +5,13 @@
 import 'dart:convert';
 
 import 'package:http/http.dart';
-import 'package:server/protos/google/protobuf/timestamp.pb.dart';
 import 'package:single/single.dart';
 import 'package:tencent_sign/tc3.dart';
 
 import 'configuration.dart';
 import 'helpers/string.helper.dart';
-import 'protos/tencent_cloud.pb.dart';
+import 'protobuf/google/protobuf/timestamp.pb.dart';
+import 'protobuf/socfony.pb.dart';
 
 class GetFederationToken {
   const GetFederationToken();

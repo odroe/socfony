@@ -4,10 +4,10 @@
 
 import 'package:grpc/grpc.dart';
 import 'package:server/database/connection_pool.dart';
-import 'package:server/protos/google/protobuf/empty.pb.dart';
-import 'package:server/protos/google/protobuf/timestamp.pb.dart';
-import 'package:server/protos/google/protobuf/wrappers.pb.dart';
-import 'package:server/protos/user.pbgrpc.dart';
+import 'package:server/protobuf/google/protobuf/empty.pb.dart';
+import 'package:server/protobuf/google/protobuf/timestamp.pb.dart';
+import 'package:server/protobuf/google/protobuf/wrappers.pb.dart';
+import 'package:server/protobuf/socfony.pbgrpc.dart';
 import 'package:single/single.dart';
 
 import '../auth.dart';
@@ -15,9 +15,9 @@ import '../auth.dart';
 class UserService extends UserServiceBase {
   @override
   Future<User> findUnique(
-      ServiceCall call, UserFindUniqueRequest request) async {
-    final UserFindUniqueRequest_Kind kind = request.whichKind();
-    if (kind == UserFindUniqueRequest_Kind.notSet) {
+      ServiceCall call, FindUniqueUserRequest request) async {
+    final FindUniqueUserRequest_Unique kind = request.whichUnique();
+    if (kind == FindUniqueUserRequest_Unique.notSet) {
       throw GrpcError.invalidArgument('Request must set one of the fields');
     }
 
@@ -50,27 +50,27 @@ class UserService extends UserServiceBase {
   }
 
   @override
-  Future<UserListResponse> findMany(
-      ServiceCall call, UserFindManyRequest request) async {
+  Future<UserList> findMany(
+      ServiceCall call, FindManyUserRequest request) async {
     if (request.where.isEmpty) {
       throw GrpcError.invalidArgument('Request must set where');
     }
 
     final List<String> ids = request.where
-        .where(
-            (element) => element.whichKind() == UserFindUniqueRequest_Kind.id)
+        .where((element) =>
+            element.whichUnique() == FindUniqueUserRequest_Unique.id)
         .map((element) => element.id)
         .toSet()
         .toList();
     final List<String> names = request.where
-        .where(
-            (element) => element.whichKind() == UserFindUniqueRequest_Kind.name)
+        .where((element) =>
+            element.whichUnique() == FindUniqueUserRequest_Unique.name)
         .map((element) => element.name)
         .toSet()
         .toList();
     final List<String> phones = request.where
         .where((element) =>
-            element.whichKind() == UserFindUniqueRequest_Kind.phone)
+            element.whichUnique() == FindUniqueUserRequest_Unique.phone)
         .map((element) => element.phone)
         .toSet()
         .toList();
@@ -121,14 +121,13 @@ class UserService extends UserServiceBase {
       result.createdAt = Timestamp.fromDateTime(user['created_at']);
       return result;
     });
-    final response = UserListResponse(users: users);
+    final response = UserList(user: users);
 
     return response;
   }
 
   @override
-  Future<UserListResponse> search(
-      ServiceCall call, UserSearchRequest request) async {
+  Future<UserList> search(ServiceCall call, SearchUserRequest request) async {
     final String keyword = request.keyword;
     final int limit = request.hasLimit() ? request.limit : 15;
     final int offset = request.hasOffset() ? request.offset : 0;
@@ -144,8 +143,8 @@ class UserService extends UserServiceBase {
       },
     );
 
-    return UserListResponse(
-      users: results.map((element) {
+    return UserList(
+      user: results.map((element) {
         final user = element['users']!;
         final result = User();
         result.id = user['id'];
@@ -158,7 +157,7 @@ class UserService extends UserServiceBase {
   }
 
   @override
-  Future<Empty> updateName(ServiceCall call, StringValue request) async {
+  Future<Empty> updateAccountName(ServiceCall call, StringValue request) async {
     final accessToken =
         await single<Auth>().getAccessToken(call.clientMetadata);
     single<Auth>().validate(accessToken: accessToken);
@@ -193,7 +192,7 @@ class UserService extends UserServiceBase {
 
   @override
   Future<Empty> updatePhone(
-      ServiceCall call, UserUpdatePhoneRequest request) async {
+      ServiceCall call, UpdateUserPhoneRequest request) async {
     final Auth auth = single<Auth>();
     final accessToken = await auth.getAccessToken(call.clientMetadata);
 

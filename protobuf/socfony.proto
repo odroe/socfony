@@ -1,0 +1,259 @@
+// Copyright (c) 2021, Odroe Inc. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+syntax = "proto3";
+package com.socfony;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
+
+//------------------------------------------------------------------------------
+// 公用消息
+//------------------------------------------------------------------------------
+
+// 媒体
+message Media {
+  // 图片
+  message Image {
+    string path = 1;
+  }
+
+  // 视频
+  message Video {
+    // 视频地址
+    string path = 1;
+    // 视频封面
+    Image poster = 2;
+  }
+
+  // 音频
+  message Audio {
+    // 音频地址
+    string path = 1;
+    // 音频封面
+    optional Image poster = 2;
+  }
+
+  oneof media {
+    Image image = 1;
+    Video video = 2;
+    Audio audio = 3;
+  }
+}
+
+//------------------------------------------------------------------------------
+// 访问令牌
+// 用于客户端创建访问令牌以及删除功能。创建访问令牌兼容自动注册用户
+//------------------------------------------------------------------------------
+service AccessTokenService {
+  // 创建访问令牌
+  rpc Create(CreateAccessTokenRequest) returns(AccessToken);
+  // 刷新访问令牌
+  rpc Refresh(google.protobuf.Empty) returns(AccessToken);
+  // 删除访问令牌
+  rpc Delete(google.protobuf.Empty) returns(google.protobuf.Empty);
+}
+
+// 创建访问令牌请求
+message CreateAccessTokenRequest {
+  // E.164 格式的手机号码
+  string phone = 1;
+  // 一次性验证码
+  string otp = 2;
+}
+
+// 访问令牌响应
+message AccessToken {
+  // 令牌
+  string token = 1;
+  // 令牌所属用户 ID
+  string user_id = 2;
+  // 创建时间
+  google.protobuf.Timestamp created_at = 3;
+  // 过期时间
+  google.protobuf.Timestamp expired_at = 4;
+  // 令牌用于刷新操作的过期时间
+  google.protobuf.Timestamp refresh_expired_at = 5;
+}
+
+//------------------------------------------------------------------------------
+// 腾讯云服务
+//------------------------------------------------------------------------------
+service TencentCloudService {
+  // 创建 COS 联合证书
+  rpc CreateCosFederationCredentials(google.protobuf.Empty) returns(TencentCloudCredentials);
+  // 发送短信一次性密码
+  rpc SendSmsOTP(google.protobuf.StringValue) returns (google.protobuf.Empty);
+}
+
+// 腾讯云联合证书
+message TencentCloudCredentials {
+  // Secret ID
+  string secret_id = 1;
+  // Secret Key
+  string secret_key = 2;
+  // Token
+  string token = 3;
+  // 过期时间
+  google.protobuf.Timestamp expired_at = 4;
+}
+
+//------------------------------------------------------------------------------
+// 用户 - 账户
+//------------------------------------------------------------------------------
+service UserService {
+  // 查询一个用户
+  rpc FindUnique(FindUniqueUserRequest) returns(User);
+  // 查询多个用户
+  rpc FindMany(FindManyUserRequest) returns(UserList);
+  // 搜索用户
+  rpc Search(SearchUserRequest) returns(UserList);
+  // 更新用户账号名
+  rpc UpdateAccountName(google.protobuf.StringValue) returns(google.protobuf.Empty);
+  // 更新或者绑定用户手机号码
+  rpc UpdatePhone(UpdateUserPhoneRequest) returns(google.protobuf.Empty);
+}
+
+// 查询唯一用户请求
+message FindUniqueUserRequest {
+  oneof unique {
+    // 用户 ID
+    string id = 1;
+    // 用户手机号
+    string phone = 2;
+    // 用户账号名
+    string name = 3;
+  }
+}
+
+// 查询多个用户请求
+message FindManyUserRequest {
+  repeated FindUniqueUserRequest where = 1;
+}
+
+// 搜索用户请求
+message SearchUserRequest {
+  string keyword = 1;
+  optional int32 limit = 2;
+  optional int32 offset = 3;
+}
+
+// 更新用户手机号码请求
+message UpdateUserPhoneRequest {
+  // 手机号码
+  string phone = 1;
+  // 验证码
+  string otp = 2;
+  // 之前绑定的手机验证码
+  optional string pre_phone_otp = 3;
+}
+
+// 用户响应
+message User {
+  // 用户 ID
+  string id = 1;
+  // 用户账号名
+  optional string name = 2;
+  // 用户手机号
+  optional string phone = 3;
+  // 用户创建时间
+  google.protobuf.Timestamp created_at = 4;
+}
+
+// 查询多个用户响应
+message UserList {
+  repeated User user = 1;
+}
+
+//------------------------------------------------------------------------------
+// 用户 - Profile
+//------------------------------------------------------------------------------
+service UserProfileService {
+  // 查询用户资料
+  rpc Find(google.protobuf.StringValue) returns(UserProfile);
+  // 更新用户资料
+  rpc Update(UpdateUserProfileRequest) returns(google.protobuf.Empty);
+}
+
+// 更新用户资料请求
+message UpdateUserProfileRequest {
+  // 昵称
+  optional string name = 1;
+  // 简介
+  optional string bio = 2;
+  // 性别
+  optional UserProfile.Gender gender = 3;
+  // 生日
+  optional int32 birthday = 4;
+}
+
+// 用户资料
+message UserProfile {
+  // 用户性别
+  enum Gender {
+    // 女
+    WOMAN = 0;
+    // 男
+    MAN = 1;
+    // 未知
+    UNKNOWN = 2;
+  }
+
+  // 用户 ID
+  string user_id = 1;
+  // 昵称
+  optional string name = 2;
+  // 头像
+  optional Media.Image avatar = 3;
+  // 个人简介
+  optional string bio = 4;
+  // 性别
+  Gender gender = 5;
+  // 生日
+  optional int32 birthday = 6;
+}
+
+//------------------------------------------------------------------------------
+// 动态
+//------------------------------------------------------------------------------
+service MomentService {
+  // 创建动态
+  rpc Create(CreateMomentRequest) returns(Moment);
+}
+
+// 创建动态请求
+message CreateMomentRequest {
+  // 标题 - 可选
+  optional string title = 1;
+  // 内容 - 可选
+  optional string content = 2;
+  // 媒体 - 可选
+  optional Moment.Media media = 3;
+}
+
+// 动态响应
+message Moment {
+  message Media {
+    message Images {
+      repeated com.socfony.Media.Image image = 1;
+    }
+
+    oneof kind {
+      // 图片
+      Images images = 1;
+      // 视频
+      com.socfony.Media.Video video = 2;
+      // 音频
+      com.socfony.Media.Audio audio = 3;
+    }
+  }
+
+  string id = 1;
+  string user_id = 2;
+  optional string title = 3;
+  optional string content = 4;
+  optional Media media = 5;
+  google.protobuf.Timestamp created_at = 6;
+}

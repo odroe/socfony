@@ -62,7 +62,7 @@ class SMS extends Message {
   @override
   String get template => single<Configuration>().tencentCloudSms.templateId;
 
-  void send() {
-    single<TencentCloudGeteway>().send(phone, this);
+  void send() async {
+    await single<TencentCloudGeteway>().send(phone, this);
   }
 }

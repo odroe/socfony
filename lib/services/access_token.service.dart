@@ -7,15 +7,15 @@ import 'package:server/auth.dart';
 import 'package:server/configuration.dart';
 import 'package:server/database/connection_pool.dart';
 import 'package:server/helpers/string.helper.dart';
-import 'package:server/protos/access_token.pbgrpc.dart';
-import 'package:server/protos/google/protobuf/empty.pb.dart';
-import 'package:server/protos/google/protobuf/timestamp.pb.dart';
+import 'package:server/protobuf/google/protobuf/empty.pb.dart';
+import 'package:server/protobuf/google/protobuf/timestamp.pb.dart';
+import 'package:server/protobuf/socfony.pbgrpc.dart';
 import 'package:single/single.dart';
 
 class AccessTokenService extends AccessTokenServiceBase {
   @override
   Future<AccessToken> create(
-      ServiceCall call, AccessTokenCreateRequest request) async {
+      ServiceCall call, CreateAccessTokenRequest request) async {
     final done = await _validateOtp(request.phone, request.otp);
     final options = single<Configuration>().accessToken;
     final user = await _resolveUserFromPhone(request.phone);
@@ -91,7 +91,7 @@ class AccessTokenService extends AccessTokenServiceBase {
   }
 
   @override
-  Future<Empty> revoke(ServiceCall call, Empty request) async {
+  Future<Empty> delete(ServiceCall call, Empty request) async {
     final accessToken =
         await single<Auth>().getAccessToken(call.clientMetadata);
     single<Auth>().validate(

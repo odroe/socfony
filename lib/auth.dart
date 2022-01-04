@@ -3,10 +3,11 @@
 // license that can be found in the LICENSE file.
 
 import 'package:grpc/grpc.dart';
-import 'package:server/database/connection_pool.dart';
-import 'package:server/protos/access_token.pb.dart';
-import 'package:server/protos/google/protobuf/timestamp.pb.dart';
 import 'package:single/single.dart';
+
+import 'database/connection_pool.dart';
+import 'protobuf/google/protobuf/timestamp.pb.dart';
+import 'protobuf/socfony.pb.dart';
 
 class Auth {
   const Auth._();

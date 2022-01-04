@@ -4,8 +4,8 @@
 # license that can be found in the LICENSE file.
 
 root_dir=$(dirname $0)/..;        # root directory of the project
-protos_dir=$root_dir/protos;      # directory containing the protos
-output_dir=$root_dir/lib/protos;  # directory to output the generated files
+protos_dir=$root_dir/protobuf; # directory containing the protos
+output_dir=$root_dir/lib/protobuf; # directory to output the generated files
 
 # Define proto imports
 imports=(
@@ -78,7 +78,7 @@ rm -rf $output_dir && mkdir -p $output_dir;
 protoc_params=(
     --plugin=protoc-gen-dart=$protoc_gen_dart_bin
     -I$protos_dir \
-    "${protos_dir}/*.proto" \
+    "${protos_dir}/socfony.proto" \
     ${imports[*]} \
     --dart_out=grpc:$output_dir \
 );

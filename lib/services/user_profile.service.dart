@@ -4,16 +4,16 @@
 
 import 'package:grpc/grpc.dart';
 import 'package:server/database/connection_pool.dart';
-import 'package:server/protos/google/protobuf/empty.pb.dart';
-import 'package:server/protos/google/protobuf/wrappers.pb.dart';
-import 'package:server/protos/user_profile.pbgrpc.dart';
+import 'package:server/protobuf/google/protobuf/empty.pb.dart';
+import 'package:server/protobuf/google/protobuf/wrappers.pb.dart';
+import 'package:server/protobuf/socfony.pbgrpc.dart';
 import 'package:single/single.dart';
 
 import '../auth.dart';
 
 class UserProfileService extends UserProfileServiceBase {
   @override
-  Future<UserProfile> findUnique(ServiceCall call, StringValue request) async {
+  Future<UserProfile> find(ServiceCall call, StringValue request) async {
     final database = await single<DatabaseConnectionPool>().getConnection();
     final results = await database.mappedResultsQuery(
       r'SELECT * FROM user_profiles WHERE user_id = @userId',
@@ -36,7 +36,7 @@ class UserProfileService extends UserProfileServiceBase {
 
   @override
   Future<Empty> update(
-      ServiceCall call, UserProfileUpdateRequest request) async {
+      ServiceCall call, UpdateUserProfileRequest request) async {
     final auth = single<Auth>();
     final accessToken = await auth.getAccessToken(call.clientMetadata);
 
@@ -62,10 +62,6 @@ class UserProfileService extends UserProfileServiceBase {
     if (request.hasGender()) {
       variables['gender'] = request.gender.value;
       fields.add('gender = @gender');
-    }
-    if (request.hasAvatar()) {
-      variables['avatar'] = request.avatar;
-      fields.add(r'avatar = @avatar');
     }
 
     // If fields is empty.
