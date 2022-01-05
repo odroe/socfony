@@ -33,7 +33,7 @@ if [ -f $config_yaml_file ]; then
 fi
 
 # run prisma push command
-$prisma_bin db push --schema $prisma_file
+$prisma_bin db push --schema $prisma_file --skip-generate
 
 # Remore DATABASE_URL environment variable
 unset DATABASE_URL

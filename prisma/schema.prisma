@@ -60,7 +60,7 @@ model UserProfile {
   name     String?
   bio      String? @db.Text
   birthday Int?
-  gender Int @default(3)
+  gender   Int     @default(3)
 
   @@index([name])
   @@index([birthday])
@@ -68,11 +68,11 @@ model UserProfile {
 }
 
 model Moment {
-  id String @id @db.Char(64)
-  title String?
-  body String? @db.Text
-  media Json?
-  user_id String @db.Char(64)
+  id         String   @id @db.Char(64)
+  title      String?
+  content    String?  @db.Text
+  media      Json?
+  user_id    String   @db.Char(64)
   created_at DateTime @default(now()) @db.Timestamptz
 
   @@index([created_at])
