@@ -4,7 +4,9 @@ import 'package:grpc/grpc.dart';
 import 'package:server/auth.dart';
 import 'package:server/database/connection_pool.dart';
 import 'package:server/helpers/string.helper.dart';
+import 'package:server/protobuf/google/protobuf/empty.pb.dart';
 import 'package:server/protobuf/google/protobuf/timestamp.pb.dart';
+import 'package:server/protobuf/google/protobuf/wrappers.pb.dart';
 import 'package:server/protobuf/socfony.pbgrpc.dart';
 import 'package:single/single.dart';
 
@@ -61,5 +63,34 @@ class MomentService extends MomentServiceBase {
       case Moment_Media_Kind.notSet:
         return true;
     }
+  }
+
+  /// Delete a moment.
+  @override
+  Future<Empty> delete(ServiceCall call, StringValue request) async {
+    final AccessToken? accessToken =
+        await single<Auth>().getAccessToken(call.clientMetadata);
+    single<Auth>().validate(accessToken: accessToken);
+
+    final database = await single<DatabaseConnectionPool>().getConnection();
+    final mappedResults = await database.mappedResultsQuery(
+      r'SELECT id, user_id FROM moments WHERE id = @id',
+      substitutionValues: {'id': request.value},
+    );
+    if (mappedResults.isEmpty) {
+      throw GrpcError.notFound('Moment not found');
+    }
+
+    final String momentOwnerId = mappedResults.first['moments']!['user_id']!;
+    if (momentOwnerId != accessToken!.userId) {
+      throw GrpcError.permissionDenied('You are not the owner of this moment');
+    }
+
+    await database.execute(
+      r'DELETE FROM moments WHERE id = @id',
+      substitutionValues: {'id': request.value},
+    );
+
+    return Empty();
   }
 }

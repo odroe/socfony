@@ -221,6 +221,8 @@ message UserProfile {
 service MomentService {
   // 创建动态
   rpc Create(CreateMomentRequest) returns(Moment);
+  // 删除一条动态
+  rpc Delete(google.protobuf.StringValue) returns(google.protobuf.Empty);
 }
 
 // 创建动态请求
