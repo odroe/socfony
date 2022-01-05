@@ -55,7 +55,7 @@ class UserProfileService extends UserProfileServiceBase {
       variables['bio'] = request.bio;
       fields.add('bio = @bio');
     }
-    if (request.hasBirthday()) {
+    if (request.hasBirthday() && request.birthday.toString().length == 8) {
       variables['birthday'] = request.birthday;
       fields.add('birthday = @birthday');
     }
