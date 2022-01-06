@@ -223,6 +223,8 @@ service MomentService {
   rpc Create(CreateMomentRequest) returns(Moment);
   // 删除一条动态
   rpc Delete(google.protobuf.StringValue) returns(google.protobuf.Empty);
+  // 获取按照发布倒序的动态列表
+  rpc FindAll(FindAllMomentRequest) returns(MomentList);
 }
 
 // 创建动态请求
@@ -233,6 +235,14 @@ message CreateMomentRequest {
   optional string content = 2;
   // 媒体 - 可选
   optional Moment.Media media = 3;
+}
+
+// 查询全部动态请求
+message FindAllMomentRequest {
+  // 分页大小
+  optional int32 limit = 1;
+  // 偏移量
+  optional int32 offset = 2;
 }
 
 // 动态响应
@@ -258,4 +268,9 @@ message Moment {
   optional string content = 4;
   optional Media media = 5;
   google.protobuf.Timestamp created_at = 6;
+}
+
+// 动态列表
+message MomentList {
+  repeated Moment moments = 1;
 }

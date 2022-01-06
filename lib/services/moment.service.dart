@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:grpc/grpc.dart';
 import 'package:server/auth.dart';
@@ -33,8 +34,7 @@ class MomentService extends MomentServiceBase {
         'userId': accessToken!.userId,
         'title': request.title.isNotEmpty ? request.title : null,
         'content': request.content.isNotEmpty ? request.content : null,
-        'media':
-            hasMediaIsEmpty ? null : json.encode(request.media.toProto3Json()),
+        'media': hasMediaIsEmpty ? null : request.media.writeToJson(),
       },
     );
 
@@ -92,5 +92,42 @@ class MomentService extends MomentServiceBase {
     );
 
     return Empty();
+  }
+
+  /// Find all moments.
+  @override
+  Future<MomentList> findAll(
+      ServiceCall call, FindAllMomentRequest request) async {
+    final int limit = max(min(request.limit, 50), 1);
+    final int offset = max(request.offset, 0);
+    final database = await single<DatabaseConnectionPool>().getConnection();
+
+    final String query =
+        r'SELECT id, user_id, title, content, media, created_at FROM moments ORDER BY created_at DESC LIMIT @limit OFFSET @offset';
+    final mappedResults = await database.mappedResultsQuery(
+      query,
+      substitutionValues: {'limit': limit, 'offset': offset},
+    );
+
+    final List<Moment> moments = [];
+    for (final Map<String, dynamic> row in mappedResults) {
+      final Moment moment = Moment()
+        ..id = row['moments']['id']
+        ..userId = row['moments']['user_id']
+        ..title = row['moments']['title']
+        ..content = row['moments']['content']
+        ..createdAt = Timestamp.fromDateTime(row['moments']['created_at']);
+      if (row['moments']['media'] != null &&
+          row['moments']['media'] != '{}' &&
+          row['moments']['media'] != '[]' &&
+          row['moments']['media'] != '') {
+        moment.media =
+            Moment_Media.fromJson(json.encode(row['moments']['media']));
+      }
+
+      moments.add(moment);
+    }
+
+    return MomentList(moments: moments);
   }
 }
