@@ -177,7 +177,7 @@ packages:
     source: hosted
     version: "2.4.3"
   protobuf:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: protobuf
       url: "https://pub.dartlang.org"
@@ -204,6 +204,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
+  socfonyapis:
+    dependency: "direct main"
+    description:
+      name: socfonyapis
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   source_span:
     dependency: transitive
     description:

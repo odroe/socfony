@@ -5,5 +5,4 @@
 .socfony_cache
 
 lib/configuration.dart
-lib/protobuf
 build

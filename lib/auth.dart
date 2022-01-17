@@ -4,10 +4,9 @@
 
 import 'package:grpc/grpc.dart';
 import 'package:single/single.dart';
+import 'package:socfonyapis/socfonyapis.dart';
 
 import 'database/connection_pool.dart';
-import 'protobuf/google/protobuf/timestamp.pb.dart';
-import 'protobuf/socfony.pb.dart';
 
 class Auth {
   const Auth._();

@@ -4,10 +4,8 @@
 
 import 'package:grpc/grpc.dart';
 import 'package:server/database/connection_pool.dart';
-import 'package:server/protobuf/google/protobuf/empty.pb.dart';
-import 'package:server/protobuf/google/protobuf/wrappers.pb.dart';
-import 'package:server/protobuf/socfony.pbgrpc.dart';
 import 'package:single/single.dart';
+import 'package:socfonyapis/socfonyapis.dart';
 
 import '../auth.dart';
 import '../get_federation_token.dart';

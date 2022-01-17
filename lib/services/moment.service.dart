@@ -5,11 +5,8 @@ import 'package:grpc/grpc.dart';
 import 'package:server/auth.dart';
 import 'package:server/database/connection_pool.dart';
 import 'package:server/helpers/string.helper.dart';
-import 'package:server/protobuf/google/protobuf/empty.pb.dart';
-import 'package:server/protobuf/google/protobuf/timestamp.pb.dart';
-import 'package:server/protobuf/google/protobuf/wrappers.pb.dart';
-import 'package:server/protobuf/socfony.pbgrpc.dart';
 import 'package:single/single.dart';
+import 'package:socfonyapis/socfonyapis.dart';
 
 /// Moment gRPC sub service.
 class MomentService extends MomentServiceBase {

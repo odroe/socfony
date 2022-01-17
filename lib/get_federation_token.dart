@@ -6,12 +6,11 @@ import 'dart:convert';
 
 import 'package:http/http.dart';
 import 'package:single/single.dart';
+import 'package:socfonyapis/socfonyapis.dart';
 import 'package:tencent_sign/tc3.dart';
 
 import 'configuration.dart';
 import 'helpers/string.helper.dart';
-import 'protobuf/google/protobuf/timestamp.pb.dart';
-import 'protobuf/socfony.pb.dart';
 
 class GetFederationToken {
   const GetFederationToken();
