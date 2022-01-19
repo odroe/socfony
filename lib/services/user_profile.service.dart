@@ -25,7 +25,6 @@ class UserProfileService extends UserProfileServiceBase {
     final result = results.first['user_profile']!;
     return UserProfile(
       userId: result['user_id'],
-      name: result['name'],
       avatar: result['avatar'],
       bio: result['bio'],
       gender: UserProfile_Gender.valueOf(result['gender']),
@@ -45,10 +44,6 @@ class UserProfileService extends UserProfileServiceBase {
     final List<String> fields = [];
 
     // Using request build the variables and fields.
-    if (request.hasName()) {
-      variables['name'] = request.name;
-      fields.add('name = @name');
-    }
     if (request.hasBio()) {
       variables['bio'] = request.bio;
       fields.add('bio = @bio');
