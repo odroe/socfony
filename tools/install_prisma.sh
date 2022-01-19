@@ -14,9 +14,15 @@ prisma_dir=$root_dir/prisma;      # Prisma schema directory
 prisma_install_dir=$root_dir/.socfony_cache/prisma; # Prisma install directory
 prisma_bin=$prisma_install_dir/node_modules/.bin/prisma; # Prisma binary
 
+# Check Node.js installed
+if [ ! -x $(which node) ]; then
+    echo "Error: Node.js is not installed.";
+    exit 1;
+fi
+
 # Chack $root_dir/.socfony_cache/prisma directory exists, create it if it does not exist.
 if [ ! -d $prisma_install_dir ]; then
-  mkdir $prisma_install_dir
+  mkdir -p $prisma_install_dir
 fi
 
 # Check prisma_bin file exists, install it if it does not exist.
