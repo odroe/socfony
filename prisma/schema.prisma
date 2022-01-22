@@ -12,10 +12,10 @@ datasource db {
 
 model User {
   id       String @id @db.Char(64)
-  username String @unique @db.VarChar(100)
-  email    String @unique @db.VarChar(100)
-  phone    String @unique @db.VarChar(100)
-  password String
+  username String? @unique @db.VarChar(100)
+  email    String? @unique @db.VarChar(100)
+  phone    String? @unique @db.VarChar(100)
+  password String?
 
   accessTokens AccessToken[]
 }
@@ -32,4 +32,23 @@ model AccessToken {
   @@index([createdAt])
   @@index([expiredAt])
   @@index([refreshExpiredAt])
+}
+
+enum OneTimePasswordType {
+  EMAIL
+  PHONE
+}
+
+model OneTimePassword {
+  type      OneTimePasswordType
+  value     String              @db.VarChar(100)
+  otp       String              @db.VarChar(100)
+  createdAt DateTime            @default(now()) @db.Timestamp
+  expiredAt DateTime            @db.Timestamp
+
+  @@id([type, value, otp])
+  @@index([createdAt])
+  @@index([type])
+  @@index([value])
+  @@index([otp])
 }
