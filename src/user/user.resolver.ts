@@ -1,3 +1,7 @@
+// Copyright (c) 2021, Odroe Inc. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { PrismaClient } from '@prisma/client';
 import { UserWhereUniqueInput } from './dto/user-where-unique.input';
