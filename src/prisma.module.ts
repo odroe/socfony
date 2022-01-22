@@ -1,11 +1,24 @@
-import { ClassProvider, Global, Module } from "@nestjs/common";
+import {
+  ClassProvider,
+  Module,
+  OnModuleDestroy,
+  OnModuleInit,
+} from '@nestjs/common';
+import { PrismaClient } from '@prisma/client';
 
 const PrismaClassProvider: ClassProvider<PrismaClient> = {
-  provide: "",
-  useClass:
+  provide: PrismaClient,
+  useClass: class extends PrismaClient implements OnModuleInit, OnModuleDestroy {
+    async onModuleDestroy() {
+      await this.$connect();
+    }
+
+    async onModuleInit() {
+      await this.$disconnect();
+    }
+  },
 };
 
-@Global()
 @Module({
   providers: [PrismaClassProvider],
   exports: [PrismaClassProvider],

@@ -9,3 +9,27 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id       String @id @db.Char(64)
+  username String @unique @db.VarChar(100)
+  email    String @unique @db.VarChar(100)
+  phone    String @unique @db.VarChar(100)
+  password String
+
+  accessTokens AccessToken[]
+}
+
+model AccessToken {
+  token            String   @id @db.Char(128)
+  userId           String   @db.Char(64)
+  createdAt        DateTime @default(now()) @db.Timestamp
+  expiredAt        DateTime @db.Timestamp
+  refreshExpiredAt DateTime @db.Timestamp
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([createdAt])
+  @@index([expiredAt])
+  @@index([refreshExpiredAt])
+}

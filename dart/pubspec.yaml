@@ -10,7 +10,7 @@ publish_to: none
 environment:
   sdk: '>=2.15.0 <3.0.0'
 
-dependencies: 
+dependencies:
   crypto: ^3.0.1
   easysms: ^1.0.0
   grpc: ^3.0.2
@@ -20,7 +20,7 @@ dependencies:
   postgres: ^2.4.3
   single: ^1.0.2
   socfonyapis: ^1.0.1
-  tencent_sign: 
+  tencent_sign:
     path: tencent_sign
 
 dev_dependencies:

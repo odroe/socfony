@@ -3,6 +3,7 @@ Socfony 是一款完全开源的应用程序。程序中具有完备的社交功
 ## 快速开始
 
 下载当前仓库代码:
+
 ```sh
 git clone https://github.com/socfony/server
 ```
