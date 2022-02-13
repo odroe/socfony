@@ -15,13 +15,14 @@ datasource db {
 }
 
 model User {
-  id       String @id @db.Char(64)
+  id       String  @id @db.Char(64)
   username String? @unique @db.VarChar(100)
   email    String? @unique @db.VarChar(100)
   phone    String? @unique @db.VarChar(100)
   password String?
 
   accessTokens AccessToken[]
+  profile      UserProfile?
 }
 
 model AccessToken {
@@ -55,4 +56,23 @@ model OneTimePassword {
   @@index([type])
   @@index([value])
   @@index([otp])
+}
+
+enum UserGender {
+  UNKNOWN
+  WOMAN
+  MAN
+}
+
+model UserProfile {
+  userId   String     @id @db.Char(64)
+  avatar   String?    @db.VarChar(255)
+  bio      String?    @db.Text
+  gender   UserGender @default(UNKNOWN)
+  birthday Int?        @db.Integer
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([gender])
+  @@index([birthday])
 }
