@@ -8,7 +8,7 @@ import { PrismaClient } from '@prisma/client';
 import { AuthNullableGuard } from './auth-nullable.guard';
 
 @Injectable()
-export class AuthGuard extends AuthNullableGuard implements CanActivate {
+export class AuthRefreshGuard extends AuthNullableGuard implements CanActivate {
   constructor(prisma: PrismaClient) {
     super(prisma);
   }
@@ -17,7 +17,7 @@ export class AuthGuard extends AuthNullableGuard implements CanActivate {
     await super.canActivate(context);
 
     const accessToken = context.accessToken;
-    if (accessToken == null) {
+    if (!accessToken || accessToken.refreshExpiredAt < new Date()) {
       throw new UnauthorizedException('Unauthorized');
     }
 
