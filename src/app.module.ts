@@ -4,7 +4,7 @@
 
 import { Module } from '@nestjs/common';
 import { AccessTokenModule } from './access-token/access-token.module';
-import { GraphQLModule } from './graphql.module';
+import { GraphQLModule } from './graphql';
 import { UserModule } from './user/user.module';
 
 @Module({

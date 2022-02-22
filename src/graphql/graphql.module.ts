@@ -6,6 +6,8 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphQLModule as $ } from '@nestjs/graphql';
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 
+import './enums.register';
+
 export const GraphQLModule = $.forRoot<ApolloDriverConfig>({
   driver: ApolloDriver,
   autoSchemaFile: true,
