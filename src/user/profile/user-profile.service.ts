@@ -9,10 +9,13 @@ import { PrismaClient, User, UserProfile } from '@prisma/client';
 export class UserProfileService {
   constructor(private readonly prisma: PrismaClient) {}
 
-  async resolve(user: User): Promise<UserProfile> {
+  async resolve(user: User | string): Promise<UserProfile> {
+    // resolve user ID
+    const userId = typeof user === 'string' ? user : user.id;
+
     // Find user profile
     const userProfile = await this.prisma.userProfile.findUnique({
-      where: { userId: user.id },
+      where: { userId },
       rejectOnNotFound: false,
     });
 
@@ -21,7 +24,7 @@ export class UserProfileService {
 
     // Create user profile
     return this.prisma.userProfile.create({
-      data: { userId: user.id },
+      data: { userId },
     });
   }
 }

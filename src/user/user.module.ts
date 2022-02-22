@@ -3,13 +3,14 @@
 // license that can be found in the LICENSE file.
 
 import { Module } from '@nestjs/common';
+import { AuthModule } from 'src/auth';
 import { PrismaModule } from 'src/prisma.module';
 import { UserProfileModule } from './profile/user-profile.module';
 import { UserResolver } from './user.resolver';
 import { UserService } from './user.service';
 
 @Module({
-  imports: [PrismaModule, UserProfileModule],
+  imports: [PrismaModule, UserProfileModule, AuthModule],
   providers: [UserService, UserResolver],
 })
 export class UserModule {}

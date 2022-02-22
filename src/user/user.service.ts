@@ -3,6 +3,34 @@
 // license that can be found in the LICENSE file.
 
 import { Injectable } from '@nestjs/common';
+import { PrismaClient, User } from '@prisma/client';
 
 @Injectable()
-export class UserService {}
+export class UserService {
+  constructor(private readonly prisma: PrismaClient) {}
+
+  /**
+   * Update a user's username.
+   * @param userId Current user ID
+   * @param username New username
+   * @returns Updated user
+   */
+  async updateUsername(userId: string, username: string): Promise<User> {
+    // Find exists user by username.
+    const user = await this.prisma.user.findUnique({
+      where: { username },
+      rejectOnNotFound: false,
+    });
+
+    // If user exists, and exists user is not current user, throw error.
+    if (user && user.id !== userId) {
+      throw new Error('Username is already taken.');
+    }
+
+    // Update username.
+    return this.prisma.user.update({
+      where: { id: userId },
+      data: { username },
+    });
+  }
+}

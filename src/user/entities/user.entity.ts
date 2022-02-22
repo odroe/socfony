@@ -4,6 +4,7 @@
 
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Prisma } from '@prisma/client';
+import { UserProfile } from '../profile/entities/user-profile.entity';
 
 @ObjectType()
 export class User
@@ -12,6 +13,7 @@ export class User
       Prisma.UserGetPayload<{
         include: {
           accessTokens: false;
+          profile: true;
         };
       }>,
       'password'
@@ -28,4 +30,7 @@ export class User
 
   @Field(() => String, { description: 'User phone' })
   phone: string;
+
+  @Field(() => UserProfile)
+  profile: UserProfile;
 }
