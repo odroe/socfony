@@ -6,6 +6,7 @@ import { AccessToken as _AccessToken } from '@prisma/client';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { AccessTokenService } from './access-token.service';
 import { AccessToken } from './entities/access-token.entity';
+import { Auth } from 'src/auth';
 
 @Resolver(() => AccessToken)
 export class AccessTokenResolver {
@@ -61,5 +62,16 @@ export class AccessTokenResolver {
       password: otp,
       usePhoneOTP: true,
     });
+  }
+
+  /**
+   * Refresh Access token.
+   * @param accessToken Current access token
+   * @returns AccessToken
+   */
+  @Auth.refresh()
+  @Mutation(() => AccessToken, { description: 'Refresh access token' })
+  async refreshAccessToken(@Auth.accessToken() accessToken: _AccessToken) {
+    return this.accessTokenService.refreshAccessToken(accessToken);
   }
 }

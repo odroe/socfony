@@ -36,6 +36,32 @@ export class AccessTokenService {
   }
 
   /**
+   * Refresh access token.
+   * @param accessToken Current access token
+   * @returns AccessToken
+   */
+  async refreshAccessToken(accessToken: AccessToken): Promise<AccessToken> {
+    const [token] = await this.prisma.$transaction([
+      this.#createAccessToken(accessToken.userId),
+      this.prisma.accessToken.update({
+        where: { token: accessToken.token },
+        data: {
+          refreshExpiredAt: new Date(),
+          // Update expiredAt field,
+          // If accessToken.expiredAt lt now, set it to accessToken.expiredAt,
+          // Else set it to now + 5 minutes
+          expiredAt:
+            new Date() >= accessToken.expiredAt
+              ? accessToken.expiredAt
+              : new Date(Date.now() + 1000 * 60 * 5),
+        },
+      }),
+    ]);
+
+    return token;
+  }
+
+  /**
    * Using username/email/phone and password to create access token.
    * @param account Username/E-Mail/Phone
    * @param password password
@@ -110,11 +136,11 @@ export class AccessTokenService {
    * @returns Access token client
    */
   #createAccessToken(
-    user: User,
+    user: User | string,
   ): Prisma.Prisma__AccessTokenClient<AccessToken> {
     return this.prisma.accessToken.create({
       data: {
-        userId: user.id,
+        userId: typeof user === 'string' ? user : user.id,
         token: nanoid(128),
         // TODO: Set expiredAt
         expiredAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
