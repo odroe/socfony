@@ -18,7 +18,7 @@ export class UserProfileResolver {
     nullable: true,
     description: 'Find User profile',
   })
-  async userProfileFind(
+  async userProfile(
     @Args({ name: 'id', type: () => ID, description: 'User ID' }) id: string,
   ): Promise<_UserProfile> {
     const user = await this.prisma.user.findUnique({
