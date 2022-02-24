@@ -65,20 +65,11 @@ export class EmailService {
 
     const [transporter, from, name] = await this.transporter();
 
-    transporter.sendMail(
-      {
-        from: `${name} <${from}>`,
-        to: email,
-        subject: 'One Time Password',
-        text: `Your one time password is ${otp}`,
-      },
-      (err, info) => {
-        if (err) {
-          console.error(err);
-        } else {
-          console.log(info);
-        }
-      },
-    );
+    transporter.sendMail({
+      from: `${name} <${from}>`,
+      to: email,
+      subject: 'One Time Password',
+      text: `Your one time password is ${otp}`,
+    });
   }
 }
