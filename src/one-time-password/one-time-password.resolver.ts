@@ -11,4 +11,11 @@ export class OneTimePasswordResolver {
 
     return true;
   }
+
+  @Mutation(() => Boolean)
+  sendEmailOTP(@Args({ name: 'email', type: () => String }) email: string) {
+    this.otpService.sendEmailOTP(email);
+
+    return true;
+  }
 }
