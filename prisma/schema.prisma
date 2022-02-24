@@ -41,7 +41,7 @@ model AccessToken {
 
 enum OneTimePasswordType {
   EMAIL
-  PHONE
+  SMS
 }
 
 model OneTimePassword {
@@ -75,4 +75,12 @@ model UserProfile {
 
   @@index([gender])
   @@index([birthday])
+}
+
+model Setting {
+  type String
+  key String
+  value Json
+
+  @@id([type, key])
 }

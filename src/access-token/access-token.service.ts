@@ -101,7 +101,7 @@ export class AccessTokenService {
     const oneTimePassword = await this.prisma.oneTimePassword.findUnique({
       where: {
         type_value_otp: {
-          type: OneTimePasswordType.PHONE,
+          type: OneTimePasswordType.SMS,
           value: phone,
           otp,
         },
@@ -119,7 +119,7 @@ export class AccessTokenService {
       this.prisma.oneTimePassword.delete({
         where: {
           type_value_otp: {
-            type: OneTimePasswordType.PHONE,
+            type: OneTimePasswordType.SMS,
             value: phone,
             otp,
           },

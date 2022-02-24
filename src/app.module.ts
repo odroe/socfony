@@ -5,9 +5,15 @@
 import { Module } from '@nestjs/common';
 import { AccessTokenModule } from './access-token/access-token.module';
 import { GraphQLModule } from './graphql';
+import { OneTimePasswordModule } from './one-time-password';
 import { UserModule } from './user/user.module';
 
 @Module({
-  imports: [GraphQLModule, AccessTokenModule, UserModule],
+  imports: [
+    GraphQLModule,
+    AccessTokenModule,
+    UserModule,
+    OneTimePasswordModule,
+  ],
 })
 export class AppModule {}
