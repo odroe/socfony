@@ -1,12 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { Prisma, PrismaClient } from '@prisma/client';
 import { customAlphabet } from 'nanoid';
+import { EmailService } from './email';
 import { SMSService } from './sms';
 
 @Injectable()
 export class OneTimePasswordService {
   constructor(
     private readonly prisma: PrismaClient,
+    @Inject(forwardRef(() => EmailService))
+    private readonly emailService: EmailService,
+    @Inject(forwardRef(() => SMSService))
     private readonly smsService: SMSService,
   ) {}
 
@@ -35,5 +39,9 @@ export class OneTimePasswordService {
 
   async sendPhoneOTP(phone: string): Promise<void> {
     return this.smsService.send(phone);
+  }
+
+  async sendEmailOTP(email: string): Promise<void> {
+    return this.emailService.send(email);
   }
 }
