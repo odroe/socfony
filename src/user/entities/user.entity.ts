@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file.
 
 import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { Prisma } from '@prisma/client';
+import { Prisma, UserProfile as _UserProfile } from '@prisma/client';
 import { UserProfile } from '../profile/entities/user-profile.entity';
 
 @ObjectType()
@@ -32,5 +32,5 @@ export class User
   phone: string;
 
   @Field(() => UserProfile)
-  profile: UserProfile;
+  profile: _UserProfile;
 }

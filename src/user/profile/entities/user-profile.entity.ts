@@ -4,6 +4,7 @@
 
 import { Field, ID, Int, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { Prisma, UserGender, User as _User } from '@prisma/client';
+import { File } from 'src/storage';
 import { User } from 'src/user/entities/user.entity';
 
 registerEnumType(UserGender, {
@@ -14,17 +15,20 @@ registerEnumType(UserGender, {
 @ObjectType()
 export class UserProfile
   implements
-    Prisma.UserProfileGetPayload<{
-      include: {
-        user: true;
-      };
-    }>
+    Omit<
+      Prisma.UserProfileGetPayload<{
+        include: {
+          user: true;
+        };
+      }>,
+      'avatar'
+    >
 {
   @Field(() => ID, { description: 'User ID' })
   userId: string;
 
-  @Field(() => String, { description: 'User avatar', nullable: true })
-  avatar: string | null;
+  @Field(() => File, { description: 'User avatar', nullable: true })
+  avatar?: File;
 
   @Field(() => String, { description: 'User bio', nullable: true })
   bio: string | null;

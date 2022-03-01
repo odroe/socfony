@@ -6,6 +6,7 @@ import { Module } from '@nestjs/common';
 import { AccessTokenModule } from './access-token/access-token.module';
 import { GraphQLModule } from './graphql';
 import { OneTimePasswordModule } from './one-time-password';
+import { StorageModule } from './storage';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -14,6 +15,7 @@ import { UserModule } from './user/user.module';
     AccessTokenModule,
     UserModule,
     OneTimePasswordModule,
+    StorageModule,
   ],
 })
 export class AppModule {}
