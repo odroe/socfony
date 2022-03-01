@@ -137,6 +137,74 @@ export class UserResolver {
   }
 
   /**
+   * Update current user E-Mail.
+   * @Auth.accessToken()
+   * @param email New bind E-Mail.
+   * @param otp New E-Mail OTP.
+   * @param oldEmailOTP Old E-Mail OTP.
+   * @returns User
+   */
+  @Mutation(() => User)
+  @Auth.must()
+  async updateUserEmail(
+    @Auth.accessToken() { userId }: AccessToken,
+    @Args({ name: 'email', type: () => String }) email: string,
+    @Args({ name: 'otp', type: () => String }) otp: string,
+    @Args({ name: 'oldEmailOTP', type: () => String, nullable: true })
+    oldEmailOTP?: string,
+  ) {
+    // Find current user.
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    // If current user email is args.email, then return.
+    if (user!.email === email) return user;
+
+    // If user.email not equal args.email, check new email user is exist.
+    const newEmailUser = await this.prisma.user.findUnique({
+      where: { email },
+      rejectOnNotFound: false,
+    });
+    if (newEmailUser && newEmailUser.id !== user!.id) {
+      throw new Error('Email is already in use.');
+    }
+
+    // Create new email OTP check and delete callback.
+    const onBindOtpDelete = await this.otpService.verify(
+      OneTimePasswordType.EMAIL,
+      email,
+      otp,
+    );
+
+    // If user bind email, create old email OTP check and delete callback.
+    let onUnbindOtpDelete: () => Promise<any> = () => Promise.resolve();
+    if (user!.email) {
+      // Check old email OTP.
+      if (!oldEmailOTP) {
+        throw new Error('Please enter old email OTP.');
+      }
+
+      onUnbindOtpDelete = await this.otpService.verify(
+        OneTimePasswordType.EMAIL,
+        user!.email,
+        oldEmailOTP,
+      );
+    }
+
+    // Update user email.
+    const promise = this.prisma.user.update({
+      where: { id: userId },
+      data: { email },
+    });
+
+    // Delete OTP.
+    await Promise.all([onBindOtpDelete(), onUnbindOtpDelete()]);
+
+    return promise;
+  }
+
+  /**
    * Resolve user profile field.
    * @param user @Parent()
    * @returns UserProfile
