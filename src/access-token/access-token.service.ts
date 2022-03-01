@@ -6,12 +6,13 @@ import { Injectable } from '@nestjs/common';
 import {
   AccessToken,
   OneTimePasswordType,
-  Prisma,
   PrismaClient,
   User,
 } from '@prisma/client';
 import bcrypt = require('bcrypt');
 import { nanoid } from 'nanoid';
+import { parsePhoneNumber } from 'libphonenumber-js';
+import { OneTimePasswordService } from 'src/one-time-password';
 
 export interface CreateAccessTokenArgs {
   account: string;
@@ -21,7 +22,10 @@ export interface CreateAccessTokenArgs {
 
 @Injectable()
 export class AccessTokenService {
-  constructor(private readonly prisma: PrismaClient) {}
+  constructor(
+    private readonly prisma: PrismaClient,
+    private readonly otpService: OneTimePasswordService,
+  ) {}
 
   /**
    * Create access token.
@@ -41,22 +45,20 @@ export class AccessTokenService {
    * @returns AccessToken
    */
   async refreshAccessToken(accessToken: AccessToken): Promise<AccessToken> {
-    const [token] = await this.prisma.$transaction([
-      this.#createAccessToken(accessToken.userId),
-      this.prisma.accessToken.update({
-        where: { token: accessToken.token },
-        data: {
-          refreshExpiredAt: new Date(),
-          // Update expiredAt field,
-          // If accessToken.expiredAt lt now, set it to accessToken.expiredAt,
-          // Else set it to now + 5 minutes
-          expiredAt:
-            new Date() >= accessToken.expiredAt
-              ? accessToken.expiredAt
-              : new Date(Date.now() + 1000 * 60 * 5),
-        },
-      }),
-    ]);
+    const token = this.#createAccessToken(accessToken.userId);
+    await this.prisma.accessToken.update({
+      where: { token: accessToken.token },
+      data: {
+        refreshExpiredAt: new Date(),
+        // Update expiredAt field,
+        // If accessToken.expiredAt lt now, set it to accessToken.expiredAt,
+        // Else set it to now + 5 minutes
+        expiredAt:
+          new Date() >= accessToken.expiredAt
+            ? accessToken.expiredAt
+            : new Date(Date.now() + 1000 * 60 * 5),
+      },
+    });
 
     return token;
   }
@@ -94,40 +96,23 @@ export class AccessTokenService {
     phone: string,
     otp: string,
   ): Promise<AccessToken> {
+    // Check phone format.
+    const phoneNumber = parsePhoneNumber(phone);
+    if (!phoneNumber.isValid()) throw new Error('Invalid phone number.');
+    const formatedPhone = phoneNumber.format('E.164');
+
     // Find user by phone
-    const user = await this.#phoneFindUserAutoCreate(phone);
+    const user = await this.#phoneFindUserAutoCreate(formatedPhone);
 
-    // Check user OTP and fetch
-    const oneTimePassword = await this.prisma.oneTimePassword.findUnique({
-      where: {
-        type_value_otp: {
-          type: OneTimePasswordType.SMS,
-          value: phone,
-          otp,
-        },
-      },
-      rejectOnNotFound: () => new Error(`One-Time Password is incorrect`),
-    });
+    // Verify OTP and create delete callback.
+    const deleteCallback = await this.otpService.verify(
+      OneTimePasswordType.SMS,
+      formatedPhone,
+      otp,
+    );
+    await deleteCallback();
 
-    // Check OTP is expired
-    if (oneTimePassword.expiredAt < new Date())
-      throw new Error(`One-Time Password is expired`);
-
-    // Create access token and delete OTP
-    const [accessToken] = await this.prisma.$transaction([
-      this.#createAccessToken(user),
-      this.prisma.oneTimePassword.delete({
-        where: {
-          type_value_otp: {
-            type: OneTimePasswordType.SMS,
-            value: phone,
-            otp,
-          },
-        },
-      }),
-    ]);
-
-    return accessToken;
+    return this.#createAccessToken(user);
   }
 
   /**
@@ -135,16 +120,32 @@ export class AccessTokenService {
    * @param user Need created access token user
    * @returns Access token client
    */
-  #createAccessToken(
-    user: User | string,
-  ): Prisma.Prisma__AccessTokenClient<AccessToken> {
+  async #createAccessToken(user: User | string): Promise<AccessToken> {
+    const column = await this.prisma.setting.findUnique({
+      where: {
+        type_key: {
+          type: 'system',
+          key: 'access-token',
+        },
+      },
+      rejectOnNotFound: false,
+    });
+    const setting = Object.assign(
+      {
+        expiresIn: 60 * 60 * 24,
+        refreshExpiresIn: 60 * 60 * 24 * 30,
+      },
+      column?.value ?? {},
+    );
+
     return this.prisma.accessToken.create({
       data: {
         userId: typeof user === 'string' ? user : user.id,
         token: nanoid(128),
-        // TODO: Set expiredAt
-        expiredAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
-        refreshExpiredAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+        expiredAt: new Date(Date.now() + 1000 * setting.expiresIn),
+        refreshExpiredAt: new Date(
+          Date.now() + 1000 * setting.refreshExpiresIn,
+        ),
       },
     });
   }
