@@ -14,6 +14,7 @@ import {
 import {
   AccessToken,
   PrismaClient,
+  User as _User,
   UserProfile as _UserProfile,
 } from '@prisma/client';
 import { Auth } from 'src/auth';
@@ -65,7 +66,7 @@ export class UserProfileResolver {
     })
     data: UserProfileUncheckedUpdateInput,
     @Auth.accessToken() { userId }: AccessToken,
-  ) {
+  ): Promise<_UserProfile> {
     // Resolve user profile.
     const profile = await this.userProfileService.resolve(userId);
 
@@ -82,7 +83,7 @@ export class UserProfileResolver {
    * @returns User
    */
   @ResolveField(() => User)
-  async user(@Parent() profile: UserProfile) {
+  async user(@Parent() profile: UserProfile): Promise<_User> {
     if (!profile.user) {
       return this.prisma.user.findUnique({
         where: { id: profile.userId },
