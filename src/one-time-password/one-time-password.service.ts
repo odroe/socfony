@@ -1,5 +1,5 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
-import { Prisma, PrismaClient } from '@prisma/client';
+import { OneTimePasswordType, Prisma, PrismaClient } from '@prisma/client';
 import { customAlphabet } from 'nanoid';
 import { EmailService } from './email';
 import { SMSService } from './sms';
@@ -43,5 +43,25 @@ export class OneTimePasswordService {
 
   async sendEmailOTP(email: string): Promise<void> {
     return this.emailService.send(email);
+  }
+
+  async verify(type: OneTimePasswordType, value: string, otp: string) {
+    const column = await this.prisma.oneTimePassword.findUnique({
+      where: {
+        type_value_otp: { type, value, otp },
+      },
+      rejectOnNotFound: () => new Error('OTP not found'),
+    });
+
+    if (column.expiredAt < new Date()) {
+      throw new Error('OTP expired');
+    }
+
+    return () =>
+      this.prisma.oneTimePassword.delete({
+        where: {
+          type_value_otp: { type, value, otp },
+        },
+      });
   }
 }

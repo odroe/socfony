@@ -10,8 +10,10 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { AccessToken, PrismaClient } from '@prisma/client';
+import { AccessToken, OneTimePasswordType, PrismaClient } from '@prisma/client';
 import { Auth } from 'src/auth';
+import { OneTimePasswordService } from 'src/one-time-password';
+import { UpdateUserPhoneArgs } from './dto/update-user-phone.args';
 import { UserFindManyArgs } from './dto/user-find-many.args';
 import { UserWhereUniqueInput } from './dto/user-where-unique.input';
 import { User } from './entities/user.entity';
@@ -24,6 +26,7 @@ export class UserResolver {
   constructor(
     private readonly userService: UserService,
     private readonly userProfileService: UserProfileService,
+    private readonly otpService: OneTimePasswordService,
     private readonly prisma: PrismaClient,
   ) {}
 
@@ -69,6 +72,68 @@ export class UserResolver {
     @Auth.accessToken() accessToken: AccessToken,
   ) {
     return this.userService.updateUsername(accessToken.userId, username);
+  }
+
+  /**
+   * Update current user phone.
+   * @param args Update user phone args.
+   * @param { userId } @Auth.accessToken()
+   */
+  @Mutation(() => User)
+  @Auth.must()
+  async updateUserPhone(
+    @Args({ type: () => UpdateUserPhoneArgs }) args: UpdateUserPhoneArgs,
+    @Auth.accessToken() { userId }: AccessToken,
+  ) {
+    // Find current user.
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    // If current user phone is args.phone, then return.
+    if (user!.phone === args.phone) return user;
+
+    // If user.phone not equal args.phone, check new phone user is exist.
+    const newPhoneUser = await this.prisma.user.findUnique({
+      where: { phone: args.phone },
+      rejectOnNotFound: false,
+    });
+    if (newPhoneUser && newPhoneUser.id !== user!.id) {
+      throw new Error('Phone is already in use.');
+    }
+
+    // Create new phone OTP check and delete callback.
+    const onBindOtpDelete = await this.otpService.verify(
+      OneTimePasswordType.SMS,
+      args.phone,
+      args.otp,
+    );
+
+    // If user bind phone, create old phone OTP check and delete callback.
+    let onUnbindOtpDelete: () => Promise<any> = () => Promise.resolve();
+    if (user!.phone) {
+      // Check old phone OTP.
+      if (!args.oldPhoneOTP) {
+        throw new Error('Please enter old phone OTP.');
+      }
+
+      onUnbindOtpDelete = await this.otpService.verify(
+        OneTimePasswordType.SMS,
+        user!.phone,
+        args.oldPhoneOTP,
+      );
+    }
+
+    // Update user phone.
+    const promise = this.prisma.user.update({
+      where: { id: userId },
+      data: { phone: args.phone },
+    });
+
+    // Delete OTP.
+    await Promise.all([onBindOtpDelete(), onUnbindOtpDelete()]);
+
+    return promise;
   }
 
   /**
