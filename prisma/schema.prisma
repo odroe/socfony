@@ -69,7 +69,7 @@ model UserProfile {
   avatar   String?    @db.VarChar(255)
   bio      String?    @db.Text
   gender   UserGender @default(UNKNOWN)
-  birthday Int?        @db.Integer
+  birthday Int?       @db.Integer
 
   user User @relation(fields: [userId], references: [id])
 
@@ -78,8 +78,8 @@ model UserProfile {
 }
 
 model Setting {
-  type String
-  key String
+  type  String
+  key   String
   value Json
 
   @@id([type, key])
