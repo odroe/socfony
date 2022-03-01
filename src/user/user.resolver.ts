@@ -11,16 +11,24 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { AccessToken, OneTimePasswordType, PrismaClient } from '@prisma/client';
+import {
+  AccessToken,
+  OneTimePasswordType,
+  PrismaClient,
+  User as _User,
+} from '@prisma/client';
 import { Auth } from 'src/auth';
 import { OneTimePasswordService } from 'src/one-time-password';
-import { UpdateUserPhoneArgs } from './dto/update-user-phone.args';
 import { UserFindManyArgs } from './dto/user-find-many.args';
 import { UserWhereUniqueInput } from './dto/user-where-unique.input';
 import { User } from './entities/user.entity';
 import { UserProfile } from './profile/entities/user-profile.entity';
 import { UserProfileService } from './profile/user-profile.service';
 import { UserService } from './user.service';
+import {
+  UpdateUserSecurityArgs,
+  UserSecurityFields,
+} from './dto/update-user-security.args';
 
 @Resolver(() => User)
 export class UserResolver {
@@ -76,173 +84,102 @@ export class UserResolver {
   }
 
   /**
-   * Update current user phone.
-   * @param args Update user phone args.
-   * @param { userId } @Auth.accessToken()
-   */
-  @Mutation(() => User)
-  @Auth.must()
-  async updateUserPhone(
-    @Args({ type: () => UpdateUserPhoneArgs }) args: UpdateUserPhoneArgs,
-    @Auth.accessToken() { userId }: AccessToken,
-  ) {
-    // Find current user.
-    const user = await this.prisma.user.findUnique({
-      where: { id: userId },
-    });
-
-    // If current user phone is args.phone, then return.
-    if (user!.phone === args.phone) return user;
-
-    // If user.phone not equal args.phone, check new phone user is exist.
-    const newPhoneUser = await this.prisma.user.findUnique({
-      where: { phone: args.phone },
-      rejectOnNotFound: false,
-    });
-    if (newPhoneUser && newPhoneUser.id !== user!.id) {
-      throw new Error('Phone is already in use.');
-    }
-
-    // Create new phone OTP check and delete callback.
-    const onBindOtpDelete = await this.otpService.verify(
-      OneTimePasswordType.SMS,
-      args.phone,
-      args.otp,
-    );
-
-    // If user bind phone, create old phone OTP check and delete callback.
-    let onUnbindOtpDelete: () => Promise<any> = () => Promise.resolve();
-    if (user!.phone) {
-      // Check old phone OTP.
-      if (!args.oldPhoneOTP) {
-        throw new Error('Please enter old phone OTP.');
-      }
-
-      onUnbindOtpDelete = await this.otpService.verify(
-        OneTimePasswordType.SMS,
-        user!.phone,
-        args.oldPhoneOTP,
-      );
-    }
-
-    // Update user phone.
-    const promise = this.prisma.user.update({
-      where: { id: userId },
-      data: { phone: args.phone },
-    });
-
-    // Delete OTP.
-    await Promise.all([onBindOtpDelete(), onUnbindOtpDelete()]);
-
-    return promise;
-  }
-
-  /**
-   * Update current user E-Mail.
-   * @Auth.accessToken()
-   * @param email New bind E-Mail.
-   * @param otp New E-Mail OTP.
-   * @param oldEmailOTP Old E-Mail OTP.
+   * Update user security.
+   * @param args User new security args.
+   * @param accessToken @Auth.accessToken()
    * @returns User
    */
   @Mutation(() => User)
   @Auth.must()
-  async updateUserEmail(
+  async updateUserSecurity(
+    @Args({ type: () => UpdateUserSecurityArgs }) args: UpdateUserSecurityArgs,
     @Auth.accessToken() { userId }: AccessToken,
-    @Args({ name: 'email', type: () => String }) email: string,
-    @Args({ name: 'otp', type: () => String }) otp: string,
-    @Args({ name: 'oldEmailOTP', type: () => String, nullable: true })
-    oldEmailOTP?: string,
   ) {
-    // Find current user.
-    const user = await this.prisma.user.findUnique({
+    const user: _User = await this.prisma.user.findUnique({
       where: { id: userId },
+      rejectOnNotFound: true,
     });
+    let field: string;
 
-    // If current user email is args.email, then return.
-    if (user!.email === email) return user;
-
-    // If user.email not equal args.email, check new email user is exist.
-    const newEmailUser = await this.prisma.user.findUnique({
-      where: { email },
-      rejectOnNotFound: false,
-    });
-    if (newEmailUser && newEmailUser.id !== user!.id) {
-      throw new Error('Email is already in use.');
+    // Check Verify field has set.
+    if (args.verifyField === UserSecurityFields.EMAIL && !user.email) {
+      field = 'email';
+      throw new Error('You have not bind email.');
+    } else if (args.verifyField === UserSecurityFields.PHONE && !user.phone) {
+      field = 'phone';
+      throw new Error('You have not bind phone.');
+    } else if (
+      args.verifyField === UserSecurityFields.PASSWORD &&
+      !user.password
+    ) {
+      field = 'password';
+      throw new Error('You have not set password.');
     }
 
-    // Create new email OTP check and delete callback.
-    const onBindOtpDelete = await this.otpService.verify(
-      OneTimePasswordType.EMAIL,
-      email,
-      otp,
-    );
+    // Check need OTP.
+    if (args.verifyField !== UserSecurityFields.PASSWORD && !args.otp) {
+      throw new Error('Please enter OTP.');
+    }
 
-    // If user bind email, create old email OTP check and delete callback.
-    let onUnbindOtpDelete: () => Promise<any> = () => Promise.resolve();
-    if (user!.email) {
-      // Check old email OTP.
-      if (!oldEmailOTP) {
-        throw new Error('Please enter old email OTP.');
+    // Check new field user is exist.
+    if (args.field !== UserSecurityFields.PASSWORD) {
+      const field = args.field === UserSecurityFields.EMAIL ? 'email' : 'phone';
+      const exists = await this.prisma.user.findUnique({
+        where: { [field]: args.value },
+        rejectOnNotFound: false,
+      });
+      if (exists && exists.id !== user.id) {
+        throw new Error(`${args.value} is already in use.`);
       }
+    }
 
-      onUnbindOtpDelete = await this.otpService.verify(
-        OneTimePasswordType.EMAIL,
-        user!.email,
-        oldEmailOTP,
+    // OTP verify and create delete callback.
+    let onVerifyOtpDelete: () => Promise<any> = () => Promise.resolve();
+    if (args.verifyField !== UserSecurityFields.PASSWORD) {
+      const fieldValue =
+        args.verifyField === UserSecurityFields.EMAIL
+          ? user.email!
+          : user.phone!;
+      onVerifyOtpDelete = await this.otpService.verify(
+        args.verifyField === UserSecurityFields.EMAIL
+          ? OneTimePasswordType.EMAIL
+          : OneTimePasswordType.SMS,
+        fieldValue,
+        args.verifyValue,
       );
     }
 
-    // Update user email.
-    const promise = this.prisma.user.update({
-      where: { id: userId },
-      data: { email },
-    });
-
-    // Delete OTP.
-    await Promise.all([onBindOtpDelete(), onUnbindOtpDelete()]);
-
-    return promise;
-  }
-
-  @Mutation(() => User)
-  @Auth.must()
-  async updateUserPassword(
-    @Args({ name: 'password', type: () => String }) password: string,
-    @Args({ name: 'type', type: () => OneTimePasswordType })
-    type: OneTimePasswordType,
-    @Args({ name: 'otp', type: () => String }) otp: string,
-    @Auth.accessToken() { userId }: AccessToken,
-  ) {
-    const user = await this.prisma.user.findUnique({
-      where: { id: userId },
-    });
-
-    // Check OTP type bind.
-    if (type === OneTimePasswordType.EMAIL && !user!.email) {
-      throw new Error('You have not bind email.');
-    } else if (type === OneTimePasswordType.SMS && !user!.phone) {
-      throw new Error('You have not bind phone.');
+    // Check user password equal user.password.
+    if (args.verifyField === UserSecurityFields.PASSWORD) {
+      const isEqual = await bcrypt.compare(args.verifyValue, user.password!);
+      if (!isEqual) {
+        throw new Error('Password is incorrect.');
+      }
     }
 
-    // Create OTP check and delete callback.
-    const onOtpDelete = await this.otpService.verify(
-      type,
-      type === OneTimePasswordType.EMAIL ? user!.email! : user!.phone!,
-      otp,
+    // Check new security OTP verify and create delete callback.
+    let onNewSecurityOtpDelete: () => Promise<any> = () => Promise.resolve();
+    if (args.field !== UserSecurityFields.PASSWORD) {
+      onNewSecurityOtpDelete = await this.otpService.verify(
+        args.field === UserSecurityFields.EMAIL
+          ? OneTimePasswordType.EMAIL
+          : OneTimePasswordType.SMS,
+        args.value,
+        args.otp!,
+      );
+    }
+
+    // Update user security.
+    const response = await this.userService.updateUserSecurity(
+      user,
+      args.field,
+      args.value,
     );
 
-    // Create new password salt.
-    const salt = bcrypt.genSaltSync(10);
+    // Delete all OTPs.
+    await Promise.all([onVerifyOtpDelete(), onNewSecurityOtpDelete()]);
 
-    // Delete OTP.
-    await onOtpDelete();
-
-    // Update user password.
-    return this.prisma.user.update({
-      where: { id: userId },
-      data: { password: bcrypt.hashSync(password, salt) },
-    });
+    return response;
   }
 
   /**

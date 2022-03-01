@@ -33,4 +33,17 @@ export class UserService {
       data: { username },
     });
   }
+
+  updateUserSecurity(
+    user: string | User,
+    field: 'email' | 'phone' | 'password',
+    value: string,
+  ): Promise<User> {
+    const userId = typeof user === 'string' ? user : user.id;
+    const userData = { [field]: value };
+    return this.prisma.user.update({
+      where: { id: userId },
+      data: userData,
+    });
+  }
 }
