@@ -17,6 +17,7 @@ import {
   UserProfile as _UserProfile,
 } from '@prisma/client';
 import { Auth } from 'src/auth';
+import { File } from 'src/storage';
 import { User } from '../entities/user.entity';
 import { UserProfileUncheckedUpdateInput } from './dto/user-profile-unckecked-update.input';
 import { UserProfile } from './entities/user-profile.entity';
@@ -90,5 +91,17 @@ export class UserProfileResolver {
     }
 
     return profile.user;
+  }
+
+  /**
+   * Resolve user profile avatar field.
+   * @param profile @Parent()
+   * @returns {File | null}
+   */
+  @ResolveField(() => File, { nullable: true })
+  avatar(@Parent() { avatar }: _UserProfile): File | null {
+    if (avatar) return File.fromPath(avatar);
+
+    return null;
   }
 }

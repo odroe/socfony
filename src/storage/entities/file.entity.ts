@@ -7,4 +7,10 @@ export class File {
 
   @Field({ description: 'Download URL.' })
   url: string;
+
+  static fromPath(path: string): File {
+    const file = new File();
+    file.path = path;
+    return file;
+  }
 }
