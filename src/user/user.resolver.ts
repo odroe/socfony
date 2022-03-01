@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+import bcrypt = require('bcrypt');
 import {
   Args,
   Mutation,
@@ -202,6 +203,46 @@ export class UserResolver {
     await Promise.all([onBindOtpDelete(), onUnbindOtpDelete()]);
 
     return promise;
+  }
+
+  @Mutation(() => User)
+  @Auth.must()
+  async updateUserPassword(
+    @Args({ name: 'password', type: () => String }) password: string,
+    @Args({ name: 'type', type: () => OneTimePasswordType })
+    type: OneTimePasswordType,
+    @Args({ name: 'otp', type: () => String }) otp: string,
+    @Auth.accessToken() { userId }: AccessToken,
+  ) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    // Check OTP type bind.
+    if (type === OneTimePasswordType.EMAIL && !user!.email) {
+      throw new Error('You have not bind email.');
+    } else if (type === OneTimePasswordType.SMS && !user!.phone) {
+      throw new Error('You have not bind phone.');
+    }
+
+    // Create OTP check and delete callback.
+    const onOtpDelete = await this.otpService.verify(
+      type,
+      type === OneTimePasswordType.EMAIL ? user!.email! : user!.phone!,
+      otp,
+    );
+
+    // Create new password salt.
+    const salt = bcrypt.genSaltSync(10);
+
+    // Delete OTP.
+    await onOtpDelete();
+
+    // Update user password.
+    return this.prisma.user.update({
+      where: { id: userId },
+      data: { password: bcrypt.hashSync(password, salt) },
+    });
   }
 
   /**
