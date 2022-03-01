@@ -1,5 +1,6 @@
 import { Args, Mutation, registerEnumType, Resolver } from '@nestjs/graphql';
 import { OneTimePasswordType } from '@prisma/client';
+import { parsePhoneNumber } from 'libphonenumber-js';
 import { OneTimePasswordService } from './one-time-password.service';
 
 registerEnumType(OneTimePasswordType, { name: 'OneTimePasswordType' });
@@ -19,7 +20,13 @@ export class OneTimePasswordResolver {
         this.otpService.sendEmailOTP(value);
         break;
       case OneTimePasswordType.SMS:
-        this.otpService.sendPhoneOTP(value);
+        // Check if phone number is valid.
+        const phone = parsePhoneNumber(value);
+        if (!phone.isValid()) {
+          throw new Error('Invalid phone number.');
+        }
+
+        this.otpService.sendPhoneOTP(phone.format('E.164'));
         break;
     }
 

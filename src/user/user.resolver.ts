@@ -3,6 +3,7 @@
 // license that can be found in the LICENSE file.
 
 import bcrypt = require('bcrypt');
+import { parsePhoneNumber } from 'libphonenumber-js';
 import {
   Args,
   Mutation,
@@ -119,6 +120,16 @@ export class UserResolver {
     // Check need OTP.
     if (args.verifyField !== UserSecurityFields.PASSWORD && !args.otp) {
       throw new Error('Please enter OTP.');
+    }
+
+    // Check Phone format.
+    if (args.field === UserSecurityFields.PHONE) {
+      const phone = parsePhoneNumber(args.value);
+      if (!phone.isValid()) {
+        throw new Error('Phone format is invalid.');
+      }
+
+      args.value = phone.format('E.164');
     }
 
     // Check new field user is exist.
