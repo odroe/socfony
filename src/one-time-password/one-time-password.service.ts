@@ -1,6 +1,6 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { OneTimePasswordType, Prisma, PrismaClient } from '@prisma/client';
-import { customAlphabet } from 'nanoid';
+import { OTPCommonService } from './common';
 import { EmailService } from './email';
 import { SMSService } from './sms';
 
@@ -8,9 +8,8 @@ import { SMSService } from './sms';
 export class OneTimePasswordService {
   constructor(
     private readonly prisma: PrismaClient,
-    @Inject(forwardRef(() => EmailService))
+    private readonly common: OTPCommonService,
     private readonly emailService: EmailService,
-    @Inject(forwardRef(() => SMSService))
     private readonly smsService: SMSService,
   ) {}
 
@@ -20,21 +19,13 @@ export class OneTimePasswordService {
    * @param data One-Time password data.
    * @returns OTP code.
    */
-  async save(
+  save(
     data: Pick<
       Prisma.OneTimePasswordUncheckedCreateInput,
       'expiredAt' | 'type' | 'value'
     >,
   ): Promise<string> {
-    // Create a OTP value.
-    const otp = customAlphabet('1234567890')(6);
-
-    // Save to database.
-    await this.prisma.oneTimePassword.create({
-      data: { ...data, otp },
-    });
-
-    return otp;
+    return this.common.save(data);
   }
 
   async sendPhoneOTP(phone: string): Promise<void> {

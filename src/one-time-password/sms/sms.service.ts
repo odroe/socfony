@@ -1,15 +1,14 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { OneTimePasswordType, PrismaClient } from '@prisma/client';
 import { Client } from 'tencentcloud-sdk-nodejs/tencentcloud/services/sms/v20210111/sms_client';
 import { ClientConfig } from 'tencentcloud-sdk-nodejs/tencentcloud/common/interface';
-import { OneTimePasswordService } from '../one-time-password.service';
+import { OTPCommonService } from '../common';
 
 @Injectable()
 export class SMSService {
   constructor(
     private readonly prisma: PrismaClient,
-    @Inject(forwardRef(() => OneTimePasswordService))
-    private readonly otpService: OneTimePasswordService,
+    private readonly common: OTPCommonService,
   ) {}
 
   protected async clientConfig(): Promise<ClientConfig> {
@@ -56,7 +55,7 @@ export class SMSService {
   }
 
   async send(phone: string): Promise<void> {
-    const otp = await this.otpService.save({
+    const otp = await this.common.save({
       type: OneTimePasswordType.SMS,
       value: phone,
       expiredAt: new Date(Date.now() + 1000 * 60 * 5),

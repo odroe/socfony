@@ -9,7 +9,7 @@ import {
   PrismaClient,
   User,
 } from '@prisma/client';
-import bcrypt = require('bcrypt');
+import bcrypt from 'bcrypt';
 import { nanoid } from 'nanoid';
 import { parsePhoneNumber } from 'libphonenumber-js';
 import { OneTimePasswordService } from 'src/one-time-password';

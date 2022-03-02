@@ -1,10 +1,10 @@
-import { forwardRef, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { PrismaModule } from 'src/prisma.module';
-import { OneTimePasswordModule } from '../one-time-password.module';
+import { OTPCommonModule } from '../common';
 import { SMSService } from './sms.service';
 
 @Module({
-  imports: [PrismaModule, forwardRef(() => OneTimePasswordModule)],
+  imports: [PrismaModule, OTPCommonModule],
   providers: [SMSService],
   exports: [SMSService],
 })

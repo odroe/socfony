@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
-import COS = require('cos-nodejs-sdk-v5');
-import querystring from 'querystring';
+import COS from 'cos-nodejs-sdk-v5';
+import qs from 'qs';
 
 @Injectable()
 export class COSService {
@@ -41,7 +41,7 @@ export class COSService {
   async createDowenloadUrl(path: string, query?: string): Promise<string> {
     const client = await this.createClient();
     const { bucket, region } = await this.configure();
-    const queryObject = query ? querystring.parse(query) : {};
+    const queryObject = query ? qs.parse(query) : {};
 
     const options: COS.GetObjectUrlParams = {
       Key: path,
@@ -51,6 +51,40 @@ export class COSService {
       Sign: true,
       Expires: 60 * 60 * 24,
       Method: 'GET',
+    };
+
+    return new Promise<string>((resolve, reject) =>
+      client.getObjectUrl(options, (err, data) => {
+        if (err) {
+          return reject(new Error(err.message));
+        }
+
+        resolve(data.Url);
+      }),
+    );
+  }
+
+  /**
+   * Create upload url.
+   * @param path COS file path.
+   * @param headers Put object headers.
+   * @returns string
+   */
+  async createUploadUrl(
+    path: string,
+    headers: Record<string, any>,
+  ): Promise<string> {
+    const client = await this.createClient();
+    const { bucket, region } = await this.configure();
+
+    const options: COS.GetObjectUrlParams = {
+      Key: path,
+      Region: region,
+      Bucket: bucket,
+      Sign: true,
+      Expires: 60 * 30,
+      Method: 'PUT',
+      Headers: headers,
     };
 
     return new Promise<string>((resolve, reject) =>

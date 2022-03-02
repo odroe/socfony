@@ -1,14 +1,13 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { OneTimePasswordType, PrismaClient } from '@prisma/client';
-import nodemailer = require('nodemailer');
-import { OneTimePasswordService } from '../one-time-password.service';
+import nodemailer from 'nodemailer';
+import { OTPCommonService } from '../common';
 
 @Injectable()
 export class EmailService {
   constructor(
     private readonly prisma: PrismaClient,
-    @Inject(forwardRef(() => OneTimePasswordService))
-    private readonly otpService: OneTimePasswordService,
+    private readonly common: OTPCommonService,
   ) {}
 
   protected async configure(): Promise<{
@@ -56,7 +55,7 @@ export class EmailService {
   }
 
   async send(email: string): Promise<void> {
-    const otp = await this.otpService.save({
+    const otp = await this.common.save({
       type: OneTimePasswordType.EMAIL,
       value: email,
       // 5 minutes

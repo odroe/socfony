@@ -15,4 +15,5 @@ export const GraphQLModule = $.forRoot<ApolloDriverConfig>({
   path: '/graphql',
   sortSchema: true,
   plugins: [ApolloServerPluginLandingPageLocalDefault()],
+  context: ({ req }) => req,
 });
