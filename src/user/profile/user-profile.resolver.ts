@@ -77,6 +77,22 @@ export class UserProfileResolver {
     });
   }
 
+  @Mutation(() => UserProfile)
+  @Auth.must()
+  async updateUserAvatar(
+    @Args({ name: 'path', type: () => String }) path: string,
+    @Auth.accessToken() accessToken: AccessToken,
+  ) {
+    const { userId } = await this.userProfileService.resolve(
+      accessToken.userId,
+    );
+
+    return this.prisma.userProfile.update({
+      where: { userId },
+      data: { avatar: path },
+    });
+  }
+
   /**
    * Resolve user profile user field.
    * @param profile @Parent()
