@@ -11,8 +11,10 @@ import {
   PrismaClient,
   Moment as _Moment,
   User as _User,
+  PrismaPromise,
 } from '@prisma/client';
 import { User } from 'src/user/entities/user.entity';
+import { MomentFindManyArgs } from './dto/moment-find-many.args';
 import { Moment } from './entities/moment.entity';
 
 @Resolver(() => Moment)
@@ -27,6 +29,13 @@ export class MomentResolver {
       where: { id },
       rejectOnNotFound: false,
     });
+  }
+
+  @Query(() => [Moment], { description: 'Find moments.', nullable: 'items' })
+  moments(
+    @Args({ type: () => MomentFindManyArgs }) args: MomentFindManyArgs,
+  ): PrismaPromise<_Moment[]> {
+    return this.prisma.moment.findMany(args);
   }
 
   @ResolveField(() => User)

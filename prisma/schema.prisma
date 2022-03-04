@@ -95,4 +95,8 @@ model Moment {
   createdAt DateTime @default(now()) @db.Timestamp
 
   user User @relation(fields: [userId], references: [id])
+
+  @@index([createdAt])
+  @@index([userId])
+  @@index([title])
 }
