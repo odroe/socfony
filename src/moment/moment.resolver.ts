@@ -83,8 +83,9 @@ export class MomentResolver {
       data: {
         id: nanoid(64),
         userId,
-        title,
-        content: content ? content.trim() : undefined,
+        title: title && title.trim().length > 0 ? title.trim() : undefined,
+        content:
+          content && content.trim().length > 0 ? content.trim() : undefined,
         media,
       },
     });
