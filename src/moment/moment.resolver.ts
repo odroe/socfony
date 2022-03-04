@@ -54,7 +54,7 @@ export class MomentResolver {
     if (
       (!images || images.length === 0) &&
       (!video || !video.poster || !video.video) &&
-      !content
+      (!content || content.trim().length === 0)
     ) {
       throw new Error(
         'Moment must have at least one media, Or content is required.',
@@ -84,7 +84,7 @@ export class MomentResolver {
         id: nanoid(64),
         userId,
         title,
-        content,
+        content: content ? content.trim() : undefined,
         media,
       },
     });
