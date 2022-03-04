@@ -1,6 +1,7 @@
 import {
   Args,
   ID,
+  Mutation,
   Parent,
   Query,
   ResolveField,
@@ -12,8 +13,13 @@ import {
   Moment as _Moment,
   User as _User,
   PrismaPromise,
+  AccessToken,
+  prisma,
 } from '@prisma/client';
+import { nanoid } from 'nanoid';
+import { Auth } from 'src/auth';
 import { User } from 'src/user/entities/user.entity';
+import { MomentCreateInput } from './dto/moment-create.input';
 import { MomentFindManyArgs } from './dto/moment-find-many.args';
 import { Moment } from './entities/moment.entity';
 
@@ -36,6 +42,52 @@ export class MomentResolver {
     @Args({ type: () => MomentFindManyArgs }) args: MomentFindManyArgs,
   ): PrismaPromise<_Moment[]> {
     return this.prisma.moment.findMany(args);
+  }
+
+  @Mutation(() => Moment, { description: 'Create a moment.' })
+  @Auth.must()
+  createMoment(
+    @Args({ name: 'data', type: () => MomentCreateInput })
+    { images, video, title, content }: MomentCreateInput,
+    @Auth.accessToken() { userId }: AccessToken,
+  ): Prisma.Prisma__MomentClient<_Moment> {
+    if (
+      (!images || images.length === 0) &&
+      (!video || !video.poster || !video.video) &&
+      !content
+    ) {
+      throw new Error(
+        'Moment must have at least one media, Or content is required.',
+      );
+    } else if (
+      (images && images.length > 0) ||
+      (video && video.poster && video.video)
+    ) {
+      throw new Error('Moment can not have both images and video.');
+    }
+
+    let media:
+      | string[]
+      | {
+          poster: string;
+          video: string;
+        }
+      | undefined;
+    if (images && images.length > 0) {
+      media = images;
+    } else if (video && video.poster && video.video) {
+      media = video;
+    }
+
+    return this.prisma.moment.create({
+      data: {
+        id: nanoid(64),
+        userId,
+        title,
+        content,
+        media,
+      },
+    });
   }
 
   @ResolveField(() => User)
