@@ -93,7 +93,6 @@ model Moment {
   content   String?  @db.Text
   media     Json?
   createdAt DateTime @default(now()) @db.Timestamp
-  updatedAt DateTime @db.Timestamp
 
   user User @relation(fields: [userId], references: [id])
 }
