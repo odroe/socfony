@@ -14,7 +14,6 @@ import {
   User as _User,
   PrismaPromise,
   AccessToken,
-  prisma,
 } from '@prisma/client';
 import { nanoid } from 'nanoid';
 import { Auth } from 'src/auth';
