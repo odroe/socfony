@@ -22,6 +22,7 @@ model User {
   password String?
 
   accessTokens AccessToken[]
+  comments     Comment[]
   profile      UserProfile?
   moments      Moment[]
   likedMoments UserLikeOnMoment[]
@@ -117,4 +118,16 @@ model UserLikeOnMoment {
 
   @@id([userId, momentId])
   @@index([createdAt])
+}
+
+model Comment {
+  id        String   @id @db.Char(64)
+  content   String   @db.Text
+  userId    String   @db.Char(64)
+  createdAt DateTime @default(now()) @db.Timestamp
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([createdAt])
+  @@index([userId])
 }

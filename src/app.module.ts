@@ -4,6 +4,7 @@
 
 import { Module } from '@nestjs/common';
 import { AccessTokenModule } from './access-token/access-token.module';
+import { CommentModule } from './comment/comment.module';
 import { GraphQLModule } from './graphql';
 import { MomentModule } from './moment';
 import { OneTimePasswordModule } from './one-time-password';
@@ -18,6 +19,7 @@ import { UserModule } from './user/user.module';
     OneTimePasswordModule,
     StorageModule,
     MomentModule,
+    CommentModule,
   ],
 })
 export class AppModule {}
