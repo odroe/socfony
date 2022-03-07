@@ -24,6 +24,11 @@ model User {
   accessTokens AccessToken[]
   profile      UserProfile?
   moments      Moment[]
+  likedMoments UserLikeOnMoment[]
+
+  @@index([username])
+  @@index([email])
+  @@index([phone])
 }
 
 model AccessToken {
@@ -94,9 +99,21 @@ model Moment {
   media     Json?
   createdAt DateTime @default(now()) @db.Timestamp
 
-  user User @relation(fields: [userId], references: [id])
+  user       User               @relation(fields: [userId], references: [id])
+  likedUsers UserLikeOnMoment[]
 
   @@index([createdAt])
   @@index([userId])
   @@index([title])
+}
+
+model UserLikeOnMoment {
+  userId    String   @db.Char(64)
+  momentId  String   @db.Char(64)
+  createdAt DateTime @default(now()) @db.Timestamp
+
+  user   User   @relation(fields: [userId], references: [id])
+  moment Moment @relation(fields: [momentId], references: [id])
+
+  @@id([userId, momentId])
 }
