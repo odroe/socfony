@@ -1,6 +1,7 @@
 import {
   Args,
   ID,
+  Int,
   Mutation,
   Parent,
   Query,
@@ -90,6 +91,45 @@ export class MomentResolver {
     });
   }
 
+  @Mutation(() => Moment, { description: 'Like a moment.' })
+  @Auth.must()
+  async likeMoment(
+    @Args({ name: 'momentId', type: () => ID }) id: string,
+    @Auth.accessToken() { userId }: AccessToken,
+  ): Promise<_Moment> {
+    const { id: momentId } = await this.prisma.moment.findUnique({
+      where: { id },
+      select: { id: true },
+      rejectOnNotFound: true,
+    });
+
+    const result = await this.prisma.userLikeOnMoment.upsert({
+      where: {
+        userId_momentId: { userId, momentId },
+      },
+      update: {},
+      create: { userId, momentId },
+      select: { moment: true },
+    });
+
+    return result.moment;
+  }
+
+  @Mutation(() => Boolean, { description: 'Unlike a moment.' })
+  @Auth.must()
+  async unlikeMoment(
+    @Args({ name: 'momentId', type: () => ID }) momentId: string,
+    @Auth.accessToken() { userId }: AccessToken,
+  ): Promise<boolean> {
+    await this.prisma.userLikeOnMoment.delete({
+      where: {
+        userId_momentId: { userId, momentId },
+      },
+    });
+
+    return true;
+  }
+
   @ResolveField(() => User)
   user(
     @Parent()
@@ -101,5 +141,23 @@ export class MomentResolver {
       where: { id: userId },
       rejectOnNotFound: true,
     });
+  }
+
+  @ResolveField(() => [User])
+  async likedUsers(
+    @Parent() { id }: _Moment,
+    @Args({ name: 'take', type: () => Int, nullable: true, defaultValue: 15 })
+    take: number = 15,
+    @Args({ name: 'skip', type: () => Int, nullable: true }) skip?: number,
+  ): Promise<_User[]> {
+    const results = await this.prisma.userLikeOnMoment.findMany({
+      where: { momentId: id },
+      orderBy: { createdAt: 'desc' },
+      select: { user: true },
+      take,
+      skip,
+    });
+
+    return results.map(({ user }) => user);
   }
 }

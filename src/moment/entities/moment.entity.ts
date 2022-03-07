@@ -32,4 +32,10 @@ export class Moment
 
   @Field(() => User, { description: 'Moment owner user.' })
   user: _User;
+
+  @Field(() => [User], {
+    description: 'Users who like this moment.',
+    nullable: 'items',
+  })
+  likedUsers: _User[];
 }

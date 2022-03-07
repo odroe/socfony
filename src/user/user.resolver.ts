@@ -6,6 +6,7 @@ import * as bcrypt from 'bcrypt';
 import { parsePhoneNumber } from 'libphonenumber-js';
 import {
   Args,
+  Int,
   Mutation,
   Parent,
   Query,
@@ -17,6 +18,8 @@ import {
   OneTimePasswordType,
   PrismaClient,
   User as _User,
+  Moment as _Moment,
+  PrismaPromise,
 } from '@prisma/client';
 import { Auth } from 'src/auth';
 import { OneTimePasswordService } from 'src/one-time-password';
@@ -30,6 +33,7 @@ import {
   UpdateUserSecurityArgs,
   UserSecurityFields,
 } from './dto/update-user-security.args';
+import { Moment } from 'src/moment/entities/moment.entity';
 
 @Resolver(() => User)
 export class UserResolver {
@@ -205,5 +209,38 @@ export class UserResolver {
     }
 
     return user.profile;
+  }
+
+  @ResolveField(() => [Moment])
+  moments(
+    @Parent() { id }: _User,
+    @Args({ name: 'take', type: () => Int, nullable: true, defaultValue: 15 })
+    take: number = 15,
+    @Args({ name: 'skip', type: () => Int, nullable: true }) skip?: number,
+  ): PrismaPromise<_Moment[]> {
+    return this.prisma.moment.findMany({
+      where: { userId: id },
+      orderBy: { createdAt: 'desc' },
+      take,
+      skip,
+    });
+  }
+
+  @ResolveField(() => [Moment])
+  async likedMoments(
+    @Parent() { id }: _User,
+    @Args({ name: 'take', type: () => Int, nullable: true, defaultValue: 15 })
+    take: number = 15,
+    @Args({ name: 'skip', type: () => Int, nullable: true }) skip?: number,
+  ): Promise<_Moment[]> {
+    const results = await this.prisma.userLikeOnMoment.findMany({
+      select: { moment: true },
+      where: { userId: id },
+      orderBy: { createdAt: 'desc' },
+      take,
+      skip,
+    });
+
+    return results.map(({ moment }) => moment);
   }
 }

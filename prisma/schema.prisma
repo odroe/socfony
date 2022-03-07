@@ -116,4 +116,5 @@ model UserLikeOnMoment {
   moment Moment @relation(fields: [momentId], references: [id])
 
   @@id([userId, momentId])
+  @@index([createdAt])
 }

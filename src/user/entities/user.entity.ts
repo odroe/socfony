@@ -3,7 +3,12 @@
 // license that can be found in the LICENSE file.
 
 import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { Prisma, UserProfile as _UserProfile } from '@prisma/client';
+import {
+  Prisma,
+  UserProfile as _UserProfile,
+  Moment as _Moment,
+} from '@prisma/client';
+import { Moment } from 'src/moment/entities/moment.entity';
 import { UserProfile } from '../profile/entities/user-profile.entity';
 
 @ObjectType()
@@ -14,6 +19,7 @@ export class User
         include: {
           accessTokens: false;
           profile: true;
+          moments: true;
         };
       }>,
       'password'
@@ -33,4 +39,10 @@ export class User
 
   @Field(() => UserProfile)
   profile: _UserProfile;
+
+  @Field(() => [Moment], { nullable: 'items' })
+  moments: _Moment[];
+
+  @Field(() => [Moment], { nullable: 'items' })
+  likedMoments: _Moment[];
 }
