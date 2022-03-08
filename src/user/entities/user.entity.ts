@@ -7,7 +7,9 @@ import {
   Prisma,
   UserProfile as _UserProfile,
   Moment as _Moment,
+  Comment as _Comment,
 } from '@prisma/client';
+import { Comment } from 'src/comment/entities/comment.entity';
 import { Moment } from 'src/moment/entities/moment.entity';
 import { UserProfile } from '../profile/entities/user-profile.entity';
 
@@ -20,6 +22,7 @@ export class User
           accessTokens: false;
           profile: true;
           moments: true;
+          comments: true;
         };
       }>,
       'password'
@@ -45,4 +48,7 @@ export class User
 
   @Field(() => [Moment], { nullable: 'items' })
   likedMoments: _Moment[];
+
+  @Field(() => [Comment], { nullable: 'items' })
+  comments: _Comment[];
 }

@@ -102,6 +102,7 @@ model Moment {
 
   user       User               @relation(fields: [userId], references: [id])
   likedUsers UserLikeOnMoment[]
+  comments   Comment[]
 
   @@index([createdAt])
   @@index([userId])
@@ -126,7 +127,11 @@ model Comment {
   userId    String   @db.Char(64)
   createdAt DateTime @default(now()) @db.Timestamp
 
-  user User @relation(fields: [userId], references: [id])
+  // 可选关系
+  momentId String? @db.Char(64)
+
+  user   User    @relation(fields: [userId], references: [id])
+  moment Moment? @relation(fields: [momentId], references: [id])
 
   @@index([createdAt])
   @@index([userId])

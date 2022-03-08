@@ -13,11 +13,13 @@ import {
   PrismaClient,
   Moment as _Moment,
   User as _User,
+  Comment as _Comment,
   PrismaPromise,
   AccessToken,
 } from '@prisma/client';
 import { nanoid } from 'nanoid';
 import { Auth } from 'src/auth';
+import { Comment } from 'src/comment/entities/comment.entity';
 import { User } from 'src/user/entities/user.entity';
 import { MomentCreateInput } from './dto/moment-create.input';
 import { MomentFindManyArgs } from './dto/moment-find-many.args';
@@ -159,5 +161,20 @@ export class MomentResolver {
     });
 
     return results.map(({ user }) => user);
+  }
+
+  @ResolveField(() => [Comment])
+  comments(
+    @Parent() { id }: _Moment,
+    @Args({ name: 'take', type: () => Int, nullable: true, defaultValue: 15 })
+    take: number = 15,
+    @Args({ name: 'skip', type: () => Int, nullable: true }) skip?: number,
+  ): PrismaPromise<_Comment[]> {
+    return this.prisma.comment.findMany({
+      where: { momentId: id },
+      orderBy: { createdAt: 'desc' },
+      take,
+      skip,
+    });
   }
 }

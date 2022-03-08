@@ -1,5 +1,6 @@
 import { Field, GraphQLISODateTime, ID, ObjectType } from '@nestjs/graphql';
-import { Prisma, User as _User } from '@prisma/client';
+import { Prisma, User as _User, Comment as _Comment } from '@prisma/client';
+import { Comment } from 'src/comment/entities/comment.entity';
 import { Media } from 'src/graphql';
 import { User } from 'src/user/entities/user.entity';
 
@@ -9,6 +10,7 @@ export class Moment
     Prisma.MomentGetPayload<{
       include: {
         user: true;
+        comments: true;
       };
     }>
 {
@@ -38,4 +40,10 @@ export class Moment
     nullable: 'items',
   })
   likedUsers: _User[];
+
+  @Field(() => [Comment], {
+    nullable: 'items',
+    description: 'Moment comments.',
+  })
+  comments: _Comment[];
 }

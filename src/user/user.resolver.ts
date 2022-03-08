@@ -19,6 +19,7 @@ import {
   PrismaClient,
   User as _User,
   Moment as _Moment,
+  Comment as _Comment,
   PrismaPromise,
 } from '@prisma/client';
 import { Auth } from 'src/auth';
@@ -34,6 +35,7 @@ import {
   UserSecurityFields,
 } from './dto/update-user-security.args';
 import { Moment } from 'src/moment/entities/moment.entity';
+import { Comment } from 'src/comment/entities/comment.entity';
 
 @Resolver(() => User)
 export class UserResolver {
@@ -242,5 +244,20 @@ export class UserResolver {
     });
 
     return results.map(({ moment }) => moment);
+  }
+
+  @ResolveField(() => [Comment])
+  comments(
+    @Parent() { id }: _User,
+    @Args({ name: 'take', type: () => Int, nullable: true, defaultValue: 15 })
+    take: number = 15,
+    @Args({ name: 'skip', type: () => Int, nullable: true }) skip?: number,
+  ): PrismaPromise<_Comment[]> {
+    return this.prisma.comment.findMany({
+      where: { userId: id },
+      orderBy: { createdAt: 'desc' },
+      take,
+      skip,
+    });
   }
 }
