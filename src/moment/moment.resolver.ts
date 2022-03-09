@@ -132,6 +132,33 @@ export class MomentResolver {
     return true;
   }
 
+  @Mutation(() => Comment, { description: 'Create a moment comment.' })
+  @Auth.must()
+  async createMomentComment(
+    @Args({ name: 'id', type: () => ID, description: 'Moment ID.' }) id: string,
+    @Args({
+      name: 'content',
+      type: () => String,
+      description: 'Comment content.',
+    })
+    content: string,
+    @Auth.accessToken() { userId }: AccessToken,
+  ) {
+    const moment = await this.prisma.moment.findUnique({
+      where: { id },
+      rejectOnNotFound: true,
+    });
+
+    return this.prisma.comment.create({
+      data: {
+        id: nanoid(64),
+        content,
+        userId,
+        momentId: moment.id,
+      },
+    });
+  }
+
   @ResolveField(() => User)
   user(
     @Parent()
