@@ -32,11 +32,18 @@ export class AccessTokenResolver {
       description: 'User password',
     })
     password: string,
+    @Args({
+      name: 'usePhoneOTP',
+      type: () => Boolean,
+      description: 'Whether to use phone OTP',
+      defaultValue: false,
+    })
+    usePhoneOTP: boolean,
   ): Promise<_AccessToken> {
     return this.accessTokenService.createAccessToken({
       account,
       password,
-      usePhoneOTP: false,
+      usePhoneOTP,
     });
   }
 
