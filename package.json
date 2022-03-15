@@ -20,7 +20,7 @@
     "@nestjs/apollo": "^10.0.6",
     "@nestjs/common": "^8.4.0",
     "@nestjs/core": "^8.4.0",
-    "@nestjs/graphql": "^10.0.6",
+    "@nestjs/graphql": "^10.0.7",
     "@nestjs/platform-express": "^8.4.0",
     "@prisma/client": "^3.10.0",
     "apollo-server-core": "^3.6.4",
