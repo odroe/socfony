@@ -35,7 +35,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.5.5",
-    "tencentcloud-sdk-nodejs": "^4.0.307"
+    "tencentcloud-sdk-nodejs": "^4.0.308"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.2.3",
