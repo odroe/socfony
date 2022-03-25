@@ -31,13 +31,13 @@ export class User
   @Field(() => ID, { description: 'User ID' })
   id: string;
 
-  @Field(() => String, { description: 'User unique name' })
+  @Field(() => String, { description: 'User unique name', nullable: true })
   username: string;
 
-  @Field(() => String, { description: 'User email' })
+  @Field(() => String, { description: 'User email', nullable: true })
   email: string;
 
-  @Field(() => String, { description: 'User phone' })
+  @Field(() => String, { description: 'User phone', nullable: true })
   phone: string;
 
   @Field(() => UserProfile)
