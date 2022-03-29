@@ -8,7 +8,7 @@
     "esModuleInterop": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
+    "allowSyntheticDefaultImports": false,
     "target": "esnext",
     "sourceMap": false,
     "outDir": "./dist",

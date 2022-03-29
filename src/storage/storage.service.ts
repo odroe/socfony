@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { COSService } from './cos';
 import { nanoid } from 'nanoid';
-import qs from 'qs';
+import * as qs from 'qs';
 
 @Injectable()
 export class StorageService {

@@ -84,14 +84,6 @@ model UserProfile {
   @@index([birthday])
 }
 
-model Setting {
-  type  String
-  key   String
-  value Json
-
-  @@id([type, key])
-}
-
 model Moment {
   id        String   @id @db.Char(64)
   userId    String   @db.Char(64)

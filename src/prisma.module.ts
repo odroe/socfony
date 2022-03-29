@@ -3,28 +3,46 @@
 // license that can be found in the LICENSE file.
 
 import {
-  ClassProvider,
+  FactoryProvider,
+  Inject,
+  Injectable,
   Module,
   OnModuleDestroy,
   OnModuleInit,
 } from '@nestjs/common';
+import { ConfigType } from '@nestjs/config';
 import { PrismaClient } from '@prisma/client';
+import database from './configuration/database';
 
-const PrismaClassProvider: ClassProvider<PrismaClient> = {
+@Injectable()
+class PrismaClientImpl implements OnModuleInit, OnModuleDestroy {
+  public readonly prisma: PrismaClient;
+
+  constructor(@Inject(database.KEY) { url }: ConfigType<typeof database>) {
+    this.prisma = new PrismaClient({
+      datasources: {
+        db: { url },
+      },
+    });
+  }
+
+  async onModuleInit() {
+    await this.prisma.$connect();
+  }
+
+  async onModuleDestroy() {
+    await this.prisma.$disconnect();
+  }
+}
+
+const provider: FactoryProvider<PrismaClient> = {
   provide: PrismaClient,
-  useClass: class extends PrismaClient implements OnModuleInit, OnModuleDestroy {
-    async onModuleDestroy() {
-      await this.$connect();
-    }
-
-    async onModuleInit() {
-      await this.$disconnect();
-    }
-  },
+  inject: [PrismaClientImpl],
+  useFactory: ({ prisma }: PrismaClientImpl) => prisma,
 };
 
 @Module({
-  providers: [PrismaClassProvider],
-  exports: [PrismaClassProvider],
+  providers: [PrismaClientImpl, provider],
+  exports: [provider],
 })
 export class PrismaModule {}

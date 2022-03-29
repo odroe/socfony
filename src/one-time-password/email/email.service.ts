@@ -1,57 +1,28 @@
-import { Injectable } from '@nestjs/common';
-import { OneTimePasswordType, PrismaClient } from '@prisma/client';
-import nodemailer from 'nodemailer';
+import { Inject, Injectable } from '@nestjs/common';
+import { ConfigType } from '@nestjs/config';
+import { OneTimePasswordType } from '@prisma/client';
+import nodemailer = require('nodemailer');
+import mailer from 'src/configuration/mailer';
 import { OTPCommonService } from '../common';
 
 @Injectable()
 export class EmailService {
   constructor(
-    private readonly prisma: PrismaClient,
     private readonly common: OTPCommonService,
+    @Inject(mailer.KEY) private readonly configure: ConfigType<typeof mailer>,
   ) {}
 
-  protected async configure(): Promise<{
-    pool: boolean;
-    host: string;
-    port: number;
-    secure: boolean;
-    auth: {
-      user: string;
-      pass: string;
-    };
-    name: string;
-  }> {
-    const setting = await this.prisma.setting.findUnique({
-      where: {
-        type_key: {
-          type: 'email',
-          key: 'configure',
-        },
-      },
-      rejectOnNotFound: false,
-    });
-
-    return setting?.value as unknown as {
-      pool: boolean;
-      host: string;
-      port: number;
-      secure: boolean;
+  transporter() {
+    return nodemailer.createTransport({
+      host: this.configure.host,
+      port: this.configure.port,
+      secure: this.configure.secure,
       auth: {
-        user: string;
-        pass: string;
-      };
-      name: string;
-    };
-  }
-
-  async transporter() {
-    const configure = await this.configure();
-
-    return [
-      nodemailer.createTransport(configure),
-      configure.auth.user,
-      configure.name,
-    ] as const;
+        user: this.configure.user,
+        pass: this.configure.pass,
+      },
+      name: this.configure.name,
+    });
   }
 
   async send(email: string): Promise<void> {
@@ -62,10 +33,8 @@ export class EmailService {
       expiredAt: new Date(Date.now() + 1000 * 60 * 5),
     });
 
-    const [transporter, from, name] = await this.transporter();
-
-    transporter.sendMail({
-      from: `${name} <${from}>`,
+    this.transporter().sendMail({
+      from: `${this.configure.name} <${this.configure.user}>`,
       to: email,
       subject: 'One Time Password',
       text: `Your one time password is ${otp}`,

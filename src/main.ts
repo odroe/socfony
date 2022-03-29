@@ -3,12 +3,21 @@
 // license that can be found in the LICENSE file.
 
 import { Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { DEFAULT_SERVER_PORT } from './configuration/server';
 
 async function bootstrap() {
+  // Create the Nest application
   const app = await NestFactory.create(AppModule);
-  await app.listen(3000);
+
+  // Get app listening on the configured port
+  const port: number =
+    app.get(ConfigService).get<number>('server.port') || DEFAULT_SERVER_PORT;
+
+  // Start the application
+  await app.listen(port);
 
   // Get the app running URL
   const url = await app.getUrl();

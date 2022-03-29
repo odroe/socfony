@@ -1,53 +1,38 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
-import COS from 'cos-nodejs-sdk-v5';
-import qs from 'qs';
+import { Inject, Injectable } from '@nestjs/common';
+import { ConfigType } from '@nestjs/config';
+import COS = require('cos-nodejs-sdk-v5');
+import * as qs from 'qs';
+import tencent_cos from 'src/configuration/tencent_cos';
 
 @Injectable()
 export class COSService {
-  constructor(private readonly prisma: PrismaClient) {}
+  constructor(
+    @Inject(tencent_cos.KEY)
+    private readonly configure: ConfigType<typeof tencent_cos>,
+  ) {}
 
   /**
    * Create a COS client.
    * @returns {Promise<COS>}
    */
   async createClient(): Promise<COS> {
-    // Fetch COS secretId and secretKey from Prisma.
-    const colum = await this.prisma.setting.findUnique({
-      where: {
-        type_key: {
-          type: 'cos',
-          key: 'base',
-        },
-      },
-      rejectOnNotFound: () =>
-        new Error('COS secretId and secretKey not found.'),
-    });
-    const { secretId, secretKey, domain, protocol } = colum.value as {
-      secretId: string;
-      secretKey: string;
-      domain: string | null;
-      protocol: string;
-    };
-
     return new COS({
-      SecretId: secretId,
-      SecretKey: secretKey,
-      Protocol: protocol,
-      Domain: typeof domain === 'string' ? domain : undefined,
+      SecretId: this.configure.secretId,
+      SecretKey: this.configure.secretKey,
+      Protocol: this.configure.protocol,
+      Domain: this.configure.domain,
     });
   }
 
   async createDowenloadUrl(path: string, query?: string): Promise<string> {
     const client = await this.createClient();
-    const { bucket, region } = await this.configure();
     const queryObject = query ? qs.parse(query) : {};
 
     const options: COS.GetObjectUrlParams = {
       Key: path,
       Query: queryObject,
-      Region: region,
-      Bucket: bucket,
+      Region: this.configure.region!,
+      Bucket: this.configure.bucket!,
       Sign: true,
       Expires: 60 * 60 * 24,
       Method: 'GET',
@@ -75,12 +60,11 @@ export class COSService {
     headers: Record<string, any>,
   ): Promise<string> {
     const client = await this.createClient();
-    const { bucket, region } = await this.configure();
 
     const options: COS.GetObjectUrlParams = {
       Key: path,
-      Region: region,
-      Bucket: bucket,
+      Region: this.configure.region!,
+      Bucket: this.configure.bucket!,
       Sign: true,
       Expires: 60 * 30,
       Method: 'PUT',
@@ -96,22 +80,5 @@ export class COSService {
         resolve(data.Url);
       }),
     );
-  }
-
-  protected async configure(): Promise<{
-    bucket: string;
-    region: string;
-  }> {
-    const colum = await this.prisma.setting.findUnique({
-      where: {
-        type_key: {
-          type: 'cos',
-          key: 'configure',
-        },
-      },
-      rejectOnNotFound: () => new Error('COS configure not found.'),
-    });
-
-    return colum.value as { bucket: string; region: string };
   }
 }

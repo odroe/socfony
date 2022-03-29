@@ -1,57 +1,27 @@
-import { Injectable } from '@nestjs/common';
-import { OneTimePasswordType, PrismaClient } from '@prisma/client';
+import { Inject, Injectable } from '@nestjs/common';
+import { ConfigType } from '@nestjs/config';
+import { OneTimePasswordType } from '@prisma/client';
+import tencent_cloud_sms from 'src/configuration/tencent_cloud_sms';
 import { Client } from 'tencentcloud-sdk-nodejs/tencentcloud/services/sms/v20210111/sms_client';
-import { ClientConfig } from 'tencentcloud-sdk-nodejs/tencentcloud/common/interface';
 import { OTPCommonService } from '../common';
 
 @Injectable()
 export class SMSService {
   constructor(
-    private readonly prisma: PrismaClient,
     private readonly common: OTPCommonService,
+    @Inject(tencent_cloud_sms.KEY)
+    private readonly configure: ConfigType<typeof tencent_cloud_sms>,
   ) {}
 
-  protected async clientConfig(): Promise<ClientConfig> {
-    const setting = await this.prisma.setting.findUnique({
-      where: {
-        type_key: {
-          type: 'sms',
-          key: 'tencentcloud-sms-client',
-        },
+  client(): Client {
+    return new Client({
+      credential: {
+        secretId: this.configure.secretId,
+        secretKey: this.configure.secretKey,
       },
-      rejectOnNotFound: false,
+      region: this.configure.region!,
+      profile: {},
     });
-
-    return setting?.value as unknown as ClientConfig;
-  }
-
-  protected async requestConfig(): Promise<{
-    appId: string;
-    templateId: string;
-    signName: string;
-    params: string[];
-  }> {
-    const setting = await this.prisma.setting.findUnique({
-      where: {
-        type_key: {
-          type: 'sms',
-          key: 'tencentcloud-sms-request',
-        },
-      },
-      rejectOnNotFound: false,
-    });
-
-    return setting?.value as unknown as {
-      appId: string;
-      templateId: string;
-      signName: string;
-      params: string[];
-    };
-  }
-
-  async client(): Promise<Client> {
-    const config = await this.clientConfig();
-    return new Client(config);
   }
 
   async send(phone: string): Promise<void> {
@@ -60,15 +30,13 @@ export class SMSService {
       value: phone,
       expiredAt: new Date(Date.now() + 1000 * 60 * 5),
     });
-    const { appId, templateId, signName, params } = await this.requestConfig();
 
-    const client = await this.client();
-    await client.SendSms({
+    await this.client().SendSms({
       PhoneNumberSet: [phone],
-      SmsSdkAppId: appId,
-      TemplateId: templateId,
-      SignName: signName,
-      TemplateParamSet: params.map((value) => {
+      SmsSdkAppId: this.configure.appId!,
+      TemplateId: this.configure.templateId!,
+      SignName: this.configure.signName!,
+      TemplateParamSet: this.configure.params.map((value) => {
         switch (value.toLocaleLowerCase()) {
           case '{otp}':
             return otp;

@@ -2,17 +2,20 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import {
   AccessToken,
   OneTimePasswordType,
   PrismaClient,
   User,
 } from '@prisma/client';
-import bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt';
+import dayjs = require('dayjs');
 import { nanoid } from 'nanoid';
 import { parsePhoneNumber } from 'libphonenumber-js';
 import { OneTimePasswordService } from 'src/one-time-password';
+import { ConfigType } from '@nestjs/config';
+import auth from 'src/configuration/auth';
 
 export interface CreateAccessTokenArgs {
   account: string;
@@ -20,12 +23,41 @@ export interface CreateAccessTokenArgs {
   usePhoneOTP: boolean;
 }
 
+class ParsedAuthConfigureChild {
+  private readonly units: string[] = ['s', 'm', 'h', 'd'];
+
+  constructor(private readonly source: string) {}
+
+  get value(): number {
+    return parseInt(this.source.substring(0, this.source.length - 1));
+  }
+
+  get unit(): 's' | 'm' | 'h' | 'd' {
+    const unit: string = this.source
+      .toLocaleLowerCase()
+      .substring(this.source.length - 1);
+
+    if (!this.units.includes(unit)) {
+      throw new Error(`Invalid unit ${unit}`);
+    }
+
+    return unit as 's' | 'm' | 'h' | 'd';
+  }
+}
+
 @Injectable()
 export class AccessTokenService {
+  private readonly _expiresIn: ParsedAuthConfigureChild;
+  private readonly _refreshExpiresIn: ParsedAuthConfigureChild;
+
   constructor(
     private readonly prisma: PrismaClient,
     private readonly otpService: OneTimePasswordService,
-  ) {}
+    @Inject(auth.KEY) { expiresIn, refreshExpiresIn }: ConfigType<typeof auth>,
+  ) {
+    this._expiresIn = new ParsedAuthConfigureChild(expiresIn);
+    this._refreshExpiresIn = new ParsedAuthConfigureChild(refreshExpiresIn);
+  }
 
   /**
    * Create access token.
@@ -121,31 +153,16 @@ export class AccessTokenService {
    * @returns Access token client
    */
   async #createAccessToken(user: User | string): Promise<AccessToken> {
-    const column = await this.prisma.setting.findUnique({
-      where: {
-        type_key: {
-          type: 'system',
-          key: 'access-token',
-        },
-      },
-      rejectOnNotFound: false,
-    });
-    const setting = Object.assign(
-      {
-        expiresIn: 60 * 60 * 24,
-        refreshExpiresIn: 60 * 60 * 24 * 30,
-      },
-      column?.value ?? {},
-    );
-
     return this.prisma.accessToken.create({
       data: {
         userId: typeof user === 'string' ? user : user.id,
         token: nanoid(128),
-        expiredAt: new Date(Date.now() + 1000 * setting.expiresIn),
-        refreshExpiredAt: new Date(
-          Date.now() + 1000 * setting.refreshExpiresIn,
-        ),
+        expiredAt: dayjs()
+          .add(this._expiresIn.value, this._expiresIn.unit)
+          .toDate(),
+        refreshExpiredAt: dayjs()
+          .add(this._refreshExpiresIn.value, this._refreshExpiresIn.unit)
+          .toDate(),
       },
     });
   }

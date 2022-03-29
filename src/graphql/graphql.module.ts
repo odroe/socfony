@@ -3,17 +3,22 @@
 // license that can be found in the LICENSE file.
 
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { ConfigType } from '@nestjs/config';
 import { GraphQLModule as $ } from '@nestjs/graphql';
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
+import graphql from 'src/configuration/graphql';
 
 import './enums.register';
 
-export const GraphQLModule = $.forRoot<ApolloDriverConfig>({
+export const GraphQLModule = $.forRootAsync<ApolloDriverConfig>({
+  inject: [graphql.KEY],
   driver: ApolloDriver,
-  autoSchemaFile: true,
-  playground: false,
-  path: '/graphql',
-  sortSchema: true,
-  plugins: [ApolloServerPluginLandingPageLocalDefault()],
-  context: ({ req }) => req,
+  useFactory: ({ path }: ConfigType<typeof graphql>) => ({
+    autoSchemaFile: true,
+    playground: false,
+    path,
+    sortSchema: true,
+    plugins: [ApolloServerPluginLandingPageLocalDefault()],
+    context: ({ req }) => req,
+  }),
 });
