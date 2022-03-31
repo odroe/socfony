@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import COS = require('cos-nodejs-sdk-v5');
 import * as qs from 'qs';
-import tencent_cos from 'src/configuration/tencent_cos';
+import tencent_cos from 'src/configuration/tencent_cloud_object_storage';
 
 @Injectable()
 export class COSService {
