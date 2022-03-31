@@ -27,7 +27,7 @@
     "@odroe/fs-cos": "^0.1.8",
     "@prisma/client": "^3.11.1",
     "apollo-server-core": "^3.6.7",
-    "apollo-server-express": "^3.6.6",
+    "apollo-server-express": "^3.6.7",
     "bcrypt": "^5.0.1",
     "cos-nodejs-sdk-v5": "^2.11.6",
     "dayjs": "^1.11.0",
