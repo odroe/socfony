@@ -50,37 +50,9 @@ export class MomentResolver {
   @Auth.must()
   createMoment(
     @Args({ name: 'data', type: () => MomentCreateInput })
-    { images, video, title, content }: MomentCreateInput,
+    { media, title, content }: MomentCreateInput,
     @Auth.accessToken() { userId }: AccessToken,
   ): Prisma.Prisma__MomentClient<_Moment> {
-    if (
-      (!images || images.length === 0) &&
-      (!video || !video.poster || !video.video) &&
-      (!content || content.trim().length === 0)
-    ) {
-      throw new Error(
-        'Moment must have at least one media, Or content is required.',
-      );
-    } else if (
-      (images && images.length > 0) ||
-      (video && video.poster && video.video)
-    ) {
-      throw new Error('Moment can not have both images and video.');
-    }
-
-    let media:
-      | string[]
-      | {
-          poster: string;
-          video: string;
-        }
-      | undefined;
-    if (images && images.length > 0) {
-      media = images;
-    } else if (video && video.poster && video.video) {
-      media = video;
-    }
-
     return this.prisma.moment.create({
       data: {
         id: nanoid(64),

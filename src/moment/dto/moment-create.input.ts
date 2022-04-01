@@ -15,20 +15,8 @@ class MomentVideoMediaInput {
 export class MomentCreateInput
   extends PickType(
     PartialType(Moment),
-    ['title', 'content'] as const,
+    ['title', 'content', 'media'] as const,
     InputType,
   )
-  implements Pick<Prisma.MomentCreateInput, 'title' | 'content'>
-{
-  @Field(() => [String], {
-    nullable: true,
-    description: 'Moment images media.',
-  })
-  images?: string[];
-
-  @Field(() => MomentVideoMediaInput, {
-    nullable: true,
-    description: 'Moment video media.',
-  })
-  video?: MomentVideoMediaInput;
-}
+  implements Pick<Prisma.MomentCreateInput, 'title' | 'content' |'media'>
+{}

@@ -26,7 +26,7 @@ export class Moment
   content: string | null;
 
   @Field(() => [String], { nullable: true, description: 'Moment media.' })
-  media: Prisma.JsonValue;
+  media: string[];
 
   @Field(() => GraphQLISODateTime, { description: 'Moment create at.' })
   createdAt: Date;
