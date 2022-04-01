@@ -1,7 +1,6 @@
 import { Field, GraphQLISODateTime, ID, ObjectType } from '@nestjs/graphql';
 import { Prisma, User as _User, Comment as _Comment } from '@prisma/client';
 import { Comment } from 'src/comment/entities/comment.entity';
-import { Media } from 'src/graphql';
 import { User } from 'src/user/entities/user.entity';
 
 @ObjectType()
@@ -26,7 +25,7 @@ export class Moment
   @Field(() => String, { nullable: true, description: 'Moment content.' })
   content: string | null;
 
-  @Field(() => Media, { nullable: true, description: 'Moment media.' })
+  @Field(() => [String], { nullable: true, description: 'Moment media.' })
   media: Prisma.JsonValue;
 
   @Field(() => GraphQLISODateTime, { description: 'Moment create at.' })

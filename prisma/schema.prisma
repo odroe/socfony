@@ -89,7 +89,7 @@ model Moment {
   userId    String   @db.Char(64)
   title     String?  @db.VarChar(255)
   content   String?  @db.Text
-  media     Json?
+  media     String[]
   createdAt DateTime @default(now()) @db.Timestamp
 
   user       User               @relation(fields: [userId], references: [id])
