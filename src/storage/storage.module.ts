@@ -14,6 +14,6 @@ import { TencentCloudSTSClient } from './tencent_cloud_sts_service';
     TencentCloudObjectStorageClient,
     TencentCloudSTSClient,
   ],
-  exports: [],
+  exports: [StorageHost],
 })
 export class StorageModule {}

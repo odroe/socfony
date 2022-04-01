@@ -82,14 +82,7 @@ export class UserProfileResolver {
     @Args({ name: 'path', type: () => String }) path: string,
     @Auth.accessToken() accessToken: AccessToken,
   ) {
-    const { userId } = await this.userProfileService.resolve(
-      accessToken.userId,
-    );
-
-    return this.prisma.userProfile.update({
-      where: { userId },
-      data: { avatar: path },
-    });
+    return this.userProfileService.saveAvatar(accessToken.userId, path);
   }
 
   /**

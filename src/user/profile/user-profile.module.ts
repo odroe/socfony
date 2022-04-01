@@ -5,11 +5,12 @@
 import { Module } from '@nestjs/common';
 import { AuthModule } from 'src/auth';
 import { PrismaModule } from 'src/prisma.module';
+import { StorageModule } from 'src/storage';
 import { UserProfileResolver } from './user-profile.resolver';
 import { UserProfileService } from './user-profile.service';
 
 @Module({
-  imports: [PrismaModule, AuthModule],
+  imports: [PrismaModule, AuthModule, StorageModule],
   providers: [UserProfileService, UserProfileResolver],
   exports: [UserProfileService],
 })
