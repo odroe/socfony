@@ -1,18 +1,16 @@
-import { Field, InputType, Int, registerEnumType } from '@nestjs/graphql';
-import { Prisma, UserGender } from '@prisma/client';
-
-registerEnumType(UserGender, { name: 'UserGender' });
+import { InputType, PickType } from '@nestjs/graphql';
+import { Prisma } from '@prisma/client';
+import { UserProfile } from '../entities/user-profile.entity';
 
 @InputType()
 export class UserProfileUncheckedUpdateInput
-  implements Prisma.UserProfileUncheckedUpdateInput
-{
-  @Field(() => String, { nullable: true })
-  bio?: string;
-
-  @Field(() => UserGender, { nullable: true })
-  gender?: UserGender;
-
-  @Field(() => Int, { nullable: true })
-  birthday?: number;
-}
+  extends PickType(
+    UserProfile,
+    ['bio', 'birthday', 'gender'] as const,
+    InputType,
+  )
+  implements
+    Pick<
+      Prisma.UserProfileUncheckedUpdateInput,
+      'bio' | 'birthday' | 'gender'
+    > {}

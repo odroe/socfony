@@ -14,20 +14,17 @@ registerEnumType(UserGender, {
 @ObjectType()
 export class UserProfile
   implements
-    Omit<
-      Prisma.UserProfileGetPayload<{
-        include: {
-          user: true;
-        };
-      }>,
-      'avatar'
-    >
+    Prisma.UserProfileGetPayload<{
+      include: {
+        user: true;
+      };
+    }>
 {
   @Field(() => ID, { description: 'User ID' })
   userId: string;
 
   @Field(() => String, { description: 'User avatar', nullable: true })
-  avatar?: string;
+  avatar: string | null;
 
   @Field(() => String, { description: 'User bio', nullable: true })
   bio: string | null;

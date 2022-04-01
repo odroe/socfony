@@ -18,5 +18,4 @@ export class MomentCreateInput
     ['title', 'content', 'media'] as const,
     InputType,
   )
-  implements Pick<Prisma.MomentCreateInput, 'title' | 'content' |'media'>
-{}
+  implements Pick<Prisma.MomentCreateInput, 'title' | 'content' | 'media'> {}
