@@ -7,13 +7,21 @@ import { GqlContextType, GqlExecutionContext } from '@nestjs/graphql';
 import { AccessToken, PrismaClient } from '@prisma/client';
 import { Request } from 'express';
 
+export function getRequest(context: ExecutionContext): Request {
+  if (context.getType<GqlContextType>() === 'graphql') {
+    return GqlExecutionContext.create(context).getContext<Request>();
+  }
+
+  return context.switchToHttp().getRequest();
+}
+
 @Injectable()
 export class AuthNullableGuard implements CanActivate {
   constructor(protected readonly prisma: PrismaClient) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     // Get the request
-    const request = this.getRequest(context);
+    const request = getRequest(context);
 
     // Get authorization header,
     // if it doesn't exist, return true.
@@ -27,14 +35,6 @@ export class AuthNullableGuard implements CanActivate {
     }
 
     return true;
-  }
-
-  private getRequest(context: ExecutionContext): Request {
-    if (context.getType<GqlContextType>() === 'graphql') {
-      return GqlExecutionContext.create(context).getContext<Request>();
-    }
-
-    return context.switchToHttp().getRequest();
   }
 
   private getAuthorization(request: Request): string | undefined {
@@ -55,7 +55,8 @@ export class AuthNullableGuard implements CanActivate {
     accessToken: AccessToken,
   ): void {
     if (accessToken.expiredAt > new Date()) {
-      context.accessToken = accessToken;
+      const request = getRequest(context);
+      request.accessToken = accessToken;
     }
   }
 }

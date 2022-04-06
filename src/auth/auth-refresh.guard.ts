@@ -9,7 +9,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
-import { AuthNullableGuard } from './auth-nullable.guard';
+import { AuthNullableGuard, getRequest } from './auth-nullable.guard';
 
 @Injectable()
 export class AuthRefreshGuard extends AuthNullableGuard implements CanActivate {
@@ -20,7 +20,7 @@ export class AuthRefreshGuard extends AuthNullableGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     await super.canActivate(context);
 
-    const accessToken = context.accessToken;
+    const accessToken = getRequest(context).accessToken;
     if (!accessToken || accessToken.refreshExpiredAt < new Date()) {
       throw new UnauthorizedException('Unauthorized');
     }

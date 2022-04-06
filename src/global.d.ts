@@ -4,8 +4,8 @@
 
 import { AccessToken } from '@prisma/client';
 
-declare module '@nestjs/common' {
-  interface ExecutionContext {
+declare module 'express' {
+  interface Request {
     accessToken: AccessToken | null;
   }
 }
