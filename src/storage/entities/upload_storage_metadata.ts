@@ -1,7 +1,10 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class UploadStorageMetadata {
+  @Field(() => ID, { description: 'storage ID' })
+  id: string;
+
   @Field(() => String, { description: 'PUT file url' })
   url: string;
 

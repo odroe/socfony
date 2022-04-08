@@ -91,13 +91,14 @@ export class StorageResolver {
     return this.prisma.storage
       .create({
         data: {
-          id: nanoid(54),
+          id: nanoid(64),
           isUploaded: false,
           location,
           userId,
         },
       })
-      .then<UploadStorageMetadata>(() => ({
+      .then<UploadStorageMetadata>(({ id }) => ({
+        id,
         url,
         headers: QueryString.stringify(headers),
       }));
