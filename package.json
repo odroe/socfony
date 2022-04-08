@@ -22,7 +22,7 @@
     "@nestjs/config": "^2.0.0",
     "@nestjs/core": "^8.4.4",
     "@nestjs/graphql": "^10.0.8",
-    "@nestjs/platform-express": "^8.4.3",
+    "@nestjs/platform-express": "^8.4.4",
     "@odroe/fs": "^0.1.8",
     "@odroe/fs-cos": "^0.1.8",
     "@prisma/client": "^3.12.0",
