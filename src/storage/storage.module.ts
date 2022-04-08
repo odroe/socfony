@@ -7,5 +7,6 @@ import { TencentCloudObjectStorageClient } from './tencent_cloud_object_storage_
 @Module({
   imports: [AuthModule, PrismaModule],
   providers: [TencentCloudObjectStorageClient, StorageResolver],
+  exports: [TencentCloudObjectStorageClient],
 })
 export class StorageModule {}
