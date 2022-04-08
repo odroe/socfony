@@ -48,30 +48,6 @@ export class AccessTokenResolver {
   }
 
   /**
-   * Using phone/OTP to login, If user don't register, create it.
-   * @param phone User phone
-   * @param otp User OTP
-   * @returns AccessToken
-   */
-  @Mutation(() => AccessToken, { description: 'Using phone/OTP to login' })
-  async loginWithPhoneOTP(
-    @Args({ type: () => String, name: 'phone', description: 'User phone' })
-    phone: string,
-    @Args({
-      type: () => String,
-      name: 'otp',
-      description: 'OTP sent to user phone',
-    })
-    otp: string,
-  ): Promise<_AccessToken> {
-    return this.accessTokenService.createAccessToken({
-      account: phone,
-      password: otp,
-      usePhoneOTP: true,
-    });
-  }
-
-  /**
    * Refresh Access token.
    * @param accessToken Current access token
    * @returns AccessToken
