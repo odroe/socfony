@@ -23,8 +23,6 @@
     "@nestjs/core": "^8.4.4",
     "@nestjs/graphql": "^10.0.8",
     "@nestjs/platform-express": "^8.4.4",
-    "@odroe/fs": "^0.1.8",
-    "@odroe/fs-cos": "^0.1.8",
     "@prisma/client": "^3.12.0",
     "apollo-server-core": "^3.6.7",
     "apollo-server-express": "^3.6.7",

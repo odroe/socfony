@@ -26,6 +26,7 @@ model User {
   profile      UserProfile?
   moments      Moment[]
   likedMoments UserLikeOnMoment[]
+  storages     Storage[]
 
   @@index([username])
   @@index([email])
@@ -126,5 +127,18 @@ model Comment {
   moment Moment? @relation(fields: [momentId], references: [id])
 
   @@index([createdAt])
+  @@index([userId])
+}
+
+model Storage {
+  id         String   @id @db.Char(64)
+  location   String   @unique
+  isUploaded Boolean  @default(false)
+  createdAt  DateTime @default(now()) @db.Timestamp
+
+  userId String @db.Char(64)
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@index([isUploaded])
   @@index([userId])
 }
