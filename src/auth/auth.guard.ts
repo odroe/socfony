@@ -20,7 +20,7 @@ export class AuthGuard extends AuthNullableGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     await super.canActivate(context);
 
-    const accessToken = getRequest(context);
+    const { accessToken } = getRequest(context);
     if (accessToken == null) {
       throw new UnauthorizedException('Unauthorized');
     }
