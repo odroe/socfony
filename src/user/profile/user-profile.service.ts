@@ -27,14 +27,4 @@ export class UserProfileService {
       data: { userId },
     });
   }
-
-  async saveAvatar(userId: string, path: string): Promise<UserProfile> {
-    // TODO: check if user profile exists
-    const { userId: _userId } = await this.resolve(userId);
-    return this.prisma.userProfile.update({
-      where: { userId: _userId },
-      data: {},
-      // data: { avatar: destination.path },
-    });
-  }
 }

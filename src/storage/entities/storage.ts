@@ -1,8 +1,18 @@
 import { Field, GraphQLISODateTime, ID, ObjectType } from '@nestjs/graphql';
-import { Storage as StorageInterface } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 
 @ObjectType({})
-export class Storage implements Omit<StorageInterface, 'userId'> {
+export class Storage
+  implements
+    Prisma.StorageGetPayload<{
+      select: {
+        id: true;
+        location: true;
+        isUploaded: true;
+        createdAt: true;
+      };
+    }>
+{
   @Field(() => ID)
   id: string;
 

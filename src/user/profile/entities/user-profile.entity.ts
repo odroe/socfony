@@ -23,8 +23,11 @@ export class UserProfile
   @Field(() => ID, { description: 'User ID' })
   userId: string;
 
-  @Field(() => String, { description: 'User avatar', nullable: true })
-  avatar: string | null;
+  @Field(() => String, {
+    description: 'User avatar storage ID',
+    nullable: true,
+  })
+  avatarStorageId: string | null;
 
   @Field(() => String, { description: 'User bio', nullable: true })
   bio: string | null;

@@ -73,14 +73,16 @@ enum UserGender {
 }
 
 model UserProfile {
-  userId   String     @id @db.Char(64)
-  avatar   String?    @db.VarChar(255)
-  bio      String?    @db.Text
-  gender   UserGender @default(UNKNOWN)
-  birthday Int?       @db.Integer
+  userId          String     @id @db.Char(64)
+  avatarStorageId String?    @unique @db.Char(64)
+  bio             String?    @db.Text
+  gender          UserGender @default(UNKNOWN)
+  birthday        Int?       @db.Integer
 
-  user User @relation(fields: [userId], references: [id])
+  user   User     @relation(fields: [userId], references: [id])
+  avatar Storage? @relation(fields: [avatarStorageId], references: [id])
 
+  @@index([avatarStorageId])
   @@index([gender])
   @@index([birthday])
 }
@@ -138,6 +140,9 @@ model Storage {
 
   userId String @db.Char(64)
   user   User   @relation(fields: [userId], references: [id])
+
+  /// 无需关注的细节关系，仅用于生产客户端代码关系
+  userProfile UserProfile?
 
   @@index([isUploaded])
   @@index([userId])

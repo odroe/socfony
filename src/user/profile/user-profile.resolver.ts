@@ -18,6 +18,11 @@ import {
   UserProfile as _UserProfile,
 } from '@prisma/client';
 import { Auth } from 'src/auth';
+import { TencentCloudObjectStorageClient } from 'src/storage';
+import {
+  findSupportedStorageMetadata,
+  SupportedImageStorageMetadata,
+} from 'src/storage/supported_storage_metadatas';
 import { User } from '../entities/user.entity';
 import { UserProfileUncheckedUpdateInput } from './dto/user-profile-unckecked-update.input';
 import { UserProfile } from './entities/user-profile.entity';
@@ -28,6 +33,7 @@ export class UserProfileResolver {
   constructor(
     private readonly userProfileService: UserProfileService,
     private readonly prisma: PrismaClient,
+    private readonly cos: TencentCloudObjectStorageClient,
   ) {}
 
   /**
@@ -79,10 +85,49 @@ export class UserProfileResolver {
   @Mutation(() => UserProfile)
   @Auth.must()
   async updateUserAvatar(
-    @Args({ name: 'path', type: () => String }) path: string,
-    @Auth.accessToken() accessToken: AccessToken,
+    @Args({ name: 'storageId', type: () => String }) id: string,
+    @Auth.accessToken() { userId }: AccessToken,
   ) {
-    return this.userProfileService.saveAvatar(accessToken.userId, path);
+    const { location, id: storageId } = await this.prisma.storage.findFirst({
+      where: { id },
+      select: { location: true, id: true },
+      rejectOnNotFound: () => new Error('Storage not found'),
+    });
+
+    // Get object header data in COS
+    const result = await this.cos.headObject({
+      Bucket: this.cos.bucket,
+      Region: this.cos.region,
+      Key: location,
+    });
+
+    // Validate request success
+    if (result.statusCode !== 200) {
+      throw new Error('Request storage object failed');
+    }
+
+    // Get object content-type in headers
+    const contentType: string | undefined = result.headers?.['content-type'];
+
+    // Validate content-type is supported image
+    if (
+      !contentType ||
+      !(
+        findSupportedStorageMetadata(contentType) instanceof
+        SupportedImageStorageMetadata
+      )
+    ) {
+      throw new Error('Storage not is supported image');
+    }
+
+    // Resolve user profile
+    const profile = await this.userProfileService.resolve(userId);
+
+    // Update user profile avatar storage id and return user profile
+    return this.prisma.userProfile.update({
+      where: { userId: profile.userId },
+      data: { avatarStorageId: storageId },
+    });
   }
 
   /**
