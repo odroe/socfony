@@ -89,9 +89,9 @@ export class UserProfileResolver {
     @Auth.accessToken() { userId }: AccessToken,
   ) {
     const { location, id: storageId } = await this.prisma.storage.findFirst({
-      where: { id },
+      where: { id, userId, isUploaded: false },
       select: { location: true, id: true },
-      rejectOnNotFound: () => new Error('Storage not found'),
+      rejectOnNotFound: () => new Error('Storage not found or used'),
     });
 
     // Get object header data in COS
@@ -123,10 +123,15 @@ export class UserProfileResolver {
     // Resolve user profile
     const profile = await this.userProfileService.resolve(userId);
 
-    // Update user profile avatar storage id and return user profile
+    // Start update user profile and change storage uplodated status
     return this.prisma.userProfile.update({
       where: { userId: profile.userId },
-      data: { avatarStorageId: storageId },
+      data: {
+        avatar: {
+          connect: { id: storageId },
+          update: { isUploaded: true },
+        },
+      },
     });
   }
 

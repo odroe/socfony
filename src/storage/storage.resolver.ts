@@ -41,27 +41,6 @@ export class StorageResolver {
     });
   }
 
-  @Mutation(() => Storage)
-  @Auth.must()
-  async notifyStorageUploaded(
-    @Auth.accessToken() { userId }: AccessToken,
-    @Args('location') location: string,
-  ) {
-    const storage = await this.prisma.storage.findFirst({
-      where: { location, userId },
-      rejectOnNotFound: () => Error(`Storage ${location} not found`),
-    });
-
-    // Validate storage is uploaded, if it's uploaded, return
-    if (storage.isUploaded) return storage;
-
-    // Update storage and return
-    return this.prisma.storage.update({
-      where: { id: storage.id },
-      data: { isUploaded: true },
-    });
-  }
-
   @Mutation(() => UploadStorageMetadata, { nullable: true })
   @Auth.must()
   async createUploadStorageMetadata(
