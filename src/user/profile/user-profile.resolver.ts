@@ -18,7 +18,7 @@ import {
   UserProfile as _UserProfile,
 } from '@prisma/client';
 import { Auth } from 'src/auth';
-import { TencentCloudObjectStorageClient } from 'src/storage';
+import { StorageService, TencentCloudObjectStorageClient } from 'src/storage';
 import {
   findSupportedStorageMetadata,
   SupportedImageStorageMetadata,
@@ -34,6 +34,7 @@ export class UserProfileResolver {
     private readonly userProfileService: UserProfileService,
     private readonly prisma: PrismaClient,
     private readonly cos: TencentCloudObjectStorageClient,
+    private readonly storage: StorageService,
   ) {}
 
   /**
@@ -109,7 +110,7 @@ export class UserProfileResolver {
     // Get object content-type in headers
     const contentType: string | undefined = result.headers?.['content-type'];
 
-    // Validate content-type is supported image
+    // contentType is enpty or `findSupportedStorageMetadata(contentType)` not instanceof `SupportedImageStorageMetadata` will throw error
     if (
       !contentType ||
       !(
@@ -124,15 +125,24 @@ export class UserProfileResolver {
     const profile = await this.userProfileService.resolve(userId);
 
     // Start update user profile and change storage uplodated status
-    return this.prisma.userProfile.update({
-      where: { userId: profile.userId },
-      data: {
-        avatar: {
-          connect: { id: storageId },
-          update: { isUploaded: true },
-        },
-      },
-    });
+    const [newProfile] = await this.prisma.$transaction([
+      // Update user profile
+      this.prisma.userProfile.update({
+        where: { userId: profile.userId },
+        data: { avatarStorageId: storageId },
+      }),
+
+      // Update storage uplodated status
+      this.prisma.storage.update({
+        where: { id: storageId },
+        data: { isUploaded: true },
+      }),
+    ]);
+
+    // Delete old avatar
+    this.storage.delete(profile.avatarStorageId);
+
+    return newProfile;
   }
 
   /**
