@@ -1,5 +1,6 @@
 import {
   Args,
+  Int,
   Mutation,
   Parent,
   Query,
@@ -50,7 +51,7 @@ export class StorageResolver {
       description: 'File md5 hash hex (32 bytes)',
     })
     md5: string,
-    @Args('size', { type: () => Number, description: 'File size in bytes' })
+    @Args('size', { type: () => Int, description: 'File size in bytes' })
     size: number,
     @Args('mimeType', { type: () => String, description: 'File MIME type' })
     mimeType: string,
