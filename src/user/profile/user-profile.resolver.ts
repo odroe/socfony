@@ -76,10 +76,20 @@ export class UserProfileResolver {
     // Resolve user profile.
     const profile = await this.userProfileService.resolve(userId);
 
+    // Date without null item in data.
+    const dataWithoutNull = Object.fromEntries(
+      Object.entries(data).filter(([key, value]) => value !== null),
+    );
+
+    // If dataWithoutNull is empty, return profile.
+    if (Object.keys(dataWithoutNull).length === 0) {
+      return profile;
+    }
+
     // Update user profile.
     return this.prisma.userProfile.update({
       where: { userId: profile.userId },
-      data,
+      data: dataWithoutNull,
     });
   }
 
