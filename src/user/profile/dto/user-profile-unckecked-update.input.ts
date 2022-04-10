@@ -4,10 +4,10 @@ import { UserProfile } from '../entities/user-profile.entity';
 
 @InputType()
 export class UserProfileUncheckedUpdateInput
-  extends PartialType(PickType(
-    UserProfile,
-    ['bio', 'birthday', 'gender'] as const,
-  ), InputType)
+  extends PartialType(
+    PickType(UserProfile, ['bio', 'birthday', 'gender'] as const),
+    InputType,
+  )
   implements
     Pick<
       Prisma.UserProfileUncheckedUpdateInput,
