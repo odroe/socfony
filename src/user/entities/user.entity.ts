@@ -25,7 +25,7 @@ export class User
           comments: true;
         };
       }>,
-      'password'
+      'password' | 'email' | 'phone'
     >
 {
   @Field(() => ID, { description: 'User ID' })
@@ -33,12 +33,6 @@ export class User
 
   @Field(() => String, { description: 'User unique name', nullable: true })
   username: string;
-
-  @Field(() => String, { description: 'User email', nullable: true })
-  email: string;
-
-  @Field(() => String, { description: 'User phone', nullable: true })
-  phone: string;
 
   @Field(() => UserProfile)
   profile: _UserProfile;

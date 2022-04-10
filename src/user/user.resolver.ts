@@ -36,6 +36,7 @@ import {
 } from './dto/update-user-security.args';
 import { Moment } from 'src/moment/entities/moment.entity';
 import { Comment } from 'src/comment/entities/comment.entity';
+import { AccountSecurityHealthResult } from './entities/account_security_health.entity';
 
 @Resolver(() => User)
 export class UserResolver {
@@ -45,6 +46,26 @@ export class UserResolver {
     private readonly otpService: OneTimePasswordService,
     private readonly prisma: PrismaClient,
   ) {}
+
+  @Query(() => [AccountSecurityHealthResult], {
+    description: 'Account Security Health Check',
+  })
+  @Auth.must()
+  async accountSecurityHealth(
+    @Auth.accessToken() { userId }: AccessToken,
+  ): Promise<AccountSecurityHealthResult[]> {
+    const { password, email, phone } = await this.prisma.user.findUnique({
+      select: { password: true, email: true, phone: true },
+      where: { id: userId },
+      rejectOnNotFound: true,
+    });
+
+    return [
+      AccountSecurityHealthResult.fromPassword(password),
+      AccountSecurityHealthResult.fromEmail(email),
+      AccountSecurityHealthResult.fromPhone(phone),
+    ];
+  }
 
   /**
    * Find a user by unique where input.
@@ -259,54 +280,5 @@ export class UserResolver {
       take,
       skip,
     });
-  }
-
-  @ResolveField('email', () => String, { nullable: true })
-  @Auth.nullable()
-  resolveEmail(
-    @Parent() user: _User,
-    @Auth.accessToken() accessToken: AccessToken,
-  ): string | null | undefined {
-    if (!user.email) return;
-    if (!accessToken) return;
-    if (accessToken.userId !== user.id) return;
-
-    // desensitized email address
-    const email = user.email;
-    const [prefix, domain] = email.split('@');
-
-    const desensitizedName =
-      prefix.length === 1
-        ? '*'
-        : prefix.length == 2
-        ? `${prefix[0]}*`
-        : `${prefix[0]}${'*'.repeat(prefix.length - 3)}${
-            prefix[prefix.length - 1]
-          }`;
-
-    return `${desensitizedName}@${domain}`;
-  }
-
-  /**
-   * Resolve user entity phone field.
-   *
-   * Desensitized phone number.
-   */
-  @ResolveField('phone', () => String, { nullable: true })
-  @Auth.nullable()
-  resolvePhone(
-    @Parent() user: _User,
-    @Auth.accessToken() accessToken: AccessToken,
-  ): string | null | undefined {
-    if (!user.phone) return;
-    if (!accessToken) return;
-    if (accessToken.userId !== user.id) return;
-
-    // desensitized phone number
-    const phone = parsePhoneNumber(user.phone).format('E.164');
-
-    return `${phone.substring(0, 5)}${'*'.repeat(
-      phone.length - 7,
-    )}${phone.substring(phone.length - 2)}`;
   }
 }
