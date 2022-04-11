@@ -145,7 +145,7 @@ export class UserResolver {
     }
 
     // Check need OTP.
-    if (args.verifyField !== UserSecurityFields.PASSWORD && !args.otp) {
+    if (args.field !== UserSecurityFields.PASSWORD && !args.otp) {
       throw new Error('Please enter OTP.');
     }
 
