@@ -127,7 +127,7 @@ export class UserResolver {
       where: { id: userId },
       rejectOnNotFound: true,
     });
-    let field: string;
+    let field: 'password' | 'email' | 'phone';
 
     // Check Verify field has set.
     if (args.verifyField === UserSecurityFields.EMAIL && !user.email) {
@@ -207,11 +207,26 @@ export class UserResolver {
       );
     }
 
+    let value = args.value;
+    if (args.field === UserSecurityFields.PASSWORD) {
+      if (user.password) {
+        const oldPasswordIsEqual = await bcrypt.compare(
+          args.value,
+          user.password!,
+        );
+        if (oldPasswordIsEqual) {
+          throw new Error('New password is same as old password.');
+        }
+      }
+
+      value = await bcrypt.hash(args.value, await bcrypt.genSalt());
+    }
+
     // Update user security.
     const response = await this.userService.updateUserSecurity(
       user,
       args.field,
-      args.value,
+      value,
     );
 
     // Delete all OTPs.
