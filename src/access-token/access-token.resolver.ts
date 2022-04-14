@@ -57,4 +57,17 @@ export class AccessTokenResolver {
   async refreshAccessToken(@Auth.accessToken() accessToken: _AccessToken) {
     return this.accessTokenService.refreshAccessToken(accessToken);
   }
+
+  /**
+   * Logout, Delete access token.
+   */
+
+  @Auth.nullable()
+  @Mutation(() => Boolean, { description: 'Logout' })
+  async logout(@Auth.accessToken() accessToken?: _AccessToken) {
+    if (accessToken) {
+      await this.accessTokenService.deleteAccessToken(accessToken);
+    }
+    return true;
+  }
 }
