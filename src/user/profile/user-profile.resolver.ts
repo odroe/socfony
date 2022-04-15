@@ -78,7 +78,7 @@ export class UserProfileResolver {
 
     // Date without null item in data.
     const dataWithoutNull = Object.fromEntries(
-      Object.entries(data).filter(([key, value]) => value !== null),
+      Object.entries(data).filter(([_key, value]) => value),
     );
 
     // If dataWithoutNull is empty, return profile.
