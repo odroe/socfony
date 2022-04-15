@@ -12,4 +12,10 @@ import { AuthGuard } from './auth.guard';
   imports: [PrismaModule],
   providers: [AuthNullableGuard, AuthGuard, AuthRefreshGuard],
 })
-export class AuthModule {}
+export class AuthModule {
+  static forRoot() {
+    return {
+      module: AuthModule,
+    };
+  }
+}

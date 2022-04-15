@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file.
 
 import { Module } from '@nestjs/common';
-import { AuthModule } from 'src/auth';
+import { AuthModule } from 'src/shared/auth';
 import { OneTimePasswordModule } from 'src/graphql/one-time-password';
 import { PrismaModule } from 'src/prisma.module';
 import { AccessTokenResolver } from './access-token.resolver';

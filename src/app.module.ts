@@ -3,13 +3,11 @@
 // license that can be found in the LICENSE file.
 
 import { Module } from '@nestjs/common';
+import { ClientRestApiModule } from './client-rest-api/client-rest-api.module';
 import { ConfigureModule } from './configuration/configure_module';
 import { GraphQLModule } from './graphql';
 
 @Module({
-  imports: [
-    ConfigureModule,
-    GraphQLModule,
-  ],
+  imports: [ConfigureModule, GraphQLModule, ClientRestApiModule],
 })
 export class AppModule {}

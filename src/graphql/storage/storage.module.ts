@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { AuthModule } from 'src/auth';
+import { AuthModule } from 'src/shared/auth';
 import { PrismaModule } from 'src/prisma.module';
 import { StorageResolver } from './storage.resolver';
 import { StorageService } from './storage.service';

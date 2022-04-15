@@ -1,7 +1,6 @@
 import {
-  FactoryProvider,
+  ClassProvider,
   Inject,
-  Injectable,
   OnModuleDestroy,
   OnModuleInit,
 } from '@nestjs/common';
@@ -9,7 +8,6 @@ import { ConfigType } from '@nestjs/config';
 import { PrismaClient } from '@prisma/client';
 import { database } from './database.config';
 
-@Injectable()
 export class PrismaClientImpl
   extends PrismaClient
   implements OnModuleInit, OnModuleDestroy
@@ -28,9 +26,8 @@ export class PrismaClientImpl
   /// On module destroy.
   onModuleDestroy: () => Promise<void> = () => this.$disconnect();
 
-  static provider: FactoryProvider<PrismaClient> = {
+  static provider: ClassProvider<PrismaClient> = {
     provide: PrismaClient,
-    inject: [PrismaClientImpl],
-    useFactory: (client: PrismaClientImpl) => client,
+    useClass: PrismaClientImpl,
   };
 }

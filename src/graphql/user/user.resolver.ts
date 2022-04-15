@@ -4,12 +4,7 @@
 
 import * as bcrypt from 'bcrypt';
 import { parsePhoneNumber } from 'libphonenumber-js';
-import {
-  Args,
-  Mutation,
-  Query,
-  Resolver,
-} from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   AccessToken,
   OneTimePasswordType,
@@ -17,7 +12,7 @@ import {
   PrismaPromise,
   User as UserInterface,
 } from '@prisma/client';
-import { Auth } from 'src/auth';
+import { Auth } from 'src/shared/auth';
 import { OneTimePasswordService } from 'src/graphql/one-time-password';
 import { UserFindManyArgs } from './dto/user-find-many.args';
 import { UserWhereUniqueInput } from './dto/user-where-unique.input';

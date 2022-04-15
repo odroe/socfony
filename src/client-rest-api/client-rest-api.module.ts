@@ -1,7 +1,9 @@
-import { Module } from "@nestjs/common";
-import { PrismaModule } from "src/shared";
+import { Module } from '@nestjs/common';
+import { AuthModule } from 'src/shared/auth';
+import { PrismaModule } from 'src/shared';
+import { MomentModule } from './moment';
 
 @Module({
-  imports: [PrismaModule.forGlobal()],
+  imports: [PrismaModule.forRoot(), AuthModule.forRoot(), MomentModule],
 })
 export class ClientRestApiModule {}

@@ -9,8 +9,11 @@ import {
   User as _User,
   UserProfile as _UserProfile,
 } from '@prisma/client';
-import { Auth } from 'src/auth';
-import { StorageService, TencentCloudObjectStorageClient } from 'src/graphql/storage';
+import { Auth } from 'src/shared/auth';
+import {
+  StorageService,
+  TencentCloudObjectStorageClient,
+} from 'src/graphql/storage';
 import {
   findSupportedStorageMetadata,
   SupportedImageStorageMetadata,

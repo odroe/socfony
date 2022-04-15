@@ -5,11 +5,11 @@ import { PrismaClientImpl } from './prisma.client';
 
 @Module({
   imports: [ConfigModule.forFeature(database)],
-  providers: [PrismaClientImpl, PrismaClientImpl.provider],
+  providers: [PrismaClientImpl.provider],
   exports: [PrismaClientImpl.provider],
 })
 export class PrismaModule {
-  static forGlobal(): DynamicModule {
+  static forRoot(): DynamicModule {
     return {
       module: PrismaModule,
       global: true,
