@@ -6,7 +6,7 @@ import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { DEFAULT_SERVER_PORT } from './configuration/server';
+import { DEFAULT_SERVER_PORT } from './shared/configuration/server';
 
 async function bootstrap() {
   // Create the Nest application

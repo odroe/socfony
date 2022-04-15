@@ -38,7 +38,12 @@ export class AuthNullableGuard implements CanActivate {
   }
 
   private getAuthorization(request: Request): string | undefined {
-    return request.header('authorization');
+    const token: string | undefined = request.header('authorization');
+    if (token && token.startsWith('Bearer ')) {
+      return token.substring(7);
+    }
+
+    return token;
   }
 
   private async getAccessToken(
