@@ -5,7 +5,7 @@
 import { Module } from '@nestjs/common';
 import { AuthModule } from 'src/auth';
 import { PrismaModule } from 'src/prisma.module';
-import { StorageModule } from 'src/storage';
+import { StorageModule } from 'src/graphql/storage';
 import { UserProfileResolver } from './user-profile.resolver';
 import { UserProfileService } from './user-profile.service';
 

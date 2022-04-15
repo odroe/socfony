@@ -3,15 +3,10 @@
 // license that can be found in the LICENSE file.
 
 import { Field, ID, ObjectType } from '@nestjs/graphql';
-import {
-  User as UserInterface,
-} from '@prisma/client';
+import { User as UserInterface } from '@prisma/client';
 
 @ObjectType()
-export class User
-  implements
-    Pick<UserInterface, 'id' | 'username'>
-{
+export class User implements Pick<UserInterface, 'id' | 'username'> {
   @Field(() => ID, { description: 'User ID' })
   id: string;
 

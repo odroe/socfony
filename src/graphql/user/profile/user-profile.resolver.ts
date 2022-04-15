@@ -2,13 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-import {
-  Args,
-  ID,
-  Mutation,
-  Query,
-  Resolver,
-} from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   AccessToken,
   PrismaClient,
@@ -16,11 +10,11 @@ import {
   UserProfile as _UserProfile,
 } from '@prisma/client';
 import { Auth } from 'src/auth';
-import { StorageService, TencentCloudObjectStorageClient } from 'src/storage';
+import { StorageService, TencentCloudObjectStorageClient } from 'src/graphql/storage';
 import {
   findSupportedStorageMetadata,
   SupportedImageStorageMetadata,
-} from 'src/storage/supported_storage_metadatas';
+} from 'src/graphql/storage/supported_storage_metadatas';
 import { User } from '../entities/user.entity';
 import { UserProfileUncheckedUpdateInput } from './dto/user-profile-unckecked-update.input';
 import { UserProfile } from './entities/user-profile.entity';

@@ -3,7 +3,10 @@
 // license that can be found in the LICENSE file.
 
 import { Field, ID, Int, ObjectType, registerEnumType } from '@nestjs/graphql';
-import {  UserGender, UserProfile as UserProfileInterface } from '@prisma/client';
+import {
+  UserGender,
+  UserProfile as UserProfileInterface,
+} from '@prisma/client';
 
 registerEnumType(UserGender, {
   name: 'UserGender',
@@ -11,9 +14,7 @@ registerEnumType(UserGender, {
 });
 
 @ObjectType()
-export class UserProfile
-  implements UserProfileInterface
-{
+export class UserProfile implements UserProfileInterface {
   @Field(() => ID, { description: 'User ID' })
   userId: string;
 

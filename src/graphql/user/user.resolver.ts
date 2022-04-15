@@ -6,36 +6,28 @@ import * as bcrypt from 'bcrypt';
 import { parsePhoneNumber } from 'libphonenumber-js';
 import {
   Args,
-  Int,
   Mutation,
-  Parent,
   Query,
-  ResolveField,
   Resolver,
 } from '@nestjs/graphql';
 import {
   AccessToken,
   OneTimePasswordType,
   PrismaClient,
-  User as _User,
-  Moment as _Moment,
-  Comment as _Comment,
   PrismaPromise,
+  User as UserInterface,
 } from '@prisma/client';
 import { Auth } from 'src/auth';
-import { OneTimePasswordService } from 'src/one-time-password';
+import { OneTimePasswordService } from 'src/graphql/one-time-password';
 import { UserFindManyArgs } from './dto/user-find-many.args';
 import { UserWhereUniqueInput } from './dto/user-where-unique.input';
 import { User } from './entities/user.entity';
-import { UserProfile } from './profile/entities/user-profile.entity';
 import { UserProfileService } from './profile/user-profile.service';
 import { UserService } from './user.service';
 import {
   UpdateUserSecurityArgs,
   UserSecurityFields,
 } from './dto/update-user-security.args';
-import { Moment } from 'src/moment/entities/moment.entity';
-import { Comment } from 'src/comment/entities/comment.entity';
 import { AccountSecurityHealthResult } from './entities/account_security_health.entity';
 
 @Resolver(() => User)
@@ -123,7 +115,7 @@ export class UserResolver {
     @Args({ type: () => UpdateUserSecurityArgs }) args: UpdateUserSecurityArgs,
     @Auth.accessToken() { userId }: AccessToken,
   ) {
-    const user: _User = await this.prisma.user.findUnique({
+    const user: UserInterface = await this.prisma.user.findUnique({
       where: { id: userId },
       rejectOnNotFound: true,
     });
@@ -233,20 +225,5 @@ export class UserResolver {
     await Promise.all([onVerifyOtpDelete(), onNewSecurityOtpDelete()]);
 
     return response;
-  }
-
-  @ResolveField(() => [Moment])
-  moments(
-    @Parent() { id }: _User,
-    @Args({ name: 'take', type: () => Int, nullable: true, defaultValue: 15 })
-    take: number = 15,
-    @Args({ name: 'skip', type: () => Int, nullable: true }) skip?: number,
-  ): PrismaPromise<_Moment[]> {
-    return this.prisma.moment.findMany({
-      where: { userId: id },
-      orderBy: { createdAt: 'desc' },
-      take,
-      skip,
-    });
   }
 }
