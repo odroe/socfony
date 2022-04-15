@@ -3,11 +3,7 @@ import { Prisma } from '@prisma/client';
 
 @InputType()
 export class MomentOrderByWithRelationInput
-  implements
-    Pick<
-      Prisma.MomentOrderByWithRelationInput,
-      'id' | 'userId' | 'title' | 'createdAt'
-    >
+  implements Omit<Prisma.MomentOrderByWithRelationInput, 'content'>
 {
   @Field(() => Prisma.SortOrder, { nullable: true })
   id?: Prisma.SortOrder;

@@ -58,7 +58,7 @@ export class AccessTokenService {
     this._expiresIn = new ParsedAuthConfigureChild(expiresIn);
     this._refreshExpiresIn = new ParsedAuthConfigureChild(refreshExpiresIn);
   }
-  
+
   /**
    * Delete access token.
    * @param token access token

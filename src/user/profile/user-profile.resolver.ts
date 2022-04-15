@@ -6,9 +6,7 @@ import {
   Args,
   ID,
   Mutation,
-  Parent,
   Query,
-  ResolveField,
   Resolver,
 } from '@nestjs/graphql';
 import {
@@ -153,22 +151,5 @@ export class UserProfileResolver {
     this.storage.delete(profile.avatarStorageId);
 
     return newProfile;
-  }
-
-  /**
-   * Resolve user profile user field.
-   * @param profile @Parent()
-   * @returns User
-   */
-  @ResolveField(() => User)
-  async user(@Parent() profile: UserProfile): Promise<_User> {
-    if (!profile.user) {
-      return this.prisma.user.findUnique({
-        where: { id: profile.userId },
-        rejectOnNotFound: () => new Error('User not found'),
-      });
-    }
-
-    return profile.user;
   }
 }

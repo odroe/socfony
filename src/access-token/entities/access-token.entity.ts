@@ -3,18 +3,10 @@
 // license that can be found in the LICENSE file.
 
 import { Field, GraphQLISODateTime, ID, ObjectType } from '@nestjs/graphql';
-import { Prisma, User as _User } from '@prisma/client';
-import { User } from 'src/user/entities/user.entity';
+import { AccessToken as AccessTokenInterface } from '@prisma/client';
 
 @ObjectType()
-export class AccessToken
-  implements
-    Prisma.AccessTokenGetPayload<{
-      include: {
-        user: true;
-      };
-    }>
-{
+export class AccessToken implements AccessTokenInterface {
   @Field(() => String, { description: 'Access token' })
   token: string;
 
@@ -29,7 +21,4 @@ export class AccessToken
 
   @Field(() => GraphQLISODateTime, { description: 'Token refresh expired at' })
   refreshExpiredAt: Date;
-
-  @Field(() => User, { description: 'The token owner User' })
-  user: _User;
 }

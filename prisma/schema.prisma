@@ -21,13 +21,6 @@ model User {
   phone    String? @unique @db.VarChar(100)
   password String?
 
-  accessTokens AccessToken[]
-  comments     Comment[]
-  profile      UserProfile?
-  moments      Moment[]
-  likedMoments UserLikeOnMoment[]
-  storages     Storage[]
-
   @@index([username])
   @@index([email])
   @@index([phone])
@@ -39,8 +32,6 @@ model AccessToken {
   createdAt        DateTime @default(now()) @db.Timestamp
   expiredAt        DateTime @db.Timestamp
   refreshExpiredAt DateTime @db.Timestamp
-
-  user User @relation(fields: [userId], references: [id])
 
   @@index([createdAt])
   @@index([expiredAt])
@@ -79,9 +70,6 @@ model UserProfile {
   gender          UserGender @default(UNKNOWN)
   birthday        Int?       @db.Integer
 
-  user   User     @relation(fields: [userId], references: [id])
-  avatar Storage? @relation(fields: [avatarStorageId], references: [id])
-
   @@index([avatarStorageId])
   @@index([gender])
   @@index([birthday])
@@ -92,25 +80,17 @@ model Moment {
   userId    String   @db.Char(64)
   title     String?  @db.VarChar(255)
   content   String?  @db.Text
-  media     String[]
   createdAt DateTime @default(now()) @db.Timestamp
-
-  user       User               @relation(fields: [userId], references: [id])
-  likedUsers UserLikeOnMoment[]
-  comments   Comment[]
 
   @@index([createdAt])
   @@index([userId])
   @@index([title])
 }
 
-model UserLikeOnMoment {
+model LikeOnMoment {
   userId    String   @db.Char(64)
   momentId  String   @db.Char(64)
   createdAt DateTime @default(now()) @db.Timestamp
-
-  user   User   @relation(fields: [userId], references: [id])
-  moment Moment @relation(fields: [momentId], references: [id])
 
   @@id([userId, momentId])
   @@index([createdAt])
@@ -122,14 +102,16 @@ model Comment {
   userId    String   @db.Char(64)
   createdAt DateTime @default(now()) @db.Timestamp
 
-  // 可选关系
-  momentId String? @db.Char(64)
-
-  user   User    @relation(fields: [userId], references: [id])
-  moment Moment? @relation(fields: [momentId], references: [id])
-
   @@index([createdAt])
   @@index([userId])
+}
+
+model CommentOnMoment {
+  commentId String @id @db.Char(64)
+  momentId  String @db.Char(64)
+
+  @@unique([commentId, momentId])
+  @@index([commentId])
 }
 
 model Storage {
@@ -137,13 +119,24 @@ model Storage {
   location   String   @unique
   isUploaded Boolean  @default(false)
   createdAt  DateTime @default(now()) @db.Timestamp
-
-  userId String @db.Char(64)
-  user   User   @relation(fields: [userId], references: [id])
-
-  /// 无需关注的细节关系，仅用于生产客户端代码关系
-  userProfile UserProfile?
+  userId     String   @db.Char(64)
 
   @@index([isUploaded])
   @@index([userId])
+}
+
+model StorageOnMoment {
+  storageId String @id @db.Char(64)
+  momentId  String @db.Char(64)
+
+  @@unique([storageId, momentId])
+  @@index([storageId])
+}
+
+model StorageOnComment {
+  storageId String @id @db.Char(64)
+  commentId String @db.Char(64)
+
+  @@unique([storageId, commentId])
+  @@index([storageId])
 }

@@ -1,7 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { Prisma } from '@prisma/client';
 import { DateTimeFilter, StringFilter } from 'src/graphql';
-import { UserRelationFilter } from 'src/user/dto/user-relation.filter';
 
 @InputType()
 export class MomentWhereInput
@@ -24,7 +23,4 @@ export class MomentWhereInput
 
   @Field(() => DateTimeFilter, { nullable: true })
   createdAt?: DateTimeFilter;
-
-  @Field(() => UserRelationFilter, { nullable: true })
-  user?: Prisma.UserRelationFilter;
 }

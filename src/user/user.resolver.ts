@@ -235,20 +235,6 @@ export class UserResolver {
     return response;
   }
 
-  /**
-   * Resolve user profile field.
-   * @param user @Parent()
-   * @returns UserProfile
-   */
-  @ResolveField(() => UserProfile)
-  async profile(@Parent() user: User) {
-    if (!user.profile) {
-      return this.userProfileService.resolve(user.id);
-    }
-
-    return user.profile;
-  }
-
   @ResolveField(() => [Moment])
   moments(
     @Parent() { id }: _User,
@@ -257,39 +243,6 @@ export class UserResolver {
     @Args({ name: 'skip', type: () => Int, nullable: true }) skip?: number,
   ): PrismaPromise<_Moment[]> {
     return this.prisma.moment.findMany({
-      where: { userId: id },
-      orderBy: { createdAt: 'desc' },
-      take,
-      skip,
-    });
-  }
-
-  @ResolveField(() => [Moment])
-  async likedMoments(
-    @Parent() { id }: _User,
-    @Args({ name: 'take', type: () => Int, nullable: true, defaultValue: 15 })
-    take: number = 15,
-    @Args({ name: 'skip', type: () => Int, nullable: true }) skip?: number,
-  ): Promise<_Moment[]> {
-    const results = await this.prisma.userLikeOnMoment.findMany({
-      select: { moment: true },
-      where: { userId: id },
-      orderBy: { createdAt: 'desc' },
-      take,
-      skip,
-    });
-
-    return results.map(({ moment }) => moment);
-  }
-
-  @ResolveField(() => [Comment])
-  comments(
-    @Parent() { id }: _User,
-    @Args({ name: 'take', type: () => Int, nullable: true, defaultValue: 15 })
-    take: number = 15,
-    @Args({ name: 'skip', type: () => Int, nullable: true }) skip?: number,
-  ): PrismaPromise<_Comment[]> {
-    return this.prisma.comment.findMany({
       where: { userId: id },
       orderBy: { createdAt: 'desc' },
       take,

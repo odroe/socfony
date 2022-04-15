@@ -3,8 +3,7 @@
 // license that can be found in the LICENSE file.
 
 import { Field, ID, Int, ObjectType, registerEnumType } from '@nestjs/graphql';
-import { Prisma, UserGender, User as _User } from '@prisma/client';
-import { User } from 'src/user/entities/user.entity';
+import {  UserGender, UserProfile as UserProfileInterface } from '@prisma/client';
 
 registerEnumType(UserGender, {
   name: 'UserGender',
@@ -13,12 +12,7 @@ registerEnumType(UserGender, {
 
 @ObjectType()
 export class UserProfile
-  implements
-    Prisma.UserProfileGetPayload<{
-      include: {
-        user: true;
-      };
-    }>
+  implements UserProfileInterface
 {
   @Field(() => ID, { description: 'User ID' })
   userId: string;
@@ -37,7 +31,4 @@ export class UserProfile
 
   @Field(() => UserGender, { description: 'User gender' })
   gender: UserGender;
-
-  @Field(() => User, { description: 'Profile owner' })
-  user: _User;
 }
