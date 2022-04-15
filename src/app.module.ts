@@ -15,9 +15,9 @@ import { MomentsModule } from './moments/moments.module';
 @Module({
   imports: [
     ConfigureModule,
+    GraphQLModule,
     PrismaModule.forRoot(),
     AuthModule.forRoot(),
-    GraphQLModule,
     AccessTokenModule,
     UserModule,
     OneTimePasswordModule,
