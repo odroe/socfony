@@ -11,6 +11,7 @@ import { UserModule } from './user/user.module';
 import { OneTimePasswordModule } from './one-time-password';
 import { StorageModule } from './storage/storage.module';
 import { MomentsModule } from './moments/moments.module';
+import { KeyValueModule } from './key-value/key-value.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { MomentsModule } from './moments/moments.module';
     OneTimePasswordModule,
     StorageModule,
     MomentsModule,
+    KeyValueModule,
   ],
 })
 export class AppModule {}
