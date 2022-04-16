@@ -211,8 +211,3 @@ model StorageOnMoment {
   @@unique([storageId, momentId])
   @@index([storageId])
 }
-
-model KeyValue {
-  key   String @id
-  value Json?
-}
