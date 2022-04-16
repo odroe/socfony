@@ -9,12 +9,22 @@ export class Moment implements MomentInterface {
   @Field(() => String, { description: 'The userId is moment publisher.' })
   userId: string;
 
-  @Field(() => String, { description: 'The moment title.' })
+  @Field(() => String, { description: 'The moment title.', nullable: true })
   title: string | null;
 
-  @Field(() => String, { description: 'The moment content.' })
+  @Field(() => String, { description: 'The moment content.', nullable: true })
   content: string | null;
 
   @Field(() => String, { description: 'The moment created at.' })
   createdAt: Date;
+
+  /// Append additional attributes here. - Start
+
+  /**
+   * Moment storages.
+   */
+  @Field(() => [String], { description: 'The moment storage', nullable: true })
+  storages?: string[];
+
+  /// Append additional attributes here. - End
 }

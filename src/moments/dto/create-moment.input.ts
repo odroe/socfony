@@ -1,7 +1,9 @@
-import { InputType, Int, Field } from '@nestjs/graphql';
+import { InputType, PickType } from '@nestjs/graphql';
+import { Moment } from '../entities/moment.entity';
 
 @InputType()
-export class CreateMomentInput {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number;
-}
+export class CreateMomentInput extends PickType(
+  Moment,
+  ['title', 'content', 'storages'] as const,
+  InputType,
+) {}

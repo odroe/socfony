@@ -38,9 +38,27 @@ model User {
 
   /// The user uploaded storages.
   Storage Storage[]
+
+  /// Following
+  following FollowOnUser[] @relation(name: "follow:user")
+
+  /// Followers
+  followers FollowOnUser[] @relation(name: "user:following")
+
   @@index([username])
   @@index([email])
   @@index([phone])
+}
+
+model FollowOnUser {
+  userId      String   @db.Char(64)
+  followingId String   @db.Char(64)
+  createdAt   DateTime @default(now()) @db.Timestamp
+
+  user      User @relation(name: "follow:user", fields: [userId], references: [id])
+  following User @relation(name: "user:following", fields: [followingId], references: [id])
+
+  @@id([userId, followingId])
 }
 
 model AccessToken {
@@ -105,19 +123,17 @@ model Moment {
   createdAt DateTime @default(now()) @db.Timestamp
 
   /// The moment has one to many images storage.
-  ImageOnMoment ImageOnMoment[]
-
-  /// The moment has one to one video storage.
-  VideoOnMoment VideoOnMoment?
+  storages StorageOnMoment[]
 
   /// The moment belongs to user.
-  User User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 
   /// The moment likers, moment many to many users.
-  LikeOnMoment LikeOnMoment[]
+  likers LikeOnMoment[]
 
   /// The moment comments.
-  CommentOnMoment CommentOnMoment[]
+  comments CommentOnMoment[]
+
   @@index([createdAt])
   @@index([userId])
   @@index([title])
@@ -179,41 +195,19 @@ model Storage {
   User User @relation(fields: [userId], references: [id])
 
   /// The storage image belongs to moment.
-  ImageOnMoment ImageOnMoment?
-
-  /// The storage video source belongs to moment.
-  VideoSourceOnMoment VideoOnMoment? @relation(name: "video:source")
-  /// The storage video thumbnail belongs to moment.
-  VideoImageOnMoment  VideoOnMoment? @relation(name: "video:image")
+  StorageOnMoment StorageOnMoment?
 
   @@index([isUploaded])
   @@index([userId])
 }
 
-model ImageOnMoment {
+model StorageOnMoment {
   storageId String @id @db.Char(64)
   momentId  String @db.Char(64)
 
   Storage Storage @relation(fields: [storageId], references: [id])
   Moment  Moment  @relation(fields: [momentId], references: [id])
 
+  @@unique([storageId, momentId])
   @@index([storageId])
-}
-
-model VideoOnMoment {
-  momentId       String @id @db.Char(64)
-  vodeoStorageId String @db.Char(64)
-  imageStorageId String @db.Char(64)
-
-  /// The video belongs to moment.
-  Moment Moment @relation(fields: [momentId], references: [id])
-
-  /// The vodeo has one storage.
-  Vodeo Storage @relation(name: "video:source", fields: [vodeoStorageId], references: [id])
-
-  /// The thumbnail has one storage.
-  Image Storage @relation(name: "video:image", fields: [imageStorageId], references: [id])
-
-  @@unique([vodeoStorageId])
-  @@unique([imageStorageId])
 }
