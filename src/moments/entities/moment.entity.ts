@@ -1,4 +1,4 @@
-import { ObjectType, Field } from '@nestjs/graphql';
+import { ObjectType, Field, GraphQLISODateTime } from '@nestjs/graphql';
 import { Moment as MomentInterface } from '@prisma/client';
 
 @ObjectType()
@@ -15,7 +15,7 @@ export class Moment implements MomentInterface {
   @Field(() => String, { description: 'The moment content.', nullable: true })
   content: string | null;
 
-  @Field(() => String, { description: 'The moment created at.' })
+  @Field(() => GraphQLISODateTime, { description: 'The moment created at.' })
   createdAt: Date;
 
   /// Append additional attributes here. - Start

@@ -28,7 +28,7 @@ export class MomentsResolver {
    */
   @Mutation(() => Moment)
   @Auth.must()
-  createMoment(
+  async createMoment(
     @Args('createMomentInput') { title, content, storages }: CreateMomentInput,
     @Auth.accessToken() { userId }: AccessToken,
   ): Promise<MomentInterface> {
@@ -40,17 +40,38 @@ export class MomentsResolver {
       throw new Error('Moment must have at least one field.');
     }
 
-    let storageOnMoment:
-      | Prisma.StorageOnMomentUncheckedCreateNestedManyWithoutMomentInput
-      | undefined;
+
     if (Helper.isNotEmpty(storages)) {
-      storageOnMoment = {
+      const storageOnMoment: Prisma.StorageOnMomentUncheckedCreateNestedManyWithoutMomentInput = {
         createMany: {
           skipDuplicates: true,
           data: Object.values(storages!).map((storageId) => ({ storageId })),
         },
-      } as Prisma.StorageOnMomentUncheckedCreateNestedManyWithoutMomentInput;
+      };
+
+      const [moment] = await this.prisma.$transaction([
+        /// Create moment
+        this.prisma.moment.create({
+          data: {
+            id: ID.primary(),
+            userId,
+            title,
+            content,
+            storages: storageOnMoment,
+          },
+        }),
+        /// Update storage is used
+        this.prisma.storage.updateMany({
+          where: {
+            id: { in: storages },
+          },
+          data: { isUploaded: true },
+        }),
+      ]);
+
+      return moment;
     }
+
 
     return this.prisma.moment.create({
       data: {
@@ -58,7 +79,6 @@ export class MomentsResolver {
         userId,
         title,
         content,
-        storages: storageOnMoment,
       },
     });
   }
@@ -130,7 +150,7 @@ export class MomentsResolver {
     });
   }
 
-  @ResolveField('storages', () => [String])
+  @ResolveField('storages', () => [String], { nullable: true })
   async resolveStoragesField(@Parent() { id }: MomentInterface) {
     const storageOnMoment = await this.prisma.storageOnMoment.findMany({
       where: { momentId: id },
