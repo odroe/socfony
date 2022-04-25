@@ -2,6 +2,7 @@ import { Args, Query, Resolver } from '@nestjs/graphql';
 import { PrismaClient } from '@prisma/client';
 import { UserFindManyArgs } from 'src/args';
 import { UserEntity } from 'src/entities';
+import { UtilHelpers } from 'src/helpers';
 import { UserWhereInput } from 'src/inputs';
 
 /**
@@ -22,6 +23,10 @@ export class UserQuery {
   async findOne(
     @Args('where', { type: () => UserWhereInput }) where: UserWhereInput,
   ) {
+    if (UtilHelpers.isEmpty(where)) {
+      return null;
+    }
+
     return this.prisma.user.findFirst({
       where,
       rejectOnNotFound: false,

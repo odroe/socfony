@@ -14,6 +14,7 @@ import { CreateStorageUrlOptions } from './interfaces';
 import { SupportedStorageMetadata } from './metadata';
 import { ObjectHelper, UtilHelpers } from 'src/helpers';
 import { finder } from './finder';
+import { supportedStorageMetadatas } from './supported';
 
 @Injectable()
 export class StorageService extends Client {
@@ -79,7 +80,7 @@ export class StorageService extends Client {
   async validate(
     storageId: string,
     ownerId: string,
-    metadatas: SupportedStorageMetadata[] = [],
+    metadatas: SupportedStorageMetadata[] = supportedStorageMetadatas,
   ): Promise<() => Prisma.Prisma__StorageClient<Storage>> {
     /// Find storage
     const storaged = await this.prisma.storage.findUnique({
