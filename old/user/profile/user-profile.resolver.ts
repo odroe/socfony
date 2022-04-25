@@ -130,14 +130,14 @@ export class UserProfileResolver {
     const [newProfile] = await this.prisma.$transaction([
       // Update user profile
       this.prisma.userProfile.update({
-        where: { userId: profile.userId },
+        where: { ownerId: profile.ownerId },
         data: { avatarStorageId: storageId },
       }),
 
       // Update storage uplodated status
       this.prisma.storage.update({
         where: { id: storageId },
-        data: { isUploaded: true },
+        data: { isUsed: true },
       }),
     ]);
 

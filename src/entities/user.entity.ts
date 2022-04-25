@@ -26,5 +26,5 @@ export class UserEntity
    * User unique name.
    */
   @Field(() => String, { description: 'User unique name', nullable: true })
-  username: string | null;
+  username: string;
 }

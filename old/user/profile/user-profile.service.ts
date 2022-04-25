@@ -15,7 +15,7 @@ export class UserProfileService {
 
     // Find user profile
     const userProfile = await this.prisma.userProfile.findUnique({
-      where: { userId },
+      where: { ownerId: userId },
       rejectOnNotFound: false,
     });
 
@@ -24,7 +24,7 @@ export class UserProfileService {
 
     // Create user profile
     return this.prisma.userProfile.create({
-      data: { userId },
+      data: { ownerId: userId },
     });
   }
 }
