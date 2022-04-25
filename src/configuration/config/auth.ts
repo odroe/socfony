@@ -1,11 +1,13 @@
 import { registerAs } from '@nestjs/config';
-
-export const DEFAULT_AUTH_TOKEN_EXPIRES_IN = '1d';
-export const DEFAULT_AUTH_TOKEN_REFRESH_EXPIRES_IN = '7d';
+import { intParser } from '../utils';
 
 export default registerAs('auth', () => ({
-  expiresIn: process.env.AUTH_TOKEN_EXPIRED_IN || DEFAULT_AUTH_TOKEN_EXPIRES_IN,
-  refreshExpiresIn:
-    process.env.AUTH_REFRESH_TOKEN_EXPIRED_IN ||
-    DEFAULT_AUTH_TOKEN_REFRESH_EXPIRES_IN,
+  access: {
+    value: intParser(process.env.AUTH_TOKEN_ACCESS_VALUE) || 1,
+    unit: process.env.AUTH_TOKEN_ACCESS_UNIT || 'd',
+  },
+  refresh: {
+    value: intParser(process.env.AUTH_TOKEN_REFRESH_VALUE) || 7,
+    unit: process.env.AUTH_TOKEN_REFRESH_UNIT || 'd',
+  }
 }));

@@ -2,27 +2,17 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
-import { GraphQLModule as $GraphQLModule } from '@nestjs/graphql';
-import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
-import { AuthModule } from './auth';
-import { ConfigureModule } from './configuration/configure.module';
-import { PrismaModule } from './prisma';
 
-const GraphQLModule = $GraphQLModule.forRootAsync<ApolloDriverConfig>({
-  driver: ApolloDriver,
-  useFactory: () => ({
-    autoSchemaFile: true,
-    playground: false,
-    path: '/graphql',
-    sortSchema: true,
-    plugins: [ApolloServerPluginLandingPageLocalDefault()],
-    context: ({ req }) => req,
-  }),
-});
+import { AuthModule } from './auth';
+import { ConfigureModule } from './configuration';
+import { GraphQLModule } from './graphql.module';
+import { PrismaModule } from './prisma';
+import * as mutations from './mutations';
+import * as services from './services';
 
 @Module({
   imports: [ConfigureModule, GraphQLModule, PrismaModule, AuthModule],
+  providers: [...Object.values(mutations), ...Object.values(services)],
 })
 export class AppModule {}

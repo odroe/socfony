@@ -76,23 +76,14 @@ model AccessToken {
   @@index([refreshExpiredAt])
 }
 
-enum OneTimePasswordType {
-  EMAIL
-  SMS
-}
-
 model OneTimePassword {
-  type      OneTimePasswordType
-  value     String              @db.VarChar(100)
-  otp       String              @db.VarChar(100)
-  createdAt DateTime            @default(now()) @db.Timestamp
-  expiredAt DateTime            @db.Timestamp
+  target    String   @db.VarChar(100)
+  password  String   @db.VarChar(100)
+  createdAt DateTime @default(now()) @db.Timestamp
+  expiredAt DateTime @db.Timestamp
 
-  @@id([type, value, otp])
-  @@index([createdAt])
-  @@index([type])
-  @@index([value])
-  @@index([otp])
+  @@id([target, password])
+  @@index([expiredAt])
 }
 
 enum UserGender {
