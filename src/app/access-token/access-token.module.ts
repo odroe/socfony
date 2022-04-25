@@ -4,7 +4,7 @@
 
 import { Module } from '@nestjs/common';
 import { AuthModule } from 'src/shared/auth';
-import { OneTimePasswordModule } from 'src/one-time-password';
+import { OneTimePasswordModule } from 'src/app/one-time-password';
 import { AccessTokenResolver } from './access-token.resolver';
 import { AccessTokenService } from './access-token.service';
 

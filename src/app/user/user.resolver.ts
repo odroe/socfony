@@ -13,7 +13,7 @@ import {
   User as UserInterface,
 } from '@prisma/client';
 import { Auth } from 'src/shared/auth';
-import { OneTimePasswordService } from 'src/one-time-password';
+import { OneTimePasswordService } from 'src/app/one-time-password';
 import { UserFindManyArgs } from './dto/user-find-many.args';
 import { UserWhereUniqueInput } from './dto/user-where-unique.input';
 import { User } from './entities/user.entity';

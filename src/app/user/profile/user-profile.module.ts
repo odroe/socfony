@@ -4,7 +4,7 @@
 
 import { Module } from '@nestjs/common';
 import { AuthModule } from 'src/shared/auth';
-import { StorageModule } from 'src/storage';
+import { StorageModule } from 'src/app/storage';
 import { UserProfileResolver } from './user-profile.resolver';
 import { UserProfileService } from './user-profile.service';
 
