@@ -1,4 +1,4 @@
-import {  Global, Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { PrismaClientImpl } from './prisma.client';
 
 @Global()

@@ -1,2 +1,2 @@
 export { default as cos } from './cos';
-export {default as sms} from './sms';
+export { default as sms } from './sms';

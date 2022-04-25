@@ -17,7 +17,7 @@ import {
   Moment as MomentInterface,
 } from '@prisma/client';
 import { Auth } from 'src/auth';
-import { Helper, ID } from 'src/utils';
+import { IDHelper, UtilHelpers } from 'src/helpers';
 
 @Resolver(() => Moment)
 export class MomentsResolver {
@@ -34,27 +34,27 @@ export class MomentsResolver {
     @Auth.accessToken() { userId }: AccessToken,
   ): Promise<MomentInterface> {
     if (
-      Helper.isEmpty(title) &&
-      Helper.isEmpty(content) &&
-      Helper.isEmpty(storages)
+      UtilHelpers.isEmpty(title) &&
+      UtilHelpers.isEmpty(content) &&
+      UtilHelpers.isEmpty(storages)
     ) {
       throw new Error('Moment must have at least one field.');
     }
 
-
-    if (Helper.isNotEmpty(storages)) {
-      const storageOnMoment: Prisma.StorageOnMomentUncheckedCreateNestedManyWithoutMomentInput = {
-        createMany: {
-          skipDuplicates: true,
-          data: Object.values(storages!).map((storageId) => ({ storageId })),
-        },
-      };
+    if (UtilHelpers.isNotEmpty(storages)) {
+      const storageOnMoment: Prisma.StorageOnMomentUncheckedCreateNestedManyWithoutMomentInput =
+        {
+          createMany: {
+            skipDuplicates: true,
+            data: Object.values(storages!).map((storageId) => ({ storageId })),
+          },
+        };
 
       const [moment] = await this.prisma.$transaction([
         /// Create moment
         this.prisma.moment.create({
           data: {
-            id: ID.primary(),
+            id: IDHelper.primary(),
             userId,
             title,
             content,
@@ -73,10 +73,9 @@ export class MomentsResolver {
       return moment;
     }
 
-
     return this.prisma.moment.create({
       data: {
-        id: ID.primary(),
+        id: IDHelper.primary(),
         userId,
         title,
         content,

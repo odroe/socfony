@@ -12,8 +12,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   // Get app listening on the configured port
-  const port: number =
-    app.get(ConfigService).get<number>('server.port')!;
+  const port: number = app.get(ConfigService).get<number>('server.port')!;
 
   // Start the application
   await app.listen(port);

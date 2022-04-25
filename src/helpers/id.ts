@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
 
-export namespace ID {
+export namespace IDHelper {
   export const primary = (): string => nanoid(64);
 }

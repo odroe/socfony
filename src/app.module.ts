@@ -23,11 +23,6 @@ const GraphQLModule = $GraphQLModule.forRootAsync<ApolloDriverConfig>({
 });
 
 @Module({
-  imports: [
-    ConfigureModule,
-    GraphQLModule,
-    PrismaModule,
-    AuthModule,
-  ],
+  imports: [ConfigureModule, GraphQLModule, PrismaModule, AuthModule],
 })
 export class AppModule {}
