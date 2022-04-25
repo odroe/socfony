@@ -99,7 +99,8 @@ model UserProfile {
   gender          UserGender @default(UNKNOWN)
   birthday        Int?       @db.Integer
 
-  owner User @relation(fields: [ownerId], references: [id])
+  owner  User     @relation(fields: [ownerId], references: [id])
+  avatar Storage? @relation(fields: [avatarStorageId], references: [id])
 
   @@index([avatarStorageId])
   @@index([gender])
@@ -186,7 +187,10 @@ model Storage {
   owner User @relation(fields: [ownerId], references: [id])
 
   /// The storage image belongs to moment.
-  StorageOnMoment StorageOnMoment?
+  moment StorageOnMoment?
+
+  /// User profile used to avatar
+  userProfile UserProfile?
 
   @@index([isUsed])
   @@index([ownerId])

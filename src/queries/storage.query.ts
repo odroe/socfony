@@ -2,6 +2,7 @@ import qs = require('qs');
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { StorageService } from 'src/services';
 import { StoragePutUrlMetadataEntity } from 'src/entities';
+import { StorageQuerySignedUrlArgs } from 'src/args';
 
 @Resolver(() => StoragePutUrlMetadataEntity)
 export class StorageQuery {
@@ -17,18 +18,8 @@ export class StorageQuery {
   })
   queryStorageSignedUrl(
     @Args('id', { type: () => String }) id: string,
-    @Args('headers', {
-      nullable: true,
-      type: () => String,
-      description: 'Query the url request headers',
-    })
-    headers?: string,
-    @Args('query', {
-      nullable: true,
-      type: () => String,
-      description: 'Query the url request query',
-    })
-    query?: string,
+    @Args({ type: () => StorageQuerySignedUrlArgs })
+    { headers, query }: StorageQuerySignedUrlArgs,
   ): Promise<string> {
     return this.storageService.createObjectURLByStorageId(id, {
       headers: headers ? qs.parse(headers) : undefined,

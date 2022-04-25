@@ -1,5 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Prisma } from '@prisma/client';
+import { Prisma, UserProfile } from '@prisma/client';
+import { UserProfileEntity } from './user_profile.entity';
 
 /**
  * User entity.
@@ -10,7 +11,7 @@ export class UserEntity
     Omit<
       Prisma.UserGetPayload<{
         include: {
-          profile: false;
+          profile: true;
         };
       }>,
       'password' | 'phone' | 'email'
@@ -27,4 +28,13 @@ export class UserEntity
    */
   @Field(() => String, { description: 'User unique name', nullable: true })
   username: string;
+
+  /**
+   * User profile.
+   */
+  @Field(() => UserProfileEntity, {
+    nullable: false,
+    description: 'User profile',
+  })
+  profile: UserProfile;
 }
