@@ -9,5 +9,5 @@ export default registerAs('auth', () => ({
   refresh: {
     value: intParser(process.env.AUTH_TOKEN_REFRESH_VALUE) || 7,
     unit: process.env.AUTH_TOKEN_REFRESH_UNIT || 'd',
-  }
+  },
 }));

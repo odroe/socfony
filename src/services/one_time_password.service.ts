@@ -1,21 +1,22 @@
-import { Injectable } from "@nestjs/common";
-import { OneTimePassword, PrismaClient } from "@prisma/client";
-import { ERROR_CODE_OTP_NOT_VALID } from "src/errorcodes";
+import { Injectable } from '@nestjs/common';
+import { OneTimePassword, PrismaClient } from '@prisma/client';
+import { ERROR_CODE_OTP_NOT_VALID } from 'src/errorcodes';
 
 /**
  * One-time password service
  */
 @Injectable()
 export class OneTimePasswordService {
-  constructor(
-    private readonly prisma: PrismaClient,
-  ) {}
+  constructor(private readonly prisma: PrismaClient) {}
 
   /**
    * compare one-time password, if not match, return error.
    * if match, return delete callback.
    */
-  async compare(target: string, password: string): Promise<() => Promise<void>> {
+  async compare(
+    target: string,
+    password: string,
+  ): Promise<() => Promise<void>> {
     const otp = await this.prisma.oneTimePassword.findUnique({
       where: {
         target_password: { target, password },
@@ -40,7 +41,7 @@ export class OneTimePasswordService {
           target_password: {
             target: otp.target,
             password: otp.password,
-          }
+          },
         },
       });
 

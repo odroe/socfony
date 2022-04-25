@@ -9,10 +9,15 @@ import { ConfigureModule } from './configuration';
 import { GraphQLModule } from './graphql.module';
 import { PrismaModule } from './prisma';
 import * as mutations from './mutations';
+import * as resolvers from './resolvers';
 import * as services from './services';
 
 @Module({
   imports: [ConfigureModule, GraphQLModule, PrismaModule, AuthModule],
-  providers: [...Object.values(mutations), ...Object.values(services)],
+  providers: [
+    ...Object.values(mutations),
+    ...Object.values(resolvers),
+    ...Object.values(services),
+  ],
 })
 export class AppModule {}

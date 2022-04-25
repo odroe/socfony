@@ -1,12 +1,17 @@
-import { Inject, Injectable } from "@nestjs/common";
-import { ConfigType } from "@nestjs/config";
-import { PrismaClient } from "@prisma/client";
-import dayjs = require("dayjs");
-import { auth } from "src/configuration";
-import { ERROR_CODE_UNATHORIZED, ERROR_CODE_USER_NOT_FOUND, ERROR_CODE_USER_NOT_SET_PASSWORD, ERROR_CODE_USER_PASSWORD_NOT_MATCH } from "src/errorcodes";
-import { EmailHelper, IDHelper, PhoneNumberHelper } from "src/helpers";
-import { PasswordHelper } from "src/helpers/password";
-import { OneTimePasswordService } from "./one_time_password.service";
+import { Inject, Injectable } from '@nestjs/common';
+import { ConfigType } from '@nestjs/config';
+import { PrismaClient } from '@prisma/client';
+import dayjs = require('dayjs');
+import { auth } from 'src/configuration';
+import {
+  ERROR_CODE_UNATHORIZED,
+  ERROR_CODE_USER_NOT_FOUND,
+  ERROR_CODE_USER_NOT_SET_PASSWORD,
+  ERROR_CODE_USER_PASSWORD_NOT_MATCH,
+} from 'src/errorcodes';
+import { EmailHelper, IDHelper, PhoneNumberHelper } from 'src/helpers';
+import { PasswordHelper } from 'src/helpers/password';
+import { OneTimePasswordService } from './one_time_password.service';
 
 @Injectable()
 export class AccessTokenService {
@@ -26,10 +31,16 @@ export class AccessTokenService {
     otp: boolean = false,
   ) {
     if (otp == true) {
-      return this.#createAccessTokenByOTP(account.toLocaleLowerCase(), password);
+      return this.#createAccessTokenByOTP(
+        account.toLocaleLowerCase(),
+        password,
+      );
     }
 
-    return this.#createAccessTokenByPassword(account.toLocaleLowerCase(), password);
+    return this.#createAccessTokenByPassword(
+      account.toLocaleLowerCase(),
+      password,
+    );
   }
 
   /**
@@ -51,9 +62,10 @@ export class AccessTokenService {
     });
 
     // If access token is expired, return error
-    if (accessToken.refreshExpiredAt < new Date()) throw new Error(ERROR_CODE_UNATHORIZED);
+    if (accessToken.refreshExpiredAt < new Date())
+      throw new Error(ERROR_CODE_UNATHORIZED);
 
-    // Update access token refresh expired is now, 
+    // Update access token refresh expired is now,
     // and expired is now + 5 minutes
     await this.prisma.accessToken.update({
       where: { token },
@@ -76,7 +88,8 @@ export class AccessTokenService {
     if (!hash) throw new Error(ERROR_CODE_USER_NOT_SET_PASSWORD);
 
     // Compare password, if not match, return error
-    if (!PasswordHelper.compare(password, hash)) throw new Error(ERROR_CODE_USER_PASSWORD_NOT_MATCH);
+    if (!PasswordHelper.compare(password, hash))
+      throw new Error(ERROR_CODE_USER_PASSWORD_NOT_MATCH);
 
     return this.#createAccessTokenByUserId(id);
   }
@@ -86,7 +99,10 @@ export class AccessTokenService {
    */
   async #createAccessTokenByOTP(account: string, otp: string) {
     const { id } = await this.#findPhoneUserOrCrrate(account);
-    const deleteCallback = await this.oneTimePasswordService.compare(account, otp);
+    const deleteCallback = await this.oneTimePasswordService.compare(
+      account,
+      otp,
+    );
 
     // Delete one-time password
     deleteCallback();
@@ -96,7 +112,7 @@ export class AccessTokenService {
 
   /**
    * find phone user or create a new user.
-   * 
+   *
    * If account is phone number, create user by phone number.
    * if account is email, call [#findUserOrThrow]
    */
@@ -104,7 +120,7 @@ export class AccessTokenService {
     if (EmailHelper.is(account)) {
       return this.#findUserOrThrow(account);
     }
-    
+
     const phone = PhoneNumberHelper.e164(account);
     const user = await this.prisma.user.findUnique({
       where: { phone },
@@ -146,8 +162,12 @@ export class AccessTokenService {
       data: {
         ownerId: userId,
         token: IDHelper.token(),
-        expiredAt: dayjs().add(this.config.access.value, this.config.access.unit).toDate(),
-        refreshExpiredAt: dayjs().add(this.config.refresh.value, this.config.refresh.unit).toDate(),
+        expiredAt: dayjs()
+          .add(this.config.access.value, this.config.access.unit)
+          .toDate(),
+        refreshExpiredAt: dayjs()
+          .add(this.config.refresh.value, this.config.refresh.unit)
+          .toDate(),
       },
     });
   }
@@ -163,5 +183,4 @@ export class AccessTokenService {
       },
     });
   }
-
 }
