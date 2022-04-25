@@ -1,4 +1,4 @@
-import { nanoid } from 'nanoid';
+import { customAlphabet, nanoid } from 'nanoid';
 
 export namespace IDHelper {
   /**
@@ -12,5 +12,17 @@ export namespace IDHelper {
    */
   export function token(): string {
     return nanoid(128);
+  }
+
+  /**
+   * numeric nanoid.
+   */
+  export const numeric = customAlphabet('0123456789', 6);
+
+  /**
+   * One-time password.
+   */
+  export function oneTimePassword(): string {
+    return numeric(6);
   }
 }

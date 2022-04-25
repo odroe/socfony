@@ -7,13 +7,11 @@ import { parsePhoneNumber } from 'libphonenumber-js';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   AccessToken,
-  OneTimePasswordType,
   PrismaClient,
   PrismaPromise,
   User as UserInterface,
 } from '@prisma/client';
 import { Auth } from 'src/auth';
-import { OneTimePasswordService } from 'src/modules/one-time-password';
 import { UserFindManyArgs } from './dto/user-find-many.args';
 import { UserWhereUniqueInput } from './dto/user-where-unique.input';
 import { User } from './entities/user.entity';
@@ -95,7 +93,7 @@ export class UserResolver {
     @Args({ name: 'username', type: () => String }) username: string,
     @Auth.accessToken() accessToken: AccessToken,
   ) {
-    return this.userService.updateUsername(accessToken.userId, username);
+    return this.userService.updateUsername(accessToken.ownerId, username);
   }
 
   /**
@@ -108,10 +106,10 @@ export class UserResolver {
   @Auth.must()
   async updateUserSecurity(
     @Args({ type: () => UpdateUserSecurityArgs }) args: UpdateUserSecurityArgs,
-    @Auth.accessToken() { userId }: AccessToken,
+    @Auth.accessToken() { ownerId }: AccessToken,
   ) {
     const user: UserInterface = await this.prisma.user.findUnique({
-      where: { id: userId },
+      where: { id: ownerId },
       rejectOnNotFound: true,
     });
     let field: 'password' | 'email' | 'phone';

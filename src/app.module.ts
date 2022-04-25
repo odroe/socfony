@@ -9,6 +9,7 @@ import { ConfigureModule } from './configuration';
 import { GraphQLModule } from './graphql.module';
 import { PrismaModule } from './prisma';
 import * as mutations from './mutations';
+import * as queries from './queries';
 import * as resolvers from './resolvers';
 import * as services from './services';
 
@@ -16,6 +17,7 @@ import * as services from './services';
   imports: [ConfigureModule, GraphQLModule, PrismaModule, AuthModule],
   providers: [
     ...Object.values(mutations),
+    ...Object.values(queries),
     ...Object.values(resolvers),
     ...Object.values(services),
   ],

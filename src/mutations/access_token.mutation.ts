@@ -39,9 +39,7 @@ export class AccessTokenMutation {
     nullable: false,
   })
   @Auth.nullable()
-  async deleteAccessToken(
-    @Auth.accessToken() accessToken?: AccessToken
-  ) {
+  async deleteAccessToken(@Auth.accessToken() accessToken?: AccessToken) {
     if (accessToken && accessToken.token) {
       await this.accessTokenService.deleteAccessToken(accessToken.token);
     }

@@ -13,11 +13,11 @@ import { Auth } from 'src/auth';
 import {
   StorageService,
   TencentCloudObjectStorageClient,
-} from 'src/modules/storage';
+} from 'old/storage';
 import {
   findSupportedStorageMetadata,
   SupportedImageStorageMetadata,
-} from 'src/modules/storage/supported_storage_metadatas';
+} from 'old/storage/supported_storage_metadatas';
 import { User } from '../entities/user.entity';
 import { UserProfileUncheckedUpdateInput } from './dto/user-profile-unckecked-update.input';
 import { UserProfile } from './entities/user-profile.entity';

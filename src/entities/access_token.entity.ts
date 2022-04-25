@@ -1,5 +1,6 @@
 import { Field, GraphQLISODateTime, ObjectType } from '@nestjs/graphql';
-import { Prisma } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
+import { UserEntity } from './user.entity';
 
 /**
  * Access token entity.
@@ -9,7 +10,7 @@ export class AccessTokenEntity
   implements
     Prisma.AccessTokenGetPayload<{
       include: {
-        owner: false;
+        owner: true;
       };
     }>
 {
@@ -57,4 +58,13 @@ export class AccessTokenEntity
       'The access token can be used to refresh the token before this time.',
   })
   refreshExpiredAt: Date;
+
+  /**
+   * The access token owner.
+   */
+  @Field(() => UserEntity, {
+    nullable: false,
+    description: 'The access token owner.',
+  })
+  owner: User;
 }
