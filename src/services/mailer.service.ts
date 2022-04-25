@@ -1,7 +1,7 @@
 import nodemailer = require('nodemailer');
-import { Inject, Injectable } from "@nestjs/common";
-import { ConfigType } from "@nestjs/config";
-import { mailer } from "src/configuration";
+import { Inject, Injectable } from '@nestjs/common';
+import { ConfigType } from '@nestjs/config';
+import { mailer } from 'src/configuration';
 
 export interface MailerSendOptions {
   password: string;
@@ -11,8 +11,10 @@ export interface MailerSendOptions {
 @Injectable()
 export class MailerService {
   private readonly transporter: nodemailer.Transporter;
-  
-  constructor(@Inject(mailer.KEY) private readonly configure: ConfigType<typeof mailer>) {
+
+  constructor(
+    @Inject(mailer.KEY) private readonly configure: ConfigType<typeof mailer>,
+  ) {
     this.transporter = nodemailer.createTransport({
       host: this.configure.host,
       port: this.configure.port,
@@ -27,7 +29,9 @@ export class MailerService {
 
   async send(email: string, options: MailerSendOptions): Promise<void> {
     const now = new Date();
-    const minutes = Math.floor((options.expiredAt.getTime() - now.getTime()) / 1000 / 60);
+    const minutes = Math.floor(
+      (options.expiredAt.getTime() - now.getTime()) / 1000 / 60,
+    );
 
     this.transporter.sendMail({
       from: `${this.configure.name} <${this.configure.user}>`,

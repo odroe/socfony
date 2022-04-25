@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-import { Module } from '@nestjs/common';
+import { Module, Provider } from '@nestjs/common';
 
 import { AuthModule } from './auth';
 import { ConfigureModule } from './configuration';
@@ -13,13 +13,24 @@ import * as queries from './queries';
 import * as resolvers from './resolvers';
 import * as services from './services';
 
+function filter(providers: Record<string, any>, endsWith: string): Provider[] {
+  const filtered: Provider[] = [];
+  for (const key in providers) {
+    if (key.endsWith(endsWith)) {
+      filtered.push(providers[key]);
+    }
+  }
+
+  return filtered;
+}
+
 @Module({
   imports: [ConfigureModule, GraphQLModule, PrismaModule, AuthModule],
   providers: [
-    ...Object.values(mutations),
-    ...Object.values(queries),
-    ...Object.values(resolvers),
-    ...Object.values(services),
+    ...filter(mutations, 'Mutation'),
+    ...filter(queries, 'Query'),
+    ...filter(resolvers, 'Resolver'),
+    ...filter(services, 'Service'),
   ],
 })
 export class AppModule {}

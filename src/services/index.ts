@@ -1,3 +1,4 @@
+export * from './storage';
 export * from './tencentcloud';
 
 export * from './access_token.service';

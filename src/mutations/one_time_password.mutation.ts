@@ -1,8 +1,8 @@
-import { Args, Mutation, Resolver } from "@nestjs/graphql";
-import { AccessToken } from "@prisma/client";
-import { Auth } from "src/auth";
-import { PhoneNumberHelper, UtilHelpers } from "src/helpers";
-import { OneTimePasswordService, UserService } from "src/services";
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { AccessToken } from '@prisma/client';
+import { Auth } from 'src/auth';
+import { PhoneNumberHelper, UtilHelpers } from 'src/helpers';
+import { OneTimePasswordService, UserService } from 'src/services';
 
 @Resolver(() => Boolean)
 export class OntTimePasswordMutation {
@@ -12,8 +12,8 @@ export class OntTimePasswordMutation {
   ) {}
 
   @Mutation(() => Boolean, {
-    name: "sendOneTimePasswordToEmail",
-    description: "Send one-time password to email",
+    name: 'sendOneTimePasswordToEmail',
+    description: 'Send one-time password to email',
     nullable: false,
   })
   @Auth.nullable()
@@ -38,8 +38,8 @@ export class OntTimePasswordMutation {
   }
 
   @Mutation(() => Boolean, {
-    name: "sendOneTimePasswordToPhone",
-    description: "Send one-time password to phone",
+    name: 'sendOneTimePasswordToPhone',
+    description: 'Send one-time password to phone',
     nullable: false,
   })
   @Auth.nullable()
@@ -58,9 +58,7 @@ export class OntTimePasswordMutation {
     if (UtilHelpers.isEmpty(target)) return false;
 
     // Send one-time password to phone.
-    this.oneTimePasswordService.sendToPhone(
-      PhoneNumberHelper.e164(target!),
-    );
+    this.oneTimePasswordService.sendToPhone(PhoneNumberHelper.e164(target!));
 
     return true;
   }

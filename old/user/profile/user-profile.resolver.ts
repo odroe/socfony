@@ -10,10 +10,7 @@ import {
   UserProfile as _UserProfile,
 } from '@prisma/client';
 import { Auth } from 'src/auth';
-import {
-  StorageService,
-  TencentCloudObjectStorageClient,
-} from 'old/storage';
+import { StorageService, TencentCloudObjectStorageClient } from 'old/storage';
 import {
   findSupportedStorageMetadata,
   SupportedImageStorageMetadata,

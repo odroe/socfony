@@ -1,6 +1,6 @@
-import { Inject, Injectable } from "@nestjs/common";
-import { ConfigType } from "@nestjs/config";
-import { tencentcloud } from "src/configuration";
+import { Inject, Injectable } from '@nestjs/common';
+import { ConfigType } from '@nestjs/config';
+import { tencentcloud } from 'src/configuration';
 import { Client } from 'tencentcloud-sdk-nodejs/tencentcloud/services/sms/v20210111/sms_client';
 
 export interface TencentCloudSMSSendOptions {
@@ -24,7 +24,10 @@ export class TencentCloudSMSService extends Client {
     });
   }
 
-  async send(phone: string, options: TencentCloudSMSSendOptions): Promise<void> {
+  async send(
+    phone: string,
+    options: TencentCloudSMSSendOptions,
+  ): Promise<void> {
     await this.SendSms({
       PhoneNumberSet: [phone],
       SmsSdkAppId: this.configure.appId!,
@@ -36,13 +39,14 @@ export class TencentCloudSMSService extends Client {
             return options.password;
           case '{minutes}':
             const now = new Date();
-            const minutes = Math.floor((options.expiredAt.getTime() - now.getTime()) / 1000 / 60);
+            const minutes = Math.floor(
+              (options.expiredAt.getTime() - now.getTime()) / 1000 / 60,
+            );
             return minutes.toString();
           default:
             return value;
         }
-      }
-      ),
+      }),
     });
   }
 }

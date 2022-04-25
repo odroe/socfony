@@ -5,7 +5,10 @@ import { otp } from 'src/configuration';
 import { ERROR_CODE_OTP_NOT_VALID } from 'src/errorcodes';
 import { IDHelper } from 'src/helpers';
 import { MailerSendOptions, MailerService } from './mailer.service';
-import { TencentCloudSMSSendOptions, TencentCloudSMSService } from './tencentcloud';
+import {
+  TencentCloudSMSSendOptions,
+  TencentCloudSMSService,
+} from './tencentcloud';
 
 /**
  * One-time password service
@@ -24,14 +27,18 @@ export class OneTimePasswordService {
    * @param email Target
    */
   async sendToEmail(email: string): Promise<void> {
-    await this.#send(email, (options: MailerSendOptions) => this.mailerService.send(email, options));
+    await this.#send(email, (options: MailerSendOptions) =>
+      this.mailerService.send(email, options),
+    );
   }
 
   /**
    * Send one-time password to phone
    */
   async sendToPhone(phone: string): Promise<void> {
-    await this.#send(phone, (options: TencentCloudSMSSendOptions) => this.tencentCloudSMSService.send(phone, options));
+    await this.#send(phone, (options: TencentCloudSMSSendOptions) =>
+      this.tencentCloudSMSService.send(phone, options),
+    );
   }
 
   /**
@@ -86,14 +93,21 @@ export class OneTimePasswordService {
    * @param target Target
    * @param fn Send function
    */
-  async #send(target: string, fn: (options: TencentCloudSMSSendOptions | MailerSendOptions) => Promise<any>) {
+  async #send(
+    target: string,
+    fn: (
+      options: TencentCloudSMSSendOptions | MailerSendOptions,
+    ) => Promise<any>,
+  ) {
     // Create one-time password
     const otp = await this.prisma.oneTimePassword.create({
       data: {
         target,
         password: IDHelper.oneTimePassword(),
-        expiredAt: new Date(Date.now() + this.configure.expiresInMinutes * 60 * 1000),
-      }
+        expiredAt: new Date(
+          Date.now() + this.configure.expiresInMinutes * 60 * 1000,
+        ),
+      },
     });
 
     // Send one-time password to target
