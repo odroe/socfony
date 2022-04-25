@@ -9,6 +9,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
+import { ERROR_CODE_UNATHORIZED } from 'src/errorcodes';
 import { AuthNullableGuard, getRequest } from './auth-nullable.guard';
 
 @Injectable()
@@ -22,7 +23,7 @@ export class AuthGuard extends AuthNullableGuard implements CanActivate {
 
     const { accessToken } = getRequest(context);
     if (accessToken == null) {
-      throw new UnauthorizedException('Unauthorized');
+      throw new UnauthorizedException(ERROR_CODE_UNATHORIZED);
     }
 
     return true;
