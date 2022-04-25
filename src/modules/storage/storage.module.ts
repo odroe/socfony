@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { AuthModule } from 'src/shared/auth';
+import { AuthModule } from 'src/auth';
 import { StorageResolver } from './storage.resolver';
 import { StorageService } from './storage.service';
 import { TencentCloudObjectStorageClient } from './tencent_cloud_object_storage_client';

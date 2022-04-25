@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { PrismaClient } from '@prisma/client';
-import { database } from './database.config';
+import { database } from 'src/configuration';
 
 export class PrismaClientImpl
   extends PrismaClient

@@ -10,13 +10,14 @@ import {
 
 import { Moment } from './entities/moment.entity';
 import { CreateMomentInput } from './dto/create-moment.input';
-import { Auth, Helper, ID } from 'src/shared';
 import {
   AccessToken,
   Prisma,
   PrismaClient,
   Moment as MomentInterface,
 } from '@prisma/client';
+import { Auth } from 'src/auth';
+import { Helper, ID } from 'src/utils';
 
 @Resolver(() => Moment)
 export class MomentsResolver {

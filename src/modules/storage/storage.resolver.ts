@@ -15,7 +15,7 @@ import {
 } from '@prisma/client';
 import { nanoid } from 'nanoid';
 import QueryString = require('qs');
-import { Auth } from 'src/shared/auth';
+import { Auth } from 'src/auth';
 import { ResolveURLOnStorageBaseMetadataArgs } from './args/resolve_url_on_storage';
 import { Storage } from './entities/storage';
 import { UploadStorageMetadata } from './entities/upload_storage_metadata';

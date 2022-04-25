@@ -1,7 +1,7 @@
 import { Args, Mutation, registerEnumType, Resolver } from '@nestjs/graphql';
 import { AccessToken, OneTimePasswordType, PrismaClient } from '@prisma/client';
 import { parsePhoneNumber } from 'libphonenumber-js';
-import { Auth } from 'src/shared/auth';
+import { Auth } from 'src/auth';
 import { OneTimePasswordService } from './one-time-password.service';
 
 registerEnumType(OneTimePasswordType, { name: 'OneTimePasswordType' });

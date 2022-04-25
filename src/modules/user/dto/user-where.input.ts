@@ -1,6 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { Prisma } from '@prisma/client';
-import { StringFilter } from 'src/shared/graphql';
+import { StringFilter } from 'src/filters';
 
 @InputType()
 export class UserWhereInput implements Prisma.UserWhereInput {

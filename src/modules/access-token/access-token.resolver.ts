@@ -6,7 +6,7 @@ import { AccessToken as _AccessToken } from '@prisma/client';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { AccessTokenService } from './access-token.service';
 import { AccessToken } from './entities/access-token.entity';
-import { Auth } from 'src/shared/auth';
+import { Auth } from 'src/auth';
 
 @Resolver(() => AccessToken)
 export class AccessTokenResolver {

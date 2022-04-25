@@ -3,8 +3,8 @@
 // license that can be found in the LICENSE file.
 
 import { Module } from '@nestjs/common';
-import { AuthModule } from 'src/shared/auth';
-import { StorageModule } from 'src/app/modules/storage';
+import { AuthModule } from 'src/auth';
+import { StorageModule } from 'src/modules/storage';
 import { UserProfileResolver } from './user-profile.resolver';
 import { UserProfileService } from './user-profile.service';
 

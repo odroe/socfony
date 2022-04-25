@@ -1,13 +1,19 @@
-import { ConfigModule } from '@nestjs/config';
+import { ConfigFactoryKeyHost, ConfigModule } from '@nestjs/config';
 
-import auth from './config/auth';
-import mailer from './config/mailer';
-import server from './config/server';
-import tencent_cos from './config/tencentcloud/cos';
-import tencent_cloud_sms from './config/tencentcloud/sms';
+type FlattenConfigOrigin = Record<string, ConfigFactoryKeyHost>;
+function flatten(origin: FlattenConfigOrigin | Record<string, FlattenConfigOrigin>): any[] {
+  return Object.values<ConfigFactoryKeyHost | FlattenConfigOrigin>(origin).reduce<ConfigFactoryKeyHost[]>((result, value) => {
+    if (value.KEY) {
+      return [...result, value];
+    }
+
+    return [...result, ...flatten(value as FlattenConfigOrigin)];
+  }
+  , []);
+}
 
 export const ConfigureModule = ConfigModule.forRoot({
   isGlobal: true,
   envFilePath: ['.env'],
-  load: [auth, mailer, server, tencent_cos, tencent_cloud_sms],
+  load: flatten(require('./config')),
 });
