@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { OneTimePasswordType } from '@prisma/client';
 import nodemailer = require('nodemailer');
-import mailer from 'src/shared/configuration/mailer';
+import { mailer } from 'src/configuration';
 import { OTPCommonService } from '../common';
 
 @Injectable()

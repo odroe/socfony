@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { OneTimePasswordType } from '@prisma/client';
-import tencent_cloud_sms from 'src/shared/configuration/tencent_cloud_sms';
+import { tencentcloud } from 'src/configuration';
 import { Client } from 'tencentcloud-sdk-nodejs/tencentcloud/services/sms/v20210111/sms_client';
 import { OTPCommonService } from '../common';
 
@@ -9,8 +9,8 @@ import { OTPCommonService } from '../common';
 export class SMSService {
   constructor(
     private readonly common: OTPCommonService,
-    @Inject(tencent_cloud_sms.KEY)
-    private readonly configure: ConfigType<typeof tencent_cloud_sms>,
+    @Inject(tencentcloud.sms.KEY)
+    private readonly configure: ConfigType<typeof tencentcloud.sms>,
   ) {}
 
   client(): Client {

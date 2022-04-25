@@ -15,7 +15,7 @@ import { nanoid } from 'nanoid';
 import { parsePhoneNumber } from 'libphonenumber-js';
 import { OneTimePasswordService } from 'src/one-time-password';
 import { ConfigType } from '@nestjs/config';
-import auth from 'src/shared/configuration/auth';
+import auth from 'src/configuration/config/auth';
 
 export interface CreateAccessTokenArgs {
   account: string;

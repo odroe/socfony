@@ -1,5 +1,5 @@
 import { registerAs } from '@nestjs/config';
-import { booleanParser, intParser } from './_utils';
+import { booleanParser, intParser } from '../utils';
 
 export default registerAs('mailer', () => ({
   host: process.env.MAILER_HOST,

@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import type { ConfigType } from '@nestjs/config';
 import Client = require('cos-nodejs-sdk-v5');
-import tencentCloudObjectStorageConfigure from 'src/shared/configuration/tencent_cloud_object_storage';
+import tencentCloudObjectStorageConfigure from 'src/configuration/config/tencentcloud/cos';
 
 export interface CreateObjectURLOptions {
   expiresIn?: number;

@@ -5,8 +5,7 @@
 import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { DEFAULT_SERVER_PORT } from './shared/configuration/server';
+import { AppModule } from './app';
 
 async function bootstrap() {
   // Create the Nest application
@@ -14,7 +13,7 @@ async function bootstrap() {
 
   // Get app listening on the configured port
   const port: number =
-    app.get(ConfigService).get<number>('server.port') || DEFAULT_SERVER_PORT;
+    app.get(ConfigService).get<number>('server.port')!;
 
   // Start the application
   await app.listen(port);
