@@ -4,7 +4,7 @@
 
 import { Module } from '@nestjs/common';
 import { AuthModule } from 'src/shared/auth';
-import { OneTimePasswordModule } from 'src/app/one-time-password';
+import { OneTimePasswordModule } from 'src/app/modules/one-time-password';
 import { UserProfileModule } from './profile/user-profile.module';
 import { UserResolver } from './user.resolver';
 import { UserService } from './user.service';

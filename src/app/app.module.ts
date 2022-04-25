@@ -6,11 +6,11 @@ import { Module } from '@nestjs/common';
 import { ConfigureModule } from '../configuration/configure.module';
 import { GraphQLModule } from '../shared/graphql';
 import { AuthModule, PrismaModule } from '../shared';
-import { AccessTokenModule } from './access-token/access-token.module';
-import { UserModule } from './user/user.module';
-import { OneTimePasswordModule } from './one-time-password';
-import { StorageModule } from './storage/storage.module';
-import { MomentsModule } from './moments/moments.module';
+import { AccessTokenModule } from './modules/access-token/access-token.module';
+import { UserModule } from './modules/user/user.module';
+import { OneTimePasswordModule } from './modules/one-time-password';
+import { StorageModule } from './modules/storage/storage.module';
+import { MomentsModule } from './modules/moments/moments.module';
 
 @Module({
   imports: [

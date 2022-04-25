@@ -10,11 +10,11 @@ import {
   UserProfile as _UserProfile,
 } from '@prisma/client';
 import { Auth } from 'src/shared/auth';
-import { StorageService, TencentCloudObjectStorageClient } from 'src/app/storage';
+import { StorageService, TencentCloudObjectStorageClient } from 'src/app/modules/storage';
 import {
   findSupportedStorageMetadata,
   SupportedImageStorageMetadata,
-} from 'src/app/storage/supported_storage_metadatas';
+} from 'src/app/modules/storage/supported_storage_metadatas';
 import { User } from '../entities/user.entity';
 import { UserProfileUncheckedUpdateInput } from './dto/user-profile-unckecked-update.input';
 import { UserProfile } from './entities/user-profile.entity';

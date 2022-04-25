@@ -13,7 +13,7 @@ import * as bcrypt from 'bcrypt';
 import dayjs = require('dayjs');
 import { nanoid } from 'nanoid';
 import { parsePhoneNumber } from 'libphonenumber-js';
-import { OneTimePasswordService } from 'src/app/one-time-password';
+import { OneTimePasswordService } from 'src/app/modules/one-time-password';
 import { ConfigType } from '@nestjs/config';
 import auth from 'src/configuration/config/auth';
 
