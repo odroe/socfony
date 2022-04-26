@@ -34,7 +34,9 @@ export class MomentMutation {
   ) {
     // If content or storages is empty
     if (UtilHelpers.isEmpty(content) && UtilHelpers.isEmpty(storages)) {
-      throw new GraphQLException(ERROR_CODE_MOMENT_CONTENT_AND_STORAGES_IS_EMPTY);
+      throw new GraphQLException(
+        ERROR_CODE_MOMENT_CONTENT_AND_STORAGES_IS_EMPTY,
+      );
     }
 
     // Validate storages

@@ -23,7 +23,8 @@ export class CommentQuery {
   ) {
     return this.prisma.comment.findFirst({
       where,
-      rejectOnNotFound: () => new GraphQLException(ERROR_CODE_COMMENT_NOT_FOUND),
+      rejectOnNotFound: () =>
+        new GraphQLException(ERROR_CODE_COMMENT_NOT_FOUND),
     });
   }
 

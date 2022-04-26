@@ -1,6 +1,6 @@
-import { Inject, Injectable } from "@nestjs/common";
-import { ConfigType } from "@nestjs/config";
-import { tencentcloud } from "src/configuration";
+import { Inject, Injectable } from '@nestjs/common';
+import { ConfigType } from '@nestjs/config';
+import { tencentcloud } from 'src/configuration';
 import { ses } from 'tencentcloud-sdk-nodejs-ses';
 
 export interface SendOneTimePasswordTencendCloudSimpleEmailOptions {
@@ -27,7 +27,7 @@ export class TencentCloudSimpleEmailService extends ses.v20201002.Client {
     to: string,
     options: SendOneTimePasswordTencendCloudSimpleEmailOptions,
   ): Promise<void> {
-    this.SendEmail({
+    await this.SendEmail({
       FromEmailAddress: this.configure.sender,
       Destination: [to],
       Subject: this.configure.subject,

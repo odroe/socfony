@@ -32,7 +32,7 @@ export class OntTimePasswordMutation {
     if (UtilHelpers.isEmpty(target)) return false;
 
     // Send one-time password to email.
-    this.oneTimePasswordService.sendToEmail(target!);
+    await this.oneTimePasswordService.sendToEmail(target!);
 
     return true;
   }
@@ -58,7 +58,9 @@ export class OntTimePasswordMutation {
     if (UtilHelpers.isEmpty(target)) return false;
 
     // Send one-time password to phone.
-    this.oneTimePasswordService.sendToPhone(PhoneNumberHelper.e164(target!));
+    await this.oneTimePasswordService.sendToPhone(
+      PhoneNumberHelper.e164(target!),
+    );
 
     return true;
   }

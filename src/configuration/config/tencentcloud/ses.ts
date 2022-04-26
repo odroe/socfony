@@ -1,5 +1,5 @@
-import { registerAs } from "@nestjs/config";
-import { intParser } from "../../utils";
+import { registerAs } from '@nestjs/config';
+import { intParser } from '../../utils';
 
 export default registerAs('Tencent Cloud SES', () => ({
   secretId: process.env.TENCENTCLOUD_SES_SECRET_ID,

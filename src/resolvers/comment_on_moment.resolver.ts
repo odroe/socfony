@@ -24,7 +24,8 @@ export class CommentOnMomentResolver {
 
     return this.prisma.comment.findUnique({
       where: { id: parent.commentId },
-      rejectOnNotFound: () => new GraphQLException(ERROR_CODE_COMMENT_NOT_FOUND),
+      rejectOnNotFound: () =>
+        new GraphQLException(ERROR_CODE_COMMENT_NOT_FOUND),
     });
   }
 
@@ -39,7 +40,8 @@ export class CommentOnMomentResolver {
 
     return this.prisma.moment.findUnique({
       where: { id: parent.momentId },
-      rejectOnNotFound: () => new GraphQLException(ERROR_CODE_COMMENT_NOT_FOUND),
+      rejectOnNotFound: () =>
+        new GraphQLException(ERROR_CODE_COMMENT_NOT_FOUND),
     });
   }
 }

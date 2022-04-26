@@ -6,12 +6,10 @@ import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { GraphQLExceptionFilter } from './exception.filter';
 
 async function bootstrap() {
   // Create the Nest application
   const app = await NestFactory.create(AppModule);
-  app.useGlobalFilters(new GraphQLExceptionFilter());
 
   // Get app listening on the configured port
   const port: number = app.get(ConfigService).get<number>('server.port')!;

@@ -69,7 +69,8 @@ export class StorageService extends Client {
     const { location } = await this.prisma.storage.findUnique({
       where: { id: storageId },
       select: { location: true },
-      rejectOnNotFound: () => new GraphQLException(ERROR_CODE_STORAGE_NOT_FOUND),
+      rejectOnNotFound: () =>
+        new GraphQLException(ERROR_CODE_STORAGE_NOT_FOUND),
     });
 
     return this.createObjectURLBylocation(location, options);
@@ -86,7 +87,8 @@ export class StorageService extends Client {
     /// Find storage
     const storaged = await this.prisma.storage.findUnique({
       where: { id: storageId },
-      rejectOnNotFound: () => new GraphQLException(ERROR_CODE_STORAGE_NOT_FOUND),
+      rejectOnNotFound: () =>
+        new GraphQLException(ERROR_CODE_STORAGE_NOT_FOUND),
     });
 
     /// If storage is used, throw error
