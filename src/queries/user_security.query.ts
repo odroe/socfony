@@ -14,7 +14,7 @@ export class UserSecurityQuery {
   @Query(() => UserSecurityEntity, {
     nullable: true,
     description: 'Query authenticated user security.',
-    name: 'authenticatedUserSecurity',
+    name: 'security',
   })
   @Auth.must()
   queryAuthenticatedUserSecurity(

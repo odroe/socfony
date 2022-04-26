@@ -12,7 +12,7 @@ export class StorageQuery {
    * query storage signed url.
    */
   @Query(() => String, {
-    name: 'queryStorageSignedUrl',
+    name: 'storageSignedUrl',
     description: 'query storage signed url',
     nullable: false,
   })

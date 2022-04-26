@@ -10,7 +10,7 @@ export class AccessTokenQuery {
 
   @Query(() => UserEntity, {
     nullable: false,
-    name: 'authenticatedUser',
+    name: 'user',
     description: 'Find the authenticated user.',
   })
   @Auth.must()

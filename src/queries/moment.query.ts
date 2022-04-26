@@ -36,7 +36,7 @@ export class MomentQuery {
    */
   @Query(() => [MomentEntity], {
     name: 'momentFindMany',
-    nullable: 'items',
+    nullable: false,
     description: 'Find many moments.',
   })
   findMany(@Args({ type: () => MomentFindManyArgs }) args: MomentFindManyArgs) {

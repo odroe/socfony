@@ -1,5 +1,7 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import { Prisma, UserProfile } from '@prisma/client';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { FollowOnUser, Moment, Prisma, UserProfile } from '@prisma/client';
+import { FollowOnUserEntity } from './follow_on_user.entity';
+import { MomentEntity } from './moment.entity';
 import { UserProfileEntity } from './user_profile.entity';
 
 /**
@@ -12,6 +14,9 @@ export class UserEntity
       Prisma.UserGetPayload<{
         include: {
           profile: true;
+          following: true;
+          followers: true;
+          moments: true;
         };
       }>,
       'password' | 'phone' | 'email'
@@ -37,4 +42,58 @@ export class UserEntity
     description: 'User profile',
   })
   profile: UserProfile;
+
+  /**
+   * Following count
+   */
+  @Field(() => Int, {
+    nullable: false,
+    description: 'Following count',
+  })
+  followingCount: number;
+
+  /**
+   * Followers count
+   */
+  @Field(() => Int, {
+    nullable: false,
+    description: 'Followers count',
+  })
+  followersCount: number;
+
+  /**
+   * User published moments count
+   */
+  @Field(() => Int, {
+    nullable: false,
+    description: 'User published moments count',
+  })
+  momentsCount: number;
+
+  /**
+   * User following
+   */
+  @Field(() => [FollowOnUserEntity], {
+    nullable: false,
+    description: 'User following',
+  })
+  following: FollowOnUser[];
+
+  /**
+   * User followers
+   */
+  @Field(() => [FollowOnUserEntity], {
+    nullable: false,
+    description: 'User followers',
+  })
+  followers: FollowOnUser[];
+
+  /**
+   * User published moments
+   */
+  @Field(() => [MomentEntity], {
+    nullable: false,
+    description: 'User published moments',
+  })
+  moments: Moment[];
 }

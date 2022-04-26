@@ -5,3 +5,4 @@ export * from './storage.mutation';
 export * from './user.mutation';
 export * from './user_security.mutation';
 export * from './user_profile.mutation';
+export * from './user_follow.mutation';

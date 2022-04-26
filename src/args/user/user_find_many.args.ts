@@ -5,9 +5,13 @@ import {
   UserWhereInput,
   UserWhereUniqueInput,
 } from 'src/inputs';
+import { PaginationArgs } from '../pagination.args';
 
 @ArgsType()
-export class UserFindManyArgs implements Prisma.UserFindManyArgs {
+export class UserFindManyArgs
+  extends PaginationArgs
+  implements Prisma.UserFindManyArgs
+{
   /**
    * Filter, which Users to fetch.
    */
@@ -34,24 +38,4 @@ export class UserFindManyArgs implements Prisma.UserFindManyArgs {
     description: 'Sets the position for listing Users.',
   })
   cursor?: Prisma.UserWhereUniqueInput;
-
-  /**
-   * Take `±n` Users from the position of the cursor.
-   */
-  @Field(() => Int, {
-    nullable: true,
-    description: 'Take `±n` Users from the position of the cursor.',
-    defaultValue: 15,
-  })
-  take: number = 15;
-
-  /**
-   * Skip the first `n` Users.
-   */
-  @Field(() => Int, {
-    nullable: true,
-    description: 'Skip the first `n` Users.',
-    defaultValue: 0,
-  })
-  skip: number = 0;
 }

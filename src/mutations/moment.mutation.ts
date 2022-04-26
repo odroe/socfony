@@ -5,13 +5,19 @@ import { Auth } from 'src/auth';
 import { MomentEntity } from 'src/entities';
 import { ERROR_CODE_MOMENT_CONTENT_AND_STORAGES_IS_EMPTY } from 'src/errorcodes';
 import { IDHelper, UtilHelpers } from 'src/helpers';
-import { StorageService, supportedStorageMetadatas } from 'src/services';
+import {
+  ResourceCountService,
+  StorageService,
+  supportedStorageMetadatas,
+  UserCountType,
+} from 'src/services';
 
 @Resolver(() => MomentEntity)
 export class MomentMutation {
   constructor(
     private readonly prisma: PrismaClient,
     private readonly storageService: StorageService,
+    private readonly resourceCountService: ResourceCountService,
   ) {}
 
   @Mutation(() => MomentEntity, {
@@ -60,6 +66,14 @@ export class MomentMutation {
           },
         },
       }),
+
+      // Update or create user published moment count.
+      this.resourceCountService.upsert(
+        UserCountType.publishedMoments,
+        ownerId,
+        { increment: 1 },
+        1,
+      ),
 
       // Update storages
       ...allStorageUpdates.map((fn) => fn()),
