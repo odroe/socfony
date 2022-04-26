@@ -13,7 +13,7 @@ export const GraphQLModule = $.forRootAsync<ApolloDriverConfig>({
   useFactory: () => ({
     autoSchemaFile: true,
     playground: false,
-    path: '/graphql',
+    path: '/',
     sortSchema: true,
     plugins: [ApolloServerPluginLandingPageLocalDefault()],
     context: ({ req }) => req,
