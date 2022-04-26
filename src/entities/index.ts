@@ -1,4 +1,6 @@
 export * from './access_token.entity';
+export * from './comment.entity';
+export * from './comment_on_moment.entity';
 export * from './follow_on_user.entity';
 export * from './like_on_moment.entity';
 export * from './moment.entity';

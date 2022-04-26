@@ -1,13 +1,16 @@
-import { Field, InputType, PartialType, PickType } from "@nestjs/graphql";
-import { Prisma } from "@prisma/client";
-import { LikeOnMomentEntity } from "src/entities";
-import { DateTimeFilter } from "src/filters";
+import { Field, InputType, PartialType, PickType } from '@nestjs/graphql';
+import { Prisma } from '@prisma/client';
+import { LikeOnMomentEntity } from 'src/entities';
+import { DateTimeFilter } from 'src/filters';
 
 @InputType({ description: 'Like on moment where input' })
-export class LikeOnMomentWhereInput extends PartialType(
-  PickType(LikeOnMomentEntity, ['momentId', 'userId'] as const),
-  InputType,
-) implements Prisma.LikeOnMomentWhereInput {
+export class LikeOnMomentWhereInput
+  extends PartialType(
+    PickType(LikeOnMomentEntity, ['momentId', 'userId'] as const),
+    InputType,
+  )
+  implements Prisma.LikeOnMomentWhereInput
+{
   /**
    * AND logical operator
    */

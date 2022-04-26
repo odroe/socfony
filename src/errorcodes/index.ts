@@ -1,4 +1,5 @@
 export * from './access_token';
+export * from './comment';
 export * from './email';
 export * from './moment';
 export * from './one_time_password';

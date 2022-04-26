@@ -156,7 +156,7 @@ model Comment {
   publisher User @relation(fields: [publisherId], references: [id])
 
   /// The comment belongs to moment.
-  moments CommentOnMoment[]
+  onMoment CommentOnMoment?
 
   @@index([createdAt])
   @@index([publisherId])

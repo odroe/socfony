@@ -1,5 +1,12 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { LikeOnMoment, Prisma, StorageOnMoment, User } from '@prisma/client';
+import {
+  CommentOnMoment,
+  LikeOnMoment,
+  Prisma,
+  StorageOnMoment,
+  User,
+} from '@prisma/client';
+import { CommentOnMomentEntity } from './comment_on_moment.entity';
 import { LikeOnMomentEntity } from './like_on_moment.entity';
 import { UserEntity } from './user.entity';
 
@@ -11,6 +18,7 @@ export class MomentEntity
         storages: true;
         publisher: true;
         likers: true;
+        comments: true;
       };
     }>
 {
@@ -70,4 +78,22 @@ export class MomentEntity
     nullable: false,
   })
   likers: LikeOnMoment[];
+
+  /**
+   * The moment comments count
+   */
+  @Field(() => Int, {
+    description: 'The moment comments count.',
+    nullable: false,
+  })
+  commentsCount: number;
+
+  /**
+   * The moment comments
+   */
+  @Field(() => [CommentOnMomentEntity], {
+    description: 'The moment comments.',
+    nullable: false,
+  })
+  comments: CommentOnMoment[];
 }

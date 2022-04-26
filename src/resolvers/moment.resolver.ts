@@ -1,14 +1,25 @@
 import { Args, Int, Parent, ResolveField, Resolver } from '@nestjs/graphql';
 import {
   LikeOnMoment,
+  Prisma,
   PrismaClient,
   StorageOnMoment,
   User,
 } from '@prisma/client';
 import { PaginationArgs } from 'src/args';
-import { LikeOnMomentEntity, MomentEntity, UserEntity } from 'src/entities';
+import {
+  CommentOnMomentEntity,
+  LikeOnMomentEntity,
+  MomentEntity,
+  UserEntity,
+} from 'src/entities';
 import { UtilHelpers } from 'src/helpers';
-import { LikeOnMomentService, UserService } from 'src/services';
+import {
+  LikeOnMomentService,
+  MomentCountType,
+  ResourceCountService,
+  UserService,
+} from 'src/services';
 
 function _unwrap(origin?: string[] | StorageOnMoment[] | null): string[] {
   if (UtilHelpers.isNotEmpty(origin)) {
@@ -26,6 +37,7 @@ export class MomentResolver {
     private readonly userService: UserService,
     private readonly prisma: PrismaClient,
     private readonly likeOnMomentService: LikeOnMomentService,
+    private readonly resourceCountService: ResourceCountService,
   ) {}
 
   /**
@@ -68,7 +80,7 @@ export class MomentResolver {
    * Resolve likers field.
    */
   @ResolveField('likers', () => [LikeOnMomentEntity])
-  resolveLikers(
+  resolveLikersField(
     @Parent() parent: MomentEntity,
     @Args({ type: () => PaginationArgs }) args: PaginationArgs,
   ): Promise<LikeOnMoment[]> {
@@ -76,6 +88,42 @@ export class MomentResolver {
       ...args,
       where: { momentId: parent.id },
       orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  /**
+   * Resolve commentsCount field.
+   */
+  @ResolveField('commentsCount', () => Int)
+  async resolveCommentsCountField(
+    @Parent() parent: MomentEntity,
+  ): Promise<number> {
+    const { count } = await this.resourceCountService.get(
+      MomentCountType.comments,
+      parent.id,
+      () =>
+        this.prisma.commentOnMoment.count({ where: { momentId: parent.id } }),
+    );
+
+    return count;
+  }
+
+  /**
+   * Resolve comments field.
+   */
+  @ResolveField('comments', () => [CommentOnMomentEntity])
+  resolveCommentsField(
+    @Parent() parent: MomentEntity,
+    @Args({ type: () => PaginationArgs }) args: PaginationArgs,
+  ) {
+    return this.prisma.commentOnMoment.findMany({
+      ...args,
+      where: { momentId: parent.id },
+      orderBy: {
+        comment: {
+          createdAt: Prisma.SortOrder.desc,
+        },
+      },
     });
   }
 }

@@ -1,13 +1,11 @@
-import { Args, Query, Resolver } from "@nestjs/graphql";
-import { PrismaClient } from "@prisma/client";
-import { LikeOnMomentFindManyArgs } from "src/args";
-import { LikeOnMomentEntity } from "src/entities";
+import { Args, Query, Resolver } from '@nestjs/graphql';
+import { PrismaClient } from '@prisma/client';
+import { LikeOnMomentFindManyArgs } from 'src/args';
+import { LikeOnMomentEntity } from 'src/entities';
 
 @Resolver(() => LikeOnMomentEntity)
 export class LikeOnMomentQuery {
-  constructor(
-    private readonly prisma: PrismaClient,
-  ) {}
+  constructor(private readonly prisma: PrismaClient) {}
 
   /**
    * Query like on moment many.
@@ -18,7 +16,8 @@ export class LikeOnMomentQuery {
     name: 'likeOnMomentList',
   })
   async queryLikeOnMomentList(
-    @Args({ type: () => LikeOnMomentFindManyArgs }) args: LikeOnMomentFindManyArgs,
+    @Args({ type: () => LikeOnMomentFindManyArgs })
+    args: LikeOnMomentFindManyArgs,
   ) {
     return this.prisma.likeOnMoment.findMany({
       ...args,
