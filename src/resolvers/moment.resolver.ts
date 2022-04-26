@@ -1,8 +1,14 @@
-import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
-import { PrismaClient, StorageOnMoment, User } from '@prisma/client';
-import { MomentEntity, UserEntity } from 'src/entities';
+import { Args, Int, Parent, ResolveField, Resolver } from '@nestjs/graphql';
+import {
+  LikeOnMoment,
+  PrismaClient,
+  StorageOnMoment,
+  User,
+} from '@prisma/client';
+import { PaginationArgs } from 'src/args';
+import { LikeOnMomentEntity, MomentEntity, UserEntity } from 'src/entities';
 import { UtilHelpers } from 'src/helpers';
-import { UserService } from 'src/services';
+import { LikeOnMomentService, UserService } from 'src/services';
 
 function _unwrap(origin?: string[] | StorageOnMoment[] | null): string[] {
   if (UtilHelpers.isNotEmpty(origin)) {
@@ -19,6 +25,7 @@ export class MomentResolver {
   constructor(
     private readonly userService: UserService,
     private readonly prisma: PrismaClient,
+    private readonly likeOnMomentService: LikeOnMomentService,
   ) {}
 
   /**
@@ -47,5 +54,28 @@ export class MomentResolver {
     });
 
     return _unwrap(many);
+  }
+
+  /**
+   * Resolve likersCount field.
+   */
+  @ResolveField('likersCount', () => Int)
+  resolveLikersCountField(@Parent() parent: MomentEntity): Promise<number> {
+    return this.likeOnMomentService.momentLikersCount(parent.id);
+  }
+
+  /**
+   * Resolve likers field.
+   */
+  @ResolveField('likers', () => [LikeOnMomentEntity])
+  resolveLikers(
+    @Parent() parent: MomentEntity,
+    @Args({ type: () => PaginationArgs }) args: PaginationArgs,
+  ): Promise<LikeOnMoment[]> {
+    return this.prisma.likeOnMoment.findMany({
+      ...args,
+      where: { momentId: parent.id },
+      orderBy: { createdAt: 'desc' },
+    });
   }
 }

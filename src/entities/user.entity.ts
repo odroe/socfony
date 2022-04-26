@@ -96,4 +96,22 @@ export class UserEntity
     description: 'User published moments',
   })
   moments: Moment[];
+
+  /**
+   * The user liked moments count.
+   */
+  @Field(() => Int, {
+    nullable: false,
+    description: 'The user liked moments count.',
+  })
+  likedMomentsCount: number;
+
+  /**
+   * The user all published moment likers count.
+   */
+  @Field(() => Int, {
+    nullable: false,
+    description: 'The user all published moment likers count.',
+  })
+  allMomentLikersCount: number;
 }

@@ -5,9 +5,9 @@ import { UtilHelpers } from 'src/helpers';
 export enum UserCountType {
   following = 'user:following', // 关注的用户数量
   followers = 'user:followers', // 粉丝数量
-  publishedMoments = 'user:published-moments', // 发布的动态数量
+  moments = 'user:moments', // 发布的动态数量
   likedMoments = 'user:liked-moments', // 喜欢的动态数量
-  allPublishedMomentLikes = 'user:all-published-moment-likes', // 发布的动态喜欢总数
+  allMomentLikers = 'user:all-moment-likers', // 发布的动态喜欢总数
 }
 
 export enum MomentCountType {

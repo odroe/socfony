@@ -1,5 +1,6 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import { Prisma, StorageOnMoment, User } from '@prisma/client';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { LikeOnMoment, Prisma, StorageOnMoment, User } from '@prisma/client';
+import { LikeOnMomentEntity } from './like_on_moment.entity';
 import { UserEntity } from './user.entity';
 
 @ObjectType({ description: 'Moment entity' })
@@ -9,6 +10,7 @@ export class MomentEntity
       include: {
         storages: true;
         publisher: true;
+        likers: true;
       };
     }>
 {
@@ -50,4 +52,22 @@ export class MomentEntity
     nullable: false,
   })
   publisher: User;
+
+  /**
+   * Likers count
+   */
+  @Field(() => Int, {
+    description: 'The moment likers count.',
+    nullable: false,
+  })
+  likersCount: number;
+
+  /**
+   * The moment likers
+   */
+  @Field(() => [LikeOnMomentEntity], {
+    description: 'The moment likers.',
+    nullable: false,
+  })
+  likers: LikeOnMoment[];
 }

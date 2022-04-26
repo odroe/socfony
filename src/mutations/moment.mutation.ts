@@ -69,7 +69,7 @@ export class MomentMutation {
 
       // Update or create user published moment count.
       this.resourceCountService.upsert(
-        UserCountType.publishedMoments,
+        UserCountType.moments,
         ownerId,
         { increment: 1 },
         1,

@@ -8,6 +8,7 @@ import {
   UserProfileEntity,
 } from 'src/entities';
 import {
+  LikeOnMomentService,
   ResourceCountService,
   UserCountType,
   UserFollowService,
@@ -19,8 +20,9 @@ export class UserResolver {
   constructor(
     private readonly userProfileService: UserProfileService,
     private readonly userFollowService: UserFollowService,
-    private readonly resourceCountService: ResourceCountService,
     private readonly prisma: PrismaClient,
+    private readonly resourceCountService: ResourceCountService,
+    private readonly likeOnMomentService: LikeOnMomentService,
   ) {}
 
   /**
@@ -59,7 +61,7 @@ export class UserResolver {
   @ResolveField('momentsCount', () => Int)
   async resolveMomentsCountField(@Parent() { id }: UserEntity) {
     const { count } = await this.resourceCountService.get(
-      UserCountType.publishedMoments,
+      UserCountType.moments,
       id,
       () => this.prisma.moment.count({ where: { publisherId: id } }),
     );
@@ -110,5 +112,21 @@ export class UserResolver {
       where: { publisherId: id },
       orderBy: { createdAt: 'desc' },
     });
+  }
+
+  /**
+   * Resolve liked moments count field.
+   */
+  @ResolveField('likedMomentsCount', () => Int)
+  resolveLikedMomentsCountField(@Parent() { id }: UserEntity) {
+    return this.likeOnMomentService.userLikedMomentsCount(id);
+  }
+
+  /**
+   * Resolve all published moment likers count field.
+   */
+  @ResolveField('allMomentLikersCount', () => Int)
+  resolveAllMomentLikersCountField(@Parent() { id }: UserEntity) {
+    return this.likeOnMomentService.userAllMomentLikersCount(id);
   }
 }

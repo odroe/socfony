@@ -16,7 +16,7 @@ export class UserFindManyArgs
    * Filter, which Users to fetch.
    */
   @Field(() => UserWhereInput, {
-    nullable: false,
+    nullable: true,
     description: 'Filter, which Users to fetch.',
   })
   where?: Prisma.UserWhereInput;
