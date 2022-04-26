@@ -1,6 +1,10 @@
-import { ArgsType, Field, Int } from "@nestjs/graphql";
-import { Prisma } from "@prisma/client";
-import { MomentOrderByWithRelationInput, MomentWhereInput, MomentWhereUniqueInput } from "src/inputs";
+import { ArgsType, Field, Int } from '@nestjs/graphql';
+import { Prisma } from '@prisma/client';
+import {
+  MomentOrderByWithRelationInput,
+  MomentWhereInput,
+  MomentWhereUniqueInput,
+} from 'src/inputs';
 
 @ArgsType()
 export class MomentFindManyArgs implements Prisma.MomentFindManyArgs {
@@ -37,7 +41,7 @@ export class MomentFindManyArgs implements Prisma.MomentFindManyArgs {
   @Field(() => Int, {
     nullable: true,
     description: 'Take `±n` Moments from the position of the cursor.',
-    defaultValue: 15
+    defaultValue: 15,
   })
   take: number = 15;
 
@@ -47,7 +51,7 @@ export class MomentFindManyArgs implements Prisma.MomentFindManyArgs {
   @Field(() => Int, {
     nullable: true,
     description: 'Skip the first `n` Moments.',
-    defaultValue: 0
+    defaultValue: 0,
   })
   skip: number = 0;
 }

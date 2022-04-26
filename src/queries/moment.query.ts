@@ -39,9 +39,7 @@ export class MomentQuery {
     nullable: 'items',
     description: 'Find many moments.',
   })
-  findMany(
-    @Args({ type: () => MomentFindManyArgs }) args: MomentFindManyArgs,
-  ) {
+  findMany(@Args({ type: () => MomentFindManyArgs }) args: MomentFindManyArgs) {
     return this.prisma.moment.findMany(args);
   }
 }

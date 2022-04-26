@@ -1,8 +1,10 @@
-import { Field, InputType } from "@nestjs/graphql";
-import { Prisma } from "@prisma/client";
+import { Field, InputType } from '@nestjs/graphql';
+import { Prisma } from '@prisma/client';
 
 @InputType({ description: 'Moment order by with relation input' })
-export class MomentOrderByWithRelationInput implements Prisma.MomentOrderByWithRelationInput {
+export class MomentOrderByWithRelationInput
+  implements Prisma.MomentOrderByWithRelationInput
+{
   /**
    * Ordering by id
    */
