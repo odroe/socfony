@@ -1,5 +1,6 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { PrismaClient } from '@prisma/client';
+import { MomentFindManyArgs } from 'src/args';
 import { MomentEntity } from 'src/entities';
 import { UtilHelpers } from 'src/helpers';
 import { MomentWhereInput } from 'src/inputs';
@@ -28,5 +29,19 @@ export class MomentQuery {
       rejectOnNotFound: false,
       include: { storages: true },
     });
+  }
+
+  /**
+   * Moment find many.
+   */
+  @Query(() => [MomentEntity], {
+    name: 'momentFindMany',
+    nullable: 'items',
+    description: 'Find many moments.',
+  })
+  findMany(
+    @Args({ type: () => MomentFindManyArgs }) args: MomentFindManyArgs,
+  ) {
+    return this.prisma.moment.findMany(args);
   }
 }
