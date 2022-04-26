@@ -4,6 +4,7 @@ import { CreateMomentArgs } from 'src/args';
 import { Auth } from 'src/auth';
 import { MomentEntity } from 'src/entities';
 import { ERROR_CODE_MOMENT_CONTENT_AND_STORAGES_IS_EMPTY } from 'src/errorcodes';
+import { GraphQLException } from 'src/graphql.exception';
 import { IDHelper, UtilHelpers } from 'src/helpers';
 import {
   ResourceCountService,
@@ -33,7 +34,7 @@ export class MomentMutation {
   ) {
     // If content or storages is empty
     if (UtilHelpers.isEmpty(content) && UtilHelpers.isEmpty(storages)) {
-      throw new Error(ERROR_CODE_MOMENT_CONTENT_AND_STORAGES_IS_EMPTY);
+      throw new GraphQLException(ERROR_CODE_MOMENT_CONTENT_AND_STORAGES_IS_EMPTY);
     }
 
     // Validate storages

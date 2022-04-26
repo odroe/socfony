@@ -15,6 +15,7 @@ import { SupportedStorageMetadata } from './metadata';
 import { ObjectHelper, UtilHelpers } from 'src/helpers';
 import { finder } from './finder';
 import { supportedStorageMetadatas } from './supported';
+import { GraphQLException } from 'src/graphql.exception';
 
 @Injectable()
 export class StorageService extends Client {
@@ -68,7 +69,7 @@ export class StorageService extends Client {
     const { location } = await this.prisma.storage.findUnique({
       where: { id: storageId },
       select: { location: true },
-      rejectOnNotFound: () => new Error(ERROR_CODE_STORAGE_NOT_FOUND),
+      rejectOnNotFound: () => new GraphQLException(ERROR_CODE_STORAGE_NOT_FOUND),
     });
 
     return this.createObjectURLBylocation(location, options);
@@ -85,17 +86,17 @@ export class StorageService extends Client {
     /// Find storage
     const storaged = await this.prisma.storage.findUnique({
       where: { id: storageId },
-      rejectOnNotFound: () => new Error(ERROR_CODE_STORAGE_NOT_FOUND),
+      rejectOnNotFound: () => new GraphQLException(ERROR_CODE_STORAGE_NOT_FOUND),
     });
 
     /// If storage is used, throw error
     if (storaged.isUsed) {
-      throw new Error(ERROR_CODE_STORAGE_IS_USED);
+      throw new GraphQLException(ERROR_CODE_STORAGE_IS_USED);
     }
 
     // If storage ownerId is not equal to ownerId, throw error
     if (storaged.ownerId !== ownerId) {
-      throw new Error(ERROR_CODE_STORAGE_NOT_FOUND);
+      throw new GraphQLException(ERROR_CODE_STORAGE_NOT_FOUND);
     }
 
     // Get object uploaded http result.
@@ -107,7 +108,7 @@ export class StorageService extends Client {
 
     // If http code is not 200, throw error
     if (result.statusCode !== 200) {
-      throw new Error(ERROR_CODE_STORAGE_NOT_UPLOADED);
+      throw new GraphQLException(ERROR_CODE_STORAGE_NOT_UPLOADED);
     }
 
     // Get object content-type in headers
@@ -118,7 +119,7 @@ export class StorageService extends Client {
 
     // If contentType is empty, throw error
     if (!contentType) {
-      throw new Error(ERROR_CODE_STORAGE_UNKNOWN_MIME_TYPE);
+      throw new GraphQLException(ERROR_CODE_STORAGE_UNKNOWN_MIME_TYPE);
     }
 
     // Get current storage metadata
@@ -126,7 +127,7 @@ export class StorageService extends Client {
 
     // Match contentType with supported metadata
     if (!metadatas.includes(metadata)) {
-      throw new Error(ERROR_CODE_STORAGE_UNSUPPORTED_MIME_TYPE);
+      throw new GraphQLException(ERROR_CODE_STORAGE_UNSUPPORTED_MIME_TYPE);
     }
 
     return () =>

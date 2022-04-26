@@ -1,15 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { tencentcloud } from 'src/configuration';
-import { Client } from 'tencentcloud-sdk-nodejs/tencentcloud/services/sms/v20210111/sms_client';
+import { sms } from 'tencentcloud-sdk-nodejs-sms';
 
-export interface TencentCloudSMSSendOptions {
+export interface SendOneTimePasswordTencentCloudShortMessageOptions {
   password: string;
-  expiredAt: Date;
+  expiresIn: number;
 }
 
 @Injectable()
-export class TencentCloudSMSService extends Client {
+export class TencentCloudShortMessageService extends sms.v20210111.Client {
   constructor(
     @Inject(tencentcloud.sms.KEY)
     private readonly configure: ConfigType<typeof tencentcloud.sms>,
@@ -19,14 +19,13 @@ export class TencentCloudSMSService extends Client {
         secretId: configure.secretId,
         secretKey: configure.secretKey,
       },
-      region: configure.region!,
-      profile: {},
+      region: configure.region,
     });
   }
 
-  async send(
+  async sendOneTimePassword(
     phone: string,
-    options: TencentCloudSMSSendOptions,
+    options: SendOneTimePasswordTencentCloudShortMessageOptions,
   ): Promise<void> {
     await this.SendSms({
       PhoneNumberSet: [phone],
@@ -38,11 +37,7 @@ export class TencentCloudSMSService extends Client {
           case '{otp}':
             return options.password;
           case '{minutes}':
-            const now = new Date();
-            const minutes = Math.floor(
-              (options.expiredAt.getTime() - now.getTime()) / 1000 / 60,
-            );
-            return minutes.toString();
+            return options.expiresIn.toString();
           default:
             return value;
         }

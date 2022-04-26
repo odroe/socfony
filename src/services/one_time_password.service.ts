@@ -2,13 +2,10 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { OneTimePassword, PrismaClient } from '@prisma/client';
 import { otp } from 'src/configuration';
-import { ERROR_CODE_OTP_NOT_VALID } from 'src/errorcodes';
+import { ERROR_CODE_OTP_NOT_VALID, ERROR_CODE_OTP_SEND_LIMIT_EXCEEDED } from 'src/errorcodes';
+import { GraphQLException } from 'src/graphql.exception';
 import { IDHelper } from 'src/helpers';
-import { MailerSendOptions, MailerService } from './mailer.service';
-import {
-  TencentCloudSMSSendOptions,
-  TencentCloudSMSService,
-} from './tencentcloud';
+import { SendOneTimePasswordTencendCloudSimpleEmailOptions, SendOneTimePasswordTencentCloudShortMessageOptions, TencentCloudShortMessageService, TencentCloudSimpleEmailService } from './tencentcloud';
 
 /**
  * One-time password service
@@ -17,8 +14,8 @@ import {
 export class OneTimePasswordService {
   constructor(
     private readonly prisma: PrismaClient,
-    private readonly mailerService: MailerService,
-    private readonly tencentCloudSMSService: TencentCloudSMSService,
+    private readonly sms: TencentCloudShortMessageService,
+    private readonly ses: TencentCloudSimpleEmailService,
     @Inject(otp.KEY) private readonly configure: ConfigType<typeof otp>,
   ) {}
 
@@ -27,8 +24,8 @@ export class OneTimePasswordService {
    * @param email Target
    */
   async sendToEmail(email: string): Promise<void> {
-    await this.#send(email, (options: MailerSendOptions) =>
-      this.mailerService.send(email, options),
+    await this.#send(email, (options: SendOneTimePasswordTencendCloudSimpleEmailOptions) =>
+      this.ses.sendOneTimePassword(email, options),
     );
   }
 
@@ -36,8 +33,8 @@ export class OneTimePasswordService {
    * Send one-time password to phone
    */
   async sendToPhone(phone: string): Promise<void> {
-    await this.#send(phone, (options: TencentCloudSMSSendOptions) =>
-      this.tencentCloudSMSService.send(phone, options),
+    await this.#send(phone, (options: SendOneTimePasswordTencentCloudShortMessageOptions) =>
+      this.sms.sendOneTimePassword(phone, options),
     );
   }
 
@@ -53,11 +50,11 @@ export class OneTimePasswordService {
       where: {
         target_password: { target, password },
       },
-      rejectOnNotFound: () => new Error(ERROR_CODE_OTP_NOT_VALID),
+      rejectOnNotFound: () => new GraphQLException(ERROR_CODE_OTP_NOT_VALID),
     });
 
     // check if otp is expired
-    if (otp.expiredAt < new Date()) throw new Error(ERROR_CODE_OTP_NOT_VALID);
+    if (otp.expiredAt < new Date()) throw new GraphQLException(ERROR_CODE_OTP_NOT_VALID);
 
     return this.#createDeleteCallback(otp);
   }
@@ -96,9 +93,20 @@ export class OneTimePasswordService {
   async #send(
     target: string,
     fn: (
-      options: TencentCloudSMSSendOptions | MailerSendOptions,
+      options: SendOneTimePasswordTencentCloudShortMessageOptions | SendOneTimePasswordTencendCloudSimpleEmailOptions,
     ) => Promise<any>,
   ) {
+    // 统计当前 target 24 小时内发送的次数，如果超过限制，则抛出异常
+    const count = await this.prisma.oneTimePassword.count({
+      where: {
+        target,
+        createdAt: {
+          gte: new Date(Date.now() - 24 * 60 * 60 * 1000),
+        },
+      },
+    });
+    if (count >= this.configure.limit) throw new GraphQLException(ERROR_CODE_OTP_SEND_LIMIT_EXCEEDED);
+
     // Create one-time password
     const otp = await this.prisma.oneTimePassword.create({
       data: {
@@ -113,7 +121,7 @@ export class OneTimePasswordService {
     // Send one-time password to target
     return await fn({
       password: otp.password,
-      expiredAt: otp.expiredAt,
+      expiresIn: this.configure.expiresInMinutes,
     });
   }
 }

@@ -9,6 +9,7 @@ import {
   ERROR_CODE_USER_NOT_SET_PASSWORD,
   ERROR_CODE_USER_PASSWORD_NOT_MATCH,
 } from 'src/errorcodes';
+import { GraphQLException } from 'src/graphql.exception';
 import { EmailHelper, IDHelper, PhoneNumberHelper } from 'src/helpers';
 import { PasswordHelper } from 'src/helpers/password';
 import { OneTimePasswordService } from './one_time_password.service';
@@ -58,12 +59,12 @@ export class AccessTokenService {
   async refreshAccessToken(token: string) {
     const accessToken = await this.prisma.accessToken.findUnique({
       where: { token },
-      rejectOnNotFound: () => Error(ERROR_CODE_UNATHORIZED),
+      rejectOnNotFound: () => new GraphQLException(ERROR_CODE_UNATHORIZED),
     });
 
     // If access token is expired, return error
     if (accessToken.refreshExpiredAt < new Date())
-      throw new Error(ERROR_CODE_UNATHORIZED);
+      throw new GraphQLException(ERROR_CODE_UNATHORIZED);
 
     // Update access token refresh expired is now,
     // and expired is now + 5 minutes
@@ -85,11 +86,11 @@ export class AccessTokenService {
     const { id, password: hash } = await this.#findUserOrThrow(account);
 
     // If user not set password, return error
-    if (!hash) throw new Error(ERROR_CODE_USER_NOT_SET_PASSWORD);
+    if (!hash) throw new GraphQLException(ERROR_CODE_USER_NOT_SET_PASSWORD);
 
     // Compare password, if not match, return error
     if (!PasswordHelper.compare(password, hash))
-      throw new Error(ERROR_CODE_USER_PASSWORD_NOT_MATCH);
+      throw new GraphQLException(ERROR_CODE_USER_PASSWORD_NOT_MATCH);
 
     return this.#createAccessTokenByUserId(id);
   }
@@ -147,7 +148,7 @@ export class AccessTokenService {
           { username: account },
         ],
       },
-      rejectOnNotFound: () => new Error(ERROR_CODE_USER_NOT_FOUND),
+      rejectOnNotFound: () => new GraphQLException(ERROR_CODE_USER_NOT_FOUND),
     });
   }
 

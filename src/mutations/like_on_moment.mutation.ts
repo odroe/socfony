@@ -3,6 +3,7 @@ import { AccessToken, LikeOnMoment, PrismaClient } from '@prisma/client';
 import { Auth } from 'src/auth';
 import { LikeOnMomentEntity } from 'src/entities';
 import { ERROR_CODE_MOMENT_NOT_FOUND } from 'src/errorcodes';
+import { GraphQLException } from 'src/graphql.exception';
 import { LikeOnMomentService } from 'src/services';
 
 @Resolver(() => LikeOnMomentEntity)
@@ -34,7 +35,7 @@ export class LikeOnMomentMutation {
     const { id } = await this.prisma.moment.findUnique({
       where: { id: momentId },
       select: { id: true },
-      rejectOnNotFound: () => new Error(ERROR_CODE_MOMENT_NOT_FOUND),
+      rejectOnNotFound: () => new GraphQLException(ERROR_CODE_MOMENT_NOT_FOUND),
     });
 
     return this.likeOnMomentService.like(ownerId, id);
@@ -62,7 +63,7 @@ export class LikeOnMomentMutation {
     const { id } = await this.prisma.moment.findUnique({
       where: { id: momentId },
       select: { id: true },
-      rejectOnNotFound: () => new Error(ERROR_CODE_MOMENT_NOT_FOUND),
+      rejectOnNotFound: () => new GraphQLException(ERROR_CODE_MOMENT_NOT_FOUND),
     });
 
     await this.likeOnMomentService.unlike(ownerId, id);

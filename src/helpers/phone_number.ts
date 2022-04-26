@@ -1,5 +1,6 @@
 import * as libphonenulber from 'libphonenumber-js';
 import { ERROR_CODE_PHONE_NUMBER_NOT_VALID } from 'src/errorcodes';
+import { GraphQLException } from 'src/graphql.exception';
 
 export namespace PhoneNumberHelper {
   /**
@@ -16,7 +17,7 @@ export namespace PhoneNumberHelper {
     try {
       return libphonenulber.format(phoneNumber, 'E.164');
     } catch (error) {
-      throw new Error(ERROR_CODE_PHONE_NUMBER_NOT_VALID);
+      throw new GraphQLException(ERROR_CODE_PHONE_NUMBER_NOT_VALID);
     }
   }
 }

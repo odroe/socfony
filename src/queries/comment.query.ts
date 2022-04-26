@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import { CommentFindManyArgs } from 'src/args';
 import { CommentEntity } from 'src/entities';
 import { ERROR_CODE_COMMENT_NOT_FOUND } from 'src/errorcodes';
+import { GraphQLException } from 'src/graphql.exception';
 import { CommentWhereInput, CommentWhereUniqueInput } from 'src/inputs';
 
 @Resolver(() => CommentEntity)
@@ -22,7 +23,7 @@ export class CommentQuery {
   ) {
     return this.prisma.comment.findFirst({
       where,
-      rejectOnNotFound: () => new Error(ERROR_CODE_COMMENT_NOT_FOUND),
+      rejectOnNotFound: () => new GraphQLException(ERROR_CODE_COMMENT_NOT_FOUND),
     });
   }
 

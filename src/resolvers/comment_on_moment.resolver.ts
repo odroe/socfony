@@ -6,6 +6,7 @@ import {
   MomentEntity,
 } from 'src/entities';
 import { ERROR_CODE_COMMENT_NOT_FOUND } from 'src/errorcodes';
+import { GraphQLException } from 'src/graphql.exception';
 import { UtilHelpers } from 'src/helpers';
 
 @Resolver(() => CommentOnMomentEntity)
@@ -23,7 +24,7 @@ export class CommentOnMomentResolver {
 
     return this.prisma.comment.findUnique({
       where: { id: parent.commentId },
-      rejectOnNotFound: () => new Error(ERROR_CODE_COMMENT_NOT_FOUND),
+      rejectOnNotFound: () => new GraphQLException(ERROR_CODE_COMMENT_NOT_FOUND),
     });
   }
 
@@ -38,7 +39,7 @@ export class CommentOnMomentResolver {
 
     return this.prisma.moment.findUnique({
       where: { id: parent.momentId },
-      rejectOnNotFound: () => new Error(ERROR_CODE_COMMENT_NOT_FOUND),
+      rejectOnNotFound: () => new GraphQLException(ERROR_CODE_COMMENT_NOT_FOUND),
     });
   }
 }

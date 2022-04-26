@@ -3,7 +3,6 @@ export * from './tencentcloud';
 
 export * from './access_token.service';
 export * from './like_on_moment.service';
-export * from './mailer.service';
 export * from './one_time_password.service';
 export * from './resource_count.service';
 export * from './user_profile.service';

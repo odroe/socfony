@@ -8,6 +8,7 @@ import {
   ERROR_CODE_USER_PASSWORD_NOT_MATCH,
   ERROR_CODE_USER_PHONE_ALREADY_EXISTS,
 } from 'src/errorcodes';
+import { GraphQLException } from 'src/graphql.exception';
 import {
   EmailHelper,
   PasswordHelper,
@@ -44,7 +45,7 @@ export class UserSecurityService {
       select: { id: true },
     });
     if (exists && exists.id !== userId) {
-      throw new Error(ERROR_CODE_USER_PHONE_ALREADY_EXISTS);
+      throw new GraphQLException(ERROR_CODE_USER_PHONE_ALREADY_EXISTS);
     }
 
     // Validate phone one-time password and get delete callback.
@@ -76,7 +77,7 @@ export class UserSecurityService {
   ) {
     // Check email is valid.
     if (EmailHelper.isNot(email)) {
-      throw new Error(ERROR_CODE_EMAIL_NOT_VALID);
+      throw new GraphQLException(ERROR_CODE_EMAIL_NOT_VALID);
     }
 
     // Check email user exists.
@@ -86,7 +87,7 @@ export class UserSecurityService {
       rejectOnNotFound: false,
     });
     if (exists && exists.id !== userId) {
-      throw new Error(ERROR_CODE_USER_EMAIL_ALREADY_EXISTS);
+      throw new GraphQLException(ERROR_CODE_USER_EMAIL_ALREADY_EXISTS);
     }
 
     // Validate phone one-time password and get delete callback.
@@ -146,7 +147,7 @@ export class UserSecurityService {
         UtilHelpers.isEmpty(security) ||
         PasswordHelper.compare(value, security!) === false
       ) {
-        throw new Error(ERROR_CODE_USER_PASSWORD_NOT_MATCH);
+        throw new GraphQLException(ERROR_CODE_USER_PASSWORD_NOT_MATCH);
       }
 
       return async () => {};

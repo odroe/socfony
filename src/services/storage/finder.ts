@@ -1,4 +1,5 @@
 import { ERROR_CODE_STORAGE_UNSUPPORTED_MIME_TYPE } from 'src/errorcodes';
+import { GraphQLException } from 'src/graphql.exception';
 import { SupportedStorageMetadata } from './metadata';
 import { supportedStorageMetadatas } from './supported';
 
@@ -11,7 +12,7 @@ export function finder(mimeType: string): SupportedStorageMetadata {
     );
 
   if (!(metadata instanceof SupportedStorageMetadata)) {
-    throw new Error(ERROR_CODE_STORAGE_UNSUPPORTED_MIME_TYPE);
+    throw new GraphQLException(ERROR_CODE_STORAGE_UNSUPPORTED_MIME_TYPE);
   }
 
   return metadata;

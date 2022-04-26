@@ -2,6 +2,7 @@ import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
 import { Moment, PrismaClient, User } from '@prisma/client';
 import { LikeOnMomentEntity, MomentEntity, UserEntity } from 'src/entities';
 import { ERROR_CODE_MOMENT_NOT_FOUND } from 'src/errorcodes';
+import { GraphQLException } from 'src/graphql.exception';
 import { UserService } from 'src/services';
 
 @Resolver(() => LikeOnMomentEntity)
@@ -34,7 +35,7 @@ export class LikeOnMomentResolver {
     // Find user by id.
     return this.prisma.moment.findUnique({
       where: { id: parent.momentId },
-      rejectOnNotFound: () => new Error(ERROR_CODE_MOMENT_NOT_FOUND),
+      rejectOnNotFound: () => new GraphQLException(ERROR_CODE_MOMENT_NOT_FOUND),
     });
   }
 }

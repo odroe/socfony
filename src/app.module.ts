@@ -8,6 +8,7 @@ import { AuthModule } from './auth';
 import { ConfigureModule } from './configuration';
 import { GraphQLModule } from './graphql.module';
 import { PrismaModule } from './prisma';
+
 import * as mutations from './mutations';
 import * as queries from './queries';
 import * as resolvers from './resolvers';

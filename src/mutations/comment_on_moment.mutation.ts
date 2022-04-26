@@ -6,6 +6,7 @@ import {
   ERROR_CODE_COMMENT_CONTENT_EMPTY,
   ERROR_CODE_MOMENT_NOT_FOUND,
 } from 'src/errorcodes';
+import { GraphQLException } from 'src/graphql.exception';
 import { IDHelper, UtilHelpers } from 'src/helpers';
 import {
   MomentCountType,
@@ -46,13 +47,13 @@ export class CommentOnMomentMutation {
   ) {
     // If content is empty, throw error.
     if (UtilHelpers.isEmpty(content)) {
-      throw new Error(ERROR_CODE_COMMENT_CONTENT_EMPTY);
+      throw new GraphQLException(ERROR_CODE_COMMENT_CONTENT_EMPTY);
     }
 
     // Validate moment is exist.
     const { id } = await this.prisma.moment.findUnique({
       where: { id: momentId },
-      rejectOnNotFound: () => new Error(ERROR_CODE_MOMENT_NOT_FOUND),
+      rejectOnNotFound: () => new GraphQLException(ERROR_CODE_MOMENT_NOT_FOUND),
     });
 
     const [commentOnMoment] = await this.prisma.$transaction([

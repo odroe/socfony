@@ -3,6 +3,7 @@ import { AccessToken, PrismaClient } from '@prisma/client';
 import { Auth } from 'src/auth';
 import { UserEntity } from 'src/entities';
 import { ERROR_CODE_USER_USERNAME_ALREADY_EXISTS } from 'src/errorcodes';
+import { GraphQLException } from 'src/graphql.exception';
 
 @Resolver(() => UserEntity)
 export class UserMutation {
@@ -24,7 +25,7 @@ export class UserMutation {
       rejectOnNotFound: false,
     });
     if (exists && exists.id !== ownerId) {
-      throw new Error(ERROR_CODE_USER_USERNAME_ALREADY_EXISTS);
+      throw new GraphQLException(ERROR_CODE_USER_USERNAME_ALREADY_EXISTS);
     }
 
     return this.prisma.user.update({
