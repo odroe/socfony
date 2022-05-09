@@ -28,7 +28,7 @@
     "apollo-server-express": "^3.7.0",
     "bcrypt": "^5.0.1",
     "cos-nodejs-sdk-v5": "^2.11.7",
-    "dayjs": "^1.11.0",
+    "dayjs": "^1.11.2",
     "graphql": "^16.4.0",
     "libphonenumber-js": "^1.9.52",
     "nanoid": "^3.3.4",
