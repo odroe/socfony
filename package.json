@@ -37,7 +37,7 @@
     "rimraf": "^3.0.2",
     "rxjs": "^7.5.5",
     "tencentcloud-sdk-nodejs-ses": "^4.0.350",
-    "tencentcloud-sdk-nodejs-sms": "^4.0.349"
+    "tencentcloud-sdk-nodejs-sms": "^4.0.350"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.2.6",
