@@ -20,9 +20,9 @@
     "@nestjs/apollo": "^10.0.13",
     "@nestjs/common": "^8.4.5",
     "@nestjs/config": "^2.0.1",
-    "@nestjs/core": "^8.4.5",
+    "@nestjs/core": "^8.4.6",
     "@nestjs/graphql": "^10.0.13",
-    "@nestjs/platform-express": "^8.4.5",
+    "@nestjs/platform-express": "^8.4.6",
     "@prisma/client": "^3.14.0",
     "apollo-server-core": "^3.8.1",
     "apollo-server-express": "^3.8.1",
@@ -36,7 +36,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.5.5",
-    "tencentcloud-sdk-nodejs-ses": "^4.0.350",
+    "tencentcloud-sdk-nodejs-ses": "^4.0.351",
     "tencentcloud-sdk-nodejs-sms": "^4.0.349"
   },
   "devDependencies": {
