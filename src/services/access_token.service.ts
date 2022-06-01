@@ -164,10 +164,10 @@ export class AccessTokenService {
         ownerId: userId,
         token: IDHelper.token(),
         expiredAt: dayjs()
-          .add(this.config.access.value, this.config.access.unit)
+          .add(this.config.access.value, this.config.access.unit as dayjs.ManipulateType)
           .toDate(),
         refreshExpiredAt: dayjs()
-          .add(this.config.refresh.value, this.config.refresh.unit)
+          .add(this.config.refresh.value, this.config.refresh.unit as dayjs.ManipulateType)
           .toDate(),
       },
     });
