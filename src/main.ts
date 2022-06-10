@@ -20,7 +20,7 @@ async function bootstrap() {
   // Get the app running URL
   const url = await app.getUrl();
   Logger.log(
-    `🚀  Server ready at ${url.replace('[::1]', '127.0.0.1')}`,
+    `🚀  Server ready at ${url.replace('[::1]', '127.0.0.1').replace('://::', '://127.0.0.1')}`,
     'Bootstrap',
   );
 }
