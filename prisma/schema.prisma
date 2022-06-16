@@ -17,9 +17,7 @@ datasource db {
 model User {
   id       String  @id @db.Char(64)
   username String? @unique @db.VarChar(100)
-  email    String? @unique @db.VarChar(100)
   phone    String? @unique @db.VarChar(100)
-  password String?
 
   /// The user published moments
   moments Moment[]
@@ -46,7 +44,6 @@ model User {
   followers FollowOnUser[] @relation(name: "user:target")
 
   @@index([username])
-  @@index([email])
   @@index([phone])
 }
 

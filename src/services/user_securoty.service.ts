@@ -67,77 +67,18 @@ export class UserSecurityService {
     });
   }
 
-  /**
-   * Update user email.
-   */
-  async updateUserEmail(
-    userId: string,
-    { email, otp }: { email: string; otp: string },
-    { field, value }: { field: UserSecurityFieldsEnum; value: string },
-  ) {
-    // Check email is valid.
-    if (EmailHelper.isNot(email)) {
-      throw new GraphQLException(ERROR_CODE_EMAIL_NOT_VALID);
-    }
+  
 
-    // Check email user exists.
-    const exists = await this.prisma.user.findUnique({
-      where: { email },
-      select: { id: true },
-      rejectOnNotFound: false,
-    });
-    if (exists && exists.id !== userId) {
-      throw new GraphQLException(ERROR_CODE_USER_EMAIL_ALREADY_EXISTS);
-    }
-
-    // Validate phone one-time password and get delete callback.
-    const otpDeleteCallback = await this.oneTimePasswordService.compare(
-      email,
-      otp,
-    );
-
-    // Run validator and get callback.
-    const validatorCallback = await this.#validator(userId, field, value);
-
-    // Run all callback.
-    Promise.all([otpDeleteCallback, validatorCallback]);
-
-    // Update user phone.
-    return this.prisma.user.update({
-      where: { id: userId },
-      data: { email: email.toLocaleLowerCase() },
-    });
-  }
-
-  /**
-   * Update user password.
-   */
-  async updateUserPassword(
-    userId: string,
-    password: string,
-    { field, value }: { field: UserSecurityFieldsEnum; value: string },
-  ) {
-    // Run validateor
-    const callback = await this.#validator(userId, field, value);
-    callback();
-
-    return this.prisma.user.update({
-      where: { id: userId },
-      data: {
-        password: PasswordHelper.hash(password),
-      },
-    });
-  }
+  
 
   /**
    * User security validator.
    */
   async #validator(
     userId: string,
-    field: UserSecurityFieldsEnum,
     value: string,
   ): Promise<() => Promise<void>> {
-    const { [field]: security } = await this.userService.findUniqueOrThrow({
+    const { phone } = await this.userService.findUniqueOrThrow({
       id: userId,
     });
 
