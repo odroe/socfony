@@ -1,53 +1,49 @@
-<a href="https://odroe.com">
-  <img align="right" width="120px" src="graphs/socfony.png" alt="Socfony Logo">
-</a>
+A server app built using [Shelf](https://pub.dev/packages/shelf),
+configured to enable running with [Docker](https://www.docker.com/).
 
-Socfony is an open source social application, and basic security modules and social function modules have been preset in the software. Whether it is to deploy Socfony directly or as a basis for program development is wonderful.
+This sample code handles HTTP GET requests to `/` and `/echo/<message>`
 
-- [Server](https://github.com/socfony/server) - GraphQL server side of Socfony.
-- [App](https://github.com/socfony/app) - Using Flutter develop Socfony app.
+# Running the sample
 
-## Get Started
+## Running with the Dart SDK
 
-1. Clone the repository.
+You can run the example with the [Dart SDK](https://dart.dev/get-dart)
+like this:
 
-   ```bash
-   git clone https://github.com/socfony/server
-   ```
-
-2. Install dependencies.
-
-   ```bash
-   cd server
-   npm install
-   ```
-
-### Configuration
-
-Copy the configuration file to the server directory.
-
-```bash
-cat .env.example > .env
+```
+$ dart run bin/server.dart
+Server listening on port 8080
 ```
 
-### Database
-
-Create tables and insert data.
-
-```bash
-npx prisma db push
+And then from a second terminal:
+```
+$ curl http://0.0.0.0:8080
+Hello, World!
+$ curl http://0.0.0.0:8080/echo/I_love_Dart
+I_love_Dart
 ```
 
-### Run server
+## Running with Docker
 
-```bash
-npm run start
+If you have [Docker Desktop](https://www.docker.com/get-started) installed, you
+can build and run with the `docker` command:
+
+```
+$ docker build . -t myserver
+$ docker run -it -p 8080:8080 myserver
+Server listening on port 8080
 ```
 
-## Documentation
+And then from a second terminal:
+```
+$ curl http://0.0.0.0:8080
+Hello, World!
+$ curl http://0.0.0.0:8080/echo/I_love_Dart
+I_love_Dart
+```
 
-TODO. Website: [https://odroe.com](https://odroe.com)
-
-## License
-
-The BSD 3-Clause License.
+You should see the logging printed in the first terminal:
+```
+2021-05-06T15:47:04.620417  0:00:00.000158 GET     [200] /
+2021-05-06T15:47:08.392928  0:00:00.001216 GET     [200] /echo/I_love_Dart
+```
