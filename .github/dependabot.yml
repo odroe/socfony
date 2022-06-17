@@ -10,3 +10,8 @@ updates:
     directory: '/'
     schedule:
       interval: 'daily'
+  # Database
+  - package-ecosystem: 'npm'
+    directory: 'database'
+    schedule:
+      interval: 'daily'
