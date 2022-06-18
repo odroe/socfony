@@ -1,0 +1,120 @@
+// Copyright (c) 2021, Odroe Inc. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+syntax = "proto3";
+package odroe.socfony;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
+
+// Access token.
+message AccessToken {
+  // Access token.
+  string token = 1;
+
+  // The token owner's ID.
+  string userId = 2;
+
+  // Token expiration time.
+  google.protobuf.Timestamp expiredAt = 3;
+
+  // Token refresh expiration time.
+  google.protobuf.Timestamp refreshExpiredAt = 4;
+}
+
+// Create access token request.
+message CreateAccessTokenRequest {
+  // E.164 formated need create new access token or auto refister new user.
+  string phone = 1;
+
+  // The request [phone] one-time password.
+  string otp = 2;
+}
+
+// Auth service.
+service AuthService {
+  // Create a new access token, if the phone not registered user,
+  // the user will be created.
+  rpc Create(CreateAccessTokenRequest) returns (AccessToken);
+
+  // Refresh access token.
+  rpc Refresh(google.protobuf.Empty) returns (AccessToken);
+
+  // delete access token.
+  rpc Delete(google.protobuf.Empty) returns (google.protobuf.Empty);
+}
+
+// User
+message User {
+  string id = 1; // User ID.
+  optional string name = 2; // User name.
+  string phone = 3; // User phone.
+  Gender gender = 4; // User gender.
+  optional string avatar = 5;
+  optional string bio = 6;
+  optional int32 birthday = 7;
+
+  // User gender
+  enum Gender {
+    woman = 0;
+    man = 1;
+    unknown = 2;
+  }
+}
+
+// Update current user request
+message UpdateUserRequest {
+  optional User.Gender gender = 1;
+  optional string avalar = 2;
+  optional string bio = 3;
+  optional int32 birthday = 4;
+}
+
+// User service.
+service UserService {
+  // Find a user by ID.
+  rpc Find(google.protobuf.StringValue) returns (User);
+
+  // Update current auth user data.
+  rpc Update(UpdateUserRequest) returns (User);
+}
+
+// Moment
+message Moment {
+  string id = 1; // Moment ID
+  string userId = 2; // Created the moment user ID.
+  optional string title = 3; // Moment title.
+  optional string content = 4; // Moment content.
+  optional ImagesValue images = 5; // Moment images.
+  google.protobuf.Timestamp createdAt = 6; // Moment created time.
+  google.protobuf.Timestamp updatedAt = 7; // Moment updated time.
+
+  message ImagesValue {
+    repeated string value = 1;
+  }
+}
+
+// Create moment request.
+message CreateMomentRequest {
+  string title = 1; // Moment title.
+  string content = 2; // Moment content.
+  repeated string images = 3; // Moment images.
+}
+
+// Moment service.
+service MomentService {
+  // Create a new moment.
+  rpc Create(CreateMomentRequest) returns (Moment);
+
+  // Delete a moment.
+  rpc Delete(google.protobuf.StringValue) returns (google.protobuf.Empty);
+
+  // Has a moment is liked by user.
+  rpc hasLiked(google.protobuf.StringValue) returns (google.protobuf.BoolValue);
+
+  // Toggle moment like.
+  // If the moment has been liked, the like will be removed.
+  rpc toggleLike(google.protobuf.StringValue) returns (google.protobuf.BoolValue);
+}
