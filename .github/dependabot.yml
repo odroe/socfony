@@ -6,12 +6,13 @@
 version: 2
 enable-beta-ecosystems: true
 updates:
+  # Socfony gRPC Server
   - package-ecosystem: 'pub'
-    directory: '/'
+    directory: '/server'
     schedule:
       interval: 'daily'
-  # Database
+  # Socfony database management tool
   - package-ecosystem: 'npm'
-    directory: 'database'
+    directory: '/database'
     schedule:
       interval: 'daily'
