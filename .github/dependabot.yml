@@ -16,6 +16,11 @@ updates:
     directory: '/server'
     schedule:
       interval: 'daily'
+  # Socfony application
+  - package-ecosystem: 'pub'
+    directory: '/app'
+    schedule:
+      interval: 'daily'
   # Socfony gRPC server/client APIs library
   - package-ecosystem: 'pub'
     directory: '/socfonyapi'
