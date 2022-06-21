@@ -9,6 +9,8 @@ environment:
 
 dependencies:
   grpc: ^3.0.2
+  pool: ^1.5.1
+  postgres: ^2.4.4
   socfonyapis: ^1.0.2
 
 dev_dependencies:
