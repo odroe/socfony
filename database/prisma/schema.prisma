@@ -12,7 +12,7 @@ datasource db {
 
 model User {
   id            String     @id @db.Char(64)
-  phone         String     @db.VarChar(50)
+  phone         String     @unique @db.VarChar(50)
   gender        UserGender @default(unknown)
   name          String?    @db.VarChar(100)
   avatar        String?    @db.VarChar(255)
@@ -20,7 +20,6 @@ model User {
   birthday      Int?
   registered_at DateTime   @db.Timestamptz()
 
-  @@unique([phone])
   @@index([name])
   @@index([birthday])
   @@index([registered_at])
@@ -34,4 +33,15 @@ enum UserGender {
   unknown
 
   @@map("user_gender")
+}
+
+model AccessToken {
+  token              String   @id @db.Char(128)
+  owner_id           String   @db.Char(64)
+  created_at         DateTime @db.Timestamptz()
+  expired_at         DateTime @db.Timestamptz()
+  refresh_expired_at DateTime @db.Timestamptz()
+
+  @@index([owner_id])
+  @@map("access_tokens")
 }
