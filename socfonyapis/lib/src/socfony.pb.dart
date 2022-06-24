@@ -937,11 +937,11 @@ class CreateMomentRequest extends $pb.GeneratedMessage {
   $core.List<$core.String> get images => $_getList(2);
 }
 
-class VerifyPhoneOneTimePasswordRequest extends $pb.GeneratedMessage {
+class CheckPhoneOneTimePasswordRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       const $core.bool.fromEnvironment('protobuf.omit_message_names')
           ? ''
-          : 'VerifyPhoneOneTimePasswordRequest',
+          : 'CheckPhoneOneTimePasswordRequest',
       package: const $pb.PackageName(
           const $core.bool.fromEnvironment('protobuf.omit_message_names')
               ? ''
@@ -959,8 +959,8 @@ class VerifyPhoneOneTimePasswordRequest extends $pb.GeneratedMessage {
             : 'otp')
     ..hasRequiredFields = false;
 
-  VerifyPhoneOneTimePasswordRequest._() : super();
-  factory VerifyPhoneOneTimePasswordRequest({
+  CheckPhoneOneTimePasswordRequest._() : super();
+  factory CheckPhoneOneTimePasswordRequest({
     $core.String? phone,
     $core.String? otp,
   }) {
@@ -973,37 +973,37 @@ class VerifyPhoneOneTimePasswordRequest extends $pb.GeneratedMessage {
     }
     return _result;
   }
-  factory VerifyPhoneOneTimePasswordRequest.fromBuffer($core.List<$core.int> i,
+  factory CheckPhoneOneTimePasswordRequest.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory VerifyPhoneOneTimePasswordRequest.fromJson($core.String i,
+  factory CheckPhoneOneTimePasswordRequest.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
       'Will be removed in next major version')
-  VerifyPhoneOneTimePasswordRequest clone() =>
-      VerifyPhoneOneTimePasswordRequest()..mergeFromMessage(this);
+  CheckPhoneOneTimePasswordRequest clone() =>
+      CheckPhoneOneTimePasswordRequest()..mergeFromMessage(this);
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
       'Will be removed in next major version')
-  VerifyPhoneOneTimePasswordRequest copyWith(
-          void Function(VerifyPhoneOneTimePasswordRequest) updates) =>
-      super.copyWith((message) =>
-              updates(message as VerifyPhoneOneTimePasswordRequest))
-          as VerifyPhoneOneTimePasswordRequest; // ignore: deprecated_member_use
+  CheckPhoneOneTimePasswordRequest copyWith(
+          void Function(CheckPhoneOneTimePasswordRequest) updates) =>
+      super.copyWith(
+              (message) => updates(message as CheckPhoneOneTimePasswordRequest))
+          as CheckPhoneOneTimePasswordRequest; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static VerifyPhoneOneTimePasswordRequest create() =>
-      VerifyPhoneOneTimePasswordRequest._();
-  VerifyPhoneOneTimePasswordRequest createEmptyInstance() => create();
-  static $pb.PbList<VerifyPhoneOneTimePasswordRequest> createRepeated() =>
-      $pb.PbList<VerifyPhoneOneTimePasswordRequest>();
+  static CheckPhoneOneTimePasswordRequest create() =>
+      CheckPhoneOneTimePasswordRequest._();
+  CheckPhoneOneTimePasswordRequest createEmptyInstance() => create();
+  static $pb.PbList<CheckPhoneOneTimePasswordRequest> createRepeated() =>
+      $pb.PbList<CheckPhoneOneTimePasswordRequest>();
   @$core.pragma('dart2js:noInline')
-  static VerifyPhoneOneTimePasswordRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<VerifyPhoneOneTimePasswordRequest>(
+  static CheckPhoneOneTimePasswordRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CheckPhoneOneTimePasswordRequest>(
           create);
-  static VerifyPhoneOneTimePasswordRequest? _defaultInstance;
+  static CheckPhoneOneTimePasswordRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get phone => $_getSZ(0);

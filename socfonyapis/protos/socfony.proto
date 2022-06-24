@@ -119,8 +119,8 @@ service MomentService {
   rpc toggleLike(google.protobuf.StringValue) returns (google.protobuf.BoolValue);
 }
 
-// Verify phone One-time password request
-message VerifyPhoneOneTimePasswordRequest {
+// Check phone One-time password request
+message CheckPhoneOneTimePasswordRequest {
   string phone = 1; // E.164 formated phone number.
   string otp = 2; // One-time password.
 }
@@ -130,6 +130,6 @@ service PhoneOneTimePasswordService {
   // Send a One-time password to phone number.
   rpc Send(google.protobuf.StringValue) returns (google.protobuf.Empty);
 
-  // Verify a One-time password.
-  rpc Verify(VerifyPhoneOneTimePasswordRequest) returns (google.protobuf.BoolValue);
+  // Check a One-time password.
+  rpc Check(CheckPhoneOneTimePasswordRequest) returns (google.protobuf.BoolValue);
 }
