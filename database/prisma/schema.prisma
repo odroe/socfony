@@ -11,18 +11,27 @@ datasource db {
 }
 
 model User {
-  id         String     @id @db.Char(64)
-  phone      String     @db.VarChar(50)
-  gender     UserGender @default(unknown)
-  name       String?    @db.VarChar(100)
-  avatar     String?    @db.VarChar(255)
-  bio        String?    @db.Text
-  birthday   Int?
-  registedAt DateTime   @db.Timestamptz()
+  id            String     @id @db.Char(64)
+  phone         String     @db.VarChar(50)
+  gender        UserGender @default(unknown)
+  name          String?    @db.VarChar(100)
+  avatar        String?    @db.VarChar(255)
+  bio           String?    @db.Text
+  birthday      Int?
+  registered_at DateTime   @db.Timestamptz()
+
+  @@unique([phone])
+  @@index([name])
+  @@index([birthday])
+  @@index([registered_at])
+  @@index([gender])
+  @@map("users")
 }
 
 enum UserGender {
   woman
   man
   unknown
+
+  @@map("user_gender")
 }
