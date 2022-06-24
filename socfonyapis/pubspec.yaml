@@ -1,7 +1,7 @@
 name: socfonyapis
 description: Socfony Server/Client APIs.
 version: 1.0.2
-repository: https://github.com/socfony/socfonyapis.git
+repository: https://github.com/odroe/socfony.git
 homepage: https://socfony.com
 
 environment:
