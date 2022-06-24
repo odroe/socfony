@@ -11,7 +11,8 @@ dependencies:
   grpc: ^3.0.2
   pool: ^1.5.1
   postgres: ^2.4.5
-  socfonyapis: ^1.0.2
+  socfonyapis:
+    path: ../socfonyapis
 
 dev_dependencies:
   lints: ^2.0.0

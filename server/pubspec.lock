@@ -144,9 +144,9 @@ packages:
   socfonyapis:
     dependency: "direct main"
     description:
-      name: socfonyapis
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "../socfonyapis"
+      relative: true
+    source: path
     version: "1.0.2"
   source_span:
     dependency: transitive
