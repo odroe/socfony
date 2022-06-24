@@ -16,7 +16,7 @@ class PhoneSentCodeRepository extends BaseRepository {
       {PooledDatabaseConnection? connection}) async {
     final PooledDatabaseConnection conn = await getConnection(connection);
     final PostgreSQLResult result = await conn.query(
-      'SELECT * FROM phone_sent_code WHERE phone = @phone ORDER BY created_at DESC LIMIT 1',
+      'SELECT * FROM phone_sent_codes WHERE phone = @phone ORDER BY created_at DESC LIMIT 1',
       substitutionValues: {'phone': phone},
     );
 
