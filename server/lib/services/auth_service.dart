@@ -1,20 +1,21 @@
 import 'package:grpc/grpc.dart';
 import 'package:socfonyapis/socfonyapis.dart';
 
-import '../database/connection.dart';
+import '../database/repositories/user_repository.dart';
 
 class AuthService extends AuthServiceBase {
+  late final UserRepository userRepository;
+
+  AuthService() {
+    userRepository = const UserRepository();
+  }
+
   @override
   Future<AccessToken> create(
       ServiceCall call, CreateAccessTokenRequest request) async {
-    final PooledDatabaseConnection connection =
-        await PooledDatabaseConnection.connect();
+    final user = await userRepository.find('11111');
 
-    final results = await connection.query('SELECT * FROM users');
-
-    for (final row in results) {
-      print(row.toColumnMap());
-    }
+    print(call);
 
     // TODO: implement create
     throw UnimplementedError();
