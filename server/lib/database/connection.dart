@@ -29,8 +29,6 @@ class PooledDatabaseConnection extends PostgreSQLConnection {
     final PooledDatabaseConnection connection =
         PooledDatabaseConnection(kDatabaseConnectionOptions, poolResource);
 
-    print(kDatabaseConnectionOptions.databaseName);
-
     try {
       await connection.open();
     } catch (e) {
