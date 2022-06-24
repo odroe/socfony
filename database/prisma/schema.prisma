@@ -2,10 +2,27 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider = "echo \"No compilation required\""
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String     @id @db.Char(64)
+  phone      String     @db.VarChar(50)
+  gender     UserGender @default(unknown)
+  name       String?    @db.VarChar(100)
+  avatar     String?    @db.VarChar(255)
+  bio        String?    @db.Text
+  birthday   Int?
+  registedAt DateTime   @db.Timestamptz()
+}
+
+enum UserGender {
+  woman
+  man
+  unknown
 }
