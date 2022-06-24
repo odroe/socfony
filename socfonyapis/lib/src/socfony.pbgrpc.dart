@@ -271,3 +271,64 @@ abstract class MomentServiceBase extends $grpc.Service {
   $async.Future<$2.BoolValue> toggleLike(
       $grpc.ServiceCall call, $2.StringValue request);
 }
+
+class PhoneOtpServiceClient extends $grpc.Client {
+  static final _$send = $grpc.ClientMethod<$2.StringValue, $1.Empty>(
+      '/odroe.socfony.PhoneOtpService/Send',
+      ($2.StringValue value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.Empty.fromBuffer(value));
+  static final _$verify = $grpc.ClientMethod<$2.StringValue, $2.BoolValue>(
+      '/odroe.socfony.PhoneOtpService/Verify',
+      ($2.StringValue value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $2.BoolValue.fromBuffer(value));
+
+  PhoneOtpServiceClient($grpc.ClientChannel channel,
+      {$grpc.CallOptions? options,
+      $core.Iterable<$grpc.ClientInterceptor>? interceptors})
+      : super(channel, options: options, interceptors: interceptors);
+
+  $grpc.ResponseFuture<$1.Empty> send($2.StringValue request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$send, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$2.BoolValue> verify($2.StringValue request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$verify, request, options: options);
+  }
+}
+
+abstract class PhoneOtpServiceBase extends $grpc.Service {
+  $core.String get $name => 'odroe.socfony.PhoneOtpService';
+
+  PhoneOtpServiceBase() {
+    $addMethod($grpc.ServiceMethod<$2.StringValue, $1.Empty>(
+        'Send',
+        send_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $2.StringValue.fromBuffer(value),
+        ($1.Empty value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$2.StringValue, $2.BoolValue>(
+        'Verify',
+        verify_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $2.StringValue.fromBuffer(value),
+        ($2.BoolValue value) => value.writeToBuffer()));
+  }
+
+  $async.Future<$1.Empty> send_Pre(
+      $grpc.ServiceCall call, $async.Future<$2.StringValue> request) async {
+    return send(call, await request);
+  }
+
+  $async.Future<$2.BoolValue> verify_Pre(
+      $grpc.ServiceCall call, $async.Future<$2.StringValue> request) async {
+    return verify(call, await request);
+  }
+
+  $async.Future<$1.Empty> send($grpc.ServiceCall call, $2.StringValue request);
+  $async.Future<$2.BoolValue> verify(
+      $grpc.ServiceCall call, $2.StringValue request);
+}
