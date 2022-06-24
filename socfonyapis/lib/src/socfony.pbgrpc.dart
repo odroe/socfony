@@ -272,17 +272,17 @@ abstract class MomentServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $2.StringValue request);
 }
 
-class PhoneOtpServiceClient extends $grpc.Client {
+class PhoneOneTimePasswordServiceClient extends $grpc.Client {
   static final _$send = $grpc.ClientMethod<$2.StringValue, $1.Empty>(
-      '/odroe.socfony.PhoneOtpService/Send',
+      '/odroe.socfony.PhoneOneTimePasswordService/Send',
       ($2.StringValue value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.Empty.fromBuffer(value));
   static final _$verify = $grpc.ClientMethod<$2.StringValue, $2.BoolValue>(
-      '/odroe.socfony.PhoneOtpService/Verify',
+      '/odroe.socfony.PhoneOneTimePasswordService/Verify',
       ($2.StringValue value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $2.BoolValue.fromBuffer(value));
 
-  PhoneOtpServiceClient($grpc.ClientChannel channel,
+  PhoneOneTimePasswordServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
       $core.Iterable<$grpc.ClientInterceptor>? interceptors})
       : super(channel, options: options, interceptors: interceptors);
@@ -298,10 +298,10 @@ class PhoneOtpServiceClient extends $grpc.Client {
   }
 }
 
-abstract class PhoneOtpServiceBase extends $grpc.Service {
-  $core.String get $name => 'odroe.socfony.PhoneOtpService';
+abstract class PhoneOneTimePasswordServiceBase extends $grpc.Service {
+  $core.String get $name => 'odroe.socfony.PhoneOneTimePasswordService';
 
-  PhoneOtpServiceBase() {
+  PhoneOneTimePasswordServiceBase() {
     $addMethod($grpc.ServiceMethod<$2.StringValue, $1.Empty>(
         'Send',
         send_Pre,
