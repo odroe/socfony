@@ -9,8 +9,9 @@ class PhoneOneTimePasswordService extends PhoneOneTimePasswordServiceBase {
   }
 
   @override
-  Future<BoolValue> verify(ServiceCall call, StringValue request) {
-    // TODO: implement verify
+  Future<BoolValue> check(
+      ServiceCall call, CheckPhoneOneTimePasswordRequest request) {
+    // TODO: implement check
     throw UnimplementedError();
   }
 }
