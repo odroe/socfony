@@ -936,3 +936,96 @@ class CreateMomentRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.List<$core.String> get images => $_getList(2);
 }
+
+class VerifyPhoneOneTimePasswordRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'VerifyPhoneOneTimePasswordRequest',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'odroe.socfony'),
+      createEmptyInstance: create)
+    ..aOS(
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'phone')
+    ..aOS(
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'otp')
+    ..hasRequiredFields = false;
+
+  VerifyPhoneOneTimePasswordRequest._() : super();
+  factory VerifyPhoneOneTimePasswordRequest({
+    $core.String? phone,
+    $core.String? otp,
+  }) {
+    final _result = create();
+    if (phone != null) {
+      _result.phone = phone;
+    }
+    if (otp != null) {
+      _result.otp = otp;
+    }
+    return _result;
+  }
+  factory VerifyPhoneOneTimePasswordRequest.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory VerifyPhoneOneTimePasswordRequest.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
+  VerifyPhoneOneTimePasswordRequest clone() =>
+      VerifyPhoneOneTimePasswordRequest()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  VerifyPhoneOneTimePasswordRequest copyWith(
+          void Function(VerifyPhoneOneTimePasswordRequest) updates) =>
+      super.copyWith((message) =>
+              updates(message as VerifyPhoneOneTimePasswordRequest))
+          as VerifyPhoneOneTimePasswordRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static VerifyPhoneOneTimePasswordRequest create() =>
+      VerifyPhoneOneTimePasswordRequest._();
+  VerifyPhoneOneTimePasswordRequest createEmptyInstance() => create();
+  static $pb.PbList<VerifyPhoneOneTimePasswordRequest> createRepeated() =>
+      $pb.PbList<VerifyPhoneOneTimePasswordRequest>();
+  @$core.pragma('dart2js:noInline')
+  static VerifyPhoneOneTimePasswordRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<VerifyPhoneOneTimePasswordRequest>(
+          create);
+  static VerifyPhoneOneTimePasswordRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get phone => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set phone($core.String v) {
+    $_setString(0, v);
+  }
+
+  @$pb.TagNumber(1)
+  $core.bool hasPhone() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearPhone() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get otp => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set otp($core.String v) {
+    $_setString(1, v);
+  }
+
+  @$pb.TagNumber(2)
+  $core.bool hasOtp() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearOtp() => clearField(2);
+}

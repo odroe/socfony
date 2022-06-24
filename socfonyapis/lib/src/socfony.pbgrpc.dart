@@ -277,10 +277,11 @@ class PhoneOneTimePasswordServiceClient extends $grpc.Client {
       '/odroe.socfony.PhoneOneTimePasswordService/Send',
       ($2.StringValue value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.Empty.fromBuffer(value));
-  static final _$verify = $grpc.ClientMethod<$2.StringValue, $2.BoolValue>(
-      '/odroe.socfony.PhoneOneTimePasswordService/Verify',
-      ($2.StringValue value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $2.BoolValue.fromBuffer(value));
+  static final _$verify =
+      $grpc.ClientMethod<$0.VerifyPhoneOneTimePasswordRequest, $2.BoolValue>(
+          '/odroe.socfony.PhoneOneTimePasswordService/Verify',
+          ($0.VerifyPhoneOneTimePasswordRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $2.BoolValue.fromBuffer(value));
 
   PhoneOneTimePasswordServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -292,7 +293,8 @@ class PhoneOneTimePasswordServiceClient extends $grpc.Client {
     return $createUnaryCall(_$send, request, options: options);
   }
 
-  $grpc.ResponseFuture<$2.BoolValue> verify($2.StringValue request,
+  $grpc.ResponseFuture<$2.BoolValue> verify(
+      $0.VerifyPhoneOneTimePasswordRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$verify, request, options: options);
   }
@@ -309,13 +311,15 @@ abstract class PhoneOneTimePasswordServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $2.StringValue.fromBuffer(value),
         ($1.Empty value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$2.StringValue, $2.BoolValue>(
-        'Verify',
-        verify_Pre,
-        false,
-        false,
-        ($core.List<$core.int> value) => $2.StringValue.fromBuffer(value),
-        ($2.BoolValue value) => value.writeToBuffer()));
+    $addMethod(
+        $grpc.ServiceMethod<$0.VerifyPhoneOneTimePasswordRequest, $2.BoolValue>(
+            'Verify',
+            verify_Pre,
+            false,
+            false,
+            ($core.List<$core.int> value) =>
+                $0.VerifyPhoneOneTimePasswordRequest.fromBuffer(value),
+            ($2.BoolValue value) => value.writeToBuffer()));
   }
 
   $async.Future<$1.Empty> send_Pre(
@@ -323,12 +327,12 @@ abstract class PhoneOneTimePasswordServiceBase extends $grpc.Service {
     return send(call, await request);
   }
 
-  $async.Future<$2.BoolValue> verify_Pre(
-      $grpc.ServiceCall call, $async.Future<$2.StringValue> request) async {
+  $async.Future<$2.BoolValue> verify_Pre($grpc.ServiceCall call,
+      $async.Future<$0.VerifyPhoneOneTimePasswordRequest> request) async {
     return verify(call, await request);
   }
 
   $async.Future<$1.Empty> send($grpc.ServiceCall call, $2.StringValue request);
   $async.Future<$2.BoolValue> verify(
-      $grpc.ServiceCall call, $2.StringValue request);
+      $grpc.ServiceCall call, $0.VerifyPhoneOneTimePasswordRequest request);
 }
