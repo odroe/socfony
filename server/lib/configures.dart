@@ -14,4 +14,4 @@ const DatabaseConnectionOptions kDatabaseConnectionOptions =
 
 /// Database connection max allocated connections.
 final int kDatabaseConnectionMaxAllocatedResources =
-    Platform.numberOfProcessors * 2;
+    Platform.numberOfProcessors * 2 + 1;
