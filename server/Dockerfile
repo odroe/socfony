@@ -18,4 +18,4 @@ COPY --from=build /app/bin/socfony /app/bin/
 
 # Start server.
 EXPOSE 8080
-CMD ["/app/bin/server"]
+CMD ["/app/bin/socfony"]
