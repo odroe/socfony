@@ -1,8 +1,8 @@
 import 'package:grpc/grpc.dart';
 
-import 'services/auth_service.dart';
-import 'services/phone_one_time_password_service.dart';
-import 'services/user_service.dart';
+import 'grpc_services/auth_service.dart';
+import 'grpc_services/phone_one_time_password_service.dart';
+import 'grpc_services/user_service.dart';
 
 /// Create gRPC services.
 List<Service> createServices() {
