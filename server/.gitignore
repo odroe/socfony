@@ -4,3 +4,6 @@
 
 # Conventional directory for build output.
 build/
+
+# Socfony configuration file.
+lib/configures.dart
