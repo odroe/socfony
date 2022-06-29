@@ -1,11 +1,14 @@
 import 'package:grpc/grpc.dart';
 import 'package:socfonyapis/socfonyapis.dart';
 
+import '../services/access_token/short_message_service.dart';
+
 class PhoneOneTimePasswordService extends PhoneOneTimePasswordServiceBase {
   @override
-  Future<Empty> send(ServiceCall call, StringValue request) {
-    // TODO: implement send
-    throw UnimplementedError();
+  Future<Empty> send(ServiceCall call, StringValue request) async {
+    await AccessTokenShortMessageService(request.value).send();
+
+    return Empty.create();
   }
 
   @override

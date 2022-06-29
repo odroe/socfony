@@ -1,6 +1,7 @@
 import 'dart:io' as io;
 import 'package:easysms/easysms.dart' as easysms;
 import 'database/options.dart' as database;
+import 'services/access_token/options.dart';
 
 /// Database connection options.
 const database.DatabaseConnectionOptions kDatabaseConnectionOptions =
@@ -16,10 +17,22 @@ const database.DatabaseConnectionOptions kDatabaseConnectionOptions =
 final int kDatabaseConnectionMaxAllocatedResources =
     io.Platform.numberOfProcessors * 2 + 1;
 
-/// Tencent Cloud sdhort message service geteway.
-const easysms.Geteway kTencentCloudSdhortMessageServiceGeteway =
+/// Tencent Cloud short message service geteway.
+const easysms.Geteway kTencentCloudShortMessageServiceGeteway =
     easysms.TencentCloudGeteway(
   appId: 'You Tencent Cloud SMS APP ID>',
   secretId: 'You Tencent Cloud Secret ID',
   secretKey: 'You Tencent Cloud Secret Key',
+);
+
+/// Access token short message service options.
+const AccessTokenShortMessageServiceOptions
+    kAccessTokenShortMessageServiceOptions =
+    AccessTokenShortMessageServiceOptions(
+  signName: 'Your Tencent Cloud SMS Sign Name',
+  templateId: 'You Tencent Cloud SMS Template ID',
+  params: [
+    '{otp}',
+    '{minutes}',
+  ],
 );
