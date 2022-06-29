@@ -9,6 +9,6 @@
   "author": "Odroe Inc. <hello@odroe.com>",
   "license": "BSD-3-Clause",
   "dependencies": {
-    "prisma": "^3.15.2"
+    "prisma": "^4.0.0"
   }
 }
