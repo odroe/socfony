@@ -83,10 +83,10 @@ class AccessTokenRepository extends BaseRepository {
 
     /// Update current access token, and get owner id.
     ///
-    /// - `expired_at` set to `NOW()`
-    /// - `refresh_expired_at` set to `NOW() + 5 minutes`
+    /// - `expired_at` set to `NOW() + 5 minutes`.
+    /// - `refresh_expired_at` set to `NOW()`
     final PostgreSQLResult result = await conn.query(
-      'UPDATE access_tokens SET expired_at = NOW(), refresh_expired_at = NOW() + INTERVAL \'5 minutes\' WHERE token = @token RETURNING *',
+      'UPDATE access_tokens SET expired_at = NOW() + INTERVAL \'5 minutes\', refresh_expired_at = NOW() WHERE token = @token RETURNING *',
       substitutionValues: {'token': token},
     );
 
@@ -96,5 +96,21 @@ class AccessTokenRepository extends BaseRepository {
 
     /// Create a new access token.
     return create(ownerId, connection: conn);
+  }
+
+  /// Delete an access token.
+  Future<void> delete(String token,
+      {PooledDatabaseConnection? connection}) async {
+    /// Resolved connection.
+    final PooledDatabaseConnection conn = await getConnection(connection);
+
+    /// Delete an access token.
+    await conn.query(
+      'DELETE FROM access_tokens WHERE token = @token',
+      substitutionValues: {'token': token},
+    );
+
+    /// Close the connection.
+    clear(conn);
   }
 }

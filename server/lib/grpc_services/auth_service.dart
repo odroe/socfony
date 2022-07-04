@@ -7,14 +7,12 @@ import '../database/models/user_model.dart';
 import '../database/repositories/access_token_repository.dart';
 import '../database/repositories/phone_sent_code_repository.dart';
 import '../database/repositories/user_repository.dart';
+import '../services/access_token/auth_service.dart' as $auth;
 
 class AuthService extends AuthServiceBase {
   @override
   Future<AccessToken> create(
       ServiceCall call, CreateAccessTokenRequest request) async {
-    // /// Find or create user.
-    // final UserModel user = await UserRepository().findOrCreate(request.phone);
-
     /// Find phone sent code
     final PhoneSentCodeModel? phoneSentCode =
         await PhoneSentCodeRepository().find(request.phone);
@@ -45,14 +43,28 @@ class AuthService extends AuthServiceBase {
   }
 
   @override
-  Future<Empty> delete(ServiceCall call, Empty request) {
-    // TODO: implement delete
-    throw UnimplementedError();
+  Future<Empty> delete(ServiceCall call, Empty request) async {
+    final AccessTokenModel? accessToken =
+        await $auth.AuthService(call).nullable();
+    if (accessToken != null) {
+      await AccessTokenRepository().delete(accessToken.token);
+    }
+
+    return Empty();
   }
 
   @override
-  Future<AccessToken> refresh(ServiceCall call, Empty request) {
-    // TODO: implement refresh
-    throw UnimplementedError();
+  Future<AccessToken> refresh(ServiceCall call, Empty request) async {
+    final AccessTokenModel accesstoken =
+        await $auth.AuthService(call).refresh();
+    final AccessTokenModel refreshedToken =
+        await AccessTokenRepository().refresh(accesstoken.token);
+
+    return AccessToken(
+      token: refreshedToken.token,
+      userId: refreshedToken.ownerId,
+      expiredAt: Timestamp.fromDateTime(refreshedToken.expiredAt),
+      refreshExpiredAt: Timestamp.fromDateTime(refreshedToken.refreshExpiredAt),
+    );
   }
 }
