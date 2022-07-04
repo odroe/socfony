@@ -15,7 +15,7 @@ class PhoneSentCodeModel {
   @JsonKey(name: 'expired_at', readValue: dataTimeReader)
   final DateTime expiredAt;
 
-  PhoneSentCodeModel({
+  const PhoneSentCodeModel({
     required this.phone,
     required this.code,
     required this.createdAt,

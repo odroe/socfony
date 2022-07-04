@@ -1,13 +1,14 @@
 import 'package:postgres/postgres.dart';
 
 import '../connection.dart';
+import '../models/user_model.dart';
 import '_base_repository.dart';
 
 class UserRepository extends BaseRepository {
   const UserRepository();
 
   /// Find a user by ID.
-  Future<Map<String, dynamic>> find(
+  Future<UserModel> find(
     String id, {
     PooledDatabaseConnection? connection,
   }) async {
@@ -26,7 +27,7 @@ class UserRepository extends BaseRepository {
 
     /// Find first row.
     for (var element in result) {
-      return element.toColumnMap();
+      return UserModel.fromJson(element.toColumnMap());
     }
 
     /// If no row found, throw exception.
@@ -34,7 +35,7 @@ class UserRepository extends BaseRepository {
   }
 
   /// Using `phone` find user, if not found, create new user.
-  Future<Map<String, dynamic>> findOrCreate(
+  Future<UserModel> findOrCreate(
     String phone, {
     PooledDatabaseConnection? connection,
   }) async {
@@ -54,7 +55,7 @@ class UserRepository extends BaseRepository {
       await resolvedConnection.close();
 
       /// Return user.
-      return element.toColumnMap();
+      return UserModel.fromJson(element.toColumnMap());
     }
 
     /// If no row found, create new user.
@@ -62,7 +63,7 @@ class UserRepository extends BaseRepository {
   }
 
   /// Create new user with `phone`.
-  Future<Map<String, dynamic>> createWithPhone(
+  Future<UserModel> createWithPhone(
     String phone, {
     PooledDatabaseConnection? connection,
   }) async {
@@ -81,7 +82,7 @@ class UserRepository extends BaseRepository {
 
     /// Find first row.
     for (var element in result) {
-      return element.toColumnMap();
+      return UserModel.fromJson(element.toColumnMap());
     }
 
     /// If no row found, throw exception.

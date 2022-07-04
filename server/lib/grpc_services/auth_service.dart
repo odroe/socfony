@@ -4,16 +4,11 @@ import 'package:socfonyapis/socfonyapis.dart';
 import '../database/repositories/user_repository.dart';
 
 class AuthService extends AuthServiceBase {
-  late final UserRepository userRepository;
-
-  AuthService() {
-    userRepository = const UserRepository();
-  }
-
   @override
   Future<AccessToken> create(
       ServiceCall call, CreateAccessTokenRequest request) async {
-    final user = await userRepository.find('11111');
+    /// Find or create user.
+    ///
 
     print(call);
 
