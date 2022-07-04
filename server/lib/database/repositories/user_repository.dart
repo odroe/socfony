@@ -1,3 +1,4 @@
+import 'package:betid/betid.dart';
 import 'package:postgres/postgres.dart';
 
 import '../connection.dart';
@@ -73,8 +74,11 @@ class UserRepository extends BaseRepository {
 
     /// Run query and get result.
     final PostgreSQLResult result = await resolvedConnection.query(
-      'INSERT INTO users (phone) VALUES (@phone) RETURNING *',
-      substitutionValues: {'phone': phone},
+      'INSERT INTO users (phone, id) VALUES (@phone, @id) RETURNING *',
+      substitutionValues: {
+        'phone': phone,
+        'id': 64.betid,
+      },
     );
 
     /// Close connection.

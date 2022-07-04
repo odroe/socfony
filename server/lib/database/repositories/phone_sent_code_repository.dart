@@ -20,7 +20,7 @@ class PhoneSentCodeRepository extends BaseRepository {
       substitutionValues: {'phone': phone},
     );
 
-    await conn.close();
+    clear(conn);
 
     for (final PostgreSQLResultRow element in result) {
       return PhoneSentCodeModel.fromJson(element.toColumnMap());
@@ -52,5 +52,31 @@ class PhoneSentCodeRepository extends BaseRepository {
     }
 
     throw Exception('Failed to create a phone sent code.');
+  }
+
+  /// Delete a phone sent code.
+  Future<void> delete(PhoneSentCodeModel phoneSentCode,
+      {PooledDatabaseConnection? connection}) async {
+    final PooledDatabaseConnection conn = await getConnection(connection);
+
+    /// Delete phone sent code.
+    await conn.execute(
+        'DELETE FROM phone_sent_codes WHERE phone = @phone AND code = @code',
+        substitutionValues: {
+          'phone': phoneSentCode.phone,
+          'code': phoneSentCode.code,
+        });
+
+    /// Clean up.
+    clear(conn);
+  }
+
+  /// Clean up all expired phone sent codes.
+  Future<void> clear([PooledDatabaseConnection? connection]) async {
+    final PooledDatabaseConnection conn = await getConnection(connection);
+    await conn.execute(
+      'DELETE FROM phone_sent_codes WHERE expired_at < NOW()',
+    );
+    await conn.close();
   }
 }
