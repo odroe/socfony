@@ -58,5 +58,6 @@ class UserModel {
         bio: bio,
         birthday: birthday,
         gender: gender,
+        phone: phone,
       );
 }

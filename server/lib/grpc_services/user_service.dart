@@ -6,12 +6,18 @@ import '../database/models/user_model.dart';
 import '../database/repositories/user_repository.dart';
 import '../services/access_token/auth_service.dart';
 
-/// 用户 E.64 编码后的手机号码脱敏处理
-String _maskPhone(String phone) {
-  return phone.replaceRange(5, 10, '****');
-}
-
 class UserService extends UserServiceBase {
+  /// Mask user phone
+  User _maskUserPhone(User user, {bool mask = true}) {
+    if (mask && user.hasPhone()) {
+      user.phone = user.phone.replaceRange(5, 10, '****');
+    } else {
+      user.clearPhone();
+    }
+
+    return user;
+  }
+
   @override
   Future<User> find(ServiceCall call, StringValue request) async {
     final UserModel user = await UserRepository().find(request.value);
@@ -19,16 +25,8 @@ class UserService extends UserServiceBase {
     /// Get nullable current authenticated user.
     final AccessTokenModel? current = await AuthService(call).nullable();
 
-    /// Get response message
-    final User response = user.toGrpcMessage();
-
-    /// If current owner id is user id, mask phone.
-    if (current?.ownerId == user.id) {
-      response.phone = _maskPhone(user.phone);
-    }
-
-    /// Return response.
-    return response;
+    return _maskUserPhone(user.toGrpcMessage(),
+        mask: current?.ownerId == user.id);
   }
 
   @override
@@ -43,15 +41,7 @@ class UserService extends UserServiceBase {
       gender: request.hasGender() == true ? request.gender : null,
     );
 
-    /// Get response message
-    final User response = user.toGrpcMessage();
-
-    /// If access token owner is user, mask phone.
-    if (accessToken.ownerId == user.id) {
-      response.phone = _maskPhone(user.phone);
-    }
-
-    /// Return response.
-    return response;
+    return _maskUserPhone(user.toGrpcMessage(),
+        mask: accessToken.ownerId == user.id);
   }
 }
