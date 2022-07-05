@@ -575,6 +575,99 @@ class UpdateUserRequest extends $pb.GeneratedMessage {
   void clearBirthday() => clearField(4);
 }
 
+class UpdateUserPhoneRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'UpdateUserPhoneRequest',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'odroe.socfony'),
+      createEmptyInstance: create)
+    ..aOS(
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'otp')
+    ..aOM<CreateAccessTokenRequest>(
+        2,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'new',
+        subBuilder: CreateAccessTokenRequest.create)
+    ..hasRequiredFields = false;
+
+  UpdateUserPhoneRequest._() : super();
+  factory UpdateUserPhoneRequest({
+    $core.String? otp,
+    CreateAccessTokenRequest? new_2,
+  }) {
+    final _result = create();
+    if (otp != null) {
+      _result.otp = otp;
+    }
+    if (new_2 != null) {
+      _result.new_2 = new_2;
+    }
+    return _result;
+  }
+  factory UpdateUserPhoneRequest.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory UpdateUserPhoneRequest.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
+  UpdateUserPhoneRequest clone() =>
+      UpdateUserPhoneRequest()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  UpdateUserPhoneRequest copyWith(
+          void Function(UpdateUserPhoneRequest) updates) =>
+      super.copyWith((message) => updates(message as UpdateUserPhoneRequest))
+          as UpdateUserPhoneRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static UpdateUserPhoneRequest create() => UpdateUserPhoneRequest._();
+  UpdateUserPhoneRequest createEmptyInstance() => create();
+  static $pb.PbList<UpdateUserPhoneRequest> createRepeated() =>
+      $pb.PbList<UpdateUserPhoneRequest>();
+  @$core.pragma('dart2js:noInline')
+  static UpdateUserPhoneRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<UpdateUserPhoneRequest>(create);
+  static UpdateUserPhoneRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get otp => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set otp($core.String v) {
+    $_setString(0, v);
+  }
+
+  @$pb.TagNumber(1)
+  $core.bool hasOtp() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearOtp() => clearField(1);
+
+  @$pb.TagNumber(2)
+  CreateAccessTokenRequest get new_2 => $_getN(1);
+  @$pb.TagNumber(2)
+  set new_2(CreateAccessTokenRequest v) {
+    setField(2, v);
+  }
+
+  @$pb.TagNumber(2)
+  $core.bool hasNew_2() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearNew_2() => clearField(2);
+  @$pb.TagNumber(2)
+  CreateAccessTokenRequest ensureNew_2() => $_ensure(1);
+}
+
 class Moment_ImagesValue extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       const $core.bool.fromEnvironment('protobuf.omit_message_names')

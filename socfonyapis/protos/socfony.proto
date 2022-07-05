@@ -72,6 +72,12 @@ message UpdateUserRequest {
   optional int32 birthday = 4;
 }
 
+// Update current user phone request
+message UpdateUserPhoneRequest {
+  string otp = 1;
+  CreateAccessTokenRequest new = 2;
+}
+
 // User service.
 service UserService {
   // Find a user by ID.
@@ -79,6 +85,12 @@ service UserService {
 
   // Update current auth user data.
   rpc Update(UpdateUserRequest) returns (User);
+
+  // Update username
+  rpc UpdateUsername(google.protobuf.StringValue) returns (User);
+
+  // Update phone
+  rpc UpdatePhone(UpdateUserPhoneRequest) returns (User);
 }
 
 // Moment

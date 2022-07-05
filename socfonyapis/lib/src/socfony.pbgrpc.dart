@@ -111,6 +111,15 @@ class UserServiceClient extends $grpc.Client {
       '/odroe.socfony.UserService/Update',
       ($0.UpdateUserRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.User.fromBuffer(value));
+  static final _$updateUsername = $grpc.ClientMethod<$2.StringValue, $0.User>(
+      '/odroe.socfony.UserService/UpdateUsername',
+      ($2.StringValue value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.User.fromBuffer(value));
+  static final _$updatePhone =
+      $grpc.ClientMethod<$0.UpdateUserPhoneRequest, $0.User>(
+          '/odroe.socfony.UserService/UpdatePhone',
+          ($0.UpdateUserPhoneRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $0.User.fromBuffer(value));
 
   UserServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -125,6 +134,16 @@ class UserServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$0.User> update($0.UpdateUserRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$update, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.User> updateUsername($2.StringValue request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$updateUsername, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.User> updatePhone($0.UpdateUserPhoneRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$updatePhone, request, options: options);
   }
 }
 
@@ -146,6 +165,21 @@ abstract class UserServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.UpdateUserRequest.fromBuffer(value),
         ($0.User value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$2.StringValue, $0.User>(
+        'UpdateUsername',
+        updateUsername_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $2.StringValue.fromBuffer(value),
+        ($0.User value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.UpdateUserPhoneRequest, $0.User>(
+        'UpdatePhone',
+        updatePhone_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $0.UpdateUserPhoneRequest.fromBuffer(value),
+        ($0.User value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.User> find_Pre(
@@ -158,9 +192,23 @@ abstract class UserServiceBase extends $grpc.Service {
     return update(call, await request);
   }
 
+  $async.Future<$0.User> updateUsername_Pre(
+      $grpc.ServiceCall call, $async.Future<$2.StringValue> request) async {
+    return updateUsername(call, await request);
+  }
+
+  $async.Future<$0.User> updatePhone_Pre($grpc.ServiceCall call,
+      $async.Future<$0.UpdateUserPhoneRequest> request) async {
+    return updatePhone(call, await request);
+  }
+
   $async.Future<$0.User> find($grpc.ServiceCall call, $2.StringValue request);
   $async.Future<$0.User> update(
       $grpc.ServiceCall call, $0.UpdateUserRequest request);
+  $async.Future<$0.User> updateUsername(
+      $grpc.ServiceCall call, $2.StringValue request);
+  $async.Future<$0.User> updatePhone(
+      $grpc.ServiceCall call, $0.UpdateUserPhoneRequest request);
 }
 
 class MomentServiceClient extends $grpc.Client {
