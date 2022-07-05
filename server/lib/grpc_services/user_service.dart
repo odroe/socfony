@@ -41,7 +41,42 @@ class UserService extends UserServiceBase {
       gender: request.hasGender() == true ? request.gender : null,
     );
 
-    return _maskUserPhone(user.toGrpcMessage(),
-        mask: accessToken.ownerId == user.id);
+    return _maskUserPhone(user.toGrpcMessage(), mask: true);
+  }
+
+  @override
+  Future<User> updatePhone(ServiceCall call, UpdateUserPhoneRequest request) {
+    // TODO: implement updatePhone
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<User> updateUsername(ServiceCall call, StringValue request) async {
+    /// Get required current authenticated access token.
+    final AccessTokenModel accessToken = await AuthService(call).required();
+
+    /// Create user repository.
+    const UserRepository repository = UserRepository();
+
+    /// Get user by name.
+    final UserModel? user = await repository.findByName(request.value);
+
+    /// Check if user exists and is not the same as current user.
+    if (user != null && user.id != accessToken.ownerId) {
+      throw Exception('Username already exists.');
+
+      /// If user is the same as current user, return user.
+    } else if (user != null && user.id == accessToken.ownerId) {
+      return _maskUserPhone(user.toGrpcMessage(),
+          mask: accessToken.ownerId == user.id);
+    }
+
+    /// Update username.
+    final UserModel updated = await repository.updateName(
+      accessToken.ownerId,
+      request.value,
+    );
+
+    return _maskUserPhone(updated.toGrpcMessage(), mask: true);
   }
 }

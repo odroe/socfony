@@ -141,4 +141,98 @@ class UserRepository extends BaseRepository {
 
     return UserModel.fromJson(result.first.toColumnMap());
   }
+
+  /// Find user by phone.
+  Future<UserModel?> findByPhone(String phone,
+      {PooledDatabaseConnection? connection}) async {
+    /// Get database connection.
+    final PooledDatabaseConnection resolvedConnection =
+        await getConnection(connection);
+
+    /// Run query and get result.
+    final PostgreSQLResult result = await resolvedConnection.query(
+      'SELECT * FROM users WHERE phone = @phone',
+      substitutionValues: {'phone': phone},
+    );
+
+    /// Close connection.
+    await resolvedConnection.close();
+
+    /// Find first row.
+    for (var element in result) {
+      return UserModel.fromJson(element.toColumnMap());
+    }
+
+    return null;
+  }
+
+  /// Find user by name.
+  Future<UserModel?> findByName(String name,
+      {PooledDatabaseConnection? connection}) async {
+    /// Get database connection.
+    final PooledDatabaseConnection resolvedConnection =
+        await getConnection(connection);
+
+    /// Run query and get result.
+    final PostgreSQLResult result = await resolvedConnection.query(
+      'SELECT * FROM users WHERE name = @name',
+      substitutionValues: {'name': name},
+    );
+
+    /// Close connection.
+    await resolvedConnection.close();
+
+    /// Find first row.
+    for (var element in result) {
+      return UserModel.fromJson(element.toColumnMap());
+    }
+
+    return null;
+  }
+
+  /// Update user's name.
+  Future<UserModel> updateName(String id, String name,
+      {PooledDatabaseConnection? connection}) async {
+    /// Get database connection.
+    final PooledDatabaseConnection resolvedConnection =
+        await getConnection(connection);
+
+    /// Run query and get result.
+    final PostgreSQLResult result = await resolvedConnection.query(
+      'UPDATE users SET name = @name WHERE id = @id RETURNING *',
+      substitutionValues: {
+        'id': id,
+        'name': name,
+      },
+    );
+
+    /// Close connection.
+    await resolvedConnection.close();
+
+    /// Return first row formated as [UserModel].
+    return UserModel.fromJson(result.first.toColumnMap());
+  }
+
+  /// Update user's phone.
+  Future<UserModel> updatePhone(String id, String phone,
+      {PooledDatabaseConnection? connection}) async {
+    /// Get database connection.
+    final PooledDatabaseConnection resolvedConnection =
+        await getConnection(connection);
+
+    /// Run query and get result.
+    final PostgreSQLResult result = await resolvedConnection.query(
+      'UPDATE users SET phone = @phone WHERE id = @id RETURNING *',
+      substitutionValues: {
+        'id': id,
+        'phone': phone,
+      },
+    );
+
+    /// Close connection.
+    await resolvedConnection.close();
+
+    /// Return first row formated as [UserModel].
+    return UserModel.fromJson(result.first.toColumnMap());
+  }
 }
