@@ -1,5 +1,6 @@
 import 'package:betid/betid.dart';
 import 'package:postgres/postgres.dart';
+import 'package:socfonyapis/socfonyapis.dart';
 
 import '../connection.dart';
 import '../models/user_model.dart';
@@ -91,5 +92,53 @@ class UserRepository extends BaseRepository {
 
     /// If no row found, throw exception.
     throw Exception('User not found.');
+  }
+
+  /// Update user.
+  Future<UserModel> update(
+    String id, {
+    PooledDatabaseConnection? connection,
+    String? avatar,
+    String? bio,
+    int? birthday,
+    User_Gender? gender,
+  }) async {
+    /// Resolve Database connection.
+    final PooledDatabaseConnection conn = await getConnection(connection);
+
+    final Map<String, dynamic> substitutionValues = {'id': id};
+    if (avatar != null && avatar.isNotEmpty) {
+      substitutionValues['avatar'] = avatar;
+    }
+    if (bio != null && bio.isNotEmpty) {
+      substitutionValues['bio'] = bio;
+    }
+    if (birthday != null && birthday.toString().length == 8) {
+      substitutionValues['birthday'] = birthday;
+    }
+    if (gender != null) {
+      substitutionValues['gender'] = gender.name;
+    }
+
+    /// Using substitetion values build update sql.
+    final StringBuffer sql = StringBuffer('UPDATE users SET');
+    final List<String> params = <String>[];
+    for (String key in substitutionValues.keys) {
+      params.add('$key = @$key');
+    }
+
+    /// Append params to sql.
+    sql.write(' ${params.join(', ')} WHERE id = @id RETURNING *');
+
+    /// Run query and get result.
+    final PostgreSQLResult result = await conn.query(
+      sql.toString(),
+      substitutionValues: substitutionValues,
+    );
+
+    /// Close connection.
+    await conn.close();
+
+    return UserModel.fromJson(result.first.toColumnMap());
   }
 }
