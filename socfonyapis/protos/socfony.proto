@@ -67,7 +67,7 @@ message User {
 // Update current user request
 message UpdateUserRequest {
   optional User.Gender gender = 1;
-  optional string avalar = 2;
+  optional string avatar = 2;
   optional string bio = 3;
   optional int32 birthday = 4;
 }

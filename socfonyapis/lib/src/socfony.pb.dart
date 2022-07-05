@@ -463,7 +463,7 @@ class UpdateUserRequest extends $pb.GeneratedMessage {
         2,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
-            : 'avalar')
+            : 'avatar')
     ..aOS(
         3,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
@@ -480,7 +480,7 @@ class UpdateUserRequest extends $pb.GeneratedMessage {
   UpdateUserRequest._() : super();
   factory UpdateUserRequest({
     User_Gender? gender,
-    $core.String? avalar,
+    $core.String? avatar,
     $core.String? bio,
     $core.int? birthday,
   }) {
@@ -488,8 +488,8 @@ class UpdateUserRequest extends $pb.GeneratedMessage {
     if (gender != null) {
       _result.gender = gender;
     }
-    if (avalar != null) {
-      _result.avalar = avalar;
+    if (avatar != null) {
+      _result.avatar = avatar;
     }
     if (bio != null) {
       _result.bio = bio;
@@ -539,16 +539,16 @@ class UpdateUserRequest extends $pb.GeneratedMessage {
   void clearGender() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.String get avalar => $_getSZ(1);
+  $core.String get avatar => $_getSZ(1);
   @$pb.TagNumber(2)
-  set avalar($core.String v) {
+  set avatar($core.String v) {
     $_setString(1, v);
   }
 
   @$pb.TagNumber(2)
-  $core.bool hasAvalar() => $_has(1);
+  $core.bool hasAvatar() => $_has(1);
   @$pb.TagNumber(2)
-  void clearAvalar() => clearField(2);
+  void clearAvatar() => clearField(2);
 
   @$pb.TagNumber(3)
   $core.String get bio => $_getSZ(2);
