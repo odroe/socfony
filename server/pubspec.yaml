@@ -11,7 +11,7 @@ dependencies:
   betid: ^1.0.0
   easysms: ^1.0.0
   grpc: ^3.0.2
-  json_annotation: ^4.5.0
+  json_annotation: ^4.6.0
   pool: ^1.5.1
   postgres: ^2.4.5
   socfonyapis:
