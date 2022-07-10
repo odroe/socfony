@@ -99,13 +99,8 @@ message Moment {
   string userId = 2; // Created the moment user ID.
   optional string title = 3; // Moment title.
   optional string content = 4; // Moment content.
-  optional ImagesValue images = 5; // Moment images.
+  repeated string images = 5; // Moment images.
   google.protobuf.Timestamp createdAt = 6; // Moment created time.
-  google.protobuf.Timestamp updatedAt = 7; // Moment updated time.
-
-  message ImagesValue {
-    repeated string value = 1;
-  }
 }
 
 // Create moment request.

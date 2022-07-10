@@ -668,64 +668,6 @@ class UpdateUserPhoneRequest extends $pb.GeneratedMessage {
   CreateAccessTokenRequest ensureNew_2() => $_ensure(1);
 }
 
-class Moment_ImagesValue extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'Moment.ImagesValue',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'odroe.socfony'),
-      createEmptyInstance: create)
-    ..pPS(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'value')
-    ..hasRequiredFields = false;
-
-  Moment_ImagesValue._() : super();
-  factory Moment_ImagesValue({
-    $core.Iterable<$core.String>? value,
-  }) {
-    final _result = create();
-    if (value != null) {
-      _result.value.addAll(value);
-    }
-    return _result;
-  }
-  factory Moment_ImagesValue.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory Moment_ImagesValue.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
-  Moment_ImagesValue clone() => Moment_ImagesValue()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  Moment_ImagesValue copyWith(void Function(Moment_ImagesValue) updates) =>
-      super.copyWith((message) => updates(message as Moment_ImagesValue))
-          as Moment_ImagesValue; // ignore: deprecated_member_use
-  $pb.BuilderInfo get info_ => _i;
-  @$core.pragma('dart2js:noInline')
-  static Moment_ImagesValue create() => Moment_ImagesValue._();
-  Moment_ImagesValue createEmptyInstance() => create();
-  static $pb.PbList<Moment_ImagesValue> createRepeated() =>
-      $pb.PbList<Moment_ImagesValue>();
-  @$core.pragma('dart2js:noInline')
-  static Moment_ImagesValue getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<Moment_ImagesValue>(create);
-  static Moment_ImagesValue? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.List<$core.String> get value => $_getList(0);
-}
-
 class Moment extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       const $core.bool.fromEnvironment('protobuf.omit_message_names')
@@ -757,25 +699,17 @@ class Moment extends $pb.GeneratedMessage {
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
             : 'content')
-    ..aOM<Moment_ImagesValue>(
+    ..pPS(
         5,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
-            : 'images',
-        subBuilder: Moment_ImagesValue.create)
+            : 'images')
     ..aOM<$3.Timestamp>(
         6,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
             : 'createdAt',
         protoName: 'createdAt',
-        subBuilder: $3.Timestamp.create)
-    ..aOM<$3.Timestamp>(
-        7,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'updatedAt',
-        protoName: 'updatedAt',
         subBuilder: $3.Timestamp.create)
     ..hasRequiredFields = false;
 
@@ -785,9 +719,8 @@ class Moment extends $pb.GeneratedMessage {
     $core.String? userId,
     $core.String? title,
     $core.String? content,
-    Moment_ImagesValue? images,
+    $core.Iterable<$core.String>? images,
     $3.Timestamp? createdAt,
-    $3.Timestamp? updatedAt,
   }) {
     final _result = create();
     if (id != null) {
@@ -803,13 +736,10 @@ class Moment extends $pb.GeneratedMessage {
       _result.content = content;
     }
     if (images != null) {
-      _result.images = images;
+      _result.images.addAll(images);
     }
     if (createdAt != null) {
       _result.createdAt = createdAt;
-    }
-    if (updatedAt != null) {
-      _result.updatedAt = updatedAt;
     }
     return _result;
   }
@@ -888,18 +818,7 @@ class Moment extends $pb.GeneratedMessage {
   void clearContent() => clearField(4);
 
   @$pb.TagNumber(5)
-  Moment_ImagesValue get images => $_getN(4);
-  @$pb.TagNumber(5)
-  set images(Moment_ImagesValue v) {
-    setField(5, v);
-  }
-
-  @$pb.TagNumber(5)
-  $core.bool hasImages() => $_has(4);
-  @$pb.TagNumber(5)
-  void clearImages() => clearField(5);
-  @$pb.TagNumber(5)
-  Moment_ImagesValue ensureImages() => $_ensure(4);
+  $core.List<$core.String> get images => $_getList(4);
 
   @$pb.TagNumber(6)
   $3.Timestamp get createdAt => $_getN(5);
@@ -914,20 +833,6 @@ class Moment extends $pb.GeneratedMessage {
   void clearCreatedAt() => clearField(6);
   @$pb.TagNumber(6)
   $3.Timestamp ensureCreatedAt() => $_ensure(5);
-
-  @$pb.TagNumber(7)
-  $3.Timestamp get updatedAt => $_getN(6);
-  @$pb.TagNumber(7)
-  set updatedAt($3.Timestamp v) {
-    setField(7, v);
-  }
-
-  @$pb.TagNumber(7)
-  $core.bool hasUpdatedAt() => $_has(6);
-  @$pb.TagNumber(7)
-  void clearUpdatedAt() => clearField(7);
-  @$pb.TagNumber(7)
-  $3.Timestamp ensureUpdatedAt() => $_ensure(6);
 }
 
 class CreateMomentRequest extends $pb.GeneratedMessage {
