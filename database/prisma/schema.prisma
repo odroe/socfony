@@ -57,3 +57,18 @@ model PhoneSentCodes {
   @@index([code])
   @@map("phone_sent_codes")
 }
+
+model Moment {
+  id String @db.Char(64) @id
+  title String? @db.VarChar(180)
+  content String? @db.Text
+  images String[] @default([])
+  user_id String @db.Char(64)
+  created_at DateTime @default(now()) @db.Timestamptz()
+  likers_count Int @default(0)
+  comments_count Int @default(0)
+
+  @@index([user_id])
+  @@index([created_at])
+  @@map("moments")
+}
