@@ -711,6 +711,20 @@ class Moment extends $pb.GeneratedMessage {
             : 'createdAt',
         protoName: 'createdAt',
         subBuilder: $3.Timestamp.create)
+    ..a<$core.int>(
+        7,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'likesCount',
+        $pb.PbFieldType.O3,
+        protoName: 'likesCount')
+    ..a<$core.int>(
+        8,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'commentsCount',
+        $pb.PbFieldType.O3,
+        protoName: 'commentsCount')
     ..hasRequiredFields = false;
 
   Moment._() : super();
@@ -721,6 +735,8 @@ class Moment extends $pb.GeneratedMessage {
     $core.String? content,
     $core.Iterable<$core.String>? images,
     $3.Timestamp? createdAt,
+    $core.int? likesCount,
+    $core.int? commentsCount,
   }) {
     final _result = create();
     if (id != null) {
@@ -740,6 +756,12 @@ class Moment extends $pb.GeneratedMessage {
     }
     if (createdAt != null) {
       _result.createdAt = createdAt;
+    }
+    if (likesCount != null) {
+      _result.likesCount = likesCount;
+    }
+    if (commentsCount != null) {
+      _result.commentsCount = commentsCount;
     }
     return _result;
   }
@@ -833,6 +855,30 @@ class Moment extends $pb.GeneratedMessage {
   void clearCreatedAt() => clearField(6);
   @$pb.TagNumber(6)
   $3.Timestamp ensureCreatedAt() => $_ensure(5);
+
+  @$pb.TagNumber(7)
+  $core.int get likesCount => $_getIZ(6);
+  @$pb.TagNumber(7)
+  set likesCount($core.int v) {
+    $_setSignedInt32(6, v);
+  }
+
+  @$pb.TagNumber(7)
+  $core.bool hasLikesCount() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearLikesCount() => clearField(7);
+
+  @$pb.TagNumber(8)
+  $core.int get commentsCount => $_getIZ(7);
+  @$pb.TagNumber(8)
+  set commentsCount($core.int v) {
+    $_setSignedInt32(7, v);
+  }
+
+  @$pb.TagNumber(8)
+  $core.bool hasCommentsCount() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearCommentsCount() => clearField(8);
 }
 
 class CreateMomentRequest extends $pb.GeneratedMessage {

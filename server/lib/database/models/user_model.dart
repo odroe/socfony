@@ -33,7 +33,7 @@ class UserModel {
   @_UserGenderConverter()
   final User_Gender gender;
 
-  @JsonKey(name: 'registered_at', readValue: dataTimeReader)
+  @JsonKey(name: 'registered_at', readValue: dateTimeReader)
   final DateTime registeredAt;
 
   const UserModel({

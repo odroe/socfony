@@ -11,13 +11,13 @@ class AccessTokenModel {
   @JsonKey(name: 'owner_id')
   final String ownerId;
 
-  @JsonKey(name: 'created_at', readValue: dataTimeReader)
+  @JsonKey(name: 'created_at', readValue: dateTimeReader)
   final DateTime createdAt;
 
-  @JsonKey(name: 'expired_at', readValue: dataTimeReader)
+  @JsonKey(name: 'expired_at', readValue: dateTimeReader)
   final DateTime expiredAt;
 
-  @JsonKey(name: 'refresh_expired_at', readValue: dataTimeReader)
+  @JsonKey(name: 'refresh_expired_at', readValue: dateTimeReader)
   final DateTime refreshExpiredAt;
 
   const AccessTokenModel(

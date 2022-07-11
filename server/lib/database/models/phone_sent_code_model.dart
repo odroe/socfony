@@ -9,10 +9,10 @@ class PhoneSentCodeModel {
   final String phone;
   final String code;
 
-  @JsonKey(name: 'created_at', readValue: dataTimeReader)
+  @JsonKey(name: 'created_at', readValue: dateTimeReader)
   final DateTime createdAt;
 
-  @JsonKey(name: 'expired_at', readValue: dataTimeReader)
+  @JsonKey(name: 'expired_at', readValue: dateTimeReader)
   final DateTime expiredAt;
 
   const PhoneSentCodeModel({

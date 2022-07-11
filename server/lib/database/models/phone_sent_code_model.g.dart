@@ -10,6 +10,6 @@ PhoneSentCodeModel _$PhoneSentCodeModelFromJson(Map<String, dynamic> json) =>
     PhoneSentCodeModel(
       phone: json['phone'] as String,
       code: json['code'] as String,
-      createdAt: DateTime.parse(dataTimeReader(json, 'created_at') as String),
-      expiredAt: DateTime.parse(dataTimeReader(json, 'expired_at') as String),
+      createdAt: DateTime.parse(dateTimeReader(json, 'created_at') as String),
+      expiredAt: DateTime.parse(dateTimeReader(json, 'expired_at') as String),
     );

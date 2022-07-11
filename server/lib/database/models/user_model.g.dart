@@ -14,7 +14,7 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       bio: json['bio'] as String?,
       birthday: json['birthday'] as int?,
       registeredAt:
-          DateTime.parse(dataTimeReader(json, 'registered_at') as String),
+          DateTime.parse(dateTimeReader(json, 'registered_at') as String),
       gender: json['gender'] == null
           ? User_Gender.unknown
           : const _UserGenderConverter().fromJson(json['gender'] as String),

@@ -1,4 +1,4 @@
-String? dataTimeReader(Map map, String key) {
+String? dateTimeReader(Map map, String key) {
   final Object? value = map[key];
 
   if (value is DateTime) {
