@@ -715,9 +715,9 @@ class Moment extends $pb.GeneratedMessage {
         7,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
-            : 'likesCount',
+            : 'likersCount',
         $pb.PbFieldType.O3,
-        protoName: 'likesCount')
+        protoName: 'likersCount')
     ..a<$core.int>(
         8,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
@@ -735,7 +735,7 @@ class Moment extends $pb.GeneratedMessage {
     $core.String? content,
     $core.Iterable<$core.String>? images,
     $3.Timestamp? createdAt,
-    $core.int? likesCount,
+    $core.int? likersCount,
     $core.int? commentsCount,
   }) {
     final _result = create();
@@ -757,8 +757,8 @@ class Moment extends $pb.GeneratedMessage {
     if (createdAt != null) {
       _result.createdAt = createdAt;
     }
-    if (likesCount != null) {
-      _result.likesCount = likesCount;
+    if (likersCount != null) {
+      _result.likersCount = likersCount;
     }
     if (commentsCount != null) {
       _result.commentsCount = commentsCount;
@@ -857,16 +857,16 @@ class Moment extends $pb.GeneratedMessage {
   $3.Timestamp ensureCreatedAt() => $_ensure(5);
 
   @$pb.TagNumber(7)
-  $core.int get likesCount => $_getIZ(6);
+  $core.int get likersCount => $_getIZ(6);
   @$pb.TagNumber(7)
-  set likesCount($core.int v) {
+  set likersCount($core.int v) {
     $_setSignedInt32(6, v);
   }
 
   @$pb.TagNumber(7)
-  $core.bool hasLikesCount() => $_has(6);
+  $core.bool hasLikersCount() => $_has(6);
   @$pb.TagNumber(7)
-  void clearLikesCount() => clearField(7);
+  void clearLikersCount() => clearField(7);
 
   @$pb.TagNumber(8)
   $core.int get commentsCount => $_getIZ(7);

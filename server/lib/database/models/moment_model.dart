@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:socfonyapis/socfonyapis.dart';
 
 import '_helpers.dart';
 
@@ -37,4 +38,16 @@ class MomentModel {
 
   factory MomentModel.fromJson(Map<String, dynamic> json) =>
       _$MomentModelFromJson(json);
+
+  /// To gRPC moment message
+  Moment toGrpcMessage() => Moment(
+        id: id,
+        userId: userId,
+        title: title,
+        content: content,
+        images: images,
+        createdAt: Timestamp.fromDateTime(createdAt),
+        likersCount: likersCount,
+        commentsCount: commentsCount,
+      );
 }

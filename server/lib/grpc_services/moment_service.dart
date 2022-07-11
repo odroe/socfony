@@ -1,11 +1,29 @@
 import 'package:grpc/grpc.dart';
 import 'package:socfonyapis/socfonyapis.dart';
 
+import '../database/models/access_token_model.dart';
+import '../database/models/moment_model.dart';
+import '../database/repositories/moment_repository.dart';
+import '../services/access_token/auth_service.dart';
+
 class MomentService extends MomentServiceBase {
   @override
-  Future<Moment> create(ServiceCall call, CreateMomentRequest request) {
-    // TODO: implement create
-    throw UnimplementedError();
+  Future<Moment> create(ServiceCall call, CreateMomentRequest request) async {
+    final AccessTokenModel accessToken = await AuthService(call).required();
+
+    if (request.hasContent() == false && request.images.isEmpty) {
+      throw GrpcError.invalidArgument(
+          'content and images cannot both be empty');
+    }
+
+    final MomentModel moment = await MomentRepository().create(
+      userId: accessToken.ownerId,
+      title: request.title,
+      content: request.content,
+      images: request.images,
+    );
+
+    return moment.toGrpcMessage();
   }
 
   @override
