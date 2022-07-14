@@ -77,8 +77,7 @@ class MomentRepository extends BaseRepository {
     /// Get resolved connection
     final PooledDatabaseConnection conn = await getConnection(connection);
 
-    /// Query result in database.
-    final PostgreSQLResult result = await conn.query(
+    await conn.execute(
       'DELETE FROM moments WHERE id = @id',
       substitutionValues: {'id': id},
     );
