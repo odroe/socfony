@@ -38,19 +38,7 @@ class Timestamp extends $pb.GeneratedMessage with $mixin.TimestampMixin {
     ..hasRequiredFields = false;
 
   Timestamp._() : super();
-  factory Timestamp({
-    $fixnum.Int64? seconds,
-    $core.int? nanos,
-  }) {
-    final _result = create();
-    if (seconds != null) {
-      _result.seconds = seconds;
-    }
-    if (nanos != null) {
-      _result.nanos = nanos;
-    }
-    return _result;
-  }
+  factory Timestamp() => create();
   factory Timestamp.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);

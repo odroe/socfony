@@ -53,27 +53,7 @@ class AccessToken extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   AccessToken._() : super();
-  factory AccessToken({
-    $core.String? token,
-    $core.String? userId,
-    $3.Timestamp? expiredAt,
-    $3.Timestamp? refreshExpiredAt,
-  }) {
-    final _result = create();
-    if (token != null) {
-      _result.token = token;
-    }
-    if (userId != null) {
-      _result.userId = userId;
-    }
-    if (expiredAt != null) {
-      _result.expiredAt = expiredAt;
-    }
-    if (refreshExpiredAt != null) {
-      _result.refreshExpiredAt = refreshExpiredAt;
-    }
-    return _result;
-  }
+  factory AccessToken() => create();
   factory AccessToken.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
@@ -176,19 +156,7 @@ class CreateAccessTokenRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   CreateAccessTokenRequest._() : super();
-  factory CreateAccessTokenRequest({
-    $core.String? phone,
-    $core.String? otp,
-  }) {
-    final _result = create();
-    if (phone != null) {
-      _result.phone = phone;
-    }
-    if (otp != null) {
-      _result.otp = otp;
-    }
-    return _result;
-  }
+  factory CreateAccessTokenRequest() => create();
   factory CreateAccessTokenRequest.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
@@ -296,39 +264,7 @@ class User extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   User._() : super();
-  factory User({
-    $core.String? id,
-    $core.String? name,
-    $core.String? phone,
-    User_Gender? gender,
-    $core.String? avatar,
-    $core.String? bio,
-    $core.int? birthday,
-  }) {
-    final _result = create();
-    if (id != null) {
-      _result.id = id;
-    }
-    if (name != null) {
-      _result.name = name;
-    }
-    if (phone != null) {
-      _result.phone = phone;
-    }
-    if (gender != null) {
-      _result.gender = gender;
-    }
-    if (avatar != null) {
-      _result.avatar = avatar;
-    }
-    if (bio != null) {
-      _result.bio = bio;
-    }
-    if (birthday != null) {
-      _result.birthday = birthday;
-    }
-    return _result;
-  }
+  factory User() => create();
   factory User.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
@@ -478,27 +414,7 @@ class UpdateUserRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   UpdateUserRequest._() : super();
-  factory UpdateUserRequest({
-    User_Gender? gender,
-    $core.String? avatar,
-    $core.String? bio,
-    $core.int? birthday,
-  }) {
-    final _result = create();
-    if (gender != null) {
-      _result.gender = gender;
-    }
-    if (avatar != null) {
-      _result.avatar = avatar;
-    }
-    if (bio != null) {
-      _result.bio = bio;
-    }
-    if (birthday != null) {
-      _result.birthday = birthday;
-    }
-    return _result;
-  }
+  factory UpdateUserRequest() => create();
   factory UpdateUserRequest.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
@@ -599,19 +515,7 @@ class UpdateUserPhoneRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   UpdateUserPhoneRequest._() : super();
-  factory UpdateUserPhoneRequest({
-    $core.String? otp,
-    CreateAccessTokenRequest? new_2,
-  }) {
-    final _result = create();
-    if (otp != null) {
-      _result.otp = otp;
-    }
-    if (new_2 != null) {
-      _result.new_2 = new_2;
-    }
-    return _result;
-  }
+  factory UpdateUserPhoneRequest() => create();
   factory UpdateUserPhoneRequest.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
@@ -728,43 +632,7 @@ class Moment extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   Moment._() : super();
-  factory Moment({
-    $core.String? id,
-    $core.String? userId,
-    $core.String? title,
-    $core.String? content,
-    $core.Iterable<$core.String>? images,
-    $3.Timestamp? createdAt,
-    $core.int? likersCount,
-    $core.int? commentsCount,
-  }) {
-    final _result = create();
-    if (id != null) {
-      _result.id = id;
-    }
-    if (userId != null) {
-      _result.userId = userId;
-    }
-    if (title != null) {
-      _result.title = title;
-    }
-    if (content != null) {
-      _result.content = content;
-    }
-    if (images != null) {
-      _result.images.addAll(images);
-    }
-    if (createdAt != null) {
-      _result.createdAt = createdAt;
-    }
-    if (likersCount != null) {
-      _result.likersCount = likersCount;
-    }
-    if (commentsCount != null) {
-      _result.commentsCount = commentsCount;
-    }
-    return _result;
-  }
+  factory Moment() => create();
   factory Moment.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
@@ -909,23 +777,7 @@ class CreateMomentRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   CreateMomentRequest._() : super();
-  factory CreateMomentRequest({
-    $core.String? title,
-    $core.String? content,
-    $core.Iterable<$core.String>? images,
-  }) {
-    final _result = create();
-    if (title != null) {
-      _result.title = title;
-    }
-    if (content != null) {
-      _result.content = content;
-    }
-    if (images != null) {
-      _result.images.addAll(images);
-    }
-    return _result;
-  }
+  factory CreateMomentRequest() => create();
   factory CreateMomentRequest.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
@@ -1004,19 +856,7 @@ class CheckPhoneOneTimePasswordRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   CheckPhoneOneTimePasswordRequest._() : super();
-  factory CheckPhoneOneTimePasswordRequest({
-    $core.String? phone,
-    $core.String? otp,
-  }) {
-    final _result = create();
-    if (phone != null) {
-      _result.phone = phone;
-    }
-    if (otp != null) {
-      _result.otp = otp;
-    }
-    return _result;
-  }
+  factory CheckPhoneOneTimePasswordRequest() => create();
   factory CheckPhoneOneTimePasswordRequest.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
