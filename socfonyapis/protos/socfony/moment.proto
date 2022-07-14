@@ -1,0 +1,27 @@
+// Copyright (c) 2021, Odroe Inc. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+syntax = "proto3";
+package odroe.socfony;
+
+import public "google/protobuf/timestamp.proto";
+
+// Moment
+message Moment {
+  string id = 1; // Moment ID
+  string userId = 2; // Created the moment user ID.
+  optional string title = 3; // Moment title.
+  optional string content = 4; // Moment content.
+  repeated string images = 5; // Moment images.
+  google.protobuf.Timestamp createdAt = 6; // Moment created time.
+  int32 likersCount = 7; // Moment likes count.
+  int32 commentsCount = 8; // Moment comments count.
+}
+
+// Create moment request.
+message CreateMomentRequest {
+  string title = 1; // Moment title.
+  string content = 2; // Moment content.
+  repeated string images = 3; // Moment images.
+}

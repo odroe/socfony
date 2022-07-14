@@ -5,140 +5,52 @@
 syntax = "proto3";
 package odroe.socfony;
 
-import "google/protobuf/empty.proto";
-import "google/protobuf/wrappers.proto";
-import "google/protobuf/timestamp.proto";
+// Google Protocol Buffers
+import public "google/protobuf/empty.proto";
+import public "google/protobuf/wrappers.proto";
+import public "google/protobuf/timestamp.proto";
 
-// Access token.
-message AccessToken {
-  // Access token.
-  string token = 1;
+// Socfony Protocol Buffers
+import public "socfony/access_token.proto";
+import public "socfony/moment.proto";
+import public "socfony/phone_one_time_password.proto";
+import public "socfony/user.proto";
 
-  // The token owner's ID.
-  string userId = 2;
+// Socfony Services
+service SocfonyService {
+  // Create a new acccess token by E.164 phone number.
+  rpc CreateAccessToken(CreateAccessTokenRequest) returns (AccessToken);
 
-  // Token expiration time.
-  google.protobuf.Timestamp expiredAt = 3;
+  // Refresh an access token.
+  rpc RefreshAccessToken(google.protobuf.Empty) returns (AccessToken);
 
-  // Token refresh expiration time.
-  google.protobuf.Timestamp refreshExpiredAt = 4;
-}
+  // Delete an access token.
+  rpc DeleteAccessToken(google.protobuf.Empty) returns (google.protobuf.Empty);
 
-// Create access token request.
-message CreateAccessTokenRequest {
-  // E.164 formated need create new access token or auto refister new user.
-  string phone = 1;
+  // Find an user by ID.
+  rpc FindUser(google.protobuf.StringValue) returns (User);
 
-  // The request [phone] one-time password.
-  string otp = 2;
-}
+  // Update current authenticated user data.
+  rpc UpdateUser(UpdateUserRequest) returns (User);
 
-// Auth service.
-service AuthService {
-  // Create a new access token, if the phone not registered user,
-  // the user will be created.
-  rpc Create(CreateAccessTokenRequest) returns (AccessToken);
+  // Update current authenticated user name.
+  rpc UpdateUserName(google.protobuf.StringValue) returns (User);
 
-  // Refresh access token.
-  rpc Refresh(google.protobuf.Empty) returns (AccessToken);
+  // Update current authenticated user binded phone number.
+  rpc UpdateUserPhone(google.protobuf.StringValue) returns (User);
 
-  // delete access token.
-  rpc Delete(google.protobuf.Empty) returns (google.protobuf.Empty);
-}
-
-// User
-message User {
-  string id = 1; // User ID.
-  optional string name = 2; // User name.
-  string phone = 3; // User phone.
-  Gender gender = 4; // User gender.
-  optional string avatar = 5;
-  optional string bio = 6;
-  optional int32 birthday = 7;
-
-  // User gender
-  enum Gender {
-    woman = 0;
-    man = 1;
-    unknown = 2;
-  }
-}
-
-// Update current user request
-message UpdateUserRequest {
-  optional User.Gender gender = 1;
-  optional string avatar = 2;
-  optional string bio = 3;
-  optional int32 birthday = 4;
-}
-
-// Update current user phone request
-message UpdateUserPhoneRequest {
-  string otp = 1;
-  CreateAccessTokenRequest new = 2;
-}
-
-// User service.
-service UserService {
-  // Find a user by ID.
-  rpc Find(google.protobuf.StringValue) returns (User);
-
-  // Update current auth user data.
-  rpc Update(UpdateUserRequest) returns (User);
-
-  // Update username
-  rpc UpdateUsername(google.protobuf.StringValue) returns (User);
-
-  // Update phone
-  rpc UpdatePhone(UpdateUserPhoneRequest) returns (User);
-}
-
-// Moment
-message Moment {
-  string id = 1; // Moment ID
-  string userId = 2; // Created the moment user ID.
-  optional string title = 3; // Moment title.
-  optional string content = 4; // Moment content.
-  repeated string images = 5; // Moment images.
-  google.protobuf.Timestamp createdAt = 6; // Moment created time.
-  int32 likersCount = 7; // Moment likes count.
-  int32 commentsCount = 8; // Moment comments count.
-}
-
-// Create moment request.
-message CreateMomentRequest {
-  string title = 1; // Moment title.
-  string content = 2; // Moment content.
-  repeated string images = 3; // Moment images.
-}
-
-// Moment service.
-service MomentService {
   // Create a new moment.
-  rpc Create(CreateMomentRequest) returns (Moment);
+  rpc CreateMoment(CreateMomentRequest) returns (Moment);
 
-  // Delete a moment.
-  rpc Delete(google.protobuf.StringValue) returns (google.protobuf.Empty);
+  // Has a moment is liked by current authenticated user.
+  rpc HasMomentLiked(google.protobuf.StringValue) returns (google.protobuf.BoolValue);
 
-  // Has a moment is liked by user.
-  rpc hasLiked(google.protobuf.StringValue) returns (google.protobuf.BoolValue);
+  // Toggle a moment like.
+  rpc ToggleMomentLike(google.protobuf.StringValue) returns (google.protobuf.BoolValue);
 
-  // Toggle moment like.
-  // If the moment has been liked, the like will be removed.
-  rpc toggleLike(google.protobuf.StringValue) returns (google.protobuf.BoolValue);
-}
+  // Send a one time password to a phone number.
+  rpc SendPhoneOneTimePassword(google.protobuf.StringValue) returns (google.protobuf.Empty);
 
-// Check phone One-time password request
-message CheckPhoneOneTimePasswordRequest {
-  string phone = 1; // E.164 formated phone number.
-  string otp = 2; // One-time password.
-}
-
-// Phone One-time password service.
-service PhoneOneTimePasswordService {
-  // Send a One-time password to phone number.
-  rpc Send(google.protobuf.StringValue) returns (google.protobuf.Empty);
-
-  // Check a One-time password.
-  rpc Check(CheckPhoneOneTimePasswordRequest) returns (google.protobuf.BoolValue);
+  // Check a one-time password is valid.
+  rpc CheckPhoneOneTimePassword(CheckPhoneOneTimePasswordRequest) returns (google.protobuf.BoolValue);
 }
