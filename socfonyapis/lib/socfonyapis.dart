@@ -4,11 +4,4 @@
 
 library socfonyapis;
 
-export 'src/socfony.pb.dart';
-export 'src/socfony.pbenum.dart';
 export 'src/socfony.pbgrpc.dart';
-
-// Expotrs google protobuf
-export 'src/google/protobuf/empty.pb.dart';
-export 'src/google/protobuf/timestamp.pb.dart';
-export 'src/google/protobuf/wrappers.pb.dart';
