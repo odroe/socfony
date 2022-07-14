@@ -27,9 +27,27 @@ class MomentService extends MomentServiceBase {
   }
 
   @override
-  Future<Empty> delete(ServiceCall call, StringValue request) {
-    // TODO: implement delete
-    throw UnimplementedError();
+  Future<Empty> delete(ServiceCall call, StringValue request) async {
+    /// Get access token
+    final AccessTokenModel accessToken = await AuthService(call).required();
+
+    /// Get moment
+    final MomentModel? moment =
+        await MomentRepository().findById(request.value);
+
+    /// If moment not found, throw error
+    if (moment == null) {
+      throw GrpcError.notFound('moment not found');
+
+      /// If Moment user id not equal to access token user id, throw error
+    } else if (moment.userId != accessToken.ownerId) {
+      throw GrpcError.permissionDenied('permission denied');
+    }
+
+    /// Delete moment
+    await MomentRepository().delete(moment.id);
+
+    return Empty();
   }
 
   @override

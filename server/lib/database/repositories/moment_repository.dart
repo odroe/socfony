@@ -49,4 +49,41 @@ class MomentRepository extends BaseRepository {
     /// Get first row
     return MomentModel.fromJson(result.first.toColumnMap());
   }
+
+  /// Find by id a moment.
+  Future<MomentModel?> findById(String id,
+      {PooledDatabaseConnection? connection}) async {
+    /// Get resolved connection
+    final PooledDatabaseConnection conn = await getConnection(connection);
+
+    /// Query result in database.
+    final PostgreSQLResult result = await conn.query(
+      'SELECT * FROM moments WHERE id = @id LIMIT 1',
+      substitutionValues: {'id': id},
+    );
+
+    /// Close connection.
+    await conn.close();
+
+    for (final PostgreSQLResultRow row in result) {
+      return MomentModel.fromJson(row.toColumnMap());
+    }
+
+    return null;
+  }
+
+  /// Delete a moment.
+  Future<void> delete(String id, {PooledDatabaseConnection? connection}) async {
+    /// Get resolved connection
+    final PooledDatabaseConnection conn = await getConnection(connection);
+
+    /// Query result in database.
+    final PostgreSQLResult result = await conn.query(
+      'DELETE FROM moments WHERE id = @id',
+      substitutionValues: {'id': id},
+    );
+
+    /// Close connection.
+    await conn.close();
+  }
 }
