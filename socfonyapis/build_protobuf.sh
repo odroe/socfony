@@ -15,6 +15,12 @@ imports=(
     google/protobuf/timestamp.proto
 );
 
+# Find all proto files in the protos directory
+proto_files=$(find $protos_dir -name "*.proto" | sed -e "s|$protos_dir/||g");
+
+# Show proto files count and imports count
+echo "Found ${#proto_files[@]} proto files and ${#imports[@]} imports."
+
 # Check if the protoc command is exists,
 # if not, run the install_protoc.sh script
 if ! command -v protoc >/dev/null 2>&1; then
@@ -79,7 +85,7 @@ rm -rf $output_dir && mkdir -p $output_dir;
 protoc_params=(
     --plugin=protoc-gen-dart=$protoc_gen_dart_bin
     -I$protos_dir \
-    "${protos_dir}/socfony.proto" \
+    ${proto_files[*]} \
     ${imports[*]} \
     --dart_out=grpc:$output_dir \
 );
