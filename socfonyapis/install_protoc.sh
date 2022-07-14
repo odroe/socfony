@@ -4,7 +4,7 @@
 # license that can be found in the LICENSE file.
 
 # Version
-version=21.1
+version=21.2
 
 # Define the platform
 platform=$(uname -s)
@@ -18,6 +18,10 @@ url_template="https://github.com/protocolbuffers/protobuf/releases/download/v{ve
 # system is macOS
 if [ "$platform" = "Darwin" ]; then
   os="osx-x86_64"
+  # If macOS is ARM, use the ARM version
+  if [ "$arch" = "arm64" ]; then
+    os="osx-aarch_64"
+  fi
 # system is Linux
 elif [ "$platform" = "Linux" ]; then
   # system is aarch64
