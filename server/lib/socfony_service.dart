@@ -18,10 +18,4 @@ class SocfonyService extends SocfonyServiceBase
     // TODO: implement toggleMomentLike
     throw UnimplementedError();
   }
-
-  @override
-  Future<User> updateUserPhone(ServiceCall call, StringValue request) {
-    // TODO: implement updateUserPhone
-    throw UnimplementedError();
-  }
 }

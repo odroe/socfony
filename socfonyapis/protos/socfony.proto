@@ -37,7 +37,7 @@ service SocfonyService {
   rpc UpdateUserName(google.protobuf.StringValue) returns (User);
 
   // Update current authenticated user binded phone number.
-  rpc UpdateUserPhone(google.protobuf.StringValue) returns (User);
+  rpc UpdateUserPhone(UpdateUserPhoneRequest) returns (User);
 
   // Update user avatar.
   rpc UpdateUserAvatar(google.protobuf.StringValue) returns (User);

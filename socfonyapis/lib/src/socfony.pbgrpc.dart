@@ -45,10 +45,11 @@ class SocfonyServiceClient extends $grpc.Client {
       '/odroe.socfony.SocfonyService/UpdateUserName',
       ($2.StringValue value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $3.User.fromBuffer(value));
-  static final _$updateUserPhone = $grpc.ClientMethod<$2.StringValue, $3.User>(
-      '/odroe.socfony.SocfonyService/UpdateUserPhone',
-      ($2.StringValue value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $3.User.fromBuffer(value));
+  static final _$updateUserPhone =
+      $grpc.ClientMethod<$3.UpdateUserPhoneRequest, $3.User>(
+          '/odroe.socfony.SocfonyService/UpdateUserPhone',
+          ($3.UpdateUserPhoneRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $3.User.fromBuffer(value));
   static final _$updateUserAvatar = $grpc.ClientMethod<$2.StringValue, $3.User>(
       '/odroe.socfony.SocfonyService/UpdateUserAvatar',
       ($2.StringValue value) => value.writeToBuffer(),
@@ -110,7 +111,8 @@ class SocfonyServiceClient extends $grpc.Client {
     return $createUnaryCall(_$updateUserName, request, options: options);
   }
 
-  $grpc.ResponseFuture<$3.User> updateUserPhone($2.StringValue request,
+  $grpc.ResponseFuture<$3.User> updateUserPhone(
+      $3.UpdateUserPhoneRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$updateUserPhone, request, options: options);
   }
@@ -192,12 +194,13 @@ abstract class SocfonyServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $2.StringValue.fromBuffer(value),
         ($3.User value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$2.StringValue, $3.User>(
+    $addMethod($grpc.ServiceMethod<$3.UpdateUserPhoneRequest, $3.User>(
         'UpdateUserPhone',
         updateUserPhone_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $2.StringValue.fromBuffer(value),
+        ($core.List<$core.int> value) =>
+            $3.UpdateUserPhoneRequest.fromBuffer(value),
         ($3.User value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$2.StringValue, $3.User>(
         'UpdateUserAvatar',
@@ -269,8 +272,8 @@ abstract class SocfonyServiceBase extends $grpc.Service {
     return updateUserName(call, await request);
   }
 
-  $async.Future<$3.User> updateUserPhone_Pre(
-      $grpc.ServiceCall call, $async.Future<$2.StringValue> request) async {
+  $async.Future<$3.User> updateUserPhone_Pre($grpc.ServiceCall call,
+      $async.Future<$3.UpdateUserPhoneRequest> request) async {
     return updateUserPhone(call, await request);
   }
 
@@ -313,7 +316,7 @@ abstract class SocfonyServiceBase extends $grpc.Service {
   $async.Future<$3.User> updateUserName(
       $grpc.ServiceCall call, $2.StringValue request);
   $async.Future<$3.User> updateUserPhone(
-      $grpc.ServiceCall call, $2.StringValue request);
+      $grpc.ServiceCall call, $3.UpdateUserPhoneRequest request);
   $async.Future<$3.User> updateUserAvatar(
       $grpc.ServiceCall call, $2.StringValue request);
   $async.Future<$4.Moment> createMoment(
