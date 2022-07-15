@@ -60,8 +60,9 @@ mixin AccessTokenMethods on SocfonyServiceBase {
     return AccessToken()
       ..token = accessToken['token']
       ..userId = user['id']
-      ..expiredAt = accessToken['expired_at']
-      ..refreshExpiredAt = accessToken['refresh_expired_at'];
+      ..expiredAt = Timestamp.fromDateTime(accessToken['expired_at'])
+      ..refreshExpiredAt =
+          Timestamp.fromDateTime(accessToken['refresh_expired_at']);
   }
 
   @override
@@ -105,8 +106,9 @@ mixin AccessTokenMethods on SocfonyServiceBase {
     return AccessToken()
       ..token = result['token']
       ..userId = result['owner_id']
-      ..expiredAt = result['expired_at']
-      ..refreshExpiredAt = result['refresh_expired_at'];
+      ..expiredAt = Timestamp.fromDateTime(accessToken['expired_at'])
+      ..refreshExpiredAt =
+          Timestamp.fromDateTime(accessToken['refresh_expired_at']);
   }
 
   @override
