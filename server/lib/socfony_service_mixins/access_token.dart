@@ -3,7 +3,7 @@ import 'package:grpc/grpc.dart';
 import 'package:postgres/postgres.dart';
 import 'package:socfonyapis/socfonyapis.dart';
 
-import '../auth/auth.dart';
+import '../auth.dart';
 import '../database/connection.dart';
 
 mixin AccessTokenMethods on SocfonyServiceBase {
@@ -103,6 +103,30 @@ mixin AccessTokenMethods on SocfonyServiceBase {
       ..userId = result['owner_id']
       ..expiredAt = result['expired_at']
       ..refreshExpiredAt = result['refresh_expired_at'];
+  }
+
+  @override
+  Future<Empty> deleteAccessToken(ServiceCall call, Empty request) async {
+    // Create database connection.
+    final PooledDatabaseConnection connection =
+        await PooledDatabaseConnection.connect();
+
+    // Find nullable access token.
+    final Map<String, dynamic>? accessToken =
+        await Auth(connection).nullable(call);
+
+    // If access token is not null then delete it.
+    if (accessToken != null) {
+      await connection.execute(
+        'DELETE FROM access_tokens WHERE token = @token',
+        substitutionValues: {'token': accessToken['token']},
+      );
+    }
+
+    // Close database connection.
+    await connection.close();
+
+    return Empty();
   }
 
   Future<Map<String, dynamic>> _createAccessToken(

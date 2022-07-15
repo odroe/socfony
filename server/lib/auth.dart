@@ -1,7 +1,7 @@
 import 'package:grpc/grpc.dart';
 import 'package:postgres/postgres.dart';
 
-import '../database/connection.dart';
+import 'database/connection.dart';
 
 class Auth {
   final PooledDatabaseConnection connection;

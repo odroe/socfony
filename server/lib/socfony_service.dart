@@ -18,12 +18,6 @@ class SocfonyService extends SocfonyServiceBase with AccessTokenMethods {
   }
 
   @override
-  Future<Empty> deleteAccessToken(ServiceCall call, Empty request) {
-    // TODO: implement deleteAccessToken
-    throw UnimplementedError();
-  }
-
-  @override
   Future<User> findUser(ServiceCall call, StringValue request) {
     // TODO: implement findUser
     throw UnimplementedError();
