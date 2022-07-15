@@ -45,9 +45,6 @@ service SocfonyService {
   // Create a new moment.
   rpc CreateMoment(CreateMomentRequest) returns (Moment);
 
-  // Has a moment is liked by current authenticated user.
-  rpc HasMomentLiked(google.protobuf.StringValue) returns (google.protobuf.BoolValue);
-
   // Toggle a moment like.
   rpc ToggleMomentLike(google.protobuf.StringValue) returns (google.protobuf.BoolValue);
 

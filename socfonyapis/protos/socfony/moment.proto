@@ -17,6 +17,7 @@ message Moment {
   google.protobuf.Timestamp createdAt = 6; // Moment created time.
   int32 likersCount = 7; // Moment likes count.
   int32 commentsCount = 8; // Moment comments count.
+  bool hasLiked = 9; // Whether the user has liked the moment.
 }
 
 // Create moment request.

@@ -58,11 +58,6 @@ class SocfonyServiceClient extends $grpc.Client {
           '/odroe.socfony.SocfonyService/CreateMoment',
           ($4.CreateMomentRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) => $4.Moment.fromBuffer(value));
-  static final _$hasMomentLiked =
-      $grpc.ClientMethod<$2.StringValue, $2.BoolValue>(
-          '/odroe.socfony.SocfonyService/HasMomentLiked',
-          ($2.StringValue value) => value.writeToBuffer(),
-          ($core.List<$core.int> value) => $2.BoolValue.fromBuffer(value));
   static final _$toggleMomentLike =
       $grpc.ClientMethod<$2.StringValue, $2.BoolValue>(
           '/odroe.socfony.SocfonyService/ToggleMomentLike',
@@ -128,11 +123,6 @@ class SocfonyServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$4.Moment> createMoment($4.CreateMomentRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$createMoment, request, options: options);
-  }
-
-  $grpc.ResponseFuture<$2.BoolValue> hasMomentLiked($2.StringValue request,
-      {$grpc.CallOptions? options}) {
-    return $createUnaryCall(_$hasMomentLiked, request, options: options);
   }
 
   $grpc.ResponseFuture<$2.BoolValue> toggleMomentLike($2.StringValue request,
@@ -225,13 +215,6 @@ abstract class SocfonyServiceBase extends $grpc.Service {
             $4.CreateMomentRequest.fromBuffer(value),
         ($4.Moment value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$2.StringValue, $2.BoolValue>(
-        'HasMomentLiked',
-        hasMomentLiked_Pre,
-        false,
-        false,
-        ($core.List<$core.int> value) => $2.StringValue.fromBuffer(value),
-        ($2.BoolValue value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$2.StringValue, $2.BoolValue>(
         'ToggleMomentLike',
         toggleMomentLike_Pre,
         false,
@@ -301,11 +284,6 @@ abstract class SocfonyServiceBase extends $grpc.Service {
     return createMoment(call, await request);
   }
 
-  $async.Future<$2.BoolValue> hasMomentLiked_Pre(
-      $grpc.ServiceCall call, $async.Future<$2.StringValue> request) async {
-    return hasMomentLiked(call, await request);
-  }
-
   $async.Future<$2.BoolValue> toggleMomentLike_Pre(
       $grpc.ServiceCall call, $async.Future<$2.StringValue> request) async {
     return toggleMomentLike(call, await request);
@@ -340,8 +318,6 @@ abstract class SocfonyServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $2.StringValue request);
   $async.Future<$4.Moment> createMoment(
       $grpc.ServiceCall call, $4.CreateMomentRequest request);
-  $async.Future<$2.BoolValue> hasMomentLiked(
-      $grpc.ServiceCall call, $2.StringValue request);
   $async.Future<$2.BoolValue> toggleMomentLike(
       $grpc.ServiceCall call, $2.StringValue request);
   $async.Future<$1.Empty> sendPhoneOneTimePassword(

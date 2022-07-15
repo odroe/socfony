@@ -70,6 +70,12 @@ class Moment extends $pb.GeneratedMessage {
             : 'commentsCount',
         $pb.PbFieldType.O3,
         protoName: 'commentsCount')
+    ..aOB(
+        9,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'hasLiked',
+        protoName: 'hasLiked')
     ..hasRequiredFields = false;
 
   Moment._() : super();
@@ -188,6 +194,18 @@ class Moment extends $pb.GeneratedMessage {
   $core.bool hasCommentsCount() => $_has(7);
   @$pb.TagNumber(8)
   void clearCommentsCount() => clearField(8);
+
+  @$pb.TagNumber(9)
+  $core.bool get hasLiked => $_getBF(8);
+  @$pb.TagNumber(9)
+  set hasLiked($core.bool v) {
+    $_setBool(8, v);
+  }
+
+  @$pb.TagNumber(9)
+  $core.bool hasHasLiked() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearHasLiked() => clearField(9);
 }
 
 class CreateMomentRequest extends $pb.GeneratedMessage {
