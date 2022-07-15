@@ -14,20 +14,8 @@ class SocfonyService extends SocfonyServiceBase
   }
 
   @override
-  Future<BoolValue> hasMomentLiked(ServiceCall call, StringValue request) {
-    // TODO: implement hasMomentLiked
-    throw UnimplementedError();
-  }
-
-  @override
   Future<BoolValue> toggleMomentLike(ServiceCall call, StringValue request) {
     // TODO: implement toggleMomentLike
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<User> updateUser(ServiceCall call, UpdateUserRequest request) {
-    // TODO: implement updateUser
     throw UnimplementedError();
   }
 

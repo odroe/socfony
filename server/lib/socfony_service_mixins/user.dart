@@ -115,6 +115,8 @@ mixin UserMethods on SocfonyServiceBase {
     final Map<String, dynamic> accessToken =
         await Auth(connection).required(call);
 
+    // TODO: implement validate avatar file in storage.
+
     // Update user avatar.
     final PostgreSQLResult updateResult = await connection.query(
       'UPDATE users SET avatar = @avatar WHERE id = @id RETURNING *',
@@ -122,6 +124,65 @@ mixin UserMethods on SocfonyServiceBase {
         'avatar': request.value,
         'id': accessToken['owner_id'],
       },
+    );
+
+    // Close database connection.
+    await connection.close();
+
+    return _createUserFromJson(updateResult.first.toColumnMap());
+  }
+
+  @override
+  Future<User> updateUser(ServiceCall call, UpdateUserRequest request) async {
+    // Create database connection.
+    final PooledDatabaseConnection connection =
+        await PooledDatabaseConnection.connect();
+
+    // Validate authentication.
+    final Map<String, dynamic> accessToken =
+        await Auth(connection).required(call);
+
+    // need to update user substitution values
+    final Map<String, dynamic> substitutionValues = {};
+
+    // If request has bio, update user bio.
+    if (request.hasBio() && request.bio.isNotEmpty) {
+      substitutionValues['bio'] = request.bio;
+    }
+
+    // If request has birthday, update user birthday.
+    if (request.hasBirthday() && request.birthday.toString().length == 8) {
+      substitutionValues['birthday'] = request.birthday;
+    }
+
+    // If has gender, update user gender.
+    if (request.hasGender()) {
+      substitutionValues['gender'] = request.gender.name.toLowerCase();
+    }
+
+    // If substitution values is empty, return user.
+    if (substitutionValues.isEmpty) {
+      final PostgreSQLResult result = await connection.query(
+        'SELECT * FROM users WHERE id = @id LIMIT 1',
+        substitutionValues: {'id': accessToken['owner_id']}
+          ..addAll(substitutionValues),
+      );
+
+      // Close database connection.
+      await connection.close();
+
+      return _createUserFromJson(result.first.toColumnMap());
+    }
+
+    // Build update fields SQL statement.
+    final String updateFields =
+        substitutionValues.keys.map((String key) => '$key = @$key').join(', ');
+
+    // Update user data.
+    final PostgreSQLResult updateResult = await connection.query(
+      'UPDATE users SET $updateFields WHERE id = @id RETURNING *',
+      substitutionValues: {'id': accessToken['owner_id']}
+        ..addAll(substitutionValues),
     );
 
     // Close database connection.
