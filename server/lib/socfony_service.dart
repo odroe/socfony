@@ -3,18 +3,13 @@ import 'package:socfonyapis/socfonyapis.dart';
 
 import 'socfony_service_mixins/access_token.dart';
 import 'socfony_service_mixins/phone_otp.dart';
+import 'socfony_service_mixins/user.dart';
 
 class SocfonyService extends SocfonyServiceBase
-    with AccessTokenMethods, PhoneOneTimePasswordMethods {
+    with AccessTokenMethods, PhoneOneTimePasswordMethods, UserMethods {
   @override
   Future<Moment> createMoment(ServiceCall call, CreateMomentRequest request) {
     // TODO: implement createMoment
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<User> findUser(ServiceCall call, StringValue request) {
-    // TODO: implement findUser
     throw UnimplementedError();
   }
 
@@ -37,14 +32,14 @@ class SocfonyService extends SocfonyServiceBase
   }
 
   @override
-  Future<User> updateUserName(ServiceCall call, StringValue request) {
-    // TODO: implement updateUserName
+  Future<User> updateUserPhone(ServiceCall call, StringValue request) {
+    // TODO: implement updateUserPhone
     throw UnimplementedError();
   }
 
   @override
-  Future<User> updateUserPhone(ServiceCall call, StringValue request) {
-    // TODO: implement updateUserPhone
+  Future<User> updateUserAvatar(ServiceCall call, StringValue request) {
+    // TODO: implement updateUserAvatar
     throw UnimplementedError();
   }
 }

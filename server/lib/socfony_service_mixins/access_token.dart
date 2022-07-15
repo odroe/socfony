@@ -25,10 +25,14 @@ mixin AccessTokenMethods on SocfonyServiceBase {
 
     // If result is empty then return error.
     if (result.isEmpty) {
+      // Close database connection.
+      await connection.close();
       throw GrpcError.notFound('验证码不正确');
       // If code is expired then return error.
     } else if ((result.first.toColumnMap()['expired_at'] as DateTime)
         .isBefore(DateTime.now())) {
+      // Close database connection.
+      await connection.close();
       throw GrpcError.invalidArgument('验证码已过期');
     }
 
