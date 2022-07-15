@@ -104,4 +104,29 @@ mixin UserMethods on SocfonyServiceBase {
 
     return _createUserFromJson(updateResult.first.toColumnMap());
   }
+
+  @override
+  Future<User> updateUserAvatar(ServiceCall call, StringValue request) async {
+    // Create database connection.
+    final PooledDatabaseConnection connection =
+        await PooledDatabaseConnection.connect();
+
+    // Validate authentication.
+    final Map<String, dynamic> accessToken =
+        await Auth(connection).required(call);
+
+    // Update user avatar.
+    final PostgreSQLResult updateResult = await connection.query(
+      'UPDATE users SET avatar = @avatar WHERE id = @id RETURNING *',
+      substitutionValues: {
+        'avatar': request.value,
+        'id': accessToken['owner_id'],
+      },
+    );
+
+    // Close database connection.
+    await connection.close();
+
+    return _createUserFromJson(updateResult.first.toColumnMap());
+  }
 }

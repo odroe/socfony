@@ -36,10 +36,4 @@ class SocfonyService extends SocfonyServiceBase
     // TODO: implement updateUserPhone
     throw UnimplementedError();
   }
-
-  @override
-  Future<User> updateUserAvatar(ServiceCall call, StringValue request) {
-    // TODO: implement updateUserAvatar
-    throw UnimplementedError();
-  }
 }
