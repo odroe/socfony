@@ -5,9 +5,9 @@ import 'socfony_service_mixins/moment.dart';
 import 'socfony_service_mixins/phone_otp.dart';
 import 'socfony_service_mixins/user.dart';
 
-class SocfonyService extends SocfonyServiceBase
+class SocfonyService = SocfonyServiceBase
     with
         AccessTokenMethods,
         PhoneOneTimePasswordMethods,
         UserMethods,
-        MomentMethods {}
+        MomentMethods;
