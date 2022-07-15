@@ -3,6 +3,7 @@ import 'package:grpc/grpc.dart';
 import 'package:postgres/postgres.dart';
 import 'package:socfonyapis/socfonyapis.dart';
 
+import '../auth/auth.dart';
 import '../database/connection.dart';
 
 mixin AccessTokenMethods on SocfonyServiceBase {
@@ -48,12 +49,60 @@ mixin AccessTokenMethods on SocfonyServiceBase {
       },
     );
 
+    // Close database connection.
+    await connection.close();
+
     // Create and return [AccessToken].
     return AccessToken()
       ..token = accessToken['token']
       ..userId = user['id']
       ..expiredAt = accessToken['expired_at']
       ..refreshExpiredAt = accessToken['refresh_expired_at'];
+  }
+
+  @override
+  Future<AccessToken> refreshAccessToken(
+      ServiceCall call, Empty request) async {
+    // Create database connection.
+    final PooledDatabaseConnection connection =
+        await PooledDatabaseConnection.connect();
+
+    // Find and validate access token in refresh token.
+    final Map<String, dynamic> accessToken =
+        await Auth(connection).refresh(call);
+
+    // Update current access token.
+    // - [expired_at] is set to now + 5 minutes.
+    // - [refresh_expired_at] is set to now.
+    await connection.execute(
+      'UPDATE access_tokens SET expired_at = NOW() + INTERVAL \'5 minutes\', refresh_expired_at = NOW() WHERE token = @token',
+      substitutionValues: {'token': accessToken['token']},
+    );
+
+    final Map<String, dynamic> result = await connection
+        .transaction((PostgreSQLExecutionContext connection) async {
+      // Update current access token.
+      // - [expired_at] is set to now + 5 minutes.
+      // - [refresh_expired_at] is set to now.
+      await connection.execute(
+        'UPDATE access_tokens SET expired_at = NOW() + INTERVAL \'5 minutes\', refresh_expired_at = NOW() WHERE token = @token',
+        substitutionValues: {'token': accessToken['token']},
+      );
+
+      // Create token and return it.
+      return await _createAccessToken(
+          connection as dynamic, accessToken['owner_id']);
+    });
+
+    // Close database connection.
+    await connection.close();
+
+    // Create and return [AccessToken].
+    return AccessToken()
+      ..token = result['token']
+      ..userId = result['owner_id']
+      ..expiredAt = result['expired_at']
+      ..refreshExpiredAt = result['refresh_expired_at'];
   }
 
   Future<Map<String, dynamic>> _createAccessToken(

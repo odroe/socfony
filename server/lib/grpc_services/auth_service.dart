@@ -20,19 +20,4 @@ class AuthService extends AuthServiceBase {
 
     return Empty();
   }
-
-  @override
-  Future<AccessToken> refresh(ServiceCall call, Empty request) async {
-    final AccessTokenModel accesstoken =
-        await $auth.AuthService(call).refresh();
-    final AccessTokenModel refreshedToken =
-        await AccessTokenRepository().refresh(accesstoken.token);
-
-    return AccessToken(
-      token: refreshedToken.token,
-      userId: refreshedToken.ownerId,
-      expiredAt: Timestamp.fromDateTime(refreshedToken.expiredAt),
-      refreshExpiredAt: Timestamp.fromDateTime(refreshedToken.refreshExpiredAt),
-    );
-  }
 }

@@ -36,12 +36,6 @@ class SocfonyService extends SocfonyServiceBase with AccessTokenMethods {
   }
 
   @override
-  Future<AccessToken> refreshAccessToken(ServiceCall call, Empty request) {
-    // TODO: implement refreshAccessToken
-    throw UnimplementedError();
-  }
-
-  @override
   Future<Empty> sendPhoneOneTimePassword(
       ServiceCall call, StringValue request) {
     // TODO: implement sendPhoneOneTimePassword
