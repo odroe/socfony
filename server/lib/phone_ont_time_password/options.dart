@@ -1,9 +1,9 @@
-class AccessTokenShortMessageServiceOptions {
+class SendOtpSmsOptions {
   final String signName;
   final String templateId;
   final List<String> params;
 
-  const AccessTokenShortMessageServiceOptions({
+  const SendOtpSmsOptions({
     this.params = const [],
     required this.signName,
     required this.templateId,

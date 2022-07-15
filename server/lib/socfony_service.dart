@@ -2,15 +2,10 @@ import 'package:grpc/grpc.dart';
 import 'package:socfonyapis/socfonyapis.dart';
 
 import 'socfony_service_mixins/access_token.dart';
+import 'socfony_service_mixins/phone_otp.dart';
 
-class SocfonyService extends SocfonyServiceBase with AccessTokenMethods {
-  @override
-  Future<BoolValue> checkPhoneOneTimePassword(
-      ServiceCall call, CheckPhoneOneTimePasswordRequest request) {
-    // TODO: implement checkPhoneOneTimePassword
-    throw UnimplementedError();
-  }
-
+class SocfonyService extends SocfonyServiceBase
+    with AccessTokenMethods, PhoneOneTimePasswordMethods {
   @override
   Future<Moment> createMoment(ServiceCall call, CreateMomentRequest request) {
     // TODO: implement createMoment
@@ -26,13 +21,6 @@ class SocfonyService extends SocfonyServiceBase with AccessTokenMethods {
   @override
   Future<BoolValue> hasMomentLiked(ServiceCall call, StringValue request) {
     // TODO: implement hasMomentLiked
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Empty> sendPhoneOneTimePassword(
-      ServiceCall call, StringValue request) {
-    // TODO: implement sendPhoneOneTimePassword
     throw UnimplementedError();
   }
 
