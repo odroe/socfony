@@ -1,7 +1,7 @@
 import 'dart:io' as io;
 import 'package:easysms/easysms.dart' as easysms;
 import 'database/options.dart' as database;
-import 'services/access_token/options.dart';
+import 'phone_ont_time_password/options.dart';
 
 /// Database connection options.
 const database.DatabaseConnectionOptions kDatabaseConnectionOptions =
@@ -26,11 +26,10 @@ const easysms.Geteway kTencentCloudShortMessageServiceGeteway =
 );
 
 /// Access token short message service options.
-const AccessTokenShortMessageServiceOptions
-    kAccessTokenShortMessageServiceOptions =
-    AccessTokenShortMessageServiceOptions(
-  signName: 'Your Tencent Cloud SMS Sign Name',
-  templateId: 'You Tencent Cloud SMS Template ID',
+/// Send phone one-time password sms options.
+const SendOtpSmsOptions kSendOtpSmsOptions = SendOtpSmsOptions(
+  signName: '耦左科技',
+  templateId: '617248',
   params: [
     '{otp}',
     '{minutes}',
