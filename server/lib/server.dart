@@ -1,12 +1,10 @@
 import 'package:grpc/grpc.dart';
 
-import 'services.dart';
+import 'socfony_service.dart';
 
-/// Create a gRPC server, and register the services.
-Server createServer() {
-  return Server(
-    createServices(),
-    const <Interceptor>[],
-    CodecRegistry(codecs: const [GzipCodec(), IdentityCodec()]),
-  );
-}
+/// Create a gRPC server.
+final Server server = Server(
+  [SocfonyService()],
+  const <Interceptor>[],
+  CodecRegistry(codecs: const [IdentityCodec()]),
+);

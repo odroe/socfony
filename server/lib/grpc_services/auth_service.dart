@@ -11,38 +11,6 @@ import '../services/access_token/auth_service.dart' as $auth;
 
 class AuthService extends AuthServiceBase {
   @override
-  Future<AccessToken> create(
-      ServiceCall call, CreateAccessTokenRequest request) async {
-    /// Find phone sent code
-    final PhoneSentCodeModel? phoneSentCode =
-        await PhoneSentCodeRepository().find(request.phone);
-
-    /// If phone sent code not fount, or expired, throw exception.
-    if (phoneSentCode == null ||
-        phoneSentCode.expiredAt.isBefore(DateTime.now())) {
-      throw Exception('Phone sent code not found or expired.');
-    }
-
-    /// Delete phone sent code.
-    await PhoneSentCodeRepository().delete(phoneSentCode);
-
-    /// Find or create user.
-    final UserModel user = await UserRepository().findOrCreate(request.phone);
-
-    /// Create access token.
-    final AccessTokenModel accessToken =
-        await AccessTokenRepository().create(user.id);
-
-    /// Create response.
-    return AccessToken(
-      token: accessToken.token,
-      userId: user.id,
-      expiredAt: Timestamp.fromDateTime(accessToken.expiredAt),
-      refreshExpiredAt: Timestamp.fromDateTime(accessToken.refreshExpiredAt),
-    );
-  }
-
-  @override
   Future<Empty> delete(ServiceCall call, Empty request) async {
     final AccessTokenModel? accessToken =
         await $auth.AuthService(call).nullable();
