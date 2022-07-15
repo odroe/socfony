@@ -26,9 +26,8 @@ message User {
 // Update current user request
 message UpdateUserRequest {
   optional User.Gender gender = 1;
-  optional string avatar = 2;
-  optional string bio = 3;
-  optional int32 birthday = 4;
+  optional string bio = 2;
+  optional int32 birthday = 3;
 }
 
 // Update current user phone request
@@ -41,4 +40,9 @@ message UpdateUserPhoneRequest {
 message UserNewPhoneMessage {
   string phone = 1;
   string otp = 2;
+}
+
+// Update user new avatar request
+message UpdateUserAvatarRequest {
+  string avatar = 1;
 }

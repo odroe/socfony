@@ -39,6 +39,9 @@ service SocfonyService {
   // Update current authenticated user binded phone number.
   rpc UpdateUserPhone(google.protobuf.StringValue) returns (User);
 
+  // Update user avatar.
+  rpc UpdateUserAvatar(google.protobuf.StringValue) returns (User);
+
   // Create a new moment.
   rpc CreateMoment(CreateMomentRequest) returns (Moment);
 

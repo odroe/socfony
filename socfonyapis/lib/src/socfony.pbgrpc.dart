@@ -49,6 +49,10 @@ class SocfonyServiceClient extends $grpc.Client {
       '/odroe.socfony.SocfonyService/UpdateUserPhone',
       ($2.StringValue value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $3.User.fromBuffer(value));
+  static final _$updateUserAvatar = $grpc.ClientMethod<$2.StringValue, $3.User>(
+      '/odroe.socfony.SocfonyService/UpdateUserAvatar',
+      ($2.StringValue value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $3.User.fromBuffer(value));
   static final _$createMoment =
       $grpc.ClientMethod<$4.CreateMomentRequest, $4.Moment>(
           '/odroe.socfony.SocfonyService/CreateMoment',
@@ -114,6 +118,11 @@ class SocfonyServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$3.User> updateUserPhone($2.StringValue request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$updateUserPhone, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$3.User> updateUserAvatar($2.StringValue request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$updateUserAvatar, request, options: options);
   }
 
   $grpc.ResponseFuture<$4.Moment> createMoment($4.CreateMomentRequest request,
@@ -200,6 +209,13 @@ abstract class SocfonyServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $2.StringValue.fromBuffer(value),
         ($3.User value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$2.StringValue, $3.User>(
+        'UpdateUserAvatar',
+        updateUserAvatar_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $2.StringValue.fromBuffer(value),
+        ($3.User value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$4.CreateMomentRequest, $4.Moment>(
         'CreateMoment',
         createMoment_Pre,
@@ -275,6 +291,11 @@ abstract class SocfonyServiceBase extends $grpc.Service {
     return updateUserPhone(call, await request);
   }
 
+  $async.Future<$3.User> updateUserAvatar_Pre(
+      $grpc.ServiceCall call, $async.Future<$2.StringValue> request) async {
+    return updateUserAvatar(call, await request);
+  }
+
   $async.Future<$4.Moment> createMoment_Pre($grpc.ServiceCall call,
       $async.Future<$4.CreateMomentRequest> request) async {
     return createMoment(call, await request);
@@ -314,6 +335,8 @@ abstract class SocfonyServiceBase extends $grpc.Service {
   $async.Future<$3.User> updateUserName(
       $grpc.ServiceCall call, $2.StringValue request);
   $async.Future<$3.User> updateUserPhone(
+      $grpc.ServiceCall call, $2.StringValue request);
+  $async.Future<$3.User> updateUserAvatar(
       $grpc.ServiceCall call, $2.StringValue request);
   $async.Future<$4.Moment> createMoment(
       $grpc.ServiceCall call, $4.CreateMomentRequest request);

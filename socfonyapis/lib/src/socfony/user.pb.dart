@@ -201,14 +201,9 @@ class UpdateUserRequest extends $pb.GeneratedMessage {
         2,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
-            : 'avatar')
-    ..aOS(
-        3,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
             : 'bio')
     ..a<$core.int>(
-        4,
+        3,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
             : 'birthday',
@@ -257,40 +252,28 @@ class UpdateUserRequest extends $pb.GeneratedMessage {
   void clearGender() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.String get avatar => $_getSZ(1);
+  $core.String get bio => $_getSZ(1);
   @$pb.TagNumber(2)
-  set avatar($core.String v) {
+  set bio($core.String v) {
     $_setString(1, v);
   }
 
   @$pb.TagNumber(2)
-  $core.bool hasAvatar() => $_has(1);
+  $core.bool hasBio() => $_has(1);
   @$pb.TagNumber(2)
-  void clearAvatar() => clearField(2);
+  void clearBio() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get bio => $_getSZ(2);
+  $core.int get birthday => $_getIZ(2);
   @$pb.TagNumber(3)
-  set bio($core.String v) {
-    $_setString(2, v);
-  }
-
-  @$pb.TagNumber(3)
-  $core.bool hasBio() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearBio() => clearField(3);
-
-  @$pb.TagNumber(4)
-  $core.int get birthday => $_getIZ(3);
-  @$pb.TagNumber(4)
   set birthday($core.int v) {
-    $_setSignedInt32(3, v);
+    $_setSignedInt32(2, v);
   }
 
-  @$pb.TagNumber(4)
-  $core.bool hasBirthday() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearBirthday() => clearField(4);
+  @$pb.TagNumber(3)
+  $core.bool hasBirthday() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearBirthday() => clearField(3);
 }
 
 class UpdateUserPhoneRequest extends $pb.GeneratedMessage {
@@ -448,4 +431,65 @@ class UserNewPhoneMessage extends $pb.GeneratedMessage {
   $core.bool hasOtp() => $_has(1);
   @$pb.TagNumber(2)
   void clearOtp() => clearField(2);
+}
+
+class UpdateUserAvatarRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'UpdateUserAvatarRequest',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'odroe.socfony'),
+      createEmptyInstance: create)
+    ..aOS(
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'avatar')
+    ..hasRequiredFields = false;
+
+  UpdateUserAvatarRequest._() : super();
+  factory UpdateUserAvatarRequest() => create();
+  factory UpdateUserAvatarRequest.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory UpdateUserAvatarRequest.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
+  UpdateUserAvatarRequest clone() =>
+      UpdateUserAvatarRequest()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  UpdateUserAvatarRequest copyWith(
+          void Function(UpdateUserAvatarRequest) updates) =>
+      super.copyWith((message) => updates(message as UpdateUserAvatarRequest))
+          as UpdateUserAvatarRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static UpdateUserAvatarRequest create() => UpdateUserAvatarRequest._();
+  UpdateUserAvatarRequest createEmptyInstance() => create();
+  static $pb.PbList<UpdateUserAvatarRequest> createRepeated() =>
+      $pb.PbList<UpdateUserAvatarRequest>();
+  @$core.pragma('dart2js:noInline')
+  static UpdateUserAvatarRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<UpdateUserAvatarRequest>(create);
+  static UpdateUserAvatarRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get avatar => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set avatar($core.String v) {
+    $_setString(0, v);
+  }
+
+  @$pb.TagNumber(1)
+  $core.bool hasAvatar() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearAvatar() => clearField(1);
 }
