@@ -2,32 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'login_in_progress_provider.dart';
+import 'otp_in_progress_provider.dart';
 
-/// Login phone number provider.
+/// One-time password text editing controller.
 final AutoDisposeChangeNotifierProvider<TextEditingController>
-    loginPhoneNumberProvider =
+    otpControllerProvider =
     ChangeNotifierProvider.autoDispose<TextEditingController>(
         (Ref ref) => TextEditingController());
 
-/// Login phone error text provider.
-final AutoDisposeStateProvider<String?> loginPhoneErrorTextProvider =
+/// One-time password error text provider.
+final AutoDisposeStateProvider<String?> otpErrorTextProvider =
     StateProvider.autoDispose<String?>((ref) => null);
 
-/// Login phone text field.
-class LoginPhoneTextField extends ConsumerWidget {
-  const LoginPhoneTextField({super.key});
+class OtpTextField extends ConsumerWidget {
+  const OtpTextField({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16).copyWith(bottom: 12),
       child: TextField(
-        readOnly: ref.watch(loginInProgressProvider),
-        controller: ref.watch(loginPhoneNumberProvider),
+        readOnly: ref.watch(otpInProgressProvider),
+        controller: ref.watch(otpControllerProvider),
         decoration: InputDecoration(
-          hintText: '请输入手机号',
-          errorText: ref.watch(loginPhoneErrorTextProvider),
+          hintText: '请输入验证码',
+          errorText: ref.watch(otpErrorTextProvider),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(100),
           ),
@@ -35,13 +34,11 @@ class LoginPhoneTextField extends ConsumerWidget {
               const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         ),
         inputFormatters: [
-          // China phone number length formatter.
-          LengthLimitingTextInputFormatter(11),
-
           // Only [0-9] input formatter.
           FilteringTextInputFormatter.digitsOnly,
         ],
         keyboardType: TextInputType.number,
+        maxLength: 6,
       ),
     );
   }

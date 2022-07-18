@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../otp/otp_dialog.dart';
 import 'login_agrements_widget.dart';
 import 'login_in_progress_provider.dart';
 import 'login_phone_text_field.dart';
@@ -59,7 +60,13 @@ class LoginNextButton extends ConsumerWidget {
     if (!_phoneValidator(ref, phone)) return;
 
     // Set login in progress status to true.
-    ref.read(loginInProgressProvider.state).state = true;
+    // ref.read(loginInProgressProvider.state).state = true;
+
+    showOtpVerificationDialog(
+      context,
+      phone: phone,
+      description: '如果你的手机号码未注册，验证完成后将自动创建账户。',
+    );
   }
 
   /// Phone validator.
