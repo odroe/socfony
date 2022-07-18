@@ -1,25 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:timelines/timelines.dart';
 
-import 'login/login_screen.dart';
-
-class AllMomentsScreen extends StatelessWidget {
-  const AllMomentsScreen({super.key});
+class AllMomentsListView extends StatelessWidget {
+  const AllMomentsListView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('全部动态'),
-        centerTitle: false,
-        actions: const [_SearchButton()],
-      ),
-      body: ListView(
-        children: const [_MomentCard()],
-      ),
+    return ListView(
+      children: const [_MomentCard()],
     );
   }
 }
+
+// class AllMomentsScreen extends StatelessWidget {
+//   const AllMomentsScreen({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('全部动态'),
+//         centerTitle: false,
+//         actions: const [_SearchButton()],
+//       ),
+//       body: ListView(
+//         children: const [_MomentCard()],
+//       ),
+//     );
+//   }
+// }
 
 class _MomentCard extends StatelessWidget {
   const _MomentCard();
@@ -246,27 +255,6 @@ class _MomentCardUserTile extends StatelessWidget {
         onPressed: () {},
         icon: const Icon(Icons.favorite_border),
       ),
-    );
-  }
-}
-
-class _SearchButton extends StatelessWidget {
-  const _SearchButton();
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (BuildContext context) {
-              return const LoginScreen();
-            },
-            fullscreenDialog: true,
-          ),
-        );
-      },
-      icon: const Icon(Icons.search),
     );
   }
 }

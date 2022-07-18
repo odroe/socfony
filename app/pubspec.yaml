@@ -32,6 +32,7 @@ dependencies:
 
   flutter_riverpod: ^2.0.0-dev.9
   flutter_svg: ^1.1.1
+  grpc: ^3.0.2
   http: ^0.13.4
   shared_preferences: ^2.0.15
   socfonyapis:
