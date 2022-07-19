@@ -67,7 +67,7 @@ class PhoneOtpSenderService {
   Future<bool> validate(String phone, String code) async {
     // Find phone sent code.
     final PostgreSQLResult result = await connection.query(
-      'SELECT * FROM phone_sent_codes WHERE phone = @phone AND code = @code LIMIT 1 ORDER BY created_at DESC',
+      'SELECT * FROM phone_sent_codes WHERE phone = @phone AND code = @code LIMIT 1',
       substitutionValues: {
         'phone': phone,
         'code': code,

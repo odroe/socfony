@@ -6,5 +6,8 @@ import 'socfony_service.dart';
 final Server server = Server(
   [SocfonyService()],
   const <Interceptor>[],
-  CodecRegistry(codecs: const [IdentityCodec()]),
+  CodecRegistry(codecs: const <Codec>[
+    IdentityCodec(),
+    GzipCodec(),
+  ]),
 );

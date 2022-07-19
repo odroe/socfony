@@ -10,6 +10,18 @@ mixin AccessTokenMethods on SocfonyServiceBase {
   @override
   Future<AccessToken> createAccessToken(
       ServiceCall call, CreateAccessTokenRequest request) async {
+    // Read phone number.
+    String phone = request.phone;
+
+    // Validate phone is China phone number, and not empty.
+    // Check phone number is China phone number.
+    if (!RegExp(r'^1\d{10}$').hasMatch(phone) || phone.length != 11) {
+      throw GrpcError.invalidArgument('请输入正确的手机号码');
+    }
+
+    // Update phone number to E.164 format.
+    phone = '+86$phone';
+
     // Create database connection.
     final PooledDatabaseConnection connection =
         await PooledDatabaseConnection.connect();
@@ -18,7 +30,7 @@ mixin AccessTokenMethods on SocfonyServiceBase {
     final PostgreSQLResult result = await connection.query(
       'SELECT * FROM phone_sent_codes WHERE phone = @phone AND code = @code ORDER BY created_at DESC LIMIT 1',
       substitutionValues: {
-        'phone': request.phone,
+        'phone': phone,
         'code': request.otp,
       },
     );
@@ -38,7 +50,7 @@ mixin AccessTokenMethods on SocfonyServiceBase {
 
     // Find or create user by phone number.
     final Map<String, dynamic> user =
-        await _findOrCreateUser(connection, request.phone);
+        await _findOrCreateUser(connection, phone);
 
     // Create access token by user id.
     final Map<String, dynamic> accessToken =
@@ -48,7 +60,7 @@ mixin AccessTokenMethods on SocfonyServiceBase {
     await connection.execute(
       'DELETE FROM phone_sent_codes WHERE phone = @phone AND code = @code',
       substitutionValues: {
-        'phone': request.phone,
+        'phone': phone,
         'code': request.otp,
       },
     );

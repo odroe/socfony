@@ -8,10 +8,7 @@ Future<void> main() async {
   final InternetAddress address = InternetAddress.anyIPv4;
 
   /// Start the server.
-  await server.serve(
-    address: address,
-    port: 8080,
-  );
+  await server.serve(address: address, port: 8080);
 
   /// Wait for the server to shutdown.
   /// Use `ctrl-C` to stop the server.
