@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'otp_in_progress_provider.dart';
+import 'otp_common_providers.dart';
 
 /// One-time password text editing controller.
 final AutoDisposeChangeNotifierProvider<TextEditingController>
@@ -22,7 +22,7 @@ class OtpTextField extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16).copyWith(bottom: 12),
       child: TextField(
-        readOnly: ref.watch(otpInProgressProvider),
+        readOnly: ref.watch(otpVerificationStatusProvider),
         controller: ref.watch(otpControllerProvider),
         decoration: InputDecoration(
           hintText: '请输入验证码',

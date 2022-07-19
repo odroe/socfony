@@ -12,24 +12,6 @@ class AllMomentsListView extends StatelessWidget {
   }
 }
 
-// class AllMomentsScreen extends StatelessWidget {
-//   const AllMomentsScreen({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('全部动态'),
-//         centerTitle: false,
-//         actions: const [_SearchButton()],
-//       ),
-//       body: ListView(
-//         children: const [_MomentCard()],
-//       ),
-//     );
-//   }
-// }
-
 class _MomentCard extends StatelessWidget {
   const _MomentCard();
 

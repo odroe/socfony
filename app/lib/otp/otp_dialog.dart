@@ -1,29 +1,63 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:socfonyapis/socfonyapis.dart';
 
-import 'otp_in_progress_provider.dart';
+import '../socfony_service.dart';
+import 'otp_common_providers.dart';
 import 'otp_send.dart';
 import 'otp_text_field.dart';
 import 'otp_verify_button.dart';
 
 /// Show one-time password verification dialog.
-Future<T?> showOtpVerificationDialog<T>(
-  BuildContext context, {
-  void Function(BuildContext context, String otp)? callback,
-  void Function(BuildContext context)? onClose,
+Future<String?> showOtpVerificationDialog(
+  BuildContext context,
+  Reader reader, {
   String title = '验证码',
   String? description,
   String buttonText = '验证',
   required String phone,
-}) {
-  return showDialog<T>(
+}) async {
+  // Read one-time password countdown notifier.
+  final OneTimePasswordCountdownNotifier notifier =
+      reader(otpCountdownProvider(phone).notifier);
+
+  // If countdown is don't runing, start it.
+  if (notifier.isRunning == false) {
+    try {
+      // Send OTP to phone number.
+      await socfonyService
+          .sendPhoneOneTimePassword(StringValue()..value = phone);
+
+      // Reset countdown.
+      notifier.reset();
+    } catch (e) {
+      // Stop countdown.
+      notifier.stop();
+
+      // Show error message.
+      return await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: const Text('验证码发送失败，请稍后再试。'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('知道了'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  return await showDialog<String>(
     context: context,
     barrierDismissible: false,
     builder: (BuildContext context) => _OtpVerificationDialog(
-      callback: callback,
       title: title,
       description: description,
-      onClose: onClose,
       buttonText: buttonText,
       phone: phone,
     ),
@@ -38,18 +72,10 @@ class _OtpVerificationDialog extends StatelessWidget {
     required this.buttonText,
     required this.phone,
     this.description,
-    this.onClose,
-    this.callback,
   }) : super(key: key);
 
   /// Phone number.
   final String phone;
-
-  /// The callback to be when verification is done.
-  final void Function(BuildContext context, String otp)? callback;
-
-  /// User closed the dialog callback.
-  final void Function(BuildContext context)? onClose;
 
   /// Dialog title.
   final String title;
@@ -67,7 +93,7 @@ class _OtpVerificationDialog extends StatelessWidget {
       title: Row(
         children: [
           Expanded(child: Text(title)),
-          _CloseButton(onClose: onClose),
+          const _CloseButton(),
         ],
       ),
       children: [
@@ -75,7 +101,7 @@ class _OtpVerificationDialog extends StatelessWidget {
         const OtpTextField(),
         _OtpBottons(
           buttonText: buttonText,
-          callback: callback,
+          phone: phone,
         )
       ],
     );
@@ -84,10 +110,7 @@ class _OtpVerificationDialog extends StatelessWidget {
 
 /// Close dialog button
 class _CloseButton extends ConsumerWidget {
-  const _CloseButton({Key? key, this.onClose}) : super(key: key);
-
-  /// on close callback
-  final void Function(BuildContext context)? onClose;
+  const _CloseButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -96,8 +119,8 @@ class _CloseButton extends ConsumerWidget {
 
     // If one-time password in progress status is false,
     // create a button on pressed callback.
-    if (!ref.watch(otpInProgressProvider)) {
-      onPressed = () => _onPressed(context, ref);
+    if (!ref.watch(otpVerificationStatusProvider)) {
+      onPressed = () => _onPressed(context);
     }
 
     return IconButton(
@@ -107,11 +130,7 @@ class _CloseButton extends ConsumerWidget {
   }
 
   /// Close dialog button on pressed callback.
-  void _onPressed(BuildContext context, WidgetRef ref) {
-    if (onClose != null) {
-      return onClose!(context);
-    }
-
+  void _onPressed(BuildContext context) {
     Navigator.pop(context);
   }
 }
@@ -143,25 +162,25 @@ class _Description extends StatelessWidget {
 class _OtpBottons extends StatelessWidget {
   const _OtpBottons({
     required this.buttonText,
-    this.callback,
+    required this.phone,
   });
 
   final String buttonText;
 
-  /// The callback to be when verification is done.
-  final void Function(BuildContext context, String otp)? callback;
+  /// Phone number.
+  final String phone;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: OverflowBar(
+        alignment: MainAxisAlignment.spaceBetween,
         children: [
-          const OtpResendButton(),
+          OtpResendButton(phone: phone),
           OtpVerifyButton(
             text: buttonText,
-            callback: callback,
+            phone: phone,
           ),
         ],
       ),

@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:socfonyapis/socfonyapis.dart';
 
 import '../otp/otp_dialog.dart';
+import '../user/user_providers.dart';
+import '../socfony_service.dart';
+import 'auth_provider.dart';
 import 'login_agrements_widget.dart';
 import 'login_in_progress_provider.dart';
 import 'login_phone_text_field.dart';
 
 /// Login next button.
-class LoginNextButton extends ConsumerWidget {
+class LoginNextButton extends ConsumerStatefulWidget {
   const LoginNextButton({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<LoginNextButton> createState() => _LoginNextButtonState();
+}
+
+class _LoginNextButtonState extends ConsumerState<LoginNextButton> {
+  @override
+  Widget build(BuildContext context) {
     // Create a button on pressed callback.
     VoidCallback? onPressed;
 
@@ -22,7 +31,7 @@ class LoginNextButton extends ConsumerWidget {
     final bool loginInProgress = ref.watch(loginInProgressProvider);
 
     // Create button child.
-    late final Widget child;
+    Widget child = const Text('下一步');
 
     // If login in progress status is true, create a loading child.
     if (loginInProgress) {
@@ -30,8 +39,6 @@ class LoginNextButton extends ConsumerWidget {
         dimension: 24,
         child: CircularProgressIndicator(strokeWidth: 2),
       );
-    } else {
-      child = const Text('下一步');
     }
 
     // If login in progress status is false, and agrements status is true,
@@ -40,11 +47,16 @@ class LoginNextButton extends ConsumerWidget {
       onPressed = () => _onPressed(context, ref);
     }
 
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        child: child,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: OverflowBar(
+        alignment: MainAxisAlignment.end,
+        children: [
+          TextButton(
+            onPressed: onPressed,
+            child: child,
+          ),
+        ],
       ),
     );
   }
@@ -60,13 +72,48 @@ class LoginNextButton extends ConsumerWidget {
     if (!_phoneValidator(ref, phone)) return;
 
     // Set login in progress status to true.
-    // ref.read(loginInProgressProvider.state).state = true;
+    ref.read(loginInProgressProvider.state).state = true;
 
-    showOtpVerificationDialog(
+    // Request one-time password.
+    final String? otp = await showOtpVerificationDialog(
       context,
+      ref.read,
       phone: phone,
       description: '如果你的手机号码未注册，验证完成后将自动创建账户。',
+      buttonText: r'完成',
     );
+
+    // If otp is null, set in progress status to false.
+    if (otp == null) {
+      ref.read(loginInProgressProvider.state).state = false;
+      return;
+    }
+
+    try {
+      // Create access token.
+      final AccessToken accessToken =
+          await socfonyService.createAccessToken(CreateAccessTokenRequest()
+            ..phone = phone
+            ..otp = otp);
+
+      // Save access token to local storage.
+      await writeAccessToken(accessToken);
+
+      // Fetch remote user.
+      final User user = await socfonyService
+          .findUser(StringValue()..value = accessToken.userId);
+
+      // Save user to user's provider.
+      user.save(ref.read);
+
+      // Navigate to back.
+      if (mounted) {
+        Navigator.of(context).pop<User>(user);
+      }
+    } catch (e) {
+      ref.read(loginPhoneErrorTextProvider.state).state = '登录失败，请稍后再试。';
+      ref.read(loginInProgressProvider.state).state = false;
+    }
   }
 
   /// Phone validator.

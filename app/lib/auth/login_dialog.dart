@@ -1,7 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:socfonyapis/socfonyapis.dart';
 
+import '../socfony_service.dart';
+import '../user/user_providers.dart';
+import 'auth_provider.dart';
 import 'login_agrements_widget.dart';
 import 'login_in_progress_provider.dart';
 import 'login_next_button.dart';
@@ -13,6 +18,33 @@ Future<User?> showLoginDialog(BuildContext context) {
     barrierDismissible: false,
     builder: (BuildContext context) => const _LoginDialog(),
   );
+}
+
+FutureOr<T> canAuthenticated<T>({
+  required BuildContext context,
+  required Reader reader,
+  required FutureOr<T> Function(User?) onAuthenticated,
+}) async {
+  // Read access token.
+  final AccessToken? accessToken = await readAccessToken();
+
+  // If access token is null, show login dialog.
+  if (accessToken == null) {
+    return await onAuthenticated(null);
+  }
+
+  // If find user in user's provider, return it.
+  final User? findInProvider = UserExtension.find(reader, accessToken.userId);
+  if (findInProvider != null) {
+    return onAuthenticated(findInProvider);
+  }
+
+  // Fetch remote user.
+  final User remoteUser =
+      await socfonyService.findUser(StringValue()..value = accessToken.userId);
+  remoteUser.save(reader);
+
+  return onAuthenticated(remoteUser);
 }
 
 class _LoginDialog extends StatelessWidget {
