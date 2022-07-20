@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'home_body_tab_bar_view.dart';
+import 'home_leading_publish_button.dart';
 import 'home_notifications_button.dart';
 import 'home_search_button.dart';
 import 'home_title_tab_bar.dart';
@@ -16,6 +17,7 @@ class HomeScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
+          leading: const HomeLeadingPublishButton(),
           centerTitle: false,
           title: const HomeTitleTabBar(),
           actions: const [

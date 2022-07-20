@@ -12,14 +12,6 @@ import 'login_in_progress_provider.dart';
 import 'login_next_button.dart';
 import 'login_phone_text_field.dart';
 
-Future<User?> showLoginDialog(BuildContext context) {
-  return showDialog<User>(
-    context: context,
-    barrierDismissible: false,
-    builder: (BuildContext context) => const _LoginDialog(),
-  );
-}
-
 FutureOr<T> canAuthenticated<T>({
   required BuildContext context,
   required Reader reader,
@@ -30,7 +22,11 @@ FutureOr<T> canAuthenticated<T>({
 
   // If access token is null, show login dialog.
   if (accessToken == null) {
-    return await onAuthenticated(null);
+    return await onAuthenticated(await showDialog<User>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => const _LoginDialog(),
+    ));
   }
 
   // If find user in user's provider, return it.

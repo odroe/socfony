@@ -26,9 +26,7 @@ final SocfonyServiceClient _unauthenticatedClient =
 Future<AccessToken?> _refreshAccessToken(AccessToken accessToken) async {
   /// Create authenticated call options.
   final CallOptions callOptions = CallOptions(
-    metadata: <String, String>{
-      'authorization': accessToken.token,
-    },
+    metadata: <String, String>{'authorization': accessToken.token},
   );
 
   try {
