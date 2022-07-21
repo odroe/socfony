@@ -49,6 +49,12 @@ class PhoneOtpSenderService {
     // Create a message.
     final message = _SendOtpSmsMessage(phone, code);
 
+    // Delete the phone all codes.
+    await connection.execute(
+      'DELETE FROM phone_sent_codes WHERE phone = @phone',
+      substitutionValues: {'phone': phone},
+    );
+
     // Save otp to database.
     await connection.execute(
       'INSERT INTO phone_sent_codes (phone, code, expired_at) VALUES (@phone, @code, @expired_at:timestamptz)',
