@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socfonyapis/socfonyapis.dart';
 
+import '../user/user_providers.dart';
+
 class AuthenticatedNotifier extends ValueNotifier<String?> {
   AuthenticatedNotifier._(super.value);
 
@@ -16,6 +18,36 @@ class AuthenticatedNotifier extends ValueNotifier<String?> {
 /// Current authenticated user ID provider.
 final ChangeNotifierProvider<AuthenticatedNotifier> authenticatedProvider =
     ChangeNotifierProvider((Ref ref) => AuthenticatedNotifier());
+
+/// Current authenticated user  provider.
+final Provider<User?> authenticatedUserProvider = Provider((Ref ref) {
+  /// Read current authenticated user ID.
+  final String? userId = ref.watch(authenticatedProvider).value;
+
+  // If user ID is null, return null.
+  if (userId == null) {
+    return null;
+  }
+
+  return ref.watch(usersProvider.of(userId));
+});
+
+/// Extension for Authenticated provider.
+extension AuthenticatedExtension
+    on ChangeNotifierProvider<AuthenticatedNotifier> {
+  /// Of ffset authenticated user ID.
+  String? of(Reader reader) => reader(authenticatedProvider).value;
+
+  /// Set authenticated user ID.
+  void set(Reader reader, String? value) =>
+      reader(authenticatedProvider.notifier).value = value;
+
+  /// Has authenticated
+  bool has(Reader reader) => reader(authenticatedProvider).value != null;
+
+  /// Find user
+  User? user(Reader reader) => reader(authenticatedUserProvider);
+}
 
 /// has user is authenticated provider.
 final AutoDisposeProviderFamily<bool, String>

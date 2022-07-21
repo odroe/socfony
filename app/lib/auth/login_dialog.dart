@@ -17,11 +17,8 @@ FutureOr<T> canAuthenticated<T>({
   required Reader reader,
   required FutureOr<T> Function(User?) onAuthenticated,
 }) async {
-  // Read access token.
-  final AccessToken? accessToken = await readAccessToken();
-
   // If access token is null, show login dialog.
-  if (accessToken == null) {
+  if (!authenticatedProvider.has(reader)) {
     return await onAuthenticated(await showDialog<User>(
       context: context,
       barrierDismissible: false,
@@ -30,17 +27,17 @@ FutureOr<T> canAuthenticated<T>({
   }
 
   // If find user in user's provider, return it.
-  final User? findInProvider = UserExtension.find(reader, accessToken.userId);
-  if (findInProvider != null) {
-    return onAuthenticated(findInProvider);
+  final User? user = authenticatedProvider.user(reader);
+  if (user != null) {
+    return onAuthenticated(user);
   }
 
   // Fetch remote user.
-  final User remoteUser =
-      await socfonyService.findUser(StringValue()..value = accessToken.userId);
-  remoteUser.save(reader);
+  final User remote = await socfonyService
+      .findUser(StringValue()..value = authenticatedProvider.of(reader)!);
+  remote.save(reader);
 
-  return onAuthenticated(remoteUser);
+  return onAuthenticated(remote);
 }
 
 class _LoginDialog extends StatelessWidget {
