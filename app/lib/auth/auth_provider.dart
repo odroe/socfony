@@ -32,6 +32,16 @@ final Provider<User?> authenticatedUserProvider = Provider((Ref ref) {
   return ref.watch(usersProvider.of(userId));
 });
 
+/// has user is authenticated provider.
+final AutoDisposeProviderFamily<bool, String>
+    hasUserEqualAuthenticatedProvider =
+    Provider.autoDispose.family<bool, String>((Ref ref, String userId) {
+  final String? authenticatedUserId =
+      ref.watch(authenticatedProvider.select((notifier) => notifier.value));
+
+  return authenticatedUserId == userId && authenticatedUserId != null;
+});
+
 /// Extension for Authenticated provider.
 extension AuthenticatedExtension
     on ChangeNotifierProvider<AuthenticatedNotifier> {
@@ -47,17 +57,11 @@ extension AuthenticatedExtension
 
   /// Find user
   User? user(Reader reader) => reader(authenticatedUserProvider);
+
+  /// Input user same as authenticated user.
+  bool same(Reader reader, String userId) =>
+      reader(hasUserEqualAuthenticatedProvider(userId));
 }
-
-/// has user is authenticated provider.
-final AutoDisposeProviderFamily<bool, String>
-    hasUserEqualAuthenticatedProvider =
-    Provider.autoDispose.family<bool, String>((Ref ref, String userId) {
-  final String? authenticatedUserId =
-      ref.watch(authenticatedProvider.select((notifier) => notifier.value));
-
-  return authenticatedUserId == userId && authenticatedUserId != null;
-});
 
 /// Read access token.
 Future<AccessToken?> readAccessToken() async {
