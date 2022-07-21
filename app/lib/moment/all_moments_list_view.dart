@@ -18,7 +18,7 @@ class _MomentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 8),
+      margin: const EdgeInsets.all(8),
       child: ListView(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),

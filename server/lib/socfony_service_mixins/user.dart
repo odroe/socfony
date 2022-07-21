@@ -22,13 +22,12 @@ User _createUserFromJson(Map<String, dynamic> json) {
   }
 
   // User bio
-  if (json['bio'] != null && (json['bio'] as String).isNotEmpty) {
+  if (json['bio'] != null && json['bio'].toString().isNotEmpty) {
     user.bio = json['bio'] as String;
   }
 
   // User birthday
-  if (json['birthday'] != null &&
-      (json['birthday'] as int).toString().length != 8) {
+  if (json['birthday'] != null && json['birthday'].toString().length == 8) {
     user.birthday = json['birthday'] as int;
   }
 

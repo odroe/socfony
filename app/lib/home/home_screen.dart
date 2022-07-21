@@ -16,7 +16,6 @@ class HomeScreen extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: false,
           leading: const HomeLeadingPublishButton(),
           centerTitle: false,
           title: const HomeTitleTabBar(),
