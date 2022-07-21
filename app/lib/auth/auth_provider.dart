@@ -1,5 +1,31 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socfonyapis/socfonyapis.dart';
+
+class AuthenticatedNotifier extends ValueNotifier<String?> {
+  AuthenticatedNotifier._(super.value);
+
+  /// Cached authenticated notifier.
+  static final AuthenticatedNotifier _instance = AuthenticatedNotifier._(null);
+
+  /// Get cached authenticated notifier.
+  factory AuthenticatedNotifier() => _instance;
+}
+
+/// Current authenticated user ID provider.
+final ChangeNotifierProvider<AuthenticatedNotifier> authenticatedProvider =
+    ChangeNotifierProvider((Ref ref) => AuthenticatedNotifier());
+
+/// has user is authenticated provider.
+final AutoDisposeProviderFamily<bool, String>
+    hasUserEqualAuthenticatedProvider =
+    Provider.autoDispose.family<bool, String>((Ref ref, String userId) {
+  final String? authenticatedUserId =
+      ref.watch(authenticatedProvider.select((notifier) => notifier.value));
+
+  return authenticatedUserId == userId && authenticatedUserId != null;
+});
 
 /// Read access token.
 Future<AccessToken?> readAccessToken() async {

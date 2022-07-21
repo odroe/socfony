@@ -83,15 +83,15 @@ final CallOptions _callOptions = CallOptions(
 );
 
 /// Public refresh access token.
-Future<void> refreshAccessToken() async {
+Future<AccessToken?> refreshAccessToken() async {
   // Read access token.
   final AccessToken? accessToken = await readAccessToken();
 
   // Access token is null, return.
-  if (accessToken == null) return;
+  if (accessToken == null) return null;
 
   // Refresh access token.
-  await _refreshAccessToken(accessToken);
+  return await _refreshAccessToken(accessToken);
 }
 
 final SocfonyServiceClient socfonyService =

@@ -31,7 +31,5 @@ class HomeLeadingPublishButton extends ConsumerWidget {
       // Navigator.pushNamed(context, '/publish');
       // TODO: jump to publish page.
     }
-
-    print(isAuthenticated);
   }
 }

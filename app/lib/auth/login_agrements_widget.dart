@@ -100,11 +100,11 @@ class _AgrementsTextRich extends StatelessWidget {
 
   /// User agrements tap.
   void _onUserAgrementsTap() {
-    print('User agrements tap');
+    // TODO: implement jump to user agrements page.
   }
 
   /// Privacy policy tap.
   void _onPrivacyPolicyTap() {
-    print('Privacy policy tap');
+    // TODO: implement jump to privacy policy page.
   }
 }
