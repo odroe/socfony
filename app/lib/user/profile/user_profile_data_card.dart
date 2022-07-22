@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:numeral/ext.dart';
 import 'package:socfonyapis/socfonyapis.dart';
 
+import '../../about/socfony_icon.dart';
 import '../../auth/auth_provider.dart';
 import '../user_providers.dart';
 
@@ -173,7 +174,7 @@ class _GenderIcon extends ConsumerWidget {
       return const Icon(Icons.female, color: Colors.pinkAccent);
     }
 
-    return const Icon(Icons.transgender);
+    return const SocfonyIcon();
   }
 }
 
