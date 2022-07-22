@@ -35,10 +35,12 @@ dependencies:
   grpc: ^3.0.2
   http: ^0.13.4
   numeral: ^2.0.1
+  package_info_plus: ^1.4.3
   shared_preferences: ^2.0.15
   socfonyapis:
     path: ../socfonyapis
   timelines: ^0.1.0
+  url_launcher: ^6.1.5
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   # cupertino_icons: ^1.0.2
@@ -72,9 +74,9 @@ flutter:
 
   assets:
     - assets/socfony.svg
-    - assets/login_screen_logo.png
-    - assets/2.0x/login_screen_logo.png
-    - assets/3.0x/login_screen_logo.png
+    - assets/ghost.png
+    - assets/2.0x/
+    - assets/3.0x/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

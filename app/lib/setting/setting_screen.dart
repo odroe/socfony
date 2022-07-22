@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../about/about_screen.dart';
+import '../about/application_name.dart';
+import '../about/socfony_icon.dart';
 import '../auth/auth_provider.dart';
 import '../home/home_screen.dart';
 
@@ -64,18 +67,7 @@ class SettingScreen extends StatelessWidget {
             trailing: const Icon(Icons.chevron_right),
             onTap: () {},
           ),
-          ListTile(
-            leading: const Icon(Icons.data_object_outlined),
-            title: const Text('开源组件协议'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: const Icon(Icons.info_outlined),
-            title: const Text('关于 Socfony'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {},
-          ),
+          const _AboutTile(),
           const Divider(),
           // Logout
           const _LogoutButton(),
@@ -83,6 +75,37 @@ class SettingScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+class _AboutTile extends StatelessWidget {
+  const _AboutTile({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: const SocfonyIcon(),
+      title: ApplicationName(builder: _applicationNameTextBuilder),
+      trailing: const Icon(Icons.chevron_right),
+      onTap: () => _jumpToAboutScreen(context),
+    );
+  }
+
+  /// Jump to socfony about page.
+  void _jumpToAboutScreen(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const AboutScreen(),
+      ),
+    );
+  }
+
+  /// Build application name text.
+  Text _applicationNameTextBuilder(
+          BuildContext context, String applicationName) =>
+      Text('关于$applicationName');
 }
 
 class _LogoutButton extends ConsumerWidget {
