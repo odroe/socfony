@@ -88,7 +88,7 @@ class _UserBaseDataTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        _Username(userId),
+        Expanded(child: _Username(userId)),
         const SizedBox(width: 8),
         _GenderAndAge(userId),
       ],
@@ -187,7 +187,7 @@ class _Username extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Create username provider.
     final AlwaysAliveProviderListenable<String> usernameProvider =
-        createUserProvider(userId).select((value) => value?.name ?? userId);
+        createUserProvider(userId).select((value) => value?.name ?? '');
 
     // Watch username provider.
     final String username = ref.watch(usernameProvider);
