@@ -20,14 +20,16 @@ Future<void> main() async {
     AuthenticatedNotifier().value = accessToken.userId;
   }
 
+  // Initialize application theme.
+  await _initializeTheme();
+
   // Run socfony app.
   // Root widget is a provider scope.
-  runApp(
-    ProviderScope(
-      child: SocfonyApp(
-        themeDataProvider: await createThemeDataProvider(),
-        themeModeProvider: await createThemeModeProvider(),
-      ),
-    ),
-  );
+  runApp(const ProviderScope(child: SocfonyApp()));
+}
+
+/// Initialize application theme.
+Future<void> _initializeTheme() async {
+  ThemeColorController().update(await readThemeColor());
+  ThemeModeController().update(await readThemeMode());
 }

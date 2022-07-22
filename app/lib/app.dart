@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'app_theme.dart';
 import 'home/home_screen.dart';
 
 class SocfonyApp extends ConsumerWidget {
-  final StateProviderFamily<ThemeData, Brightness> themeDataProvider;
-  final StateProvider<ThemeMode> themeModeProvider;
-
-  const SocfonyApp({
-    super.key,
-    required this.themeDataProvider,
-    required this.themeModeProvider,
-  });
+  const SocfonyApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Watch theme mode controller.
+    final ThemeModeController themeModeController =
+        ref.watch(themeModeControllerProvider);
+
     return MaterialApp(
-      theme: ref.watch(themeDataProvider.create(Brightness.light)),
-      darkTheme: ref.watch(themeDataProvider.create(Brightness.dark)),
-      themeMode: ref.watch(themeModeProvider),
+      theme: ref.watch(themeDataProvider(Brightness.light)),
+      darkTheme: ref.watch(themeDataProvider(Brightness.dark)),
+      themeMode: themeModeController.value,
       home: const HomeScreen(),
     );
   }

@@ -6,6 +6,7 @@ import '../about/application_name.dart';
 import '../about/socfony_icon.dart';
 import '../auth/auth_provider.dart';
 import '../home/home_screen.dart';
+import 'theme_screen.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({super.key});
@@ -45,9 +46,16 @@ class SettingScreen extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.palette_outlined),
-            title: const Text('主题颜色'),
+            title: const Text('外观与色彩'),
             trailing: const Icon(Icons.chevron_right),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => const ThemeScreen(),
+                ),
+              );
+            },
           ),
           const Divider(),
           // About
