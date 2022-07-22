@@ -67,8 +67,11 @@ class _Bio extends ConsumerWidget {
     final AlwaysAliveProviderListenable<String?> bioProvider =
         createUserProvider(userId).select((value) => value?.bio);
 
+    // Watch user bio.
+    final String? bio = ref.watch(bioProvider);
+
     return Text(
-      ref.watch(bioProvider) ?? '该用户很懒，没有写简介。',
+      bio == null || bio.isEmpty ? '该用户很懒，没有写简介。' : bio,
       style: Theme.of(context).textTheme.bodyMedium,
       maxLines: 3,
       overflow: TextOverflow.ellipsis,
@@ -186,8 +189,11 @@ class _Username extends ConsumerWidget {
     final AlwaysAliveProviderListenable<String> usernameProvider =
         createUserProvider(userId).select((value) => value?.name ?? userId);
 
+    // Watch username provider.
+    final String username = ref.watch(usernameProvider);
+
     return Text(
-      ref.watch(usernameProvider),
+      username.isNotEmpty ? username : userId,
       style: Theme.of(context).textTheme.titleLarge,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
@@ -378,8 +384,9 @@ class _EditUserDataButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      child: const Text('编辑资料'),
+    return TextButton.icon(
+      icon: const Icon(Icons.edit),
+      label: const Text('编辑资料'),
       onPressed: () {
         // TODO: implement edit user data button
       },
