@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../auth/auth_provider.dart';
+import '../../setting/setting_screen.dart';
 
 class UserProfileAppBar extends StatelessWidget {
   const UserProfileAppBar(this.userId, {super.key});
@@ -46,11 +47,16 @@ class _SettingsButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: const Icon(Icons.widgets),
-      onPressed: () {
-        // TODO: implement settings
-      },
+      icon: const Icon(Icons.widgets_rounded),
+      onPressed: () => _jumpToSettingScreen(context),
     );
+  }
+
+  /// Jump to setting screen.
+  void _jumpToSettingScreen(BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (BuildContext context) => const SettingScreen(),
+    ));
   }
 }
 
