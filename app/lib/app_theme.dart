@@ -42,16 +42,20 @@ class ThemeModeController extends ValueNotifier<ThemeMode> {
 final ChangeNotifierProvider<ThemeModeController> themeModeControllerProvider =
     ChangeNotifierProvider((Ref ref) => ThemeModeController());
 
+/// Create theme data.
+ThemeData createThemeData(Brightness brightness, Color color) => ThemeData.from(
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: color,
+        brightness: brightness,
+      ),
+      useMaterial3: true,
+    );
+
 /// Theme data provider.
 final ProviderFamily<ThemeData, Brightness> themeDataProvider =
     Provider.family<ThemeData, Brightness>((Ref ref, Brightness brightness) {
-  return ThemeData.from(
-    colorScheme: ColorScheme.fromSeed(
-      seedColor: ref.watch(themeColorControllerProvider).value,
-      brightness: brightness,
-    ),
-    useMaterial3: true,
-  );
+  return createThemeData(
+      brightness, ref.watch(themeColorControllerProvider).value);
 });
 
 /// Read theme color from shared preferences.

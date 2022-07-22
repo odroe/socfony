@@ -14,17 +14,96 @@ class ThemeScreen extends StatelessWidget {
         title: const Text('外观与色彩'),
       ),
       body: ListView(
-        padding: const EdgeInsets.only(top: 24),
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 24.0).copyWith(top: 24),
             child: Text('外观', style: Theme.of(context).textTheme.bodySmall),
           ),
           const _ThemeModeCard(),
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 24.0).copyWith(top: 24),
+            child: Text('色彩', style: Theme.of(context).textTheme.bodySmall),
+          ),
+          const _ThemeColorCard(),
         ],
       ),
     );
   }
+}
+
+class _ThemeColorCard extends StatelessWidget {
+  const _ThemeColorCard({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 16.0).copyWith(top: 6),
+      child: Column(
+        children: [
+          ...ListTile.divideTiles(
+            context: context,
+            tiles: [
+              _ColorCheckboxListTile(
+                kThemeColor,
+                title: 'Socfony',
+                subtitle: _ColorCheckboxListTile.colorToHex(kThemeColor),
+              ),
+              ...Colors.primaries.map<Widget>(
+                (Color color) => _ColorCheckboxListTile(color),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ColorCheckboxListTile extends ConsumerWidget {
+  const _ColorCheckboxListTile(
+    this.color, {
+    Key? key,
+    this.title,
+    this.subtitle,
+  }) : super(key: key);
+
+  final Color color;
+  final String? title;
+  final String? subtitle;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Watch theme color controller.
+    final ThemeColorController themeColorController =
+        ref.watch(themeColorControllerProvider);
+
+    // trailing
+    Widget? trailing;
+    if (themeColorController.value == color) {
+      trailing = const Icon(Icons.check);
+    }
+
+    return ListTile(
+      leading: CircleAvatar(backgroundColor: color),
+      title: Text(title ?? colorToHex(color)),
+      subtitle: Text(subtitle ?? colorToRgb(color)),
+      trailing: trailing,
+      onTap: () => saveThemeColor(ref.read, color),
+    );
+  }
+
+  /// Color to Hex string. without alpha.
+  static String colorToHex(Color color) =>
+      '#${color.value.toRadixString(16).padLeft(6, '0').substring(2)}'
+          .toUpperCase();
+
+  /// Color to RGB string.
+  static String colorToRgb(Color color) =>
+      'RGB(${color.red}, ${color.green}, ${color.blue})';
 }
 
 class _ThemeModeCard extends StatelessWidget {
@@ -34,36 +113,34 @@ class _ThemeModeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Card(
-        child: Column(
-          children: [
-            const SizedBox(height: 24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: const <Widget>[
-                _ThemeModeRadio(
-                  brightness: Brightness.light,
-                  label: '浅色',
-                  icon: Icons.light_mode_outlined,
-                  selectedIcon: Icons.light_mode,
-                ),
-                _ThemeModeRadio(
-                  brightness: Brightness.dark,
-                  label: '深色',
-                  icon: Icons.dark_mode_outlined,
-                  selectedIcon: Icons.dark_mode,
-                ),
-              ],
-            ),
-            const Divider(
-              indent: 12,
-              endIndent: 12,
-            ),
-            const _AutoThemeModeSwitchListTile(),
-          ],
-        ),
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 16.0).copyWith(top: 6),
+      child: Column(
+        children: [
+          const SizedBox(height: 24),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: const <Widget>[
+              _ThemeModeRadio(
+                brightness: Brightness.light,
+                label: '浅色',
+                icon: Icons.light_mode_outlined,
+                selectedIcon: Icons.light_mode,
+              ),
+              _ThemeModeRadio(
+                brightness: Brightness.dark,
+                label: '深色',
+                icon: Icons.dark_mode_outlined,
+                selectedIcon: Icons.dark_mode,
+              ),
+            ],
+          ),
+          const Divider(
+            indent: 12,
+            endIndent: 12,
+          ),
+          const _AutoThemeModeSwitchListTile(),
+        ],
       ),
     );
   }
