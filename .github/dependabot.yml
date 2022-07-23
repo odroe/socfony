@@ -4,23 +4,31 @@
 # https://help.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
 
 version: 2
-enable-beta-ecosystems: true
 updates:
-  # Socfony database management tool
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+
+  # Maintain dependencies for database
   - package-ecosystem: 'npm'
     directory: '/database'
     schedule:
       interval: 'daily'
-  # Socfony gRPC Server
+
+  # Maintain dependencies for Socfony server
   - package-ecosystem: 'pub'
     directory: '/server'
     schedule:
       interval: 'daily'
-  # Socfony application
+
+  # Maintain dependencies for Socfony Flutter app
   - package-ecosystem: 'pub'
     directory: '/app'
     schedule:
       interval: 'daily'
+
   # Socfony gRPC server/client APIs library
   - package-ecosystem: 'pub'
     directory: '/socfonyapi'
