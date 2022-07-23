@@ -30,9 +30,9 @@
 
 Scofony is a social application developed in [Dart](https://dart.dev), and all the code is open source.
 
-* **[Socofny App](app)** - Build apps for any screen with [Flutter](https://flutter.dev).
-* **[Socofny Server](server)** - Build a server for Socfony [gRPC](https://grpc.io) services with [Dart](https://dart.dev).
-* **[Socofny APIs](socfonyapis)** - Build APIs for Socfony **server & client**.
+* **[Socfony App](app)** - Build apps for any screen with [Flutter](https://flutter.dev).
+* **[Socfony Server](server)** - Build a server for Socfony [gRPC](https://grpc.io) services with [Dart](https://dart.dev).
+* **[Socfony APIs](socfonyapis)** - Build APIs for Socfony **server & client**.
 
 Socfony provides a complete basic social application that you can deploy anywhere.
 
@@ -40,6 +40,6 @@ Socfony provides a complete basic social application that you can deploy anywher
 
 ## Community
 
-Socofny has a huge community of enthusiasts and developers who love open source programs. You can scan the QR code below to join the WeChat group to communicate with them.
+Socfony has a huge community of enthusiasts and developers who love open source programs. You can scan the QR code below to join the WeChat group to communicate with them.
 
 <img src="graphs/wechat_group_qr_code.jpg" width="200" height="200"/>
