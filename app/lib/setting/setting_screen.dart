@@ -6,6 +6,7 @@ import '../about/application_name.dart';
 import '../about/socfony_icon.dart';
 import '../auth/auth_provider.dart';
 import '../home/home_screen.dart';
+import '../user/edit/user_edit_screen.dart';
 import 'theme_screen.dart';
 
 class SettingScreen extends StatelessWidget {
@@ -26,12 +27,7 @@ class SettingScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Text('账户', style: Theme.of(context).textTheme.bodySmall),
           ),
-          ListTile(
-            leading: const Icon(Icons.person_outlined),
-            title: const Text('账户信息'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {},
-          ),
+          const _UserEditListTile(),
           ListTile(
             leading: const Icon(Icons.lock_outlined),
             title: const Text('账户安全'),
@@ -80,6 +76,32 @@ class SettingScreen extends StatelessWidget {
           // Logout
           const _LogoutButton(),
         ],
+      ),
+    );
+  }
+}
+
+class _UserEditListTile extends StatelessWidget {
+  const _UserEditListTile({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: const Icon(Icons.person_outlined),
+      title: const Text('账户信息'),
+      trailing: const Icon(Icons.chevron_right),
+      onTap: () => _jumpToUserEditScreen(context),
+    );
+  }
+
+  /// Jump to the user edit screen.
+  void _jumpToUserEditScreen(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => const UserEditScreen(),
       ),
     );
   }

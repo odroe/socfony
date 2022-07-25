@@ -5,6 +5,7 @@ import 'package:socfonyapis/socfonyapis.dart';
 
 import '../../about/socfony_icon.dart';
 import '../../auth/auth_provider.dart';
+import '../edit/user_edit_screen.dart';
 import '../user_providers.dart';
 
 class UserProfileDataCard extends StatelessWidget {
@@ -388,9 +389,17 @@ class _EditUserDataButton extends StatelessWidget {
     return TextButton.icon(
       icon: const Icon(Icons.edit),
       label: const Text('编辑资料'),
-      onPressed: () {
-        // TODO: implement edit user data button
-      },
+      onPressed: () => _jumpToUserEditScreen(context),
+    );
+  }
+
+  /// Jump to the user edit screen.
+  void _jumpToUserEditScreen(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => const UserEditScreen(),
+      ),
     );
   }
 }
