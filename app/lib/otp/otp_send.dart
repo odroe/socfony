@@ -1,72 +1,58 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:socfonyapis/socfonyapis.dart';
 
 import '../socfony_service.dart';
+import '../user/security/account_phone_provider.dart';
 import 'otp_common_providers.dart';
-
-class OtpResendButton extends ConsumerStatefulWidget {
-  const OtpResendButton({super.key, required this.phone});
-
-  /// Phone number.
-  final String phone;
-
-  @override
-  ConsumerState<OtpResendButton> createState() => _OtpResendButtonState();
-}
 
 /// Is sending status provider.
 final AutoDisposeStateProvider<bool> _isSendingProvider =
     StateProvider.autoDispose<bool>((Ref ref) => false);
 
-class _OtpResendButtonState extends ConsumerState<OtpResendButton> {
-  Timer? _timer;
+class OtpResendButton extends ConsumerWidget {
+  const OtpResendButton({
+    super.key,
+    required this.phone,
+  });
 
-  bool get _isSending => ref.watch(_isSendingProvider);
-
-  @override
-  void initState() {
-    super.initState();
-
-    // _sendOtpHandler();
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
-  }
+  final String phone;
 
   /// Send OTP to phone number.
-  void _sendOtpHandler() async {
+  void _sendOtpHandler(Reader reader) async {
     // Set sending status.
-    ref.read(_isSendingProvider.state).state = true;
+    reader(_isSendingProvider.state).state = true;
+
+    // Read current authenticated user phone.
+    final String? currentPhone = reader(accountPhoneProvider);
 
     try {
       // Send OTP to phone number.
-      await socfonyService
-          .sendPhoneOneTimePassword(StringValue()..value = widget.phone);
+      if (currentPhone == phone) {
+        await socfonyService.sendPhoneOneTimePassword2auth(Empty());
+      } else {
+        await socfonyService
+            .sendPhoneOneTimePassword(StringValue()..value = phone);
+      }
 
       // Reset countdown.
-      ref.read(otpCountdownProvider(widget.phone).notifier).reset();
+      reader(otpCountdownProvider(phone).notifier).reset();
     } finally {
       // Update sending status.
-      ref.read(_isSendingProvider.state).state = false;
+      reader(_isSendingProvider.state).state = false;
     }
   }
 
   /// Single tap handler.
-  void _onTapHandler() {
-    if (!ref.read(_isSendingProvider)) {
-      _sendOtpHandler();
+  void _onTapHandler(Reader reader) {
+    if (!reader(_isSendingProvider)) {
+      _sendOtpHandler(reader);
     }
   }
 
   @override
-  Widget build(BuildContext context) {
-    if (_isSending) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    if (ref.watch(_isSendingProvider)) {
       return const SizedBox.square(
         dimension: 24,
         child: CircularProgressIndicator(),
@@ -74,12 +60,12 @@ class _OtpResendButtonState extends ConsumerState<OtpResendButton> {
     }
 
     // Watch countdown
-    final int countdown = ref.watch(otpCountdownProvider(widget.phone));
+    final int countdown = ref.watch(otpCountdownProvider(phone));
 
     VoidCallback? onPressed;
     String text = '${countdown}s';
     if (countdown == 0) {
-      onPressed = _onTapHandler;
+      onPressed = () => _onTapHandler(ref.read);
       text = '重新发送';
     }
 

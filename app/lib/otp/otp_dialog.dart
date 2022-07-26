@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:socfonyapis/socfonyapis.dart';
 
 import '../socfony_service.dart';
+import '../user/security/account_phone_provider.dart';
 import 'otp_common_providers.dart';
 import 'otp_send.dart';
 import 'otp_text_field.dart';
@@ -17,6 +18,10 @@ Future<String?> showOtpVerificationDialog(
   String buttonText = '验证',
   required String phone,
 }) async {
+  // Read current authenticated user phone.
+  final String? currentPhone = reader(accountPhoneProvider);
+  assert(currentPhone != null || phone.isEmpty);
+
   // Read one-time password countdown notifier.
   final OneTimePasswordCountdownNotifier notifier =
       reader(otpCountdownProvider(phone).notifier);
@@ -25,8 +30,12 @@ Future<String?> showOtpVerificationDialog(
   if (notifier.isRunning == false) {
     try {
       // Send OTP to phone number.
-      await socfonyService
-          .sendPhoneOneTimePassword(StringValue()..value = phone);
+      if (currentPhone == phone) {
+        await socfonyService.sendPhoneOneTimePassword2auth(Empty());
+      } else {
+        await socfonyService
+            .sendPhoneOneTimePassword(StringValue()..value = phone);
+      }
 
       // Reset countdown.
       notifier.reset();

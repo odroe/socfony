@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:socfonyapis/socfonyapis.dart';
 
 import '../socfony_service.dart';
+import '../user/security/account_phone_provider.dart';
 import 'otp_common_providers.dart';
 import 'otp_text_field.dart';
 
@@ -58,12 +59,21 @@ class _OtpVerifyButtonState extends ConsumerState<OtpVerifyButton> {
     // Clear error message.
     ref.read(otpErrorTextProvider.state).state = null;
 
+    // Read current authenticated user phone.
+    final String? currentPhone = ref.read(accountPhoneProvider);
+
     try {
       // Verify one-time password.
-      final BoolValue verified = await socfonyService
-          .checkPhoneOneTimePassword(CheckPhoneOneTimePasswordRequest()
-            ..phone = widget.phone
-            ..otp = otp);
+      late final BoolValue verified;
+      if (currentPhone == widget.phone) {
+        verified = await socfonyService
+            .checkPhoneOneTimePassword2auth(StringValue()..value = otp);
+      } else {
+        verified = await socfonyService
+            .checkPhoneOneTimePassword(CheckPhoneOneTimePasswordRequest()
+              ..phone = widget.phone
+              ..otp = otp);
+      }
 
       // Update verify in progress status to false.
       ref.read(otpVerificationStatusProvider.state).state = false;
