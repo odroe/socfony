@@ -4,6 +4,7 @@ import 'package:socfonyapis/socfonyapis.dart';
 
 import '../auth.dart';
 import '../database/connection.dart';
+import '../helpers/phone_number_helper.dart';
 import '../phone_ont_time_password/otp_sender_service.dart';
 
 User _createUserFromJson(Map<String, dynamic> json) {
@@ -271,8 +272,14 @@ mixin UserMethods on SocfonyServiceBase {
     }
 
     // Validate new phone one-time password.
+    late final String newPhone;
+    try {
+      newPhone = PhoneNumberHelper.formatChina(request.current.phone);
+    } catch (e) {
+      throw GrpcError.invalidArgument('请输入正确的手机号码');
+    }
     final Future<void> Function()? validatedNewOtpFn =
-        await otp.validateReturnFn(request.current.phone, request.current.otp);
+        await otp.validateReturnFn(newPhone, request.current.otp);
 
     // If new phone one-time password is not valid, throw an error.
     if (validatedNewOtpFn == null) {
@@ -285,7 +292,7 @@ mixin UserMethods on SocfonyServiceBase {
     final PostgreSQLResult updateResult = await connection.query(
       'UPDATE users SET phone = @phone WHERE id = @id RETURNING *',
       substitutionValues: {
-        'phone': request.current.phone,
+        'phone': newPhone,
         'id': accessToken['owner_id'],
       },
     );

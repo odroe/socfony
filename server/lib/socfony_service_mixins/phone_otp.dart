@@ -4,17 +4,17 @@ import 'package:socfonyapis/socfonyapis.dart';
 
 import '../auth.dart';
 import '../database/connection.dart';
+import '../helpers/phone_number_helper.dart';
 import '../phone_ont_time_password/otp_sender_service.dart';
 
 mixin PhoneOneTimePasswordMethods on SocfonyServiceBase {
   @override
   Future<Empty> sendPhoneOneTimePassword(
       ServiceCall call, StringValue request) async {
-    // Read phone number.
-    final String phone = request.value;
-
-    // Check phone number is China phone number.
-    if (!RegExp(r'^1\d{10}$').hasMatch(phone) || phone.length != 11) {
+    late final String phone;
+    try {
+      phone = PhoneNumberHelper.formatChina(request.value);
+    } catch (e) {
       throw GrpcError.invalidArgument('请输入正确的手机号码');
     }
 
@@ -23,7 +23,7 @@ mixin PhoneOneTimePasswordMethods on SocfonyServiceBase {
         await PooledDatabaseConnection.connect();
 
     // Send a one-time password to the phone.
-    await PhoneOtpSenderService(connection).send('+86$phone');
+    await PhoneOtpSenderService(connection).send(phone);
 
     // Close database connection.
     await connection.close();
@@ -34,11 +34,10 @@ mixin PhoneOneTimePasswordMethods on SocfonyServiceBase {
   @override
   Future<BoolValue> checkPhoneOneTimePassword(
       ServiceCall call, CheckPhoneOneTimePasswordRequest request) async {
-    // Read phone number.
-    final String phone = request.phone;
-
-    // Check phone number is China phone number.
-    if (!RegExp(r'^1\d{10}$').hasMatch(phone) || phone.length != 11) {
+    late final String phone;
+    try {
+      phone = PhoneNumberHelper.formatChina(request.phone);
+    } catch (e) {
       throw GrpcError.invalidArgument('请输入正确的手机号码');
     }
 
@@ -47,8 +46,8 @@ mixin PhoneOneTimePasswordMethods on SocfonyServiceBase {
         await PooledDatabaseConnection.connect();
 
     // Check if the code is valid.
-    final bool isValid = await PhoneOtpSenderService(connection)
-        .validate('+86$phone', request.otp);
+    final bool isValid =
+        await PhoneOtpSenderService(connection).validate(phone, request.otp);
 
     // Close database connection.
     await connection.close();
@@ -88,6 +87,8 @@ mixin PhoneOneTimePasswordMethods on SocfonyServiceBase {
 
       // Close database connection.
       await connection.close();
+
+      return Empty();
     }
 
     throw GrpcError.unknown('未知错误');

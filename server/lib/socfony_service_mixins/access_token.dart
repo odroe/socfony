@@ -5,22 +5,18 @@ import 'package:socfonyapis/socfonyapis.dart';
 
 import '../auth.dart';
 import '../database/connection.dart';
+import '../helpers/phone_number_helper.dart';
 
 mixin AccessTokenMethods on SocfonyServiceBase {
   @override
   Future<AccessToken> createAccessToken(
       ServiceCall call, CreateAccessTokenRequest request) async {
-    // Read phone number.
-    String phone = request.phone;
-
-    // Validate phone is China phone number, and not empty.
-    // Check phone number is China phone number.
-    if (!RegExp(r'^1\d{10}$').hasMatch(phone) || phone.length != 11) {
+    late final String phone;
+    try {
+      phone = PhoneNumberHelper.formatChina(request.phone);
+    } catch (e) {
       throw GrpcError.invalidArgument('请输入正确的手机号码');
     }
-
-    // Update phone number to E.164 format.
-    phone = '+86$phone';
 
     // Create database connection.
     final PooledDatabaseConnection connection =
