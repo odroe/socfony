@@ -80,9 +80,9 @@ class SocfonyServiceClient extends $grpc.Client {
           ($1.Empty value) => value.writeToBuffer(),
           ($core.List<$core.int> value) => $1.Empty.fromBuffer(value));
   static final _$checkPhoneOneTimePassword2auth =
-      $grpc.ClientMethod<$5.CheckPhoneOneTimePasswordRequest, $2.BoolValue>(
+      $grpc.ClientMethod<$2.StringValue, $2.BoolValue>(
           '/odroe.socfony.SocfonyService/CheckPhoneOneTimePassword2auth',
-          ($5.CheckPhoneOneTimePasswordRequest value) => value.writeToBuffer(),
+          ($2.StringValue value) => value.writeToBuffer(),
           ($core.List<$core.int> value) => $2.BoolValue.fromBuffer(value));
 
   SocfonyServiceClient($grpc.ClientChannel channel,
@@ -163,7 +163,7 @@ class SocfonyServiceClient extends $grpc.Client {
   }
 
   $grpc.ResponseFuture<$2.BoolValue> checkPhoneOneTimePassword2auth(
-      $5.CheckPhoneOneTimePasswordRequest request,
+      $2.StringValue request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$checkPhoneOneTimePassword2auth, request,
         options: options);
@@ -270,15 +270,13 @@ abstract class SocfonyServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $1.Empty.fromBuffer(value),
         ($1.Empty value) => value.writeToBuffer()));
-    $addMethod(
-        $grpc.ServiceMethod<$5.CheckPhoneOneTimePasswordRequest, $2.BoolValue>(
-            'CheckPhoneOneTimePassword2auth',
-            checkPhoneOneTimePassword2auth_Pre,
-            false,
-            false,
-            ($core.List<$core.int> value) =>
-                $5.CheckPhoneOneTimePasswordRequest.fromBuffer(value),
-            ($2.BoolValue value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$2.StringValue, $2.BoolValue>(
+        'CheckPhoneOneTimePassword2auth',
+        checkPhoneOneTimePassword2auth_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $2.StringValue.fromBuffer(value),
+        ($2.BoolValue value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.AccessToken> createAccessToken_Pre($grpc.ServiceCall call,
@@ -348,8 +346,7 @@ abstract class SocfonyServiceBase extends $grpc.Service {
   }
 
   $async.Future<$2.BoolValue> checkPhoneOneTimePassword2auth_Pre(
-      $grpc.ServiceCall call,
-      $async.Future<$5.CheckPhoneOneTimePasswordRequest> request) async {
+      $grpc.ServiceCall call, $async.Future<$2.StringValue> request) async {
     return checkPhoneOneTimePassword2auth(call, await request);
   }
 
@@ -380,5 +377,5 @@ abstract class SocfonyServiceBase extends $grpc.Service {
   $async.Future<$1.Empty> sendPhoneOneTimePassword2auth(
       $grpc.ServiceCall call, $1.Empty request);
   $async.Future<$2.BoolValue> checkPhoneOneTimePassword2auth(
-      $grpc.ServiceCall call, $5.CheckPhoneOneTimePasswordRequest request);
+      $grpc.ServiceCall call, $2.StringValue request);
 }
