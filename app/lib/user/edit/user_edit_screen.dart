@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'account_id_card.dart';
+import 'user_gender_list_tile.dart';
 
 class UserEditScreen extends StatelessWidget {
   const UserEditScreen({Key? key}) : super(key: key);
@@ -29,13 +30,7 @@ class UserEditScreen extends StatelessWidget {
               children: ListTile.divideTiles(
                 context: context,
                 tiles: [
-                  ListTile(
-                    title: const Text('性别'),
-                    trailing: TextButton(
-                      onPressed: () {},
-                      child: const Text('男'),
-                    ),
-                  ),
+                  const UserGenderListTile(),
                   // 生日
                   ListTile(
                     title: const Text('生日'),
@@ -108,25 +103,5 @@ class _UserAvatarEditCard extends StatelessWidget {
         ),
       ),
     );
-    // return SizedBox.square(
-    //   dimension: 64,
-    //   child: Stack(
-    //     alignment: Alignment.center,
-    //     children: [
-    //       Positioned.fill(child: CircleAvatar()),
-    //     ],
-    //   ),
-    // );
-    // return Stack(
-    //   alignment: Alignment.center,
-    //   children: [
-    //     CircleAvatar(),
-    //     Positioned(
-    //       child: Icon(Icons.edit),
-    //       bottom: 0,
-    //       right: 0,
-    //     ),
-    //   ],
-    // );
   }
 }
