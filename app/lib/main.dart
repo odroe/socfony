@@ -17,7 +17,7 @@ Future<void> main() async {
 
   // If access token is not null, set authenticated notifier.
   if (accessToken != null) {
-    AuthenticatedNotifier().value = accessToken.userId;
+    authenticatedNotifier.update(accessToken.userId);
   }
 
   // Initialize application theme.
@@ -30,6 +30,6 @@ Future<void> main() async {
 
 /// Initialize application theme.
 Future<void> _initializeTheme() async {
-  ThemeColorController().update(await readThemeColor());
-  ThemeModeController().update(await readThemeMode());
+  themeColorNotifier.update(await readThemeColor());
+  themeModeNotifier.update(await readThemeMode());
 }

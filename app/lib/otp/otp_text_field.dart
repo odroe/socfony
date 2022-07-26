@@ -22,6 +22,7 @@ class OtpTextField extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16).copyWith(bottom: 12),
       child: TextField(
+        autofocus: true,
         readOnly: ref.watch(otpVerificationStatusProvider),
         controller: ref.watch(otpControllerProvider),
         decoration: InputDecoration(

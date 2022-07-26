@@ -10,13 +10,12 @@ class SocfonyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Watch theme mode controller.
-    final ThemeModeController themeModeController =
-        ref.watch(themeModeControllerProvider);
+    final ThemeMode themeMode = ref.watch(themeModeProvider);
 
     return MaterialApp(
       theme: ref.watch(themeDataProvider(Brightness.light)),
       darkTheme: ref.watch(themeDataProvider(Brightness.dark)),
-      themeMode: themeModeController.value,
+      themeMode: themeMode,
       home: const HomeScreen(),
     );
   }

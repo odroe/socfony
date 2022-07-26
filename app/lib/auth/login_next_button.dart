@@ -105,7 +105,7 @@ class _LoginNextButtonState extends ConsumerState<LoginNextButton> {
 
       // Save user to user's provider.
       user.save(ref.read);
-      ref.read(authenticatedProvider).value = accessToken.userId;
+      ref.read(authenticatedProvider.notifier).update(accessToken.userId);
 
       // Navigate to back.
       if (mounted) {

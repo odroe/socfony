@@ -23,6 +23,7 @@ class LoginPhoneTextField extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16).copyWith(bottom: 12),
       child: TextField(
+        autofocus: true,
         readOnly: ref.watch(loginInProgressProvider),
         controller: ref.watch(loginPhoneNumberProvider),
         decoration: InputDecoration(

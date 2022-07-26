@@ -1,28 +1,27 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socfonyapis/socfonyapis.dart';
 
+import '../riverpod/value_state_notifier.dart';
 import '../user/user_providers.dart';
 
-class AuthenticatedNotifier extends ValueNotifier<String?> {
-  AuthenticatedNotifier._(super.value);
+/// Authenticated notifier type.
+typedef AuthenticatedNotifier = ValueStateNotifier<String?>;
 
-  /// Cached authenticated notifier.
-  static final AuthenticatedNotifier _instance = AuthenticatedNotifier._(null);
-
-  /// Get cached authenticated notifier.
-  factory AuthenticatedNotifier() => _instance;
-}
+/// Authenticated notifier.
+final AuthenticatedNotifier authenticatedNotifier =
+    ValueStateNotifier<String?>(null);
 
 /// Current authenticated user ID provider.
-final ChangeNotifierProvider<AuthenticatedNotifier> authenticatedProvider =
-    ChangeNotifierProvider((Ref ref) => AuthenticatedNotifier());
+final StateNotifierProvider<AuthenticatedNotifier, String?>
+    authenticatedProvider =
+    StateNotifierProvider<AuthenticatedNotifier, String?>(
+        (Ref ref) => authenticatedNotifier);
 
 /// Current authenticated user  provider.
 final Provider<User?> authenticatedUserProvider = Provider((Ref ref) {
   /// Read current authenticated user ID.
-  final String? userId = ref.watch(authenticatedProvider).value;
+  final String? userId = ref.watch(authenticatedProvider);
 
   // If user ID is null, return null.
   if (userId == null) {
@@ -36,24 +35,23 @@ final Provider<User?> authenticatedUserProvider = Provider((Ref ref) {
 final AutoDisposeProviderFamily<bool, String>
     hasUserEqualAuthenticatedProvider =
     Provider.autoDispose.family<bool, String>((Ref ref, String userId) {
-  final String? authenticatedUserId =
-      ref.watch(authenticatedProvider.select((notifier) => notifier.value));
+  final String? authenticatedUserId = ref.watch(authenticatedProvider);
 
   return authenticatedUserId == userId && authenticatedUserId != null;
 });
 
 /// Extension for Authenticated provider.
 extension AuthenticatedExtension
-    on ChangeNotifierProvider<AuthenticatedNotifier> {
+    on StateNotifierProvider<AuthenticatedNotifier, String?> {
   /// Of ffset authenticated user ID.
-  String? of(Reader reader) => reader(authenticatedProvider).value;
+  String? of(Reader reader) => reader(authenticatedProvider);
 
   /// Set authenticated user ID.
   void set(Reader reader, String? value) =>
-      reader(authenticatedProvider.notifier).value = value;
+      reader(authenticatedProvider.notifier).update(value);
 
   /// Has authenticated
-  bool has(Reader reader) => reader(authenticatedProvider).value != null;
+  bool has(Reader reader) => reader(authenticatedProvider) != null;
 
   /// Find user
   User? user(Reader reader) => reader(authenticatedUserProvider);

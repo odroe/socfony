@@ -77,13 +77,12 @@ class _ColorCheckboxListTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Watch theme color controller.
-    final ThemeColorController themeColorController =
-        ref.watch(themeColorControllerProvider);
+    // Watch theme color.
+    final Color themeColor = ref.watch(themeColorProvider);
 
     // trailing
     Widget? trailing;
-    if (themeColorController.value == color) {
+    if (themeColor == color) {
       trailing = const Icon(Icons.check);
     }
 
@@ -200,14 +199,13 @@ class _AutoThemeModeSwitchListTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Watch theme mode controller.
-    final ThemeModeController themeModeController =
-        ref.watch(themeModeControllerProvider);
+    final ThemeMode themeMode = ref.watch(themeModeProvider);
 
     return ListTile(
       title: const Text('自动'),
       subtitle: const Text('开启后将跟随系统自动改变外观'),
       trailing: Switch(
-        value: themeModeController.value == ThemeMode.system,
+        value: themeMode == ThemeMode.system,
         activeColor: Theme.of(context).colorScheme.primary,
         onChanged: (bool? value) => _update(context, ref.read, value),
       ),
