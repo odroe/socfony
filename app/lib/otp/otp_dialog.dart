@@ -20,7 +20,10 @@ Future<String?> showOtpVerificationDialog(
 }) async {
   // Read current authenticated user phone.
   final String? currentPhone = reader(accountPhoneProvider);
-  assert(currentPhone != null || phone.isEmpty);
+
+  if (currentPhone == null && phone.isEmpty) {
+    throw Exception('Phone is empty.');
+  }
 
   // Read one-time password countdown notifier.
   final OneTimePasswordCountdownNotifier notifier =
