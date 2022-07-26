@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'account_id_card.dart';
+import 'user_birthday_list_tile.dart';
 import 'user_gender_list_tile.dart';
 
 class UserEditScreen extends StatelessWidget {
@@ -31,14 +32,7 @@ class UserEditScreen extends StatelessWidget {
                 context: context,
                 tiles: [
                   const UserGenderListTile(),
-                  // 生日
-                  ListTile(
-                    title: const Text('生日'),
-                    trailing: TextButton(
-                      onPressed: () {},
-                      child: const Text('2020-01-01'),
-                    ),
-                  ),
+                  const UserBirthdayListTile(),
                   // 简介
                   ListTile(
                     title: Row(
