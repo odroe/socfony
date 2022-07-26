@@ -157,9 +157,11 @@ class _SaveButtonState extends ConsumerState<_SaveButton> {
       onPressed = _saveBio;
     }
 
-    return TextButton(
-      onPressed: onPressed,
-      child: const Text('保存'),
+    return Center(
+      child: TextButton(
+        onPressed: onPressed,
+        child: const Text('保存'),
+      ),
     );
   }
 
