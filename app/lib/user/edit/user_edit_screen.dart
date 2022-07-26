@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'account_id_card.dart';
+import 'user_bio_list_tile.dart';
 import 'user_birthday_list_tile.dart';
 import 'user_gender_list_tile.dart';
 
@@ -30,23 +31,10 @@ class UserEditScreen extends StatelessWidget {
             child: Column(
               children: ListTile.divideTiles(
                 context: context,
-                tiles: [
-                  const UserGenderListTile(),
-                  const UserBirthdayListTile(),
-                  // 简介
-                  ListTile(
-                    title: Row(
-                      children: [
-                        const Expanded(child: Text('简介')),
-                        TextButton(
-                          onPressed: () {},
-                          child: const Text('编辑'),
-                        ),
-                      ],
-                    ),
-                    subtitle: const Text(
-                        'Socfony has a huge community of enthusiasts and developers who love open source programs. You can scan the QR code below to join the WeChat group to communicate with them.'),
-                  ),
+                tiles: const <Widget>[
+                  UserGenderListTile(),
+                  UserBirthdayListTile(),
+                  UserBioListTile(),
                 ],
               ).toList(),
             ),
