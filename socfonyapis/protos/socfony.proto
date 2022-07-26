@@ -53,4 +53,10 @@ service SocfonyService {
 
   // Check a one-time password is valid.
   rpc CheckPhoneOneTimePassword(CheckPhoneOneTimePasswordRequest) returns (google.protobuf.BoolValue);
+
+  // Send a one-time password to current authticated user.
+  rpc SendPhoneOneTimePassword2auth(google.protobuf.Empty) returns (google.protobuf.Empty);
+
+  // Check a one-time password is valid for current authticated user.
+  rpc CheckPhoneOneTimePassword2auth(CheckPhoneOneTimePasswordRequest) returns (google.protobuf.BoolValue);
 }

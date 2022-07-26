@@ -74,6 +74,16 @@ class SocfonyServiceClient extends $grpc.Client {
           '/odroe.socfony.SocfonyService/CheckPhoneOneTimePassword',
           ($5.CheckPhoneOneTimePasswordRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) => $2.BoolValue.fromBuffer(value));
+  static final _$sendPhoneOneTimePassword2auth =
+      $grpc.ClientMethod<$1.Empty, $1.Empty>(
+          '/odroe.socfony.SocfonyService/SendPhoneOneTimePassword2auth',
+          ($1.Empty value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $1.Empty.fromBuffer(value));
+  static final _$checkPhoneOneTimePassword2auth =
+      $grpc.ClientMethod<$5.CheckPhoneOneTimePasswordRequest, $2.BoolValue>(
+          '/odroe.socfony.SocfonyService/CheckPhoneOneTimePassword2auth',
+          ($5.CheckPhoneOneTimePasswordRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $2.BoolValue.fromBuffer(value));
 
   SocfonyServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -143,6 +153,19 @@ class SocfonyServiceClient extends $grpc.Client {
       $5.CheckPhoneOneTimePasswordRequest request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$checkPhoneOneTimePassword, request,
+        options: options);
+  }
+
+  $grpc.ResponseFuture<$1.Empty> sendPhoneOneTimePassword2auth($1.Empty request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$sendPhoneOneTimePassword2auth, request,
+        options: options);
+  }
+
+  $grpc.ResponseFuture<$2.BoolValue> checkPhoneOneTimePassword2auth(
+      $5.CheckPhoneOneTimePasswordRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$checkPhoneOneTimePassword2auth, request,
         options: options);
   }
 }
@@ -240,6 +263,22 @@ abstract class SocfonyServiceBase extends $grpc.Service {
             ($core.List<$core.int> value) =>
                 $5.CheckPhoneOneTimePasswordRequest.fromBuffer(value),
             ($2.BoolValue value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$1.Empty, $1.Empty>(
+        'SendPhoneOneTimePassword2auth',
+        sendPhoneOneTimePassword2auth_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $1.Empty.fromBuffer(value),
+        ($1.Empty value) => value.writeToBuffer()));
+    $addMethod(
+        $grpc.ServiceMethod<$5.CheckPhoneOneTimePasswordRequest, $2.BoolValue>(
+            'CheckPhoneOneTimePassword2auth',
+            checkPhoneOneTimePassword2auth_Pre,
+            false,
+            false,
+            ($core.List<$core.int> value) =>
+                $5.CheckPhoneOneTimePasswordRequest.fromBuffer(value),
+            ($2.BoolValue value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.AccessToken> createAccessToken_Pre($grpc.ServiceCall call,
@@ -303,6 +342,17 @@ abstract class SocfonyServiceBase extends $grpc.Service {
     return checkPhoneOneTimePassword(call, await request);
   }
 
+  $async.Future<$1.Empty> sendPhoneOneTimePassword2auth_Pre(
+      $grpc.ServiceCall call, $async.Future<$1.Empty> request) async {
+    return sendPhoneOneTimePassword2auth(call, await request);
+  }
+
+  $async.Future<$2.BoolValue> checkPhoneOneTimePassword2auth_Pre(
+      $grpc.ServiceCall call,
+      $async.Future<$5.CheckPhoneOneTimePasswordRequest> request) async {
+    return checkPhoneOneTimePassword2auth(call, await request);
+  }
+
   $async.Future<$0.AccessToken> createAccessToken(
       $grpc.ServiceCall call, $0.CreateAccessTokenRequest request);
   $async.Future<$0.AccessToken> refreshAccessToken(
@@ -326,5 +376,9 @@ abstract class SocfonyServiceBase extends $grpc.Service {
   $async.Future<$1.Empty> sendPhoneOneTimePassword(
       $grpc.ServiceCall call, $2.StringValue request);
   $async.Future<$2.BoolValue> checkPhoneOneTimePassword(
+      $grpc.ServiceCall call, $5.CheckPhoneOneTimePasswordRequest request);
+  $async.Future<$1.Empty> sendPhoneOneTimePassword2auth(
+      $grpc.ServiceCall call, $1.Empty request);
+  $async.Future<$2.BoolValue> checkPhoneOneTimePassword2auth(
       $grpc.ServiceCall call, $5.CheckPhoneOneTimePasswordRequest request);
 }
