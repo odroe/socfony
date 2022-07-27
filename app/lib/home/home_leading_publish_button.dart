@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:socfonyapis/socfonyapis.dart';
 
 import '../auth/login_dialog.dart';
+import '../moment/publish/publish_moment_screen.dart';
 
 class HomeLeadingPublishButton extends ConsumerWidget {
   const HomeLeadingPublishButton({Key? key}) : super(key: key);
@@ -28,8 +29,13 @@ class HomeLeadingPublishButton extends ConsumerWidget {
   void _onAuthenticated(BuildContext context, bool isAuthenticated) {
     // If user is authenticated, jump to publish page.
     if (isAuthenticated) {
-      // Navigator.pushNamed(context, '/publish');
-      // TODO: jump to publish page.
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          fullscreenDialog: true,
+          builder: (context) => const PublishMomentScreen(),
+        ),
+      );
     }
   }
 }
