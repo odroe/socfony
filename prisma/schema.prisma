@@ -59,14 +59,14 @@ model PhoneSentCodes {
 }
 
 model Moment {
-  id String @db.Char(64) @id
-  title String? @db.VarChar(180)
-  content String? @db.Text
-  images String[] @default([])
-  user_id String @db.Char(64)
-  created_at DateTime @default(now()) @db.Timestamptz()
-  likers_count Int @default(0)
-  comments_count Int @default(0)
+  id             String   @id @db.Char(64)
+  title          String?  @db.VarChar(180)
+  content        String?  @db.Text
+  images         String[] @default([])
+  user_id        String   @db.Char(64)
+  created_at     DateTime @default(now()) @db.Timestamptz()
+  likers_count   Int      @default(0)
+  comments_count Int      @default(0)
 
   @@index([user_id])
   @@index([created_at])
@@ -74,8 +74,8 @@ model Moment {
 }
 
 model LikeOnMoment {
-  moment_id String @db.Char(64)
-  user_id String @db.Char(64)
+  moment_id  String   @db.Char(64)
+  user_id    String   @db.Char(64)
   created_at DateTime @default(now()) @db.Timestamptz()
 
   @@id([moment_id, user_id])

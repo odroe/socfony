@@ -9,6 +9,7 @@
   "author": "Odroe Inc. <hello@odroe.com>",
   "license": "BSD-3-Clause",
   "dependencies": {
+    "@prisma/client": "^4.1.0",
     "prisma": "^4.1.0"
   }
 }
