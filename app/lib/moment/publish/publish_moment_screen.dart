@@ -11,17 +11,20 @@ class PublishMomentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PublishScreenWillPop(
-      child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: const Text('发布动态'),
-          actions: const <Widget>[MomentPublishButton()],
-        ),
-        body: ListView(
-          children: const <Widget>[
-            SizedBox(height: 24),
-            MomentFormCard(),
-          ],
+      child: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            title: const Text('发布动态'),
+            actions: const <Widget>[MomentPublishButton()],
+          ),
+          body: ListView(
+            children: const <Widget>[
+              SizedBox(height: 24),
+              MomentFormCard(),
+            ],
+          ),
         ),
       ),
     );

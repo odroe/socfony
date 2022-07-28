@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'add_moment_image_button.dart';
 import 'moment_content_text_field.dart';
+import 'moment_picked_images.dart';
 import 'moment_title_text_field.dart';
 
 class MomentFormCard extends StatelessWidget {
@@ -16,8 +17,9 @@ class MomentFormCard extends StatelessWidget {
           MomentTitleTextField(),
           Divider(height: 0),
           MomentContextTextField(),
+          MomentPickedImages(),
           AddMomentImageButton(),
-          SizedBox(height: 24),
+          SizedBox(height: 16),
         ],
       ),
     );
