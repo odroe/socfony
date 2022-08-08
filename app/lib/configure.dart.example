@@ -1,0 +1,6 @@
+const Object sf$grpcAddress = r'127.0.0.1';
+const int sf$grpcPort = 8080;
+
+const String sf$cosAddress = '<bucket>.cos.ap-chengdu.myqcloud.com';
+const String sf$cosAccessKey = '<access-key>';
+const String sf$cosSecretKey = '<secret-key>';

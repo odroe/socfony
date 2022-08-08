@@ -1,13 +1,12 @@
-import 'dart:io';
-
 import 'package:grpc/grpc.dart';
 import 'package:socfonyapis/socfonyapis.dart';
 
 import 'auth/auth_provider.dart';
+import 'configure.dart';
 
 final ClientChannel _channel = ClientChannel(
-  InternetAddress('192.168.31.5', type: InternetAddressType.IPv4),
-  port: 8080,
+  sf$grpcAddress,
+  port: sf$grpcPort,
   options: ChannelOptions(
     userAgent: 'socfony/1.0.0',
     codecRegistry: CodecRegistry(codecs: const <Codec>[
