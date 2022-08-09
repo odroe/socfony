@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Picked images provider.
-final pickedImagesProvider = StateProvider.autoDispose<List<String>>(
+final AutoDisposeStateProvider<List<String>> pickedImagesProvider =
+    StateProvider.autoDispose<List<String>>(
   (ref) => const <String>[],
 );
 

@@ -5,7 +5,7 @@
 syntax = "proto3";
 package odroe.socfony;
 
-import public "google/protobuf/timestamp.proto";
+import "google/protobuf/timestamp.proto";
 
 // Access token.
 message AccessToken {

@@ -5,7 +5,7 @@
 syntax = "proto3";
 package odroe.socfony;
 
-import public "google/protobuf/timestamp.proto";
+import "google/protobuf/timestamp.proto";
 
 // Moment
 message Moment {
@@ -22,7 +22,7 @@ message Moment {
 
 // Create moment request.
 message CreateMomentRequest {
-  string title = 1; // Moment title.
-  string content = 2; // Moment content.
+  optional string title = 1; // Moment title.
+  optional string content = 2; // Moment content.
   repeated string images = 3; // Moment images.
 }

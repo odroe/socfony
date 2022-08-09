@@ -101,7 +101,7 @@ if echo $PATH | grep -q "$cache_dir/protoc/bin"; then
 fi
 
 # Clean unused files.
-find $output_dir/google -name '*.pbenum.dart' -delete;
+# find $output_dir/google -name '*.pbenum.dart' -delete;
 find $output_dir -name '*.pbjson.dart' -delete;
 
 # Format generated Dart files.
