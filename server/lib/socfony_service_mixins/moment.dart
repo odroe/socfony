@@ -7,14 +7,24 @@ import '../auth.dart';
 import '../database/connection.dart';
 
 Moment _createMomentFromJson(Map<String, dynamic> json) {
-  return Moment()
-    ..id = json['id']
-    ..commentsCount = json['comments_count'] ?? 0
-    ..content = json['content']
-    ..createdAt = Timestamp.fromDateTime(json['created_at'])
-    ..images.addAll(json['images'])
-    ..likersCount = json['likers_count'] ?? 0
-    ..title = json['title'];
+  final Moment moment = Moment();
+  moment.id = json['id'] as String;
+  moment.userId = json['user_id'] as String;
+  moment.commentsCount = json['comments_count'] as int;
+  moment.likersCount = json['likers_count'] as int;
+  moment.createdAt = Timestamp.fromDateTime(json['created_at']);
+
+  if (json['titme'] != null && json['title'].isNotEmpty) {
+    moment.title = json['title'] as String;
+  }
+  if (json['content'] != null && json['content'].isNotEmpty) {
+    moment.content = json['content'] as String;
+  }
+  if (json['images'] != null && json['images'].isNotEmpty) {
+    moment.images.addAll(json['images'] as List<String>);
+  }
+
+  return moment;
 }
 
 mixin MomentMethods on SocfonyServiceBase {
@@ -38,7 +48,7 @@ mixin MomentMethods on SocfonyServiceBase {
     // substitution Values
     final Map<String, dynamic> substitutionValues = <String, dynamic>{
       'id': 64.betid,
-      'userId': accessToken['ownerId'],
+      'user_id': accessToken['owner_id'],
     };
 
     // If title is not empty, add to substitution values.
@@ -56,9 +66,24 @@ mixin MomentMethods on SocfonyServiceBase {
       substitutionValues['images'] = request.images;
     }
 
+    final StringBuffer sql = StringBuffer('INSERT INTO moments');
+
+    /// Build columns.
+    sql.write('(');
+    sql.write(substitutionValues.keys.join(','));
+    sql.write(')');
+
+    /// Build values.
+    sql.write(' VALUES (');
+    sql.write(substitutionValues.keys.map((key) => '@$key').join(','));
+    sql.write(')');
+
+    /// Build returning.
+    sql.write(' RETURNING *');
+
     // Save moment.
     final PostgreSQLResult result = await connection.query(
-      'INSERT INTO moments (id, userId, title, content, images) VALUES (@id, @userId, @title, @content, @images) RETURNING *',
+      sql.toString(),
       substitutionValues: substitutionValues,
     );
 
