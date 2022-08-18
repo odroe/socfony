@@ -16,6 +16,7 @@ import 'google/protobuf/wrappers.pb.dart' as $2;
 import 'socfony/user.pb.dart' as $3;
 import 'socfony/moment.pb.dart' as $4;
 import 'socfony/phone_one_time_password.pb.dart' as $5;
+import 'socfony/shared.pb.dart' as $6;
 export 'socfony.pb.dart';
 
 class SocfonyServiceClient extends $grpc.Client {
@@ -84,6 +85,15 @@ class SocfonyServiceClient extends $grpc.Client {
           '/odroe.socfony.SocfonyService/CheckPhoneOneTimePassword2auth',
           ($2.StringValue value) => value.writeToBuffer(),
           ($core.List<$core.int> value) => $2.BoolValue.fromBuffer(value));
+  static final _$allMoments = $grpc.ClientMethod<$6.Pagination, $4.MomentList>(
+      '/odroe.socfony.SocfonyService/allMoments',
+      ($6.Pagination value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $4.MomentList.fromBuffer(value));
+  static final _$followMoments =
+      $grpc.ClientMethod<$6.Pagination, $4.MomentList>(
+          '/odroe.socfony.SocfonyService/followMoments',
+          ($6.Pagination value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $4.MomentList.fromBuffer(value));
 
   SocfonyServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -167,6 +177,16 @@ class SocfonyServiceClient extends $grpc.Client {
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$checkPhoneOneTimePassword2auth, request,
         options: options);
+  }
+
+  $grpc.ResponseFuture<$4.MomentList> allMoments($6.Pagination request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$allMoments, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$4.MomentList> followMoments($6.Pagination request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$followMoments, request, options: options);
   }
 }
 
@@ -277,6 +297,20 @@ abstract class SocfonyServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $2.StringValue.fromBuffer(value),
         ($2.BoolValue value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$6.Pagination, $4.MomentList>(
+        'allMoments',
+        allMoments_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $6.Pagination.fromBuffer(value),
+        ($4.MomentList value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$6.Pagination, $4.MomentList>(
+        'followMoments',
+        followMoments_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $6.Pagination.fromBuffer(value),
+        ($4.MomentList value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.AccessToken> createAccessToken_Pre($grpc.ServiceCall call,
@@ -350,6 +384,16 @@ abstract class SocfonyServiceBase extends $grpc.Service {
     return checkPhoneOneTimePassword2auth(call, await request);
   }
 
+  $async.Future<$4.MomentList> allMoments_Pre(
+      $grpc.ServiceCall call, $async.Future<$6.Pagination> request) async {
+    return allMoments(call, await request);
+  }
+
+  $async.Future<$4.MomentList> followMoments_Pre(
+      $grpc.ServiceCall call, $async.Future<$6.Pagination> request) async {
+    return followMoments(call, await request);
+  }
+
   $async.Future<$0.AccessToken> createAccessToken(
       $grpc.ServiceCall call, $0.CreateAccessTokenRequest request);
   $async.Future<$0.AccessToken> refreshAccessToken(
@@ -378,4 +422,8 @@ abstract class SocfonyServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $1.Empty request);
   $async.Future<$2.BoolValue> checkPhoneOneTimePassword2auth(
       $grpc.ServiceCall call, $2.StringValue request);
+  $async.Future<$4.MomentList> allMoments(
+      $grpc.ServiceCall call, $6.Pagination request);
+  $async.Future<$4.MomentList> followMoments(
+      $grpc.ServiceCall call, $6.Pagination request);
 }

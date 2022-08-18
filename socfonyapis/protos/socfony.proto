@@ -11,6 +11,7 @@ import public "google/protobuf/wrappers.proto";
 import public "google/protobuf/timestamp.proto";
 
 // Socfony Protocol Buffers
+import public "socfony/shared.proto";
 import public "socfony/access_token.proto";
 import public "socfony/moment.proto";
 import public "socfony/phone_one_time_password.proto";
@@ -59,4 +60,11 @@ service SocfonyService {
 
   // Check a one-time password is valid for current authticated user.
   rpc CheckPhoneOneTimePassword2auth(google.protobuf.StringValue) returns (google.protobuf.BoolValue);
+
+  ///========================= Moment =========================///
+  // All moments.
+  rpc allMoments(Pagination) returns (MomentList);
+
+  // Follow moments.
+  rpc followMoments(Pagination) returns (MomentList);
 }

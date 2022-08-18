@@ -26,3 +26,8 @@ message CreateMomentRequest {
   optional string content = 2; // Moment content.
   repeated string images = 3; // Moment images.
 }
+
+// Moment list
+message MomentList {
+  repeated Moment moments = 1; // Moment list.
+}

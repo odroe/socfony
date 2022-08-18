@@ -81,6 +81,7 @@ class MomentPublishButton extends ConsumerWidget {
         ..content = content;
       request.images.addAll(uploadedImages);
 
+      // TODO: Add to lists.
       final moment = await socfonyService.createMoment(request);
 
       // Navigate to moment detail page.

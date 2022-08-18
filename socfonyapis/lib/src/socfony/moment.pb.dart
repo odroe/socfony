@@ -9,7 +9,7 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../google/protobuf/timestamp.pb.dart' as $6;
+import '../google/protobuf/timestamp.pb.dart' as $7;
 
 class Moment extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
@@ -47,13 +47,13 @@ class Moment extends $pb.GeneratedMessage {
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
             : 'images')
-    ..aOM<$6.Timestamp>(
+    ..aOM<$7.Timestamp>(
         6,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
             : 'createdAt',
         protoName: 'createdAt',
-        subBuilder: $6.Timestamp.create)
+        subBuilder: $7.Timestamp.create)
     ..a<$core.int>(
         7,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
@@ -156,9 +156,9 @@ class Moment extends $pb.GeneratedMessage {
   $core.List<$core.String> get images => $_getList(4);
 
   @$pb.TagNumber(6)
-  $6.Timestamp get createdAt => $_getN(5);
+  $7.Timestamp get createdAt => $_getN(5);
   @$pb.TagNumber(6)
-  set createdAt($6.Timestamp v) {
+  set createdAt($7.Timestamp v) {
     setField(6, v);
   }
 
@@ -167,7 +167,7 @@ class Moment extends $pb.GeneratedMessage {
   @$pb.TagNumber(6)
   void clearCreatedAt() => clearField(6);
   @$pb.TagNumber(6)
-  $6.Timestamp ensureCreatedAt() => $_ensure(5);
+  $7.Timestamp ensureCreatedAt() => $_ensure(5);
 
   @$pb.TagNumber(7)
   $core.int get likersCount => $_getIZ(6);
@@ -288,4 +288,55 @@ class CreateMomentRequest extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(3)
   $core.List<$core.String> get images => $_getList(2);
+}
+
+class MomentList extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          ? ''
+          : 'MomentList',
+      package: const $pb.PackageName(
+          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+              ? ''
+              : 'odroe.socfony'),
+      createEmptyInstance: create)
+    ..pc<Moment>(
+        1,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'moments',
+        $pb.PbFieldType.PM,
+        subBuilder: Moment.create)
+    ..hasRequiredFields = false;
+
+  MomentList._() : super();
+  factory MomentList() => create();
+  factory MomentList.fromBuffer($core.List<$core.int> i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(i, r);
+  factory MomentList.fromJson($core.String i,
+          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(i, r);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+      'Will be removed in next major version')
+  MomentList clone() => MomentList()..mergeFromMessage(this);
+  @$core.Deprecated('Using this can add significant overhead to your binary. '
+      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+      'Will be removed in next major version')
+  MomentList copyWith(void Function(MomentList) updates) =>
+      super.copyWith((message) => updates(message as MomentList))
+          as MomentList; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static MomentList create() => MomentList._();
+  MomentList createEmptyInstance() => create();
+  static $pb.PbList<MomentList> createRepeated() => $pb.PbList<MomentList>();
+  @$core.pragma('dart2js:noInline')
+  static MomentList getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<MomentList>(create);
+  static MomentList? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<Moment> get moments => $_getList(0);
 }

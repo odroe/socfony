@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:betid/betid.dart';
 import 'package:grpc/grpc.dart';
 import 'package:postgres/postgres.dart';
@@ -199,5 +201,43 @@ mixin MomentMethods on SocfonyServiceBase {
     });
 
     return BoolValue()..value = false;
+  }
+
+  /// Get all moments.
+  @override
+  Future<MomentList> allMoments(ServiceCall call, Pagination request) async {
+    // Create database connection.
+    final PooledDatabaseConnection connection =
+        await PooledDatabaseConnection.connect();
+
+    // Query SQL.
+    const String sql =
+        'SELECT * FROM moments ORDER BY created_at DESC LIMIT @limit OFFSET @offset';
+
+    // Query moments.
+    final PostgreSQLResult result = await connection.query(
+      sql,
+      substitutionValues: {
+        'limit': min(100, max(request.take, 0)),
+        'offset': max(request.skip, 0),
+      },
+    );
+
+    // Close database connection.
+    await connection.close();
+
+    // Create moment list.
+    final moments = Moment.createRepeated();
+    for (final PostgreSQLResultRow row in result) {
+      moments.add(_createMomentFromJson(row.toColumnMap()));
+    }
+
+    return MomentList()..moments.addAll(moments);
+  }
+
+  /// Get follow moment.
+  @override
+  Future<MomentList> followMoments(ServiceCall call, Pagination request) async {
+    return MomentList();
   }
 }

@@ -8,6 +8,7 @@
 export 'google/protobuf/empty.pbenum.dart';
 export 'google/protobuf/wrappers.pbenum.dart';
 export 'google/protobuf/timestamp.pbenum.dart';
+export 'socfony/shared.pbenum.dart';
 export 'socfony/access_token.pbenum.dart';
 export 'socfony/moment.pbenum.dart';
 export 'socfony/phone_one_time_password.pbenum.dart';

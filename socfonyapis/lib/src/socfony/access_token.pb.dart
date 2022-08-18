@@ -9,7 +9,7 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../google/protobuf/timestamp.pb.dart' as $6;
+import '../google/protobuf/timestamp.pb.dart' as $7;
 
 class AccessToken extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
@@ -32,20 +32,20 @@ class AccessToken extends $pb.GeneratedMessage {
             ? ''
             : 'userId',
         protoName: 'userId')
-    ..aOM<$6.Timestamp>(
+    ..aOM<$7.Timestamp>(
         3,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
             : 'expiredAt',
         protoName: 'expiredAt',
-        subBuilder: $6.Timestamp.create)
-    ..aOM<$6.Timestamp>(
+        subBuilder: $7.Timestamp.create)
+    ..aOM<$7.Timestamp>(
         4,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
             : 'refreshExpiredAt',
         protoName: 'refreshExpiredAt',
-        subBuilder: $6.Timestamp.create)
+        subBuilder: $7.Timestamp.create)
     ..hasRequiredFields = false;
 
   AccessToken._() : super();
@@ -101,9 +101,9 @@ class AccessToken extends $pb.GeneratedMessage {
   void clearUserId() => clearField(2);
 
   @$pb.TagNumber(3)
-  $6.Timestamp get expiredAt => $_getN(2);
+  $7.Timestamp get expiredAt => $_getN(2);
   @$pb.TagNumber(3)
-  set expiredAt($6.Timestamp v) {
+  set expiredAt($7.Timestamp v) {
     setField(3, v);
   }
 
@@ -112,12 +112,12 @@ class AccessToken extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   void clearExpiredAt() => clearField(3);
   @$pb.TagNumber(3)
-  $6.Timestamp ensureExpiredAt() => $_ensure(2);
+  $7.Timestamp ensureExpiredAt() => $_ensure(2);
 
   @$pb.TagNumber(4)
-  $6.Timestamp get refreshExpiredAt => $_getN(3);
+  $7.Timestamp get refreshExpiredAt => $_getN(3);
   @$pb.TagNumber(4)
-  set refreshExpiredAt($6.Timestamp v) {
+  set refreshExpiredAt($7.Timestamp v) {
     setField(4, v);
   }
 
@@ -126,7 +126,7 @@ class AccessToken extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   void clearRefreshExpiredAt() => clearField(4);
   @$pb.TagNumber(4)
-  $6.Timestamp ensureRefreshExpiredAt() => $_ensure(3);
+  $7.Timestamp ensureRefreshExpiredAt() => $_ensure(3);
 }
 
 class CreateAccessTokenRequest extends $pb.GeneratedMessage {

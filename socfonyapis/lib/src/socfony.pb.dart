@@ -10,6 +10,7 @@ import 'dart:core' as $core;
 export 'google/protobuf/empty.pb.dart';
 export 'google/protobuf/wrappers.pb.dart';
 export 'google/protobuf/timestamp.pb.dart';
+export 'socfony/shared.pb.dart';
 export 'socfony/access_token.pb.dart';
 export 'socfony/moment.pb.dart';
 export 'socfony/phone_one_time_password.pb.dart';
