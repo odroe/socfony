@@ -16,7 +16,7 @@ Moment _createMomentFromJson(Map<String, dynamic> json) {
   moment.likersCount = json['likers_count'] as int;
   moment.createdAt = Timestamp.fromDateTime(json['created_at']);
 
-  if (json['titme'] != null && json['title'].isNotEmpty) {
+  if (json['title'] != null && json['title'].isNotEmpty) {
     moment.title = json['title'] as String;
   }
   if (json['content'] != null && json['content'].isNotEmpty) {

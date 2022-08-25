@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../moment/all_moments/all_moments_list_view.dart';
+import '../moment/all_moments_list_view.dart';
 
 class HomeBodyTabBarView extends StatelessWidget {
   const HomeBodyTabBarView({super.key});
