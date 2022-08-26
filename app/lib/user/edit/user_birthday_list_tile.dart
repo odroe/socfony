@@ -82,10 +82,11 @@ class _BirthdayButton extends ConsumerWidget {
     );
 
     // If selected is not null, set birthday.
-    if (selected != null) {}
-    final User user = await socfonyService
-        .updateUser(UpdateUserRequest()..birthday = _date2int(selected!));
-    user.save(reader);
+    if (selected != null) {
+      final User user = await socfonyService
+          .updateUser(UpdateUserRequest()..birthday = _date2int(selected));
+      user.save(reader);
+    }
   }
 
   // Date to 8 length int.
