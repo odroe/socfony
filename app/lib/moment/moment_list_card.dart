@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:socfony/user/user_avatar.dart';
 import 'package:socfonyapis/socfonyapis.dart';
 import 'package:timelines/timelines.dart';
 
@@ -250,11 +251,7 @@ class _MomentCardUserTile extends ConsumerWidget {
       contentPadding: const EdgeInsets.symmetric(horizontal: 16),
       horizontalTitleGap: 16,
       dense: true,
-      leading: const CircleAvatar(
-        backgroundImage: NetworkImage(
-          'https://avatars.githubusercontent.com/u/5564821',
-        ),
-      ),
+      leading: UserAvatar(id: userId),
       title: _Username(id: userId),
       subtitle: _Timeago(momentId: momentId),
       trailing: IconButton(

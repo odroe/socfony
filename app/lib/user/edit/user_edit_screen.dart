@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:socfony/socfony_service.dart';
+import 'package:socfony/user/user_avatar.dart';
 import 'package:socfony/user/user_providers.dart';
 import 'package:socfonyapis/socfonyapis.dart';
 
@@ -15,14 +16,6 @@ import 'account_id_card.dart';
 import 'user_bio_list_tile.dart';
 import 'user_birthday_list_tile.dart';
 import 'user_gender_list_tile.dart';
-
-/// User avatar provider.
-final AutoDisposeProvider<String?> _avatarProvider =
-    Provider.autoDispose((ref) {
-  return ref.watch(
-    authenticatedUserProvider.select((value) => value?.avatar),
-  );
-});
 
 class UserEditScreen extends StatelessWidget {
   const UserEditScreen({Key? key}) : super(key: key);
@@ -97,28 +90,11 @@ class _Avatar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // User avatar file path.
-    final String? avatar = ref.watch(_avatarProvider);
+    // Current user id provider.
+    final provider = authenticatedUserProvider.select((state) => state?.id);
+    final String? userId = ref.watch(provider);
 
-    return FutureBuilder<ImageProvider?>(
-      future: buildAvatarImageProvider(avatar),
-      builder: (context, snapshot) {
-        return CircleAvatar(
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          backgroundImage: snapshot.data,
-        );
-      },
-    );
-  }
-
-  /// Build avatar image provider.
-  Future<ImageProvider?> buildAvatarImageProvider(String? avatar) async {
-    if (avatar == null) {
-      return null;
-    }
-
-    final String url = await minio.presignedUrl('get', sf$cosBucket, avatar);
-    return NetworkImage(url);
+    return UserAvatar(id: userId);
   }
 }
 

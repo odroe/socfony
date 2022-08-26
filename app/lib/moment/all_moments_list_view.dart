@@ -6,16 +6,24 @@ import '../socfony_service.dart';
 import 'moment_list_card.dart';
 import 'moment_providers.dart';
 
-final _all = StateProvider.autoDispose((ref) => <String>[]);
+final allMoments = StateProvider.autoDispose((ref) => <String>[]);
 
-class AllMomentsListView extends ConsumerWidget {
+class AllMomentsListView extends ConsumerStatefulWidget {
   const AllMomentsListView({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<AllMomentsListView> createState() => _AllMomentsListViewState();
+}
+
+class _AllMomentsListViewState extends ConsumerState<AllMomentsListView>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+
     // Watch all moments count.
     final int count = ref.watch(
-      _all.select((List<String> moments) => moments.length),
+      allMoments.select((List<String> moments) => moments.length),
     );
 
     return RefreshIndicator(
@@ -31,7 +39,7 @@ class AllMomentsListView extends ConsumerWidget {
   /// List item builder.
   Widget itemBuilder(WidgetRef ref, BuildContext context, int index) {
     final String id = ref.watch(
-      _all.select((List<String> moments) => moments[index]),
+      allMoments.select((List<String> moments) => moments[index]),
     );
 
     return MomentListCard(id: id);
@@ -48,6 +56,10 @@ class AllMomentsListView extends ConsumerWidget {
       moment.save(reader);
     }
 
-    reader(_all.state).state = list.moments.map((moment) => moment.id).toList();
+    reader(allMoments.state).state =
+        list.moments.map((moment) => moment.id).toList();
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
