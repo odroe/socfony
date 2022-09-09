@@ -70,8 +70,8 @@ class User extends $pb.GeneratedMessage {
         8,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
-            : 'createdAt',
-        protoName: 'createdAt',
+            : 'registeredAt',
+        protoName: 'registeredAt',
         subBuilder: $6.Timestamp.create)
     ..hasRequiredFields = false;
 
@@ -188,18 +188,18 @@ class User extends $pb.GeneratedMessage {
   void clearBirthday() => clearField(7);
 
   @$pb.TagNumber(8)
-  $6.Timestamp get createdAt => $_getN(7);
+  $6.Timestamp get registeredAt => $_getN(7);
   @$pb.TagNumber(8)
-  set createdAt($6.Timestamp v) {
+  set registeredAt($6.Timestamp v) {
     setField(8, v);
   }
 
   @$pb.TagNumber(8)
-  $core.bool hasCreatedAt() => $_has(7);
+  $core.bool hasRegisteredAt() => $_has(7);
   @$pb.TagNumber(8)
-  void clearCreatedAt() => clearField(8);
+  void clearRegisteredAt() => clearField(8);
   @$pb.TagNumber(8)
-  $6.Timestamp ensureCreatedAt() => $_ensure(7);
+  $6.Timestamp ensureRegisteredAt() => $_ensure(7);
 }
 
 enum FindUserRequest_Kind { id, phone, name, notSet }

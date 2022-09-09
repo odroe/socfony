@@ -15,7 +15,7 @@ datasource db {
 /// Cognitive gender
 enum Gender {
   woman
-  main
+  man
   unknown
 }
 

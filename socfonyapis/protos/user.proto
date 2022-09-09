@@ -24,7 +24,7 @@ message User {
   optional string avatar = 5;
   optional string bio = 6;
   optional int32 birthday = 7;
-  google.protobuf.Timestamp createdAt = 8;
+  google.protobuf.Timestamp registeredAt = 8;
 }
 
 // Find a user request

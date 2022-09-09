@@ -82,7 +82,7 @@ Map<String, dynamic> _$UserGroupByOutputTypeToJson(
 
 const _$GenderEnumMap = {
   Gender.woman: 'woman',
-  Gender.main: 'main',
+  Gender.man: 'man',
   Gender.unknown: 'unknown',
 };
 
