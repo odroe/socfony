@@ -11,14 +11,20 @@ dependencies:
   betid: ^1.0.0
   easysms: ^1.0.0
   grpc: ^3.0.2
+  json_annotation: ^4.6.0
   orm: ^2.1.0
-  pool: ^1.5.1
-  postgres: ^2.4.6
+  rc: ^0.1.0
+  socfonyapis: ^1.0.2
+
+dev_dependencies:
+  build_runner: ^2.2.0
+  json_serializable: ^6.3.1
+  lints: ^2.0.0
+
+dependency_overrides:
   socfonyapis:
     path: ../socfonyapis
 
-dev_dependencies:
-  lints: ^2.0.0
-
 prisma:
   scehma: prisma/schema.prisma
+  doteng: .env

@@ -1,6 +1,6 @@
 ///
 //  Generated code. Do not modify.
-//  source: socfony/moment.proto
+//  source: moment.proto
 //
 // @dart = 2.12
 // ignore_for_file: annotate_overrides,camel_case_types,constant_identifier_names,directives_ordering,library_prefixes,non_constant_identifier_names,prefer_final_fields,return_of_invalid_type,unnecessary_const,unnecessary_import,unnecessary_this,unused_import,unused_shown_name
@@ -9,7 +9,8 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../google/protobuf/timestamp.pb.dart' as $2;
+import 'user.pb.dart' as $4;
+import 'google/protobuf/timestamp.pb.dart' as $6;
 
 class Moment extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
@@ -30,50 +31,56 @@ class Moment extends $pb.GeneratedMessage {
         2,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
-            : 'userId',
-        protoName: 'userId')
+            : 'title')
     ..aOS(
         3,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
-            : 'title')
-    ..aOS(
+            : 'contents')
+    ..pPS(
         4,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
-            : 'content')
-    ..pPS(
+            : 'images')
+    ..aOS(
         5,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
-            : 'images')
-    ..aOM<$2.Timestamp>(
+            : 'authorId',
+        protoName: 'authorId')
+    ..aOM<$4.User>(
         6,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'author',
+        subBuilder: $4.User.create)
+    ..aOM<$6.Timestamp>(
+        7,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
             : 'createdAt',
         protoName: 'createdAt',
-        subBuilder: $2.Timestamp.create)
-    ..a<$core.int>(
-        7,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'likersCount',
-        $pb.PbFieldType.O3,
-        protoName: 'likersCount')
+        subBuilder: $6.Timestamp.create)
     ..a<$core.int>(
         8,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'favoritesCount',
+        $pb.PbFieldType.O3,
+        protoName: 'favoritesCount')
+    ..a<$core.int>(
+        9,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
             : 'commentsCount',
         $pb.PbFieldType.O3,
         protoName: 'commentsCount')
     ..aOB(
-        9,
+        10,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
-            : 'hasLiked',
-        protoName: 'hasLiked')
+            : 'isFavorited',
+        protoName: 'isFavorited')
     ..hasRequiredFields = false;
 
   Moment._() : super();
@@ -117,93 +124,107 @@ class Moment extends $pb.GeneratedMessage {
   void clearId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.String get userId => $_getSZ(1);
+  $core.String get title => $_getSZ(1);
   @$pb.TagNumber(2)
-  set userId($core.String v) {
+  set title($core.String v) {
     $_setString(1, v);
   }
 
   @$pb.TagNumber(2)
-  $core.bool hasUserId() => $_has(1);
+  $core.bool hasTitle() => $_has(1);
   @$pb.TagNumber(2)
-  void clearUserId() => clearField(2);
+  void clearTitle() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get title => $_getSZ(2);
+  $core.String get contents => $_getSZ(2);
   @$pb.TagNumber(3)
-  set title($core.String v) {
+  set contents($core.String v) {
     $_setString(2, v);
   }
 
   @$pb.TagNumber(3)
-  $core.bool hasTitle() => $_has(2);
+  $core.bool hasContents() => $_has(2);
   @$pb.TagNumber(3)
-  void clearTitle() => clearField(3);
+  void clearContents() => clearField(3);
 
   @$pb.TagNumber(4)
-  $core.String get content => $_getSZ(3);
-  @$pb.TagNumber(4)
-  set content($core.String v) {
-    $_setString(3, v);
-  }
-
-  @$pb.TagNumber(4)
-  $core.bool hasContent() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearContent() => clearField(4);
+  $core.List<$core.String> get images => $_getList(3);
 
   @$pb.TagNumber(5)
-  $core.List<$core.String> get images => $_getList(4);
+  $core.String get authorId => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set authorId($core.String v) {
+    $_setString(4, v);
+  }
+
+  @$pb.TagNumber(5)
+  $core.bool hasAuthorId() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearAuthorId() => clearField(5);
 
   @$pb.TagNumber(6)
-  $2.Timestamp get createdAt => $_getN(5);
+  $4.User get author => $_getN(5);
   @$pb.TagNumber(6)
-  set createdAt($2.Timestamp v) {
+  set author($4.User v) {
     setField(6, v);
   }
 
   @$pb.TagNumber(6)
-  $core.bool hasCreatedAt() => $_has(5);
+  $core.bool hasAuthor() => $_has(5);
   @$pb.TagNumber(6)
-  void clearCreatedAt() => clearField(6);
+  void clearAuthor() => clearField(6);
   @$pb.TagNumber(6)
-  $2.Timestamp ensureCreatedAt() => $_ensure(5);
+  $4.User ensureAuthor() => $_ensure(5);
 
   @$pb.TagNumber(7)
-  $core.int get likersCount => $_getIZ(6);
+  $6.Timestamp get createdAt => $_getN(6);
   @$pb.TagNumber(7)
-  set likersCount($core.int v) {
-    $_setSignedInt32(6, v);
+  set createdAt($6.Timestamp v) {
+    setField(7, v);
   }
 
   @$pb.TagNumber(7)
-  $core.bool hasLikersCount() => $_has(6);
+  $core.bool hasCreatedAt() => $_has(6);
   @$pb.TagNumber(7)
-  void clearLikersCount() => clearField(7);
+  void clearCreatedAt() => clearField(7);
+  @$pb.TagNumber(7)
+  $6.Timestamp ensureCreatedAt() => $_ensure(6);
 
   @$pb.TagNumber(8)
-  $core.int get commentsCount => $_getIZ(7);
+  $core.int get favoritesCount => $_getIZ(7);
   @$pb.TagNumber(8)
-  set commentsCount($core.int v) {
+  set favoritesCount($core.int v) {
     $_setSignedInt32(7, v);
   }
 
   @$pb.TagNumber(8)
-  $core.bool hasCommentsCount() => $_has(7);
+  $core.bool hasFavoritesCount() => $_has(7);
   @$pb.TagNumber(8)
-  void clearCommentsCount() => clearField(8);
+  void clearFavoritesCount() => clearField(8);
 
   @$pb.TagNumber(9)
-  $core.bool get hasLiked => $_getBF(8);
+  $core.int get commentsCount => $_getIZ(8);
   @$pb.TagNumber(9)
-  set hasLiked($core.bool v) {
-    $_setBool(8, v);
+  set commentsCount($core.int v) {
+    $_setSignedInt32(8, v);
   }
 
   @$pb.TagNumber(9)
-  $core.bool hasHasLiked() => $_has(8);
+  $core.bool hasCommentsCount() => $_has(8);
   @$pb.TagNumber(9)
-  void clearHasLiked() => clearField(9);
+  void clearCommentsCount() => clearField(9);
+
+  @$pb.TagNumber(10)
+  $core.bool get isFavorited => $_getBF(9);
+  @$pb.TagNumber(10)
+  set isFavorited($core.bool v) {
+    $_setBool(9, v);
+  }
+
+  @$pb.TagNumber(10)
+  $core.bool hasIsFavorited() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearIsFavorited() => clearField(10);
 }
 
 class CreateMomentRequest extends $pb.GeneratedMessage {
@@ -225,7 +246,7 @@ class CreateMomentRequest extends $pb.GeneratedMessage {
         2,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
-            : 'content')
+            : 'contents')
     ..pPS(
         3,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
@@ -275,68 +296,17 @@ class CreateMomentRequest extends $pb.GeneratedMessage {
   void clearTitle() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.String get content => $_getSZ(1);
+  $core.String get contents => $_getSZ(1);
   @$pb.TagNumber(2)
-  set content($core.String v) {
+  set contents($core.String v) {
     $_setString(1, v);
   }
 
   @$pb.TagNumber(2)
-  $core.bool hasContent() => $_has(1);
+  $core.bool hasContents() => $_has(1);
   @$pb.TagNumber(2)
-  void clearContent() => clearField(2);
+  void clearContents() => clearField(2);
 
   @$pb.TagNumber(3)
   $core.List<$core.String> get images => $_getList(2);
-}
-
-class MomentList extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'MomentList',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'odroe.socfony'),
-      createEmptyInstance: create)
-    ..pc<Moment>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'moments',
-        $pb.PbFieldType.PM,
-        subBuilder: Moment.create)
-    ..hasRequiredFields = false;
-
-  MomentList._() : super();
-  factory MomentList() => create();
-  factory MomentList.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory MomentList.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
-  MomentList clone() => MomentList()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  MomentList copyWith(void Function(MomentList) updates) =>
-      super.copyWith((message) => updates(message as MomentList))
-          as MomentList; // ignore: deprecated_member_use
-  $pb.BuilderInfo get info_ => _i;
-  @$core.pragma('dart2js:noInline')
-  static MomentList create() => MomentList._();
-  MomentList createEmptyInstance() => create();
-  static $pb.PbList<MomentList> createRepeated() => $pb.PbList<MomentList>();
-  @$core.pragma('dart2js:noInline')
-  static MomentList getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<MomentList>(create);
-  static MomentList? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.List<Moment> get moments => $_getList(0);
 }

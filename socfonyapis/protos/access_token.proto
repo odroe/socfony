@@ -7,6 +7,7 @@ package odroe.socfony;
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
+import "one_time_password.proto";
 
 // Access token message
 message AccessToken {
@@ -21,8 +22,7 @@ message CreateAccessTokenRequest {
   // Formated as E.164 (https://en.wikipedia.org/wiki/E.164) phone number string
   string phone = 1;
 
-  // The [phone] one-time password
-  string otp = 2;
+  OneTimePasswordInput data = 2;
 }
 
 // Access token service

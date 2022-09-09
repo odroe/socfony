@@ -11,3 +11,6 @@ export 'src/google/protobuf/wrappers.pb.dart';
 
 // Socfony protobuf exports
 export 'src/access_token.pbgrpc.dart';
+export 'src/moment.pbgrpc.dart';
+export 'src/one_time_password.pbgrpc.dart';
+export 'src/user.pbgrpc.dart';

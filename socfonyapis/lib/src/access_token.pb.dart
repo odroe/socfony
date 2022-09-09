@@ -9,7 +9,8 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'google/protobuf/timestamp.pb.dart' as $2;
+import 'google/protobuf/timestamp.pb.dart' as $6;
+import 'one_time_password.pb.dart' as $0;
 
 class AccessToken extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
@@ -32,20 +33,20 @@ class AccessToken extends $pb.GeneratedMessage {
             ? ''
             : 'userId',
         protoName: 'userId')
-    ..aOM<$2.Timestamp>(
+    ..aOM<$6.Timestamp>(
         3,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
             : 'expiredAt',
         protoName: 'expiredAt',
-        subBuilder: $2.Timestamp.create)
-    ..aOM<$2.Timestamp>(
+        subBuilder: $6.Timestamp.create)
+    ..aOM<$6.Timestamp>(
         4,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
             : 'refreshExpiredAt',
         protoName: 'refreshExpiredAt',
-        subBuilder: $2.Timestamp.create)
+        subBuilder: $6.Timestamp.create)
     ..hasRequiredFields = false;
 
   AccessToken._() : super();
@@ -101,9 +102,9 @@ class AccessToken extends $pb.GeneratedMessage {
   void clearUserId() => clearField(2);
 
   @$pb.TagNumber(3)
-  $2.Timestamp get expiredAt => $_getN(2);
+  $6.Timestamp get expiredAt => $_getN(2);
   @$pb.TagNumber(3)
-  set expiredAt($2.Timestamp v) {
+  set expiredAt($6.Timestamp v) {
     setField(3, v);
   }
 
@@ -112,12 +113,12 @@ class AccessToken extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   void clearExpiredAt() => clearField(3);
   @$pb.TagNumber(3)
-  $2.Timestamp ensureExpiredAt() => $_ensure(2);
+  $6.Timestamp ensureExpiredAt() => $_ensure(2);
 
   @$pb.TagNumber(4)
-  $2.Timestamp get refreshExpiredAt => $_getN(3);
+  $6.Timestamp get refreshExpiredAt => $_getN(3);
   @$pb.TagNumber(4)
-  set refreshExpiredAt($2.Timestamp v) {
+  set refreshExpiredAt($6.Timestamp v) {
     setField(4, v);
   }
 
@@ -126,7 +127,7 @@ class AccessToken extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   void clearRefreshExpiredAt() => clearField(4);
   @$pb.TagNumber(4)
-  $2.Timestamp ensureRefreshExpiredAt() => $_ensure(3);
+  $6.Timestamp ensureRefreshExpiredAt() => $_ensure(3);
 }
 
 class CreateAccessTokenRequest extends $pb.GeneratedMessage {
@@ -144,11 +145,12 @@ class CreateAccessTokenRequest extends $pb.GeneratedMessage {
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
             : 'phone')
-    ..aOS(
+    ..aOM<$0.OneTimePasswordInput>(
         2,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
-            : 'otp')
+            : 'data',
+        subBuilder: $0.OneTimePasswordInput.create)
     ..hasRequiredFields = false;
 
   CreateAccessTokenRequest._() : super();
@@ -195,14 +197,16 @@ class CreateAccessTokenRequest extends $pb.GeneratedMessage {
   void clearPhone() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.String get otp => $_getSZ(1);
+  $0.OneTimePasswordInput get data => $_getN(1);
   @$pb.TagNumber(2)
-  set otp($core.String v) {
-    $_setString(1, v);
+  set data($0.OneTimePasswordInput v) {
+    setField(2, v);
   }
 
   @$pb.TagNumber(2)
-  $core.bool hasOtp() => $_has(1);
+  $core.bool hasData() => $_has(1);
   @$pb.TagNumber(2)
-  void clearOtp() => clearField(2);
+  void clearData() => clearField(2);
+  @$pb.TagNumber(2)
+  $0.OneTimePasswordInput ensureData() => $_ensure(1);
 }
