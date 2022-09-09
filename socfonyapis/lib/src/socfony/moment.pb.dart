@@ -9,7 +9,7 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../google/protobuf/timestamp.pb.dart' as $7;
+import '../google/protobuf/timestamp.pb.dart' as $2;
 
 class Moment extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
@@ -47,13 +47,13 @@ class Moment extends $pb.GeneratedMessage {
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
             : 'images')
-    ..aOM<$7.Timestamp>(
+    ..aOM<$2.Timestamp>(
         6,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
             : 'createdAt',
         protoName: 'createdAt',
-        subBuilder: $7.Timestamp.create)
+        subBuilder: $2.Timestamp.create)
     ..a<$core.int>(
         7,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
@@ -156,9 +156,9 @@ class Moment extends $pb.GeneratedMessage {
   $core.List<$core.String> get images => $_getList(4);
 
   @$pb.TagNumber(6)
-  $7.Timestamp get createdAt => $_getN(5);
+  $2.Timestamp get createdAt => $_getN(5);
   @$pb.TagNumber(6)
-  set createdAt($7.Timestamp v) {
+  set createdAt($2.Timestamp v) {
     setField(6, v);
   }
 
@@ -167,7 +167,7 @@ class Moment extends $pb.GeneratedMessage {
   @$pb.TagNumber(6)
   void clearCreatedAt() => clearField(6);
   @$pb.TagNumber(6)
-  $7.Timestamp ensureCreatedAt() => $_ensure(5);
+  $2.Timestamp ensureCreatedAt() => $_ensure(5);
 
   @$pb.TagNumber(7)
   $core.int get likersCount => $_getIZ(6);

@@ -11,75 +11,80 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+/// Cognitive gender
+enum Gender {
+  woman
+  main
+  unknown
+}
+
+/// User model
 model User {
-  id            String     @id @db.Char(64)
-  phone         String     @unique @db.VarChar(50)
-  name          String?    @unique @db.VarChar(100)
-  gender        UserGender @default(unknown)
-  avatar        String?    @db.VarChar(255)
-  bio           String?    @db.Text
-  birthday      Int?
-  registered_at DateTime   @default(now()) @db.Timestamptz()
+  id           String               @id @db.Char(64)
+  phone        String               @unique @db.VarChar(50)
+  name         String?              @unique @db.VarChar(100)
+  gender       Gender               @default(unknown)
+  avatar       String?              @db.VarChar(255)
+  bio          String?              @db.Text
+  birthday     Int?
+  registeredAt DateTime             @default(now()) @db.Timestamptz()
+  accessTokens AccessToken[]
+  moments      Moment[]
+  favorites    UserFavoriteMoment[]
 
   @@index([birthday])
-  @@index([registered_at])
+  @@index([registeredAt])
   @@index([gender])
-  @@map("users")
 }
 
-enum UserGender {
-  woman
-  man
-  unknown
-
-  @@map("user_gender")
-}
-
+/// User access token
 model AccessToken {
-  token              String   @id @db.Char(128)
-  owner_id           String   @db.Char(64)
-  created_at         DateTime @default(now()) @db.Timestamptz()
-  expired_at         DateTime @db.Timestamptz()
-  refresh_expired_at DateTime @db.Timestamptz()
+  token            String   @id @db.Char(128)
+  createdAt        DateTime @default(now()) @db.Timestamptz()
+  expiredAt        DateTime @db.Timestamptz()
+  refreshExpiredAt DateTime @db.Timestamptz()
+  ownerId          String   @db.Char(64)
+  owner            User     @relation(fields: [ownerId], references: [id])
 
-  @@index([owner_id])
-  @@map("access_tokens")
+  @@index([ownerId])
 }
 
-model PhoneSentCodes {
-  phone      String   @db.VarChar(50)
-  code       String   @db.VarChar(10)
-  created_at DateTime @default(now()) @db.Timestamptz()
-  expired_at DateTime @db.Timestamptz()
+/// Phone sent code
+model PhoneSentCode {
+  phone     String   @db.VarChar(50)
+  code      String   @db.VarChar(10)
+  createdAt DateTime @default(now()) @db.Timestamptz()
+  expiredAt DateTime @db.Timestamptz()
 
   @@id([phone, code])
   @@index([phone])
   @@index([code])
-  @@map("phone_sent_codes")
 }
 
 model Moment {
-  id             String   @id @db.Char(64)
-  title          String?  @db.VarChar(180)
-  content        String?  @db.Text
-  images         String[] @default([])
-  user_id        String   @db.Char(64)
-  created_at     DateTime @default(now()) @db.Timestamptz()
-  likers_count   Int      @default(0)
-  comments_count Int      @default(0)
+  id            String               @id @db.Char(64)
+  title         String?              @db.VarChar(180)
+  content       String?              @db.Text
+  images        String[]             @default([])
+  createdAt     DateTime             @default(now()) @db.Timestamptz()
+  likersCount   Int                  @default(0)
+  commentsCount Int                  @default(0)
+  userId        String               @db.Char(64)
+  user          User                 @relation(fields: [userId], references: [id])
+  favorites     UserFavoriteMoment[]
 
-  @@index([user_id])
-  @@index([created_at])
+  @@index([userId])
+  @@index([createdAt])
   @@map("moments")
 }
 
-model LikeOnMoment {
-  moment_id  String   @db.Char(64)
-  user_id    String   @db.Char(64)
-  created_at DateTime @default(now()) @db.Timestamptz()
+/// User favorite moment
+model UserFavoriteMoment {
+  userId     String   @db.Char(64)
+  user       User     @relation(fields: [userId], references: [id])
+  momentId   String   @db.Char(64)
+  moment     Moment   @relation(fields: [momentId], references: [id])
+  favoriteAt DateTime @default(now()) @db.Timestamptz()
 
-  @@id([moment_id, user_id])
-  @@index([moment_id])
-  @@index([user_id])
-  @@map("like_on_moments")
+  @@id([userId, momentId])
 }

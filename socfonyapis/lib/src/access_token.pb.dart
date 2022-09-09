@@ -1,6 +1,6 @@
 ///
 //  Generated code. Do not modify.
-//  source: socfony/access_token.proto
+//  source: access_token.proto
 //
 // @dart = 2.12
 // ignore_for_file: annotate_overrides,camel_case_types,constant_identifier_names,directives_ordering,library_prefixes,non_constant_identifier_names,prefer_final_fields,return_of_invalid_type,unnecessary_const,unnecessary_import,unnecessary_this,unused_import,unused_shown_name
@@ -9,7 +9,7 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../google/protobuf/timestamp.pb.dart' as $7;
+import 'google/protobuf/timestamp.pb.dart' as $2;
 
 class AccessToken extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
@@ -32,20 +32,20 @@ class AccessToken extends $pb.GeneratedMessage {
             ? ''
             : 'userId',
         protoName: 'userId')
-    ..aOM<$7.Timestamp>(
+    ..aOM<$2.Timestamp>(
         3,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
             : 'expiredAt',
         protoName: 'expiredAt',
-        subBuilder: $7.Timestamp.create)
-    ..aOM<$7.Timestamp>(
+        subBuilder: $2.Timestamp.create)
+    ..aOM<$2.Timestamp>(
         4,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
             : 'refreshExpiredAt',
         protoName: 'refreshExpiredAt',
-        subBuilder: $7.Timestamp.create)
+        subBuilder: $2.Timestamp.create)
     ..hasRequiredFields = false;
 
   AccessToken._() : super();
@@ -101,9 +101,9 @@ class AccessToken extends $pb.GeneratedMessage {
   void clearUserId() => clearField(2);
 
   @$pb.TagNumber(3)
-  $7.Timestamp get expiredAt => $_getN(2);
+  $2.Timestamp get expiredAt => $_getN(2);
   @$pb.TagNumber(3)
-  set expiredAt($7.Timestamp v) {
+  set expiredAt($2.Timestamp v) {
     setField(3, v);
   }
 
@@ -112,12 +112,12 @@ class AccessToken extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   void clearExpiredAt() => clearField(3);
   @$pb.TagNumber(3)
-  $7.Timestamp ensureExpiredAt() => $_ensure(2);
+  $2.Timestamp ensureExpiredAt() => $_ensure(2);
 
   @$pb.TagNumber(4)
-  $7.Timestamp get refreshExpiredAt => $_getN(3);
+  $2.Timestamp get refreshExpiredAt => $_getN(3);
   @$pb.TagNumber(4)
-  set refreshExpiredAt($7.Timestamp v) {
+  set refreshExpiredAt($2.Timestamp v) {
     setField(4, v);
   }
 
@@ -126,7 +126,7 @@ class AccessToken extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   void clearRefreshExpiredAt() => clearField(4);
   @$pb.TagNumber(4)
-  $7.Timestamp ensureRefreshExpiredAt() => $_ensure(3);
+  $2.Timestamp ensureRefreshExpiredAt() => $_ensure(3);
 }
 
 class CreateAccessTokenRequest extends $pb.GeneratedMessage {

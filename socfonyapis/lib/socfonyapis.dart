@@ -4,4 +4,10 @@
 
 library socfonyapis;
 
-export 'src/socfony.pbgrpc.dart';
+// Google protobuf exports
+export 'src/google/protobuf/empty.pb.dart';
+export 'src/google/protobuf/timestamp.pb.dart';
+export 'src/google/protobuf/wrappers.pb.dart';
+
+// Socfony protobuf exports
+export 'src/access_token.pbgrpc.dart';
