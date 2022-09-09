@@ -11,6 +11,7 @@ dependencies:
   betid: ^1.0.0
   easysms: ^1.0.0
   grpc: ^3.0.2
+  orm: ^2.1.0
   pool: ^1.5.1
   postgres: ^2.4.6
   socfonyapis:
@@ -18,3 +19,6 @@ dependencies:
 
 dev_dependencies:
   lints: ^2.0.0
+
+prisma:
+  scehma: prisma/schema.prisma
