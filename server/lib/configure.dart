@@ -1,10 +1,17 @@
 import 'package:rc/rc.dart';
+import 'package:orm/configure.dart' show environment;
 
 class Configure {
-  const Configure(this.rc);
+  Configure() {
+    // Create a runtime configuration.
+    rc = RuntimeConfiguration.from('.env', includeEnvironment: true);
+
+    // Set Prisma runtime configuration.
+    environment.custom(rc);
+  }
 
   /// Current runtime configuration.
-  final RuntimeConfiguration rc;
+  late final RuntimeConfiguration rc;
 
   /// Get database url.
   String? get databaseUrl => rc<String>('DATABASE_URL');
@@ -13,6 +20,4 @@ class Configure {
   int get port => rc<int>('port') ?? 8080;
 }
 
-Configure get configure => Configure(
-      RuntimeConfiguration.from('.env', includeEnvironment: true),
-    );
+final Configure configure = Configure();
