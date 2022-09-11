@@ -27,4 +27,4 @@ dependency_overrides:
 
 prisma:
   scehma: prisma/schema.prisma
-  doteng: .env
+  prismarc: .socfonyrc

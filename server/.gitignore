@@ -9,4 +9,4 @@ build/
 lib/configures.dart
 
 # Project configuration file.
-.env
+.socfonyrc
