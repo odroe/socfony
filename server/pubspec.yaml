@@ -17,7 +17,7 @@ dependencies:
   socfonyapis: ^1.0.2
 
 dev_dependencies:
-  build_runner: ^2.2.0
+  build_runner: ^2.2.1
   json_serializable: ^6.3.1
   lints: ^2.0.0
 
