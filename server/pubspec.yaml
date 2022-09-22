@@ -11,7 +11,7 @@ dependencies:
   betid: ^1.0.0
   easysms: ^1.0.0
   grpc: ^3.0.2
-  json_annotation: ^4.6.0
+  json_annotation: ^4.7.0
   orm: ^2.2.1
   rc: ^0.1.0
   socfonyapis: ^1.0.2
