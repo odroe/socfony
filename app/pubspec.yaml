@@ -34,7 +34,7 @@ dependencies:
   flutter_svg: ^1.1.5
   grpc: ^3.0.2
   http: ^0.13.5
-  image_picker: ^0.8.5+3
+  image_picker: ^0.8.6
   minio:
     git:
       url: https://github.com/odroe/minio.dart
