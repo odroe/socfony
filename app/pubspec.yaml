@@ -40,7 +40,7 @@ dependencies:
       url: https://github.com/odroe/minio.dart
       ref: main
   numeral: ^2.0.1
-  package_info_plus: ^1.4.3
+  package_info_plus: ^2.0.0
   shared_preferences: ^2.0.15
   socfonyapis:
     path: ../socfonyapis
