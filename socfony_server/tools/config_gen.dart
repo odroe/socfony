@@ -24,7 +24,7 @@ void main() {
 
   final String output = '''
 import 'dart:convert';
-final Map<String, dynamic> configure = utf8.decode(${utf8.encode(json.encode(config))}) as Map<String, dynamic>;
+final Map<String, dynamic> configure = json.decode(utf8.decode(${utf8.encode(json.encode(config))})) as Map<String, dynamic>;
 ''';
 
   // Write the configuration file.

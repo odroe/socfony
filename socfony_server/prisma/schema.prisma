@@ -10,3 +10,40 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum AccessTokenType {
+  ACCESS
+  REFRESH
+}
+
+model AccessToken {
+  token     String          @id
+  type      AccessTokenType
+  userId    String
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  expiresAt DateTime?
+  user      User            @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
+model User {
+  id           String        @id
+  login        String?       @unique
+  email        String?       @unique
+  phone        String?       @unique
+  password     String?
+  createdAt    DateTime      @default(now())
+  accessTokens AccessToken[]
+}
+
+model UserData {
+  userId String
+  name   String
+  value  Json
+
+  @@id([userId, name])
+  @@index([name])
+  @@index([userId])
+}

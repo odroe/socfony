@@ -8,3 +8,4 @@ build/
 # Socfony server configuration
 configure.yaml
 lib/configure.dart
+lib/prisma_client.*dart
