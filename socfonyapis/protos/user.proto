@@ -7,66 +7,34 @@ package odroe.socfony;
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
-import "one_time_password.proto";
 
-enum Gender {
-  woman = 0;
-  man = 1;
-  unknown = 2;
-}
-
-// User message
 message User {
   string id = 1;
-  optional string name = 2;
-  optional string phone = 3;
-  Gender gender = 4;
+  optional string login = 2;
+  optional string name = 3;
+  optional string bio = 4;
   optional string avatar = 5;
-  optional string bio = 6;
-  optional int32 birthday = 7;
-  google.protobuf.Timestamp registeredAt = 8;
+  UserSex sex = 6;
+  int32 birthday = 7;
+  google.protobuf.Timestamp createdAt = 8;
+  google.protobuf.Timestamp updatedAt = 9;
 }
 
-// Find a user request
-message FindUserRequest {
-  oneof kind {
+enum UserSex {
+  male = 0;
+  fremale = 1;
+  hermaphrodite = 2;
+  unknown = 3;
+}
+
+message UserWhereUniqueRequest {
+  oneof where {
     string id = 1;
-    string phone = 2;
-    string name = 3;
+    string login = 2;
   }
 }
 
-// Update user other info request
-message UpdateUserOtherInfoRequest {
-  optional Gender gender = 1;
-  optional string bio = 2;
-  optional int32 birthday = 3;
-}
-
-// Update user phone request
-message UpdateUserPhoneRequest {
-  string phone = 1;
-  string salt = 2;
-  string password = 3;
-
-  // The old phone request
-  optional OneTimePasswordInput old = 4;
-}
-
-// User service
 service UserService {
-  // Find a user
-  rpc Find(FindUserRequest) returns (User);
-
-  // Update user avatar
-  rpc UpdateAvatar(google.protobuf.StringValue) returns (User);
-
-  // Update user name
-  rpc UpdateName(google.protobuf.StringValue) returns (User);
-
-  // Update user phone
-  rpc UpdatePhone(UpdateUserPhoneRequest) returns (User);
-
-  // Update user other info
-  rpc Update(UpdateUserOtherInfoRequest) returns (User);
+  // Lookup a user by id or login.
+  rpc FindUnique(UserWhereUniqueRequest) returns (User);
 }

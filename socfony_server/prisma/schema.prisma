@@ -11,39 +11,29 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum AccessTokenType {
-  ACCESS
-  REFRESH
-}
-
-model AccessToken {
-  token     String          @id
-  type      AccessTokenType
-  userId    String
-  createdAt DateTime        @default(now())
-  updatedAt DateTime        @updatedAt
-  expiresAt DateTime?
-  user      User            @relation(fields: [userId], references: [id])
-
-  @@index([userId])
-}
-
 model User {
-  id           String        @id
-  login        String?       @unique
-  email        String?       @unique
-  phone        String?       @unique
-  password     String?
-  createdAt    DateTime      @default(now())
-  accessTokens AccessToken[]
+  id        String       @id @default(uuid())
+  login     String?      @unique
+  email     String?      @unique
+  phone     String?      @unique
+  createdAt DateTime     @default(now())
+  profile   UserProfile?
 }
 
-model UserData {
-  userId String
-  name   String
-  value  Json
+model UserProfile {
+  userId    String   @id
+  avatar    String?
+  name      String?
+  bio       String?
+  sex       UserSex  @default(unknown)
+  birthday  Int?
+  user      User     @relation(fields: [userId], references: [id])
+  updatedAt DateTime @updatedAt
+}
 
-  @@id([userId, name])
-  @@index([name])
-  @@index([userId])
+enum UserSex {
+  male
+  fremale
+  hermaphrodite
+  unknown
 }

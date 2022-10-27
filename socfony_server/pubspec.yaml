@@ -6,6 +6,7 @@ environment:
   sdk: '>=2.18.2 <3.0.0'
 
 dependencies: 
+  grpc: ^3.0.2
   orm: ^2.4.0
 
 dev_dependencies:

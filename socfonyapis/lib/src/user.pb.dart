@@ -9,8 +9,7 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'google/protobuf/timestamp.pb.dart' as $6;
-import 'one_time_password.pb.dart' as $0;
+import 'google/protobuf/timestamp.pb.dart' as $1;
 
 import 'user.pbenum.dart';
 
@@ -22,7 +21,7 @@ class User extends $pb.GeneratedMessage {
           ? ''
           : 'User',
       package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          $core.bool.fromEnvironment('protobuf.omit_message_names')
               ? ''
               : 'odroe.socfony'),
       createEmptyInstance: create)
@@ -35,48 +34,95 @@ class User extends $pb.GeneratedMessage {
         2,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
-            : 'name')
+            : 'login')
     ..aOS(
         3,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
-            : 'phone')
-    ..e<Gender>(
+            : 'name')
+    ..aOS(
         4,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
-            : 'gender',
-        $pb.PbFieldType.OE,
-        defaultOrMaker: Gender.woman,
-        valueOf: Gender.valueOf,
-        enumValues: Gender.values)
+            : 'bio')
     ..aOS(
         5,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
             : 'avatar')
-    ..aOS(
+    ..e<UserSex>(
         6,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
-            : 'bio')
+            : 'sex',
+        $pb.PbFieldType.OE,
+        defaultOrMaker: UserSex.male,
+        valueOf: UserSex.valueOf,
+        enumValues: UserSex.values)
     ..a<$core.int>(
         7,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
             : 'birthday',
         $pb.PbFieldType.O3)
-    ..aOM<$6.Timestamp>(
+    ..aOM<$1.Timestamp>(
         8,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
-            : 'registeredAt',
-        protoName: 'registeredAt',
-        subBuilder: $6.Timestamp.create)
+            : 'createdAt',
+        protoName: 'createdAt',
+        subBuilder: $1.Timestamp.create)
+    ..aOM<$1.Timestamp>(
+        9,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'updatedAt',
+        protoName: 'updatedAt',
+        subBuilder: $1.Timestamp.create)
     ..hasRequiredFields = false;
 
   User._() : super();
-  factory User() => create();
+  factory User({
+    $core.String? id,
+    $core.String? login,
+    $core.String? name,
+    $core.String? bio,
+    $core.String? avatar,
+    UserSex? sex,
+    $core.int? birthday,
+    $1.Timestamp? createdAt,
+    $1.Timestamp? updatedAt,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (login != null) {
+      _result.login = login;
+    }
+    if (name != null) {
+      _result.name = name;
+    }
+    if (bio != null) {
+      _result.bio = bio;
+    }
+    if (avatar != null) {
+      _result.avatar = avatar;
+    }
+    if (sex != null) {
+      _result.sex = sex;
+    }
+    if (birthday != null) {
+      _result.birthday = birthday;
+    }
+    if (createdAt != null) {
+      _result.createdAt = createdAt;
+    }
+    if (updatedAt != null) {
+      _result.updatedAt = updatedAt;
+    }
+    return _result;
+  }
   factory User.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
@@ -116,40 +162,40 @@ class User extends $pb.GeneratedMessage {
   void clearId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.String get name => $_getSZ(1);
+  $core.String get login => $_getSZ(1);
   @$pb.TagNumber(2)
-  set name($core.String v) {
+  set login($core.String v) {
     $_setString(1, v);
   }
 
   @$pb.TagNumber(2)
-  $core.bool hasName() => $_has(1);
+  $core.bool hasLogin() => $_has(1);
   @$pb.TagNumber(2)
-  void clearName() => clearField(2);
+  void clearLogin() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get phone => $_getSZ(2);
+  $core.String get name => $_getSZ(2);
   @$pb.TagNumber(3)
-  set phone($core.String v) {
+  set name($core.String v) {
     $_setString(2, v);
   }
 
   @$pb.TagNumber(3)
-  $core.bool hasPhone() => $_has(2);
+  $core.bool hasName() => $_has(2);
   @$pb.TagNumber(3)
-  void clearPhone() => clearField(3);
+  void clearName() => clearField(3);
 
   @$pb.TagNumber(4)
-  Gender get gender => $_getN(3);
+  $core.String get bio => $_getSZ(3);
   @$pb.TagNumber(4)
-  set gender(Gender v) {
-    setField(4, v);
+  set bio($core.String v) {
+    $_setString(3, v);
   }
 
   @$pb.TagNumber(4)
-  $core.bool hasGender() => $_has(3);
+  $core.bool hasBio() => $_has(3);
   @$pb.TagNumber(4)
-  void clearGender() => clearField(4);
+  void clearBio() => clearField(4);
 
   @$pb.TagNumber(5)
   $core.String get avatar => $_getSZ(4);
@@ -164,16 +210,16 @@ class User extends $pb.GeneratedMessage {
   void clearAvatar() => clearField(5);
 
   @$pb.TagNumber(6)
-  $core.String get bio => $_getSZ(5);
+  UserSex get sex => $_getN(5);
   @$pb.TagNumber(6)
-  set bio($core.String v) {
-    $_setString(5, v);
+  set sex(UserSex v) {
+    setField(6, v);
   }
 
   @$pb.TagNumber(6)
-  $core.bool hasBio() => $_has(5);
+  $core.bool hasSex() => $_has(5);
   @$pb.TagNumber(6)
-  void clearBio() => clearField(6);
+  void clearSex() => clearField(6);
 
   @$pb.TagNumber(7)
   $core.int get birthday => $_getIZ(6);
@@ -188,40 +234,53 @@ class User extends $pb.GeneratedMessage {
   void clearBirthday() => clearField(7);
 
   @$pb.TagNumber(8)
-  $6.Timestamp get registeredAt => $_getN(7);
+  $1.Timestamp get createdAt => $_getN(7);
   @$pb.TagNumber(8)
-  set registeredAt($6.Timestamp v) {
+  set createdAt($1.Timestamp v) {
     setField(8, v);
   }
 
   @$pb.TagNumber(8)
-  $core.bool hasRegisteredAt() => $_has(7);
+  $core.bool hasCreatedAt() => $_has(7);
   @$pb.TagNumber(8)
-  void clearRegisteredAt() => clearField(8);
+  void clearCreatedAt() => clearField(8);
   @$pb.TagNumber(8)
-  $6.Timestamp ensureRegisteredAt() => $_ensure(7);
+  $1.Timestamp ensureCreatedAt() => $_ensure(7);
+
+  @$pb.TagNumber(9)
+  $1.Timestamp get updatedAt => $_getN(8);
+  @$pb.TagNumber(9)
+  set updatedAt($1.Timestamp v) {
+    setField(9, v);
+  }
+
+  @$pb.TagNumber(9)
+  $core.bool hasUpdatedAt() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearUpdatedAt() => clearField(9);
+  @$pb.TagNumber(9)
+  $1.Timestamp ensureUpdatedAt() => $_ensure(8);
 }
 
-enum FindUserRequest_Kind { id, phone, name, notSet }
+enum UserWhereUniqueRequest_Where { id, login, notSet }
 
-class FindUserRequest extends $pb.GeneratedMessage {
-  static const $core.Map<$core.int, FindUserRequest_Kind>
-      _FindUserRequest_KindByTag = {
-    1: FindUserRequest_Kind.id,
-    2: FindUserRequest_Kind.phone,
-    3: FindUserRequest_Kind.name,
-    0: FindUserRequest_Kind.notSet
+class UserWhereUniqueRequest extends $pb.GeneratedMessage {
+  static const $core.Map<$core.int, UserWhereUniqueRequest_Where>
+      _UserWhereUniqueRequest_WhereByTag = {
+    1: UserWhereUniqueRequest_Where.id,
+    2: UserWhereUniqueRequest_Where.login,
+    0: UserWhereUniqueRequest_Where.notSet
   };
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       const $core.bool.fromEnvironment('protobuf.omit_message_names')
           ? ''
-          : 'FindUserRequest',
+          : 'UserWhereUniqueRequest',
       package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
+          $core.bool.fromEnvironment('protobuf.omit_message_names')
               ? ''
               : 'odroe.socfony'),
       createEmptyInstance: create)
-    ..oo(0, [1, 2, 3])
+    ..oo(0, [1, 2])
     ..aOS(
         1,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
@@ -231,46 +290,55 @@ class FindUserRequest extends $pb.GeneratedMessage {
         2,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
-            : 'phone')
-    ..aOS(
-        3,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'name')
+            : 'login')
     ..hasRequiredFields = false;
 
-  FindUserRequest._() : super();
-  factory FindUserRequest() => create();
-  factory FindUserRequest.fromBuffer($core.List<$core.int> i,
+  UserWhereUniqueRequest._() : super();
+  factory UserWhereUniqueRequest({
+    $core.String? id,
+    $core.String? login,
+  }) {
+    final _result = create();
+    if (id != null) {
+      _result.id = id;
+    }
+    if (login != null) {
+      _result.login = login;
+    }
+    return _result;
+  }
+  factory UserWhereUniqueRequest.fromBuffer($core.List<$core.int> i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromBuffer(i, r);
-  factory FindUserRequest.fromJson($core.String i,
+  factory UserWhereUniqueRequest.fromJson($core.String i,
           [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
       create()..mergeFromJson(i, r);
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
       'Will be removed in next major version')
-  FindUserRequest clone() => FindUserRequest()..mergeFromMessage(this);
+  UserWhereUniqueRequest clone() =>
+      UserWhereUniqueRequest()..mergeFromMessage(this);
   @$core.Deprecated('Using this can add significant overhead to your binary. '
       'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
       'Will be removed in next major version')
-  FindUserRequest copyWith(void Function(FindUserRequest) updates) =>
-      super.copyWith((message) => updates(message as FindUserRequest))
-          as FindUserRequest; // ignore: deprecated_member_use
+  UserWhereUniqueRequest copyWith(
+          void Function(UserWhereUniqueRequest) updates) =>
+      super.copyWith((message) => updates(message as UserWhereUniqueRequest))
+          as UserWhereUniqueRequest; // ignore: deprecated_member_use
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static FindUserRequest create() => FindUserRequest._();
-  FindUserRequest createEmptyInstance() => create();
-  static $pb.PbList<FindUserRequest> createRepeated() =>
-      $pb.PbList<FindUserRequest>();
+  static UserWhereUniqueRequest create() => UserWhereUniqueRequest._();
+  UserWhereUniqueRequest createEmptyInstance() => create();
+  static $pb.PbList<UserWhereUniqueRequest> createRepeated() =>
+      $pb.PbList<UserWhereUniqueRequest>();
   @$core.pragma('dart2js:noInline')
-  static FindUserRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FindUserRequest>(create);
-  static FindUserRequest? _defaultInstance;
+  static UserWhereUniqueRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<UserWhereUniqueRequest>(create);
+  static UserWhereUniqueRequest? _defaultInstance;
 
-  FindUserRequest_Kind whichKind() =>
-      _FindUserRequest_KindByTag[$_whichOneof(0)]!;
-  void clearKind() => clearField($_whichOneof(0));
+  UserWhereUniqueRequest_Where whichWhere() =>
+      _UserWhereUniqueRequest_WhereByTag[$_whichOneof(0)]!;
+  void clearWhere() => clearField($_whichOneof(0));
 
   @$pb.TagNumber(1)
   $core.String get id => $_getSZ(0);
@@ -285,242 +353,14 @@ class FindUserRequest extends $pb.GeneratedMessage {
   void clearId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.String get phone => $_getSZ(1);
+  $core.String get login => $_getSZ(1);
   @$pb.TagNumber(2)
-  set phone($core.String v) {
+  set login($core.String v) {
     $_setString(1, v);
   }
 
   @$pb.TagNumber(2)
-  $core.bool hasPhone() => $_has(1);
+  $core.bool hasLogin() => $_has(1);
   @$pb.TagNumber(2)
-  void clearPhone() => clearField(2);
-
-  @$pb.TagNumber(3)
-  $core.String get name => $_getSZ(2);
-  @$pb.TagNumber(3)
-  set name($core.String v) {
-    $_setString(2, v);
-  }
-
-  @$pb.TagNumber(3)
-  $core.bool hasName() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearName() => clearField(3);
-}
-
-class UpdateUserOtherInfoRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'UpdateUserOtherInfoRequest',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'odroe.socfony'),
-      createEmptyInstance: create)
-    ..e<Gender>(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'gender',
-        $pb.PbFieldType.OE,
-        defaultOrMaker: Gender.woman,
-        valueOf: Gender.valueOf,
-        enumValues: Gender.values)
-    ..aOS(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'bio')
-    ..a<$core.int>(
-        3,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'birthday',
-        $pb.PbFieldType.O3)
-    ..hasRequiredFields = false;
-
-  UpdateUserOtherInfoRequest._() : super();
-  factory UpdateUserOtherInfoRequest() => create();
-  factory UpdateUserOtherInfoRequest.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory UpdateUserOtherInfoRequest.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
-  UpdateUserOtherInfoRequest clone() =>
-      UpdateUserOtherInfoRequest()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  UpdateUserOtherInfoRequest copyWith(
-          void Function(UpdateUserOtherInfoRequest) updates) =>
-      super.copyWith(
-              (message) => updates(message as UpdateUserOtherInfoRequest))
-          as UpdateUserOtherInfoRequest; // ignore: deprecated_member_use
-  $pb.BuilderInfo get info_ => _i;
-  @$core.pragma('dart2js:noInline')
-  static UpdateUserOtherInfoRequest create() => UpdateUserOtherInfoRequest._();
-  UpdateUserOtherInfoRequest createEmptyInstance() => create();
-  static $pb.PbList<UpdateUserOtherInfoRequest> createRepeated() =>
-      $pb.PbList<UpdateUserOtherInfoRequest>();
-  @$core.pragma('dart2js:noInline')
-  static UpdateUserOtherInfoRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<UpdateUserOtherInfoRequest>(create);
-  static UpdateUserOtherInfoRequest? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  Gender get gender => $_getN(0);
-  @$pb.TagNumber(1)
-  set gender(Gender v) {
-    setField(1, v);
-  }
-
-  @$pb.TagNumber(1)
-  $core.bool hasGender() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearGender() => clearField(1);
-
-  @$pb.TagNumber(2)
-  $core.String get bio => $_getSZ(1);
-  @$pb.TagNumber(2)
-  set bio($core.String v) {
-    $_setString(1, v);
-  }
-
-  @$pb.TagNumber(2)
-  $core.bool hasBio() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearBio() => clearField(2);
-
-  @$pb.TagNumber(3)
-  $core.int get birthday => $_getIZ(2);
-  @$pb.TagNumber(3)
-  set birthday($core.int v) {
-    $_setSignedInt32(2, v);
-  }
-
-  @$pb.TagNumber(3)
-  $core.bool hasBirthday() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearBirthday() => clearField(3);
-}
-
-class UpdateUserPhoneRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      const $core.bool.fromEnvironment('protobuf.omit_message_names')
-          ? ''
-          : 'UpdateUserPhoneRequest',
-      package: const $pb.PackageName(
-          const $core.bool.fromEnvironment('protobuf.omit_message_names')
-              ? ''
-              : 'odroe.socfony'),
-      createEmptyInstance: create)
-    ..aOS(
-        1,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'phone')
-    ..aOS(
-        2,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'salt')
-    ..aOS(
-        3,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'password')
-    ..aOM<$0.OneTimePasswordInput>(
-        4,
-        const $core.bool.fromEnvironment('protobuf.omit_field_names')
-            ? ''
-            : 'old',
-        subBuilder: $0.OneTimePasswordInput.create)
-    ..hasRequiredFields = false;
-
-  UpdateUserPhoneRequest._() : super();
-  factory UpdateUserPhoneRequest() => create();
-  factory UpdateUserPhoneRequest.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory UpdateUserPhoneRequest.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
-  UpdateUserPhoneRequest clone() =>
-      UpdateUserPhoneRequest()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  UpdateUserPhoneRequest copyWith(
-          void Function(UpdateUserPhoneRequest) updates) =>
-      super.copyWith((message) => updates(message as UpdateUserPhoneRequest))
-          as UpdateUserPhoneRequest; // ignore: deprecated_member_use
-  $pb.BuilderInfo get info_ => _i;
-  @$core.pragma('dart2js:noInline')
-  static UpdateUserPhoneRequest create() => UpdateUserPhoneRequest._();
-  UpdateUserPhoneRequest createEmptyInstance() => create();
-  static $pb.PbList<UpdateUserPhoneRequest> createRepeated() =>
-      $pb.PbList<UpdateUserPhoneRequest>();
-  @$core.pragma('dart2js:noInline')
-  static UpdateUserPhoneRequest getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<UpdateUserPhoneRequest>(create);
-  static UpdateUserPhoneRequest? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.String get phone => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set phone($core.String v) {
-    $_setString(0, v);
-  }
-
-  @$pb.TagNumber(1)
-  $core.bool hasPhone() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearPhone() => clearField(1);
-
-  @$pb.TagNumber(2)
-  $core.String get salt => $_getSZ(1);
-  @$pb.TagNumber(2)
-  set salt($core.String v) {
-    $_setString(1, v);
-  }
-
-  @$pb.TagNumber(2)
-  $core.bool hasSalt() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearSalt() => clearField(2);
-
-  @$pb.TagNumber(3)
-  $core.String get password => $_getSZ(2);
-  @$pb.TagNumber(3)
-  set password($core.String v) {
-    $_setString(2, v);
-  }
-
-  @$pb.TagNumber(3)
-  $core.bool hasPassword() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearPassword() => clearField(3);
-
-  @$pb.TagNumber(4)
-  $0.OneTimePasswordInput get old => $_getN(3);
-  @$pb.TagNumber(4)
-  set old($0.OneTimePasswordInput v) {
-    setField(4, v);
-  }
-
-  @$pb.TagNumber(4)
-  $core.bool hasOld() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearOld() => clearField(4);
-  @$pb.TagNumber(4)
-  $0.OneTimePasswordInput ensureOld() => $_ensure(3);
+  void clearLogin() => clearField(2);
 }

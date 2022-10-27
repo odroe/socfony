@@ -13,4 +13,9 @@ dependencies:
   protobuf: ^2.1.0
 
 dev_dependencies:
+  archive: ^3.3.2
+  cli_util: ^0.3.5
+  http: ^0.13.5
   lints: ^1.0.0
+  path: ^1.8.2
+  protoc_plugin: ^20.0.1
