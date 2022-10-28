@@ -14,21 +14,21 @@ message User {
   optional string name = 3;
   optional string bio = 4;
   optional string avatar = 5;
-  UserSex sex = 6;
+  Sex sex = 6;
   int32 birthday = 7;
   google.protobuf.Timestamp createdAt = 8;
   google.protobuf.Timestamp updatedAt = 9;
-}
 
-enum UserSex {
-  male = 0;
-  fremale = 1;
-  hermaphrodite = 2;
-  unknown = 3;
+  enum Sex {
+    male = 0;
+    fremale = 1;
+    hermaphrodite = 2;
+    unknown = 3;
+  }
 }
 
 message UserWhereUniqueRequest {
-  oneof where {
+  oneof kind {
     string id = 1;
     string login = 2;
   }

@@ -16,7 +16,7 @@ model User {
   login     String?      @unique
   email     String?      @unique
   phone     String?      @unique
-  createdAt DateTime     @default(now())
+  createdAt DateTime     @default(now()) @db.Timestamptz()
   profile   UserProfile?
 }
 
@@ -28,7 +28,7 @@ model UserProfile {
   sex       UserSex  @default(unknown)
   birthday  Int?
   user      User     @relation(fields: [userId], references: [id])
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt @db.Timestamptz()
 }
 
 enum UserSex {

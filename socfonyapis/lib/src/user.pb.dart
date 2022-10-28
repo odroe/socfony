@@ -50,15 +50,15 @@ class User extends $pb.GeneratedMessage {
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
             : 'avatar')
-    ..e<UserSex>(
+    ..e<User_Sex>(
         6,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
             ? ''
             : 'sex',
         $pb.PbFieldType.OE,
-        defaultOrMaker: UserSex.male,
-        valueOf: UserSex.valueOf,
-        enumValues: UserSex.values)
+        defaultOrMaker: User_Sex.male,
+        valueOf: User_Sex.valueOf,
+        enumValues: User_Sex.values)
     ..a<$core.int>(
         7,
         const $core.bool.fromEnvironment('protobuf.omit_field_names')
@@ -88,7 +88,7 @@ class User extends $pb.GeneratedMessage {
     $core.String? name,
     $core.String? bio,
     $core.String? avatar,
-    UserSex? sex,
+    User_Sex? sex,
     $core.int? birthday,
     $1.Timestamp? createdAt,
     $1.Timestamp? updatedAt,
@@ -210,9 +210,9 @@ class User extends $pb.GeneratedMessage {
   void clearAvatar() => clearField(5);
 
   @$pb.TagNumber(6)
-  UserSex get sex => $_getN(5);
+  User_Sex get sex => $_getN(5);
   @$pb.TagNumber(6)
-  set sex(UserSex v) {
+  set sex(User_Sex v) {
     setField(6, v);
   }
 
@@ -262,14 +262,14 @@ class User extends $pb.GeneratedMessage {
   $1.Timestamp ensureUpdatedAt() => $_ensure(8);
 }
 
-enum UserWhereUniqueRequest_Where { id, login, notSet }
+enum UserWhereUniqueRequest_Kind { id, login, notSet }
 
 class UserWhereUniqueRequest extends $pb.GeneratedMessage {
-  static const $core.Map<$core.int, UserWhereUniqueRequest_Where>
-      _UserWhereUniqueRequest_WhereByTag = {
-    1: UserWhereUniqueRequest_Where.id,
-    2: UserWhereUniqueRequest_Where.login,
-    0: UserWhereUniqueRequest_Where.notSet
+  static const $core.Map<$core.int, UserWhereUniqueRequest_Kind>
+      _UserWhereUniqueRequest_KindByTag = {
+    1: UserWhereUniqueRequest_Kind.id,
+    2: UserWhereUniqueRequest_Kind.login,
+    0: UserWhereUniqueRequest_Kind.notSet
   };
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
       const $core.bool.fromEnvironment('protobuf.omit_message_names')
@@ -336,9 +336,9 @@ class UserWhereUniqueRequest extends $pb.GeneratedMessage {
       $pb.GeneratedMessage.$_defaultFor<UserWhereUniqueRequest>(create);
   static UserWhereUniqueRequest? _defaultInstance;
 
-  UserWhereUniqueRequest_Where whichWhere() =>
-      _UserWhereUniqueRequest_WhereByTag[$_whichOneof(0)]!;
-  void clearWhere() => clearField($_whichOneof(0));
+  UserWhereUniqueRequest_Kind whichKind() =>
+      _UserWhereUniqueRequest_KindByTag[$_whichOneof(0)]!;
+  void clearKind() => clearField($_whichOneof(0));
 
   @$pb.TagNumber(1)
   $core.String get id => $_getSZ(0);

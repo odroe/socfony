@@ -9,29 +9,29 @@
 import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-class UserSex extends $pb.ProtobufEnum {
-  static const UserSex male = UserSex._(
+class User_Sex extends $pb.ProtobufEnum {
+  static const User_Sex male = User_Sex._(
       0, $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'male');
-  static const UserSex fremale = UserSex._(1,
+  static const User_Sex fremale = User_Sex._(1,
       $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'fremale');
-  static const UserSex hermaphrodite = UserSex._(
+  static const User_Sex hermaphrodite = User_Sex._(
       2,
       $core.bool.fromEnvironment('protobuf.omit_enum_names')
           ? ''
           : 'hermaphrodite');
-  static const UserSex unknown = UserSex._(3,
+  static const User_Sex unknown = User_Sex._(3,
       $core.bool.fromEnvironment('protobuf.omit_enum_names') ? '' : 'unknown');
 
-  static const $core.List<UserSex> values = <UserSex>[
+  static const $core.List<User_Sex> values = <User_Sex>[
     male,
     fremale,
     hermaphrodite,
     unknown,
   ];
 
-  static final $core.Map<$core.int, UserSex> _byValue =
+  static final $core.Map<$core.int, User_Sex> _byValue =
       $pb.ProtobufEnum.initByValue(values);
-  static UserSex? valueOf($core.int value) => _byValue[value];
+  static User_Sex? valueOf($core.int value) => _byValue[value];
 
-  const UserSex._($core.int v, $core.String n) : super(v, n);
+  const User_Sex._($core.int v, $core.String n) : super(v, n);
 }

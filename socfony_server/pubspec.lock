@@ -386,6 +386,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
+  socfonyapis:
+    dependency: "direct main"
+    description:
+      path: "../socfonyapis"
+      relative: true
+    source: path
+    version: "1.0.2"
   source_gen:
     dependency: transitive
     description:

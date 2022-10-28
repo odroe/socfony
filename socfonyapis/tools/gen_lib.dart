@@ -94,7 +94,7 @@ library socfonyapis;
   libFile.writeAsStringSync(buffer.toString());
 
   /// Format the generated code.
-  final ProcessResult result = await Process.run(
+  await Process.run(
     Platform.resolvedExecutable,
     [
       'format',
