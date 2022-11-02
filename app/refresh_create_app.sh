@@ -1,1 +1,0 @@
-flutter create --org=com.odroe --project-name=socfony --platforms=ios,android --template=app .
